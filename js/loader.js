@@ -1,108 +1,153 @@
 /* ============================================================
-   ЗАГРУЗЧИК ИСТОРИЙ ИЗ ПАПКИ stores/
+   ЗАГРУЗЧИК ИСТОРИЙ
 
-   Как добавить историю (для владельца репозитория):
-     1. Положи файл stores/N.json, где N — следующий номер: 1, 2, 3, …
-        Номера идут подряд, без пропусков.
-     2. Закоммить. Приложение само найдёт файл при загрузке.
+   ОДНА ИСТОРИЯ = ОДНА ПАПКА в stores/, сюжет и фото вместе:
 
-   Как это работает технически:
-     • Сначала пробуем stores/index.json (необязательный манифест):
-         [1,2,3]  |  ["1.json","2.json"]  |  {"count":3}  |  {"stories":[...]}
-     • Если манифеста нет — перебираем 1.json, 2.json, 3.json, …
-       и останавливаемся на первом отсутствующем номере.
-     • Каждый файл может содержать одну историю, массив историй
-       или {"stories":[...]}.
-     • Битый файл пропускается, причина пишется в Loader.diagnostics
-       и показывается в библиотеке — приложение не падает.
+     stores/1/
+       story.json        ← сюжет (пути к картинкам — ОТНОСИТЕЛЬНЫЕ)
+       cover.jpg         ← обложка
+       images/
+         bg-01.jpg       ← фоны сцен
+         hero.png        ← персонажи
+     stores/2/
+       ...
 
-   ВАЖНО: fetch работает только через http(s). Если открыть
-   index.html двойным кликом (file://), браузер запретит чтение
-   файлов — запусти локальный сервер (см. README) или используй
-   кнопку «Импорт» в приложении.
+   В story.json картинки указываются относительно папки истории:
+   "cover": "cover.jpg", "bg": "images/bg-01.jpg" — загрузчик сам
+   подставит префикс "stores/1/". Номера папок идут подряд: 1, 2, 3…
+
+   Откуда истории берутся в разных сборках:
+   • ANDROID (RuStore): истории ВШИТЫ в приложение при сборке —
+     tools/prepare-www.mjs собирает их в js/stories-bundle.js
+     (BUNDLED_BUILD). Сеть и fetch не нужны, приложение офлайн.
+   • ВЕБ-РАЗРАБОТКА: перебираем stores/1/story.json, 2/story.json…
+     до первого отсутствующего номера (совместимость: старый
+     stores/1.json тоже поддерживается).
+   • Вкладка «Импорт»: истории из localStorage, добавленные вручную.
+
+   Битый файл никогда не роняет приложение: он пропускается,
+   а причина пишется в Loader.diagnostics и видна в библиотеке.
    ============================================================ */
 
 const Loader = {
-  stories: new Map(),     // id -> { story, source: 'stores/1.json' | 'import' }
-  diagnostics: [],        // { file, message, kind: 'error'|'warning' }
+  stories: new Map(),     // id -> { story, source }
+  diagnostics: [],        // { file, message, kind }
   fileProtocol: location.protocol === 'file:',
 
   diag(file, message, kind = 'error') { this.diagnostics.push({ file, message, kind }); },
 
-  register(story, source) {
+  /* Относительные пути картинок превращаем в полные: stores/1/ + cover.jpg.
+     Работаем с копией объекта, чтобы не испортить оригинал в хранилище. */
+  resolveAssets(story, base) {
+    const s = JSON.parse(JSON.stringify(story));
+    if (!base) return s;
+    const fix = p => {
+      if (!p || typeof p !== 'string') return p;
+      if (/^(https?:|data:|\/)/.test(p)) return p;
+      return base + p.replace(/^\.\//, '');
+    };
+    s.cover = fix(s.cover);
+    Object.values(s.characters || {}).forEach(c => { c.image = fix(c.image); });
+    Object.values(s.scenes || {}).forEach(sc => { sc.bg = fix(sc.bg); });
+    return s;
+  },
+
+  register(story, source, base = '') {
+    if (!story || typeof story !== 'object' || Array.isArray(story)) {
+      this.diag(source, 'Не объект истории'); return false;
+    }
     const { errors, warnings } = validateStory(story);
     warnings.forEach(w => this.diag(source, `«${story.title || story.id || '?'}»: ${w}`, 'warning'));
     if (errors.length) {
       errors.slice(0, 6).forEach(e => this.diag(source, `«${story.title || story.id || '?'}»: ${e}`));
-      if (errors.length > 6) this.diag(source, `…и ещё ${errors.length - 6} ошибок (полный список: node tools/validate.mjs)`);
+      if (errors.length > 6) this.diag(source, `…и ещё ${errors.length - 6} ошибок (полный список: npm run validate)`);
       return false;
     }
     if (this.stories.has(story.id)) {
       this.diag(source, `Дублирующийся id "${story.id}" — история пропущена`, 'warning');
       return false;
     }
-    this.stories.set(story.id, { story, source });
+    this.stories.set(story.id, { story: this.resolveAssets(story, base), source });
     return true;
   },
 
-  registerBundle(data, source) {
+  registerBundle(data, source, base = '') {
     const list = normalizeBundle(data);
     if (!list.length) { this.diag(source, 'Файл пуст или не содержит историй'); return 0; }
     let ok = 0;
-    list.forEach(s => { if (this.register(s, source)) ok++; });
+    list.forEach(s => { if (this.register(s, source, base)) ok++; });
     return ok;
+  },
+
+  /* Android-сборка: истории уже вшиты, сеть не нужна. */
+  loadBundled() {
+    (window.BUNDLED_STORIES || []).forEach(e => this.register(e.story, e.base || 'встроена', e.base || ''));
+    return !!window.BUNDLED_BUILD;
   },
 
   async fetchJson(path) {
     const r = await fetch(path, { cache: 'no-cache' });
     if (!r.ok) throw new Error('HTTP ' + r.status);
-    return r.json(); // бросит ошибку при битом JSON — ловим снаружи
+    return r.json();
   },
 
-  /* Список файлов из манифеста, или null если манифеста нет. */
+  /* Одна попытка загрузить историю номер n: сначала папка n/story.json,
+     затем (совместимость) файл n.json. Возвращает: 'ok' | 'missing' | 'broken'. */
+  async tryNumber(folder, n) {
+    const inFolder = `${folder}/${n}/story.json`;
+    try {
+      this.registerBundle(await this.fetchJson(inFolder), inFolder, `${folder}/${n}/`);
+      return 'ok';
+    } catch (e) {
+      if (!String(e.message).includes('404')) { this.diag(inFolder, 'JSON битый: ' + e.message); return 'broken'; }
+    }
+    const flat = `${folder}/${n}.json`;
+    try {
+      this.registerBundle(await this.fetchJson(flat), flat, '');
+      return 'ok';
+    } catch (e) {
+      if (!String(e.message).includes('404')) { this.diag(flat, 'JSON битый: ' + e.message); return 'broken'; }
+    }
+    return 'missing';
+  },
+
   async manifestFiles(folder) {
     try {
       const m = await this.fetchJson(`${folder}/index.json`);
-      if (Array.isArray(m)) return m.map(x => (typeof x === 'number' ? `${x}.json` : String(x)));
-      if (m && Number.isInteger(m.count)) return Array.from({ length: m.count }, (_, i) => `${i + 1}.json`);
-      if (m && Array.isArray(m.files)) return m.files.map(String);
-      if (m && Array.isArray(m.stories) && m.stories.length && typeof m.stories[0] === 'string') return m.stories;
-      if (m && Array.isArray(m.stories)) { this.registerBundle(m, `${folder}/index.json`); return []; }
+      if (Array.isArray(m)) return m;
+      if (m && Number.isInteger(m.count)) return Array.from({ length: m.count }, (_, i) => i + 1);
+      if (m && Array.isArray(m.files)) return m.files;
+      if (m && Array.isArray(m.stories) && m.stories.length && typeof m.stories[0] === 'object') {
+        this.registerBundle(m, `${folder}/index.json`); return [];
+      }
       return [];
     } catch (e) { return null; }
   },
 
   async loadFromStores(onProgress) {
-    if (this.fileProtocol) return; // fetch запрещён браузером — покажем подсказку в UI
+    if (this.fileProtocol) return; // браузер запрещает fetch с file:// — UI покажет подсказку
     const folder = CONFIG.stores.folder;
-    const files = await this.manifestFiles(folder);
+    const manifest = await this.manifestFiles(folder);
 
-    if (files) {
-      for (const f of files) {
-        const name = f.includes('/') ? f : `${folder}/${f}`;
-        try { this.registerBundle(await this.fetchJson(name), name); }
-        catch (e) { this.diag(name, 'Не удалось загрузить или JSON битый: ' + e.message); }
+    if (manifest) {
+      for (const entry of manifest) {
+        if (typeof entry === 'number') { await this.tryNumber(folder, entry); }
+        else {
+          const name = String(entry).includes('/') ? String(entry) : `${folder}/${entry}`;
+          const base = name.endsWith('/story.json') ? name.slice(0, -'story.json'.length) : '';
+          try { this.registerBundle(await this.fetchJson(name), name, base); }
+          catch (e) { this.diag(name, 'Не удалось загрузить или JSON битый: ' + e.message); }
+        }
         onProgress && onProgress();
       }
       return;
     }
-    // Без манифеста: 1.json, 2.json, … до первого отсутствующего номера.
-    // Битый JSON в одном файле не останавливает загрузку: он пропускается
-    // с записью в диагностику (страховка — 3 сбоя подряд = стоп).
     let failStreak = 0;
     for (let n = 1; n <= CONFIG.stores.maxProbe; n++) {
-      const name = `${folder}/${n}.json`;
-      let data;
-      try { data = await this.fetchJson(name); }
-      catch (e) {
-        if (String(e.message).includes('404')) break;         // номеров дальше нет — нормальная остановка
-        this.diag(name, 'Не удалось загрузить или JSON битый: ' + e.message);
-        if (++failStreak >= 3) break;
-        continue;
-      }
-      failStreak = 0;
-      this.registerBundle(data, name);
-      onProgress && onProgress();
+      const res = await this.tryNumber(folder, n);
+      if (res === 'missing') break;                 // номеров дальше нет
+      if (res === 'broken' && ++failStreak >= 3) break;
+      if (res === 'ok') { failStreak = 0; onProgress && onProgress(); }
     }
   },
 
@@ -110,7 +155,6 @@ const Loader = {
     (Store.data.imported || []).forEach(s => this.register(s, 'import'));
   },
 
-  /* Импорт из UI: текст JSON (файл или вставка). Возвращает {ok, added, errors[]}. */
   importFromText(text) {
     let data;
     try { data = JSON.parse(text); }

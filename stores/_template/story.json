@@ -4,7 +4,7 @@
   "description": "ОПИСАНИЕ: 2–3 предложения — кто героиня, что происходит, в чём интрига. Без спойлеров финала.",
   "genre": "ЖАНР",
   "author": "АВТОР",
-  "cover": "assets/covers/unikalnyy-id-latinicey.jpg",
+  "cover": "cover.jpg",
   "coverGradient": ["#E9DCC3", "#B49B72"],
   "coverSymbol": "✦",
   "tags": ["тег1", "тег2"],
@@ -16,11 +16,11 @@
   },
   "characters": {
     "heroine": { "name": "Имя героини", "color": "#8A6D4B", "image": "" },
-    "hero": { "name": "Имя персонажа", "color": "#5C6650", "image": "assets/characters/unikalnyy-id-latinicey/hero.png" }
+    "hero": { "name": "Имя персонажа", "color": "#5C6650", "image": "images/hero.png" }
   },
   "scenes": {
     "s1": {
-      "bg": "assets/backgrounds/unikalnyy-id-latinicey/bg-01.jpg",
+      "bg": "images/bg-01.jpg",
       "bgGradient": ["#EFE6D4", "#D8C7A8"],
       "show": ["heroine"],
       "lines": [
@@ -34,7 +34,7 @@
       ]
     },
     "s2": {
-      "bg": "",
+      "bg": "images/bg-01.jpg",
       "bgGradient": ["#EFE6D4", "#D8C7A8"],
       "show": ["heroine", "hero"],
       "lines": [

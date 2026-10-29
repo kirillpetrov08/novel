@@ -1,0 +1,9 @@
+{
+  "appId": "ru.novella.reader",
+  "appName": "Новелла",
+  "webDir": "www",
+  "backgroundColor": "#F7F2E7",
+  "android": {
+    "backgroundColor": "#F7F2E7"
+  }
+}

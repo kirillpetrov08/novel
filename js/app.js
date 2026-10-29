@@ -110,18 +110,19 @@ const UI = {
       const empty = document.createElement('div');
       empty.className = 'empty';
       if (!this.storesLoaded && !Loader.fileProtocol) {
-        empty.innerHTML = `<div class="big">❦</div><h3>Загружаем истории…</h3><p>Ищем файлы в папке <code>stores/</code></p>`;
+        empty.innerHTML = `<div class="big">❦</div><h3>Загружаем истории…</h3><p>Ищем папки историй в <code>stores/</code></p>`;
       } else if (Loader.fileProtocol) {
         empty.innerHTML = `<div class="big">❦</div><h3>Нужен локальный сервер</h3>
           <p>Страница открыта как файл (file://) — браузер в этом режиме запрещает читать папку <code>stores/</code>.<br><br>
           Запусти в папке проекта: <code>python3 -m http.server 8000</code><br>
           и открой <code>http://localhost:8000</code><br><br>
-          Либо добавь историю через вкладку «Импорт» — она работает всегда.</p>`;
+          Либо добавь историю через вкладку «Импорт» — она работает всегда. В Android-сборке сервер не нужен: истории вшиты в приложение.</p>`;
       } else {
         empty.innerHTML = `<div class="big">❦</div><h3>Историй пока нет</h3>
-          <p>Положи файлы в папку <code>stores/</code> под номерами:<br>
-          <code>stores/1.json</code>, <code>stores/2.json</code>, <code>stores/3.json</code>…<br><br>
-          Формат описан в <code>STORY_FORMAT.md</code>, готовый промпт для генерации — в <code>PROMPT_FOR_AI.md</code>. Проверить историю перед этим можно во вкладке «Импорт».</p>`;
+          <p>Добавь в репозиторий папку истории — сюжет и фото вместе:<br>
+          <code>stores/1/story.json</code> + картинки рядом,<br>
+          затем <code>stores/2/</code>, <code>stores/3/</code>…<br><br>
+          Формат описан в <code>STORY_FORMAT.md</code>, готовый промпт для генерации — в <code>PROMPT_FOR_AI.md</code>. После коммита пересобери приложение — история вшьётся в него.</p>`;
       }
       wrap.appendChild(empty);
     } else {
@@ -618,12 +619,31 @@ const UI = {
       this.pendingRef = ref.trim().toUpperCase();
     }
 
-    // импортированные — сразу, stores/ — асинхронно с перерисовкой по мере загрузки
+    // импортированные — сразу; Android-сборка: истории вшиты (офлайн);
+    // веб-разработка: stores/N/story.json подгружаются по сети по мере готовности
     Loader.loadImported();
-    this.renderLibrary();
-    Loader.loadFromStores(() => { if (this.screen === 'library') this.renderLibrary(); })
-      .then(() => { this.storesLoaded = true; if (this.screen === 'library') this.renderLibrary(); })
-      .catch(() => { this.storesLoaded = true; if (this.screen === 'library') this.renderLibrary(); });
+    if (Loader.loadBundled()) {
+      this.storesLoaded = true;
+      this.renderLibrary();
+    } else {
+      this.renderLibrary();
+      Loader.loadFromStores(() => { if (this.screen === 'library') this.renderLibrary(); })
+        .then(() => { this.storesLoaded = true; if (this.screen === 'library') this.renderLibrary(); })
+        .catch(() => { this.storesLoaded = true; if (this.screen === 'library') this.renderLibrary(); });
+    }
+
+    // Аппаратная кнопка «Назад» на Android (Capacitor): сначала закрываем
+    // модалки и возвращаемся по экранам, выход — только с библиотеки.
+    if (window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.App) {
+      window.Capacitor.Plugins.App.addListener('backButton', () => {
+        const openModal = $('.modal-ov.open');
+        if (openModal) { openModal.classList.remove('open'); return; }
+        if ($('#ending-ov').classList.contains('open')) { this.go('library'); return; }
+        if (this.screen === 'player' || this.screen === 'detail') { this.go('library'); return; }
+        if (this.screen !== 'library') { this.go('library'); return; }
+        window.Capacitor.Plugins.App.exitApp();
+      });
+    }
 
     if (!Store.data.welcomeShown) {
       Store.data.welcomeShown = true; Store.save();

@@ -1,0 +1,20 @@
+{
+  "name": "novella",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Новелла — интерактивные истории (Android-приложение для RuStore)",
+  "scripts": {
+    "validate": "node tools/validate.mjs stores",
+    "build:www": "node tools/prepare-www.mjs",
+    "build:android": "npm run build:www && npx cap sync android",
+    "dev": "python3 -m http.server 8000 --bind 0.0.0.0"
+  },
+  "dependencies": {
+    "@capacitor/android": "^8.6.0",
+    "@capacitor/app": "^8.1.2",
+    "@capacitor/core": "^8.6.0"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^8.6.0"
+  }
+}

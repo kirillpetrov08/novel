@@ -22,7 +22,7 @@ const CONFIG = {
   },
 
   stores: {
-    folder: 'stores',      // папка с историями: stores/1.json, stores/2.json, ...
+    folder: 'stores',      // папки историй: stores/1/story.json, stores/2/story.json, ...
     maxProbe: 500,         // до какого номера искать файлы (остановка на первом пропуске)
   },
 

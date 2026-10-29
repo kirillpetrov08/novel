@@ -1,0 +1,12 @@
+# Зависимости и сборки
+node_modules/
+www/
+
+# Android ключи подписи — НИКОГДА не в Git!
+android/keystore.properties
+*.jks
+*.keystore
+release.jks
+
+# Локальные настройки Android
+android/local.properties

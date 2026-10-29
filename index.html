@@ -205,7 +205,7 @@
       <button class="crystals-pill js-gems" data-go="shop"><span class="gem">◆</span><span class="js-gems-num">0</span></button>
     </header>
     <div class="scroll"><div class="pad">
-      <p class="muted" style="margin-bottom:13px">Основной способ — файлы <b>stores/1.json, 2.json, …</b> в репозитории: они подхватываются автоматически. Здесь можно быстро проверить историю до коммита: перетащи файл, выбери его или вставь JSON текстом.</p>
+      <p class="muted" style="margin-bottom:13px">Основной способ — <b>папка истории в репозитории</b>: <b>stores/1/</b> (сюжет <b>story.json</b> + фото рядом), <b>stores/2/</b>, … Истории вшиваются в приложение при сборке. Здесь можно быстро проверить историю до коммита: перетащи story.json, выбери файл или вставь JSON текстом.</p>
 
       <div class="dropzone" id="dropzone">
         <div style="font-size:30px;margin-bottom:8px">✦</div>
@@ -223,10 +223,10 @@
 
       <h2 class="h2">Правила формата</h2>
       <div class="row-card muted" style="line-height:1.7">
-        • Один файл = одна история (или массив историй).<br>
-        • В репозитории файлы лежат как <b>stores/1.json, stores/2.json…</b> — номера подряд, без пропусков.<br>
-        • Полная схема и шаблон: <b>stores/_template.json</b> и <b>STORY_FORMAT.md</b>.<br>
-        • Проверка перед коммитом: <b>node tools/validate.mjs stores/1.json</b><br>
+        • Одна папка = одна история: сюжет и фото вместе.<br>
+        • В репозитории: <b>stores/1/story.json</b>, <b>stores/2/story.json</b>… — номера папок подряд, без пропусков. Пути к фото в story.json — относительные (<b>cover.jpg</b>, <b>images/bg-01.jpg</b>).<br>
+        • Полная схема и шаблон: папка <b>stores/_template/</b> и <b>STORY_FORMAT.md</b>.<br>
+        • Проверка перед коммитом: <b>npm run validate</b><br>
         • Битый файл не ломает приложение — ошибка покажется в библиотеке.
       </div>
       <div id="imported-list"></div>
@@ -298,6 +298,7 @@
 <script src="js/store.js"></script>
 <script src="js/backend.js"></script>
 <script src="js/validate.js"></script>
+<script src="js/stories-bundle.js"></script>
 <script src="js/loader.js"></script>
 <script src="js/engine.js"></script>
 <script src="js/app.js"></script>
