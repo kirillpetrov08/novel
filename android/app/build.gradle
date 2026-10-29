@@ -9,6 +9,12 @@ if (keystorePropsFile.exists()) {
     keystoreProps.load(new FileInputStream(keystorePropsFile))
 }
 
+// Версии: CI передаёт -PappVersionCode=<номер запуска> (растёт сам) и
+// -PappVersionName из package.json. Локально без флагов — 1 / "1.0.0",
+// перед ручным релизом в Android Studio передавай параметры или правь фолбэки.
+def appVersionCodeValue = (findProperty('appVersionCode') ?: '1').toString().toInteger()
+def appVersionNameValue = (findProperty('appVersionName') ?: '1.0.0').toString()
+
 android {
     namespace = "ru.novella.reader"
     compileSdk = rootProject.ext.compileSdkVersion
@@ -16,10 +22,9 @@ android {
         applicationId "ru.novella.reader"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        // CI передаёт -PappVersionCode=<номер запуска> — растёт сам при каждой сборке.
-        // Локально в Android Studio поднимай эти цифры вручную перед каждым релизом в RuStore.
-        versionCode (findProperty('appVersionCode') ?: '1').toString().toInteger()
-        versionName (findProperty('appVersionName') ?: '1.0.0').toString()
+        // Значения вычислены выше, до android{}: findProperty внутри DSL-замыканий AGP не работает.
+        versionCode appVersionCodeValue
+        versionName appVersionNameValue
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         aaptOptions {
              // Files and dirs to omit from the packaged assets dir, modified to accommodate modern web apps.
