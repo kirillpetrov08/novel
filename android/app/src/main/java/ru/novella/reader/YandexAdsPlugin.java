@@ -15,7 +15,6 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RatingBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -36,6 +35,9 @@ import com.yandex.mobile.ads.interstitial.InterstitialAdEventListener;
 import com.yandex.mobile.ads.interstitial.InterstitialAdLoadListener;
 import com.yandex.mobile.ads.interstitial.InterstitialAdLoader;
 import com.yandex.mobile.ads.nativeads.MediaView;
+import com.yandex.mobile.ads.nativeads.Rating;
+
+import java.util.Locale;
 import com.yandex.mobile.ads.nativeads.NativeAd;
 import com.yandex.mobile.ads.nativeads.NativeAdLoadListener;
 import com.yandex.mobile.ads.nativeads.NativeAdLoader;
@@ -377,9 +379,10 @@ public class YandexAdsPlugin extends Plugin {
         TextView sponsored = text(ctx, 10, Color.rgb(138, 125, 104), true);
         TextView price = text(ctx, 12, Color.rgb(43, 38, 32), true);
         TextView reviewCount = text(ctx, 10, Color.rgb(138, 125, 104), false);
-        RatingBar rating = new RatingBar(ctx, null, android.R.attr.ratingBarStyleSmall);
-        rating.setNumStars(5);
-        rating.setIsIndicator(true);
+        StarRatingView rating = new StarRatingView(ctx);
+        rating.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
+        rating.setTextColor(Color.rgb(138, 109, 75));
+        rating.setTypeface(Typeface.DEFAULT_BOLD);
         meta.addView(sponsored);
         meta.addView(price);
         meta.addView(rating);
@@ -452,6 +455,21 @@ public class YandexAdsPlugin extends Plugin {
         wrapper.bringToFront();
         nativeWrapper = wrapper;
         return true;
+    }
+
+    /** Рейтинг приложения для нативного шаблона: SDK ожидает View, реализующую Rating. */
+    private static final class StarRatingView extends TextView implements Rating {
+        StarRatingView(Context context) { super(context); }
+
+        @Override
+        public void setRating(Float value) {
+            if (value == null || value <= 0f) {
+                setVisibility(GONE);
+                return;
+            }
+            setVisibility(VISIBLE);
+            setText(String.format(Locale.US, "★ %.1f", value));
+        }
     }
 
     @Override
