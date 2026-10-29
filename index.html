@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#F7F2E7">
+<title>Новелла — интерактивные истории</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div id="app">
+
+  <!-- ===================== БИБЛИОТЕКА ===================== -->
+  <section class="screen active" id="screen-library">
+    <header class="topbar">
+      <div class="logo">НОВЭЛЛА<small>ИНТЕРАКТИВНЫЕ ИСТОРИИ</small></div>
+      <button class="crystals-pill js-gems" data-go="shop" aria-label="Мои кристаллы">
+        <span class="gem">◆</span><span class="js-gems-num">0</span><span class="plus">+</span>
+      </button>
+    </header>
+    <div class="scroll"><div class="pad">
+      <div class="ref-banner" id="ref-banner">
+        <div class="t">Тебя пригласил друг ♡</div>
+        <p id="ref-banner-text">Активируй бонус новичка и получи кристаллы на платные выборы.</p>
+        <button class="btn" id="ref-banner-btn">Получить бонус</button>
+      </div>
+
+      <div id="continue-block"></div>
+
+      <h2 class="h2">Библиотека</h2>
+      <div id="story-list"><div class="loading-note">Загружаем истории из папки stores/…</div></div>
+      <div id="library-diag"></div>
+    </div></div>
+  </section>
+
+  <!-- ===================== ДЕТАЛЬ ИСТОРИИ ===================== -->
+  <section class="screen" id="screen-detail">
+    <div class="scroll">
+      <div class="detail-cover" id="detail-cover">
+        <button class="icon-btn back" data-go="library" aria-label="Назад">←</button>
+        <div class="shade"></div>
+        <div class="inner">
+          <div class="genre" id="detail-genre"></div>
+          <h1 id="detail-title"></h1>
+        </div>
+      </div>
+      <div class="pad">
+        <div class="chips" id="detail-chips"></div>
+        <p class="detail-desc" id="detail-desc"></p>
+        <div class="endings-line" id="detail-endings"></div>
+        <div id="detail-actions"></div>
+        <p class="muted small" id="detail-source" style="margin-top:14px"></p>
+        <div id="detail-imported-actions"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== ПЛЕЕР ===================== -->
+  <section class="screen" id="screen-player">
+    <div class="stage" id="stage">
+      <div class="stage-bg" id="stage-bg"></div>
+      <div class="stage-shade"></div>
+      <div class="player-progress" id="player-progress" style="width:0%"></div>
+      <div class="player-top">
+        <button class="icon-btn" id="player-exit" aria-label="Выйти из истории">←</button>
+        <div class="player-title" id="player-title"></div>
+        <button class="icon-btn" id="player-log" aria-label="Журнал">≡</button>
+        <button class="player-gems js-gems" aria-label="Кристаллы"><span style="color:var(--crystal)">◆</span><span class="js-gems-num">0</span></button>
+      </div>
+      <div class="chars" id="chars"></div>
+
+      <div class="dialogue-wrap">
+        <div class="dialogue" id="dialogue">
+          <div class="speaker" id="speaker"></div>
+          <div class="dialogue-text" id="dialogue-text"></div>
+          <div class="dialogue-next" id="dialogue-next">▾</div>
+        </div>
+      </div>
+
+      <div class="choices" id="choices"></div>
+
+      <div class="ending-ov" id="ending-ov">
+        <div class="ending-card">
+          <div class="kicker">ФИНАЛ ИСТОРИИ</div>
+          <h2 id="ending-title"></h2>
+          <div class="badge" id="ending-badge"></div>
+          <p id="ending-text"></p>
+          <div id="ending-rewards"></div>
+          <button class="btn btn-primary" id="ending-again">Пройти ещё раз — другие выборы</button>
+          <button class="btn btn-ghost" id="ending-library">В библиотеку</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== МАГАЗИН КРИСТАЛЛОВ ===================== -->
+  <section class="screen" id="screen-shop">
+    <header class="topbar">
+      <div class="logo">КРИСТАЛЛЫ<small>БАЛАНС И СПОСОБЫ ПОЛУЧИТЬ</small></div>
+      <button class="crystals-pill js-gems"><span class="gem">◆</span><span class="js-gems-num">0</span></button>
+    </header>
+    <div class="scroll"><div class="pad">
+      <div class="row-card big-balance">
+        <div class="num"><span style="color:var(--crystal)">◆</span> <span class="js-gems-num">0</span></div>
+        <div class="lbl">Твой баланс</div>
+      </div>
+
+      <h2 class="h2">Получить бесплатно</h2>
+
+      <div class="row-card"><div class="row-flex">
+        <div style="font-size:26px">▶</div>
+        <div class="grow">
+          <div class="row-title">Посмотреть рекламу</div>
+          <div class="row-sub" id="ad-sub"></div>
+        </div>
+        <button class="mini-btn accent" id="ad-btn"></button>
+      </div></div>
+
+      <div class="row-card"><div class="row-flex">
+        <div style="font-size:26px">☼</div>
+        <div class="grow">
+          <div class="row-title">Ежедневный бонус</div>
+          <div class="row-sub" id="daily-sub"></div>
+        </div>
+        <button class="mini-btn" id="daily-btn"></button>
+      </div></div>
+
+      <div class="row-card"><div class="row-flex">
+        <div style="font-size:26px">✦</div>
+        <div class="grow">
+          <div class="row-title">Проходить истории</div>
+          <div class="row-sub" id="complete-sub"></div>
+        </div>
+        <button class="mini-btn" data-go="library">Читать</button>
+      </div></div>
+
+      <div class="row-card"><div class="row-flex">
+        <div style="font-size:26px">♡</div>
+        <div class="grow">
+          <div class="row-title">Приглашать друзей</div>
+          <div class="row-sub" id="ref-shop-sub"></div>
+        </div>
+        <button class="mini-btn" data-go="profile">Мой код</button>
+      </div></div>
+
+      <h2 class="h2">История операций</h2>
+      <div class="row-card" id="ledger"><p class="muted">Операций пока нет.</p></div>
+      <p class="muted small" style="margin-top:6px">Реклама сейчас — демо-заглушка на несколько секунд. Реальный рекламный SDK подключается в одном месте: файл <b>js/backend.js</b>.</p>
+    </div></div>
+  </section>
+
+  <!-- ===================== ПРОФИЛЬ И РЕФЕРАЛЫ ===================== -->
+  <section class="screen" id="screen-profile">
+    <header class="topbar">
+      <div class="logo">ПРОФИЛЬ<small>ДРУЗЬЯ И НАСТРОЙКИ</small></div>
+      <button class="crystals-pill js-gems" data-go="shop"><span class="gem">◆</span><span class="js-gems-num">0</span></button>
+    </header>
+    <div class="scroll"><div class="pad">
+      <h2 class="h2">Приглашай друзей — получайте кристаллы</h2>
+      <div class="row-card">
+        <p class="muted" style="margin-bottom:10px">Твой личный код:</p>
+        <div class="code-box" id="my-ref-code">NV-??????</div>
+        <div class="link-box" id="my-ref-link"></div>
+        <div class="btn-row" style="margin-top:12px">
+          <button class="btn btn-ghost" id="copy-code-btn">Копировать код</button>
+          <button class="btn btn-primary" id="copy-link-btn">Копировать ссылку</button>
+        </div>
+        <p class="muted" id="ref-rules" style="margin-top:12px"></p>
+        <div class="stats-grid">
+          <div class="stat-cell"><div class="n" id="ref-invited">0</div><div class="l">Приглашено</div></div>
+          <div class="stat-cell"><div class="n" id="ref-completed">0</div><div class="l">Прошли историю</div></div>
+          <div class="stat-cell"><div class="n" id="ref-earned">0 ◆</div><div class="l">Заработано</div></div>
+        </div>
+      </div>
+
+      <div class="row-card" id="claim-card">
+        <div class="row-title">Тебя пригласили?</div>
+        <p class="muted" style="margin:6px 0 11px">Введи код друга и получи бонус новичка. Код можно активировать один раз.</p>
+        <div class="row-flex">
+          <input class="field" id="claim-input" placeholder="NV-XXXXXX" maxlength="10" style="flex:1;text-transform:uppercase">
+          <button class="mini-btn accent" id="claim-btn">Активировать</button>
+        </div>
+        <p class="muted small" id="claim-note" style="margin-top:9px"></p>
+      </div>
+
+      <h2 class="h2">Настройки чтения</h2>
+      <div class="row-card">
+        <div class="switch-row" style="margin-bottom:14px">
+          <div><div class="row-title">Печатная машинка</div><div class="row-sub">Текст появляется по символам. Выключи — и реплики будут мгновенными.</div></div>
+          <button class="mini-btn" id="typewriter-toggle"></button>
+        </div>
+        <div class="switch-row">
+          <div><div class="row-title">Сбросить весь прогресс</div><div class="row-sub">Кристаллы, прохождения и импортированные истории будут удалены.</div></div>
+          <button class="mini-btn" id="reset-all-btn" style="background:var(--danger)">Сброс</button>
+        </div>
+      </div>
+      <p class="muted small" id="profile-id-line"></p>
+    </div></div>
+  </section>
+
+  <!-- ===================== ИМПОРТ ===================== -->
+  <section class="screen" id="screen-import">
+    <header class="topbar">
+      <div class="logo">ИМПОРТ<small>ДОБАВИТЬ ИСТОРИЮ ВРУЧНУЮ</small></div>
+      <button class="crystals-pill js-gems" data-go="shop"><span class="gem">◆</span><span class="js-gems-num">0</span></button>
+    </header>
+    <div class="scroll"><div class="pad">
+      <p class="muted" style="margin-bottom:13px">Основной способ — файлы <b>stores/1.json, 2.json, …</b> в репозитории: они подхватываются автоматически. Здесь можно быстро проверить историю до коммита: перетащи файл, выбери его или вставь JSON текстом.</p>
+
+      <div class="dropzone" id="dropzone">
+        <div style="font-size:30px;margin-bottom:8px">✦</div>
+        <div class="row-title">Перетащи сюда файл .json</div>
+        <p class="muted" style="margin:6px 0 14px">или</p>
+        <button class="btn btn-accent" id="pick-file-btn" style="max-width:260px;margin:0 auto">Выбрать файл</button>
+        <input type="file" id="file-input" accept=".json,application/json" multiple hidden>
+      </div>
+
+      <h2 class="h2">…или вставь JSON текстом</h2>
+      <textarea class="field" id="paste-input" placeholder='{"id":"my-story","title":"…", …}'></textarea>
+      <button class="btn btn-primary" id="paste-btn" style="margin-top:11px">Добавить в библиотеку</button>
+
+      <div class="import-result" id="import-result"></div>
+
+      <h2 class="h2">Правила формата</h2>
+      <div class="row-card muted" style="line-height:1.7">
+        • Один файл = одна история (или массив историй).<br>
+        • В репозитории файлы лежат как <b>stores/1.json, stores/2.json…</b> — номера подряд, без пропусков.<br>
+        • Полная схема и шаблон: <b>stores/_template.json</b> и <b>STORY_FORMAT.md</b>.<br>
+        • Проверка перед коммитом: <b>node tools/validate.mjs stores/1.json</b><br>
+        • Битый файл не ломает приложение — ошибка покажется в библиотеке.
+      </div>
+      <div id="imported-list"></div>
+    </div></div>
+  </section>
+
+  <!-- нижняя навигация -->
+  <nav class="tabbar" id="tabbar">
+    <button data-go="library" class="active"><span class="ic">❦</span>Библиотека</button>
+    <button data-go="shop"><span class="ic">◆</span>Кристаллы</button>
+    <button data-go="import"><span class="ic">＋</span>Импорт</button>
+    <button data-go="profile"><span class="ic">♡</span>Профиль</button>
+  </nav>
+</div>
+
+<!-- ===================== МОДАЛКИ ===================== -->
+<div class="modal-ov" id="modal-ad">
+  <div class="modal">
+    <h3>Реклама</h3>
+    <div class="ad-fake">
+      <div class="t1">Здесь будет реклама</div>
+      <div class="t2">Демо-заглушка. Реальный SDK подключается в js/backend.js → Ads.showRewarded()</div>
+    </div>
+    <div class="ad-progress"><div id="ad-bar"></div></div>
+    <p class="muted" style="text-align:center;margin-top:10px" id="ad-countdown"></p>
+    <button class="btn btn-accent" id="ad-claim-btn" disabled>Забрать награду</button>
+  </div>
+</div>
+
+<div class="modal-ov" id="modal-need">
+  <div class="modal">
+    <h3>Не хватает кристаллов ◆</h3>
+    <p id="need-text"></p>
+    <button class="btn btn-accent" id="need-ad-btn">▶ Посмотреть рекламу и получить ◆</button>
+    <button class="btn btn-primary" id="need-shop-btn">Все способы получить кристаллы</button>
+    <button class="btn btn-ghost" data-close="modal-need">Выбрать бесплатный вариант</button>
+  </div>
+</div>
+
+<div class="modal-ov" id="modal-log">
+  <div class="modal">
+    <h3>Журнал</h3>
+    <div class="log-list" id="log-list"></div>
+    <button class="btn btn-ghost" data-close="modal-log" style="margin-top:14px">Закрыть</button>
+  </div>
+</div>
+
+<div class="modal-ov" id="modal-confirm">
+  <div class="modal">
+    <h3 id="confirm-title">Ты уверена?</h3>
+    <p id="confirm-text"></p>
+    <button class="btn btn-primary" id="confirm-yes">Да</button>
+    <button class="btn btn-ghost" data-close="modal-confirm">Отмена</button>
+  </div>
+</div>
+
+<div class="modal-ov" id="modal-welcome">
+  <div class="modal" style="text-align:center">
+    <div style="font-size:38px;margin-bottom:8px">◆</div>
+    <h3>Добро пожаловать в «Новеллу»</h3>
+    <p id="welcome-text"></p>
+    <button class="btn btn-accent" data-close="modal-welcome" style="margin-top:16px">К историям</button>
+  </div>
+</div>
+
+<div id="toasts"></div>
+
+<script src="js/config.js"></script>
+<script src="js/store.js"></script>
+<script src="js/backend.js"></script>
+<script src="js/validate.js"></script>
+<script src="js/loader.js"></script>
+<script src="js/engine.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

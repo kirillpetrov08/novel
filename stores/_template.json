@@ -1,0 +1,71 @@
+{
+  "id": "unikalnyy-id-latinicey",
+  "title": "НАЗВАНИЕ ИСТОРИИ",
+  "description": "ОПИСАНИЕ: 2–3 предложения — кто героиня, что происходит, в чём интрига. Без спойлеров финала.",
+  "genre": "ЖАНР",
+  "author": "АВТОР",
+  "cover": "assets/covers/unikalnyy-id-latinicey.jpg",
+  "coverGradient": ["#E9DCC3", "#B49B72"],
+  "coverSymbol": "✦",
+  "tags": ["тег1", "тег2"],
+  "estimatedMinutes": 15,
+  "start": "s1",
+  "stats": {
+    "stat1": { "label": "Название характеристики", "icon": "♡" },
+    "stat2": { "label": "Вторая характеристика", "icon": "✦" }
+  },
+  "characters": {
+    "heroine": { "name": "Имя героини", "color": "#8A6D4B", "image": "" },
+    "hero": { "name": "Имя персонажа", "color": "#5C6650", "image": "assets/characters/unikalnyy-id-latinicey/hero.png" }
+  },
+  "scenes": {
+    "s1": {
+      "bg": "assets/backgrounds/unikalnyy-id-latinicey/bg-01.jpg",
+      "bgGradient": ["#EFE6D4", "#D8C7A8"],
+      "show": ["heroine"],
+      "lines": [
+        { "type": "narration", "text": "ТЕКСТ ОТ АВТОРА. Одно–два коротких предложения, максимум 240 символов." },
+        { "type": "dialogue", "who": "heroine", "text": "РЕПЛИКА ПЕРСОНАЖА." },
+        { "type": "thought", "who": "heroine", "text": "ВНУТРЕННЯЯ МЫСЛЬ ГЕРОИНИ." }
+      ],
+      "choices": [
+        { "text": "Текст обычного выбора (до 70 символов)", "next": "s2", "effect": { "stat2": 1 } },
+        { "text": "Текст особого выбора за кристаллы", "next": "s3", "crystals": 10, "effect": { "stat1": 1 } }
+      ]
+    },
+    "s2": {
+      "bg": "",
+      "bgGradient": ["#EFE6D4", "#D8C7A8"],
+      "show": ["heroine", "hero"],
+      "lines": [
+        { "type": "dialogue", "who": "hero", "text": "РЕПЛИКА ПЕРСОНАЖА." }
+      ],
+      "next": "end1"
+    },
+    "s3": {
+      "bg": "",
+      "bgGradient": ["#EFE6D4", "#D8C7A8"],
+      "show": ["heroine", "hero"],
+      "lines": [
+        { "type": "narration", "text": "ДОПОЛНИТЕЛЬНАЯ СЦЕНА, КОТОРАЯ ОТКРЫВАЕТСЯ ЗА КРИСТАЛЛЫ." }
+      ],
+      "branch": [
+        { "if": { "stat": "stat1", "gte": 3 }, "to": "end1" }
+      ],
+      "next": "end1"
+    },
+    "end1": {
+      "bg": "",
+      "bgGradient": ["#EBDDBE", "#C2A878"],
+      "show": ["heroine"],
+      "lines": [
+        { "type": "narration", "text": "ФИНАЛЬНАЯ РЕПЛИКА ЭТОЙ ВЕТКИ." }
+      ],
+      "ending": {
+        "title": "НАЗВАНИЕ ФИНАЛА",
+        "text": "1–2 предложения: чем закончилась эта ветка сюжета.",
+        "badge": "✦ Подпись финала"
+      }
+    }
+  }
+}
