@@ -94,16 +94,18 @@ jobs:
       - name: Диагностика упавшей сборки (лог в аннотации и summary)
         if: failure()
         run: |
-          echo '## Последние 150 строк лога Gradle' >> "$GITHUB_STEP_SUMMARY"
-          echo '```' >> "$GITHUB_STEP_SUMMARY"
-          tail -n 150 gradle-build.log >> "$GITHUB_STEP_SUMMARY" || true
-          echo '```' >> "$GITHUB_STEP_SUMMARY"
+          { echo '## Ошибки из лога Gradle'; echo '```';
+            grep -nE 'error:|What went wrong|Execution failed|Caused by:|FAILED|e: file' gradle-build.log | head -n 120 || true;
+            echo '```'; echo '## Последние 60 строк'; echo '```';
+            tail -n 60 gradle-build.log || true; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
           python3 - <<'PY'
-          import pathlib
+          import pathlib, re
           p = pathlib.Path('gradle-build.log')
-          lines = p.read_text(errors='ignore').splitlines()[-150:] if p.exists() else ['лог не создан']
-          for i in range(0, len(lines), 25):
-              chunk = '%0A'.join(l.replace('%', '%25') for l in lines[i:i+25])
+          all_lines = p.read_text(errors='ignore').splitlines() if p.exists() else ['лог не создан']
+          pat = re.compile(r'error:|What went wrong|Execution failed|Caused by:|FAILED|e: file')
+          picked = [l for l in all_lines if pat.search(l)][:110] + ['--- TAIL ---'] + all_lines[-40:]
+          for i in range(0, len(picked), 25):
+              chunk = '%0A'.join(l.replace('%', '%25') for l in picked[i:i+25])
               print(f"::error title=Gradle log {i//25+1}::{chunk}")
           PY
 
