@@ -57,7 +57,7 @@
   },
   "scenes": {
     "s1": {
-      "bg": "images/bg-pier.jpg",
+      "bg": "images/bg-pier-dawn.jpg",
       "bgGradient": [
         "#D7D0BE",
         "#7E837C"
@@ -197,7 +197,7 @@
       "next": "s4"
     },
     "s4": {
-      "bg": "images/bg-lighthouse.jpg",
+      "bg": "images/bg-lighthouse-day.jpg",
       "bgGradient": [
         "#E4DCC8",
         "#8E9A8C"
@@ -229,7 +229,7 @@
       "next": "s5"
     },
     "s5": {
-      "bg": "images/bg-lighthouse.jpg",
+      "bg": "images/bg-lantern-room.jpg",
       "bgGradient": [
         "#E8DFC9",
         "#96A08E"
@@ -267,7 +267,7 @@
       ]
     },
     "s6a": {
-      "bg": "images/bg-lighthouse.jpg",
+      "bg": "images/bg-lantern-room.jpg",
       "bgGradient": [
         "#DCD3BF",
         "#7C8478"
@@ -343,7 +343,7 @@
       "next": "s7"
     },
     "s7": {
-      "bg": "images/bg-cafe.jpg",
+      "bg": "images/bg-cafe-evening.jpg",
       "bgGradient": [
         "#EADFC5",
         "#A68A64"
@@ -548,7 +548,7 @@
       ]
     },
     "s10a": {
-      "bg": "images/bg-breakwater-dusk.jpg",
+      "bg": "images/bg-breakwater-night.jpg",
       "bgGradient": [
         "#6A6E64",
         "#2C3738"
@@ -581,7 +581,7 @@
       "next": "s11"
     },
     "s10b": {
-      "bg": "images/bg-breakwater-dusk.jpg",
+      "bg": "images/bg-breakwater-night.jpg",
       "bgGradient": [
         "#63675E",
         "#283233"
@@ -925,7 +925,7 @@
       "next": "s15"
     },
     "s15": {
-      "bg": "images/bg-lighthouse-gallery.jpg",
+      "bg": "images/bg-lighthouse-sunset.jpg",
       "bgGradient": [
         "#E0D3B8",
         "#8C7A5C"
@@ -978,7 +978,7 @@
       ]
     },
     "s16a": {
-      "bg": "images/bg-lighthouse-gallery.jpg",
+      "bg": "images/bg-lighthouse-sunset.jpg",
       "bgGradient": [
         "#E7D9BC",
         "#9A8461"
@@ -1011,7 +1011,7 @@
       "next": "s17"
     },
     "s16b": {
-      "bg": "images/bg-lighthouse-gallery.jpg",
+      "bg": "images/bg-lighthouse-sunset.jpg",
       "bgGradient": [
         "#E2D5B9",
         "#8E7C5C"
@@ -1039,7 +1039,7 @@
       "next": "s17"
     },
     "s16c": {
-      "bg": "images/bg-lighthouse-gallery.jpg",
+      "bg": "images/bg-lighthouse-kiss.jpg",
       "bgGradient": [
         "#E9D8B8",
         "#A07F58"
@@ -1128,7 +1128,7 @@
       ]
     },
     "s18a": {
-      "bg": "images/bg-darkroom.jpg",
+      "bg": "images/bg-darkroom-drying.jpg",
       "bgGradient": [
         "#8A5A4E",
         "#2B1F1D"
@@ -1186,7 +1186,7 @@
       "next": "s19"
     },
     "s18c": {
-      "bg": "images/bg-darkroom.jpg",
+      "bg": "images/bg-darkroom-drying.jpg",
       "bgGradient": [
         "#87584C",
         "#2C201E"
@@ -1270,7 +1270,7 @@
       "next": "ending_ashore"
     },
     "ending_light": {
-      "bg": "images/bg-lighthouse-gallery.jpg",
+      "bg": "images/bg-house-cozy.jpg",
       "bgGradient": [
         "#F0E4C8",
         "#B99C6E"
@@ -1306,7 +1306,7 @@
       }
     },
     "ending_truth": {
-      "bg": "images/bg-square.jpg",
+      "bg": "images/bg-square-day.jpg",
       "bgGradient": [
         "#E7DAC2",
         "#94836A"
