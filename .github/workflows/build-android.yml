@@ -107,6 +107,14 @@ jobs:
               print(f"::error title=Gradle log {i//25+1}::{chunk}")
           PY
 
+      - name: Проверка содержимого APK
+        run: |
+          unzip -l android/app/build/outputs/apk/debug/app-debug.apk > apk-list.txt
+          grep -q 'assets/public/index.html' apk-list.txt
+          grep -q 'assets/public/js/engine.js' apk-list.txt
+          unzip -p android/app/build/outputs/apk/debug/app-debug.apk assets/public/js/stories-bundle.js | grep -q 'BUNDLED_BUILD = true'
+          echo '✓ APK содержит приложение и вшитые истории' >> "$GITHUB_STEP_SUMMARY"
+
       - name: Артефакт — тестовый APK
         uses: actions/upload-artifact@v4
         with:
