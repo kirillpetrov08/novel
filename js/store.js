@@ -21,8 +21,7 @@ function defaultSave() {
     crystals: CONFIG.crystals.startBonus,
     ledger: [],                       // история операций с кристаллами {t, delta, reason}
     progress: {},                     // storyId -> {sceneId, lineIndex, stats, paid:[], visited:[], completed, endingsFound:[]}
-    imported: [],                     // истории, добавленные через кнопку «Импорт» (полные объекты)
-    ads: { day: todayKey(), count: 0, lastAt: 0 },
+    ads: { day: todayKey(), count: 0, lastAt: 0, lastInterstitialAt: 0 },
     lastDaily: '',
     referralLedger: [],               // локальный реестр рефералов (имитация сервера, см. backend.js)
     settings: { typewriter: true },
@@ -37,7 +36,9 @@ const Store = {
       const raw = localStorage.getItem(SAVE_KEY);
       this.data = raw ? Object.assign(defaultSave(), JSON.parse(raw)) : defaultSave();
     } catch (e) { this.data = defaultSave(); }
-    if (this.data.ads.day !== todayKey()) this.data.ads = { day: todayKey(), count: 0, lastAt: 0 };
+    if (this.data.ads.day !== todayKey()) this.data.ads = { day: todayKey(), count: 0, lastAt: 0, lastInterstitialAt: 0 };
+    if (this.data.ads.lastInterstitialAt === undefined) this.data.ads.lastInterstitialAt = 0;
+    delete this.data.imported; // пользовательский импорт историй убран — истории только из stores/
     this.save();
     return this.data;
   },

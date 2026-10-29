@@ -23,7 +23,6 @@
    • ВЕБ-РАЗРАБОТКА: перебираем stores/1/story.json, 2/story.json…
      до первого отсутствующего номера (совместимость: старый
      stores/1.json тоже поддерживается).
-   • Вкладка «Импорт»: истории из localStorage, добавленные вручную.
 
    Битый файл никогда не роняет приложение: он пропускается,
    а причина пишется в Loader.diagnostics и видна в библиотеке.
@@ -149,33 +148,6 @@ const Loader = {
       if (res === 'broken' && ++failStreak >= 3) break;
       if (res === 'ok') { failStreak = 0; onProgress && onProgress(); }
     }
-  },
-
-  loadImported() {
-    (Store.data.imported || []).forEach(s => this.register(s, 'import'));
-  },
-
-  importFromText(text) {
-    let data;
-    try { data = JSON.parse(text); }
-    catch (e) { return { ok: false, added: 0, errors: ['JSON не читается: ' + e.message] }; }
-    const before = this.diagnostics.length;
-    const list = normalizeBundle(data);
-    if (!list.length) return { ok: false, added: 0, errors: ['В данных нет историй'] };
-    let added = 0;
-    for (const s of list) {
-      if (this.register(s, 'import')) { added++; Store.data.imported.push(s); }
-    }
-    Store.save();
-    const errors = this.diagnostics.slice(before).filter(d => d.kind === 'error').map(d => d.message);
-    return { ok: added > 0, added, errors };
-  },
-
-  removeImported(storyId) {
-    Store.data.imported = (Store.data.imported || []).filter(s => s.id !== storyId);
-    Store.save();
-    this.stories.delete(storyId);
-    Store.clearProgress(storyId);
   },
 
   list() { return [...this.stories.values()]; },

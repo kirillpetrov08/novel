@@ -18,6 +18,11 @@ const UI = {
   screen: 'library',
   detailId: null,
   pendingChoice: null,   // {idx, cost} — выбор, на который не хватило кристаллов
+  pendingRewardGrant: null, // колбэк начисления для демо-рекламы в веб-режиме
+  endingReward: 0,       // награда текущего финала — база для удвоения ×2
+  endingDoubled: false,
+  _startingStory: false,
+  nativeDismissedSession: false,
   pendingRef: null,
   confirmResolve: null,
   storesLoaded: false,
@@ -28,10 +33,10 @@ const UI = {
     $$('.screen').forEach(el => el.classList.toggle('active', el.id === 'screen-' + name));
     $('#tabbar').style.display = (name === 'player' || name === 'detail') ? 'none' : 'flex';
     $$('#tabbar button').forEach(b => b.classList.toggle('active', b.dataset.go === name));
+    this.updateNativeSlot(name);
     if (name === 'library') this.renderLibrary();
     if (name === 'shop') this.renderShop();
     if (name === 'profile') this.renderProfile();
-    if (name === 'import') this.renderImportedList();
     if (name !== 'player') Engine.stopTyping();
     window.scrollTo(0, 0);
   },
@@ -43,8 +48,12 @@ const UI = {
     setTimeout(() => { t.classList.add('out'); setTimeout(() => t.remove(), 320); }, ms);
   },
 
-  openModal(id) { $('#' + id).classList.add('open'); },
-  closeModal(id) { $('#' + id).classList.remove('open'); },
+  openModal(id) { Ads.hideNative(); $('#' + id).classList.add('open'); },
+  closeModal(id) {
+    $('#' + id).classList.remove('open');
+    // нативная карточка — Android-вью поверх WebView: возвращаем только без модалок
+    if (this.screen === 'library' && !$('.modal-ov.open')) this.updateNativeSlot('library');
+  },
 
   confirm(title, text, yesLabel = 'Да') {
     $('#confirm-title').textContent = title;
@@ -60,6 +69,23 @@ const UI = {
     if (pulse) $$('.crystals-pill').forEach(el => {
       el.classList.remove('pulse'); void el.offsetWidth; el.classList.add('pulse');
     });
+  },
+
+  /* Нативная реклама R-M-…-3: в Android — настоящая карточка поверх низа
+     библиотеки; в веб-разработке — визуальная заглушка места размещения. */
+  updateNativeSlot(name) {
+    const slot = $('#native-ad-slot');
+    if (name !== 'library') { Ads.hideNative(); if (slot) slot.innerHTML = ''; return; }
+    if (Ads.isNative()) {
+      if (!this.nativeDismissedSession) {
+        const tabH = $('#tabbar') && $('#tabbar').offsetHeight ? $('#tabbar').offsetHeight : 56;
+        Ads.showNative(tabH + 10);
+      }
+    } else if (slot && !slot.innerHTML) {
+      slot.innerHTML = `<div class="native-demo"><span class="native-demo-tag">Реклама</span>
+        <div class="native-demo-title">Нативная карточка Яндекса</div>
+        <div class="muted small">В Android-приложении здесь настоящий блок ${CONFIG.ads.native}. В веб-режиме — только место размещения.</div></div>`;
+    }
   },
 
   /* ---------------- БИБЛИОТЕКА ---------------- */
@@ -109,14 +135,16 @@ const UI = {
     if (!list.length) {
       const empty = document.createElement('div');
       empty.className = 'empty';
-      if (!this.storesLoaded && !Loader.fileProtocol) {
+      if (window.BUNDLED_BUILD) {
+        empty.innerHTML = `<div class="big">❦</div><h3>Истории скоро появятся</h3><p>Мы уже готовим первые новеллы. Загляни чуть позже ♡</p>`;
+      } else if (!this.storesLoaded && !Loader.fileProtocol) {
         empty.innerHTML = `<div class="big">❦</div><h3>Загружаем истории…</h3><p>Ищем папки историй в <code>stores/</code></p>`;
       } else if (Loader.fileProtocol) {
         empty.innerHTML = `<div class="big">❦</div><h3>Нужен локальный сервер</h3>
           <p>Страница открыта как файл (file://) — браузер в этом режиме запрещает читать папку <code>stores/</code>.<br><br>
           Запусти в папке проекта: <code>python3 -m http.server 8000</code><br>
           и открой <code>http://localhost:8000</code><br><br>
-          Либо добавь историю через вкладку «Импорт» — она работает всегда. В Android-сборке сервер не нужен: истории вшиты в приложение.</p>`;
+          В Android-сборке сервер не нужен: истории вшиты в приложение.</p>`;
       } else {
         empty.innerHTML = `<div class="big">❦</div><h3>Историй пока нет</h3>
           <p>Добавь в репозиторий папку истории — сюжет и фото вместе:<br>
@@ -197,24 +225,15 @@ const UI = {
       mk('Пройти ещё раз', 'btn-primary', () => this.play(id, 'restart'));
     }
 
-    $('#detail-source').textContent = 'Источник файла: ' + (Loader.source(id) === 'import' ? 'импортирована вручную (хранится в этом браузере)' : Loader.source(id));
-    const ia = $('#detail-imported-actions');
-    ia.innerHTML = '';
-    if (Loader.source(id) === 'import') {
-      const del = document.createElement('button');
-      del.className = 'btn btn-danger'; del.textContent = 'Удалить импортированную историю';
-      del.addEventListener('click', async () => {
-        if (await this.confirm('Удалить историю?', 'Импортированная история и её прогресс будут удалены из браузера.', 'Удалить')) {
-          Loader.removeImported(id); this.toast('История удалена'); this.go('library');
-        }
-      });
-      ia.appendChild(del);
-    }
     this.go('detail');
   },
 
   /* ---------------- ПЛЕЕР ---------------- */
-  play(id, mode) {
+  async play(id, mode) {
+    if (this._startingStory) return;
+    this._startingStory = true;
+    await Ads.showInterstitial(); // между новеллами; кулдаун и готовность — внутри Ads
+    this._startingStory = false;
     const story = Loader.get(id);
     if (!story) return;
     $('#ending-ov').classList.remove('open');
@@ -315,7 +334,14 @@ const UI = {
     wrap.classList.add('open');
   },
 
-  renderEnding({ ending, notes }) {
+  renderEnding({ ending, notes, reward }) {
+    this.endingReward = reward || 0;
+    this.endingDoubled = false;
+    const db = $('#ending-double');
+    if (this.endingReward > 0) {
+      db.style.display = 'flex';
+      db.textContent = `▶ Реклама: удвоить награду · ещё +${this.endingReward} ◆`;
+    } else db.style.display = 'none';
     $('#choices').classList.remove('open');
     $('#ending-title').textContent = ending.title || 'Финал';
     $('#ending-badge').textContent = ending.badge || '';
@@ -373,36 +399,56 @@ const UI = {
     this.renderGems(false);
   },
 
-  async watchAdFlow() {
-    const can = Ads.canWatch();
-    if (!can.ok) { this.toast(can.reason); return; }
+  /* Единый поток рекламы с вознаграждением.
+     Android: настоящий ролик Яндекса (награда только за полный просмотр).
+     Веб-разработка: демо-модалка с таймером. onReward вызывается максимум один раз. */
+  async rewardedFlow(onReward) {
     this.closeModal('modal-need');
+    if (Ads.isNative()) {
+      this.toast('Загружаем рекламу…', 1500);
+      const ok = await Ads.showRewardedNative();
+      if (ok) onReward();
+      else this.toast('Чтобы получить награду, досмотри рекламу до конца');
+      return;
+    }
+    this.pendingRewardGrant = onReward;
     this.openModal('modal-ad');
     const claim = $('#ad-claim-btn');
     claim.disabled = true;
     claim.textContent = 'Подожди…';
     const total = CONFIG.crystals.adDurationSec;
     $('#ad-bar').style.width = '0%';
-    const done = await Ads.showRewarded(left => {
+    const done = await Ads.showRewardedDemo(left => {
       $('#ad-countdown').textContent = left > 0 ? `Награда через ${left} сек` : 'Готово!';
       $('#ad-bar').style.width = Math.round(((total - left) / total) * 100) + '%';
     });
-    if (done) { claim.disabled = false; claim.textContent = `Забрать +${CONFIG.crystals.adReward} ◆`; }
+    if (done) { claim.disabled = false; claim.textContent = 'Забрать награду ◆'; }
   },
 
-  claimAd() {
+  grantShopAd() {
     Ads.registerWatch();
     Store.addCrystals(CONFIG.crystals.adReward, 'Просмотр рекламы');
-    this.closeModal('modal-ad');
     this.renderGems(true);
     this.toast(`+${CONFIG.crystals.adReward} ◆ за рекламу`);
     if (this.screen === 'shop') this.renderShop();
-    // если ждали кристаллов на конкретный выбор — сразу совершаем его
     if (this.pendingChoice && Store.data.crystals >= this.pendingChoice.cost) {
       const { idx } = this.pendingChoice;
       this.pendingChoice = null;
       Engine.choose(idx);
     }
+  },
+
+  watchAdFlow() {
+    const can = Ads.canWatch();
+    if (!can.ok) { this.toast(can.reason); return; }
+    this.rewardedFlow(() => this.grantShopAd());
+  },
+
+  claimAd() {
+    const grant = this.pendingRewardGrant;
+    this.pendingRewardGrant = null;
+    this.closeModal('modal-ad');
+    if (grant) grant();
   },
 
   /* ---------------- ПРОФИЛЬ / РЕФЕРАЛЫ ---------------- */
@@ -450,52 +496,6 @@ const UI = {
     }
   },
 
-  /* ---------------- ИМПОРТ ---------------- */
-  importResult(r) {
-    const box = $('#import-result');
-    if (r.ok) {
-      box.className = 'import-result ok';
-      box.innerHTML = `✓ Добавлено историй: <b>${r.added}</b>. Они уже в библиотеке.${r.errors.length ? '<br>Но были и ошибки:<ul>' + r.errors.map(e => `<li>${esc(e)}</li>`).join('') + '</ul>' : ''}`;
-    } else {
-      box.className = 'import-result bad';
-      box.innerHTML = '✗ Не удалось добавить:<ul>' + (r.errors.length ? r.errors : ['Неизвестная ошибка']).map(e => `<li>${esc(e)}</li>`).join('') + '</ul>';
-    }
-    this.renderImportedList();
-  },
-
-  renderImportedList() {
-    const box = $('#imported-list');
-    if (!box) return;
-    box.innerHTML = '';
-    const imp = Loader.list().filter(e => e.source === 'import');
-    if (!imp.length) return;
-    const h = document.createElement('h2'); h.className = 'h2'; h.textContent = 'Импортированные в этом браузере'; box.appendChild(h);
-    imp.forEach(({ story }) => {
-      const card = document.createElement('div');
-      card.className = 'row-card';
-      card.innerHTML = `<div class="row-flex"><div class="grow"><div class="row-title">${esc(story.title)}</div><div class="row-sub">id: ${esc(story.id)}</div></div></div>`;
-      const del = document.createElement('button');
-      del.className = 'mini-btn'; del.style.background = 'var(--danger)'; del.textContent = 'Удалить';
-      del.addEventListener('click', async () => {
-        if (await this.confirm('Удалить историю?', '«' + story.title + '» и её прогресс будут удалены из браузера.', 'Удалить')) {
-          Loader.removeImported(story.id); this.renderImportedList(); this.toast('Удалено');
-        }
-      });
-      card.querySelector('.row-flex').appendChild(del);
-      box.appendChild(card);
-    });
-  },
-
-  async handleFiles(files) {
-    let total = { ok: false, added: 0, errors: [] };
-    for (const f of files) {
-      const r = Loader.importFromText(await f.text());
-      total.added += r.added; total.errors.push(...r.errors.map(e => `${f.name}: ${e}`));
-    }
-    total.ok = total.added > 0;
-    this.importResult(total);
-  },
-
   /* ---------------- ИНИЦИАЛИЗАЦИЯ ---------------- */
   bind() {
     document.addEventListener('click', e => {
@@ -531,7 +531,24 @@ const UI = {
     $('#player-exit').addEventListener('click', () => this.go('library'));
     $('#player-log').addEventListener('click', () => { this.renderLog(); this.openModal('modal-log'); });
     $('#ending-again').addEventListener('click', () => { $('#ending-ov').classList.remove('open'); Engine.open(Engine.story, 'restart'); });
-    $('#ending-library').addEventListener('click', () => this.go('library'));
+    $('#ending-library').addEventListener('click', async () => {
+      $('#ending-ov').classList.remove('open');
+      await Ads.showInterstitial(); // при окончании истории — естественная пауза
+      this.go('library');
+    });
+    $('#ending-double').addEventListener('click', () => {
+      if (this.endingDoubled || !this.endingReward) return;
+      this.rewardedFlow(() => {
+        this.endingDoubled = true;
+        Store.addCrystals(this.endingReward, 'Удвоение награды за финал ×2');
+        $('#ending-double').style.display = 'none';
+        const line = document.createElement('div');
+        line.className = 'reward-line';
+        line.textContent = `◆ Награда удвоена: ещё +${this.endingReward} ◆`;
+        $('#ending-rewards').appendChild(line);
+        this.renderGems(true);
+      });
+    });
 
     // магазин
     $('#ad-btn').addEventListener('click', () => this.watchAdFlow());
@@ -556,7 +573,7 @@ const UI = {
       this.renderProfile();
     });
     $('#reset-all-btn').addEventListener('click', async () => {
-      if (await this.confirm('Сбросить всё?', 'Кристаллы, прогресс всех историй, импортированные истории и твой реферальный код будут удалены безвозвратно.', 'Сбросить всё')) {
+      if (await this.confirm('Сбросить всё?', 'Кристаллы, прогресс всех историй и твой реферальный код будут удалены безвозвратно.', 'Сбросить всё')) {
         Store.resetAll(); location.href = location.pathname;
       }
     });
@@ -569,19 +586,6 @@ const UI = {
     $('#modal-confirm').addEventListener('click', e => {
       if (e.target.id === 'modal-confirm' && this.confirmResolve) { this.confirmResolve(false); this.confirmResolve = null; }
     });
-
-    // импорт
-    $('#pick-file-btn').addEventListener('click', () => $('#file-input').click());
-    $('#file-input').addEventListener('change', e => { this.handleFiles([...e.target.files]); e.target.value = ''; });
-    $('#paste-btn').addEventListener('click', () => {
-      const v = $('#paste-input').value.trim();
-      if (!v) { this.toast('Вставь JSON истории'); return; }
-      this.importResult(Loader.importFromText(v));
-    });
-    const dz = $('#dropzone');
-    ['dragover', 'dragenter'].forEach(ev => dz.addEventListener(ev, e => { e.preventDefault(); dz.classList.add('over'); }));
-    ['dragleave', 'drop'].forEach(ev => dz.addEventListener(ev, e => { e.preventDefault(); dz.classList.remove('over'); }));
-    dz.addEventListener('drop', e => this.handleFiles([...(e.dataTransfer.files || [])]));
 
     // события движка
     Engine.onEvent = (type, payload) => {
@@ -619,9 +623,12 @@ const UI = {
       this.pendingRef = ref.trim().toUpperCase();
     }
 
-    // импортированные — сразу; Android-сборка: истории вшиты (офлайн);
+    Ads.init(); // Яндекс: инициализация + предзагрузка interstitial/rewarded (Android)
+    const yandex = Ads.plugin();
+    if (yandex && yandex.addListener) yandex.addListener('nativeClosed', () => { this.nativeDismissedSession = true; });
+
+    // Android-сборка: истории вшиты (офлайн);
     // веб-разработка: stores/N/story.json подгружаются по сети по мере готовности
-    Loader.loadImported();
     if (Loader.loadBundled()) {
       this.storesLoaded = true;
       this.renderLibrary();

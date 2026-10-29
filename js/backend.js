@@ -1,24 +1,59 @@
 /* ============================================================
-   BACKEND-АДАПТЕРЫ: реклама и рефералы.
+   BACKEND-АДАПТЕРЫ: реклама Яндекса и рефералы.
 
-   Сейчас работает локальная реализация (без сервера) — её
-   достаточно для запуска и тестов. Когда понадобится настоящая
-   реклама и рефералы между разными телефонами, заменяется ТОЛЬКО
-   этот файл (интерфейсы Ads.* и Referrals.* остаются теми же):
+   РЕКЛАМА — подключена по-настоящему:
+   Android-приложение использует Yandex Mobile Ads SDK через
+   локальный Capacitor-плагин (android/.../YandexAdsPlugin.java).
+   Блоки из кабинета РСЯ (ID в js/config.js → CONFIG.ads):
+     • rewarded     R-M-20304990-1 — кристаллы в магазине, «не хватает
+                    кристаллов», удвоение награды за финал
+     • interstitial R-M-20304990-2 — между новеллами: вход в историю
+                    из библиотеки и выход с экрана финала
+     • native       R-M-20304990-3 — нативная карточка в библиотеке
+   В веб-режиме разработки (нет плагина) rewarded заменяется
+   демо-таймером, interstitial пропускается, native — карточкой-
+   заглушкой, чтобы было видно место размещения.
 
-   • Реклама: внутри Ads.showRewarded() вызвать SDK
-     (Yandex Ads / AdMob / VK Ads) и резолвить Promise по их
-     событию «реклама досмотрена».
-   • Рефералы между устройствами физически требуют сервер:
-     бесплатные варианты — Supabase / Firebase. Схема таблиц
-     и порядок подключения — в REFERRAL_BACKEND.md.
+   РЕФЕРАЛЫ между разными телефонами требуют сервер — сейчас
+   работает локальная реализация. Подключение Supabase/Firebase
+   заменяет тела функций Referrals.* (см. REFERRAL_BACKEND.md).
    ============================================================ */
 
 const Ads = {
-  /* Показать rewarded-рекламу. Возвращает Promise<boolean> — досмотрел ли игрок. */
-  showRewarded(onTick) {
-    // ДЕМО-РЕАЛИЗАЦИЯ: таймер CONFIG.crystals.adDurationSec секунд.
-    // ЗАМЕНА НА РЕАЛЬНЫЙ SDK — только здесь.
+  _inited: false,
+  _nativeVisible: false,
+
+  plugin() {
+    return (window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.YandexAds) || null;
+  },
+  isNative() { return !!this.plugin(); },
+
+  async init() {
+    const p = this.plugin();
+    if (!p || this._inited) return;
+    this._inited = true;
+    try {
+      await p.initialize();
+      // Предзагрузка полноэкранных форматов: показ потом мгновенный.
+      p.preloadInterstitial({ adUnitId: CONFIG.ads.interstitial });
+      p.preloadRewarded({ adUnitId: CONFIG.ads.rewarded });
+      if (p.addListener) p.addListener('nativeClosed', () => { this._nativeVisible = false; });
+    } catch (e) { /* без рекламы приложение продолжает работать */ }
+  },
+
+  /* --- Rewarded: true, только если игрок досмотрел и получил награду --- */
+  async showRewardedNative() {
+    const p = this.plugin();
+    if (!p) return false;
+    try {
+      const r = await p.showRewarded({ adUnitId: CONFIG.ads.rewarded });
+      p.preloadRewarded({ adUnitId: CONFIG.ads.rewarded });
+      return !!(r && r.rewarded);
+    } catch (e) { return false; }
+  },
+
+  /* Веб-режим разработки: таймер-заглушка на месте настоящего SDK. */
+  showRewardedDemo(onTick) {
     return new Promise(resolve => {
       let left = CONFIG.crystals.adDurationSec;
       onTick && onTick(left);
@@ -29,6 +64,39 @@ const Ads = {
       }, 1000);
     });
   },
+
+  /* --- Interstitial: между новеллами и после финала. С кулдауном,
+         никогда не блокирует пользователя, если реклама не готова. --- */
+  async showInterstitial() {
+    const last = Store.data.ads.lastInterstitialAt || 0;
+    if (Date.now() - last < CONFIG.ads.interstitialCooldownSec * 1000) return false;
+    const p = this.plugin();
+    if (!p) return false; // в веб-разработке просто пропускаем
+    try {
+      const r = await p.showInterstitial({ adUnitId: CONFIG.ads.interstitial });
+      const shown = !!(r && r.shown);
+      if (shown) { Store.data.ads.lastInterstitialAt = Date.now(); Store.save(); }
+      return shown;
+    } catch (e) { return false; }
+  },
+
+  /* --- Native: карточка поверх нижней части библиотеки --- */
+  async showNative(bottomMarginDp) {
+    const p = this.plugin();
+    if (!p || this._nativeVisible) return false;
+    try {
+      const r = await p.showNative({ adUnitId: CONFIG.ads.native, bottomMarginDp: Math.round(bottomMarginDp || 68) });
+      this._nativeVisible = !!(r && r.shown);
+      return this._nativeVisible;
+    } catch (e) { return false; }
+  },
+  hideNative() {
+    const p = this.plugin();
+    this._nativeVisible = false;
+    if (p) { try { p.hideNative(); } catch (e) {} }
+  },
+
+  /* --- Лимиты именно для кнопки в магазине (фарм кристаллов) --- */
   canWatch() {
     const a = Store.data.ads;
     if (a.count >= CONFIG.crystals.adDailyLimit) return { ok: false, reason: `Лимит на сегодня: ${CONFIG.crystals.adDailyLimit} реклам` };
@@ -69,7 +137,7 @@ const Referrals = {
     return { ok: true };
   },
 
-  /* Вызывается при ПЕРВОМ завершении любой истории: начисляем пригласившему.
+  /* Вызывается при ПЕРВОМ завершении любой истории: засчитываем пригласившему.
      В локальной реализации выплата видна в реестре этого устройства;
      при серверном бэкенде здесь будет запрос к API (см. REFERRAL_BACKEND.md). */
   onFirstStoryCompleted() {
@@ -79,7 +147,6 @@ const Referrals = {
     if (entry) { entry.status = 'inviter-paid'; entry.paidAt = Date.now(); Store.save(); }
   },
 
-  /* Статистика для экрана профиля (по локальному реестру). */
   stats() {
     const mine = Store.data.referralLedger.filter(r => r.code === this.myCode());
     const completed = mine.filter(r => r.status === 'inviter-paid').length;

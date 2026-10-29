@@ -244,14 +244,12 @@ textarea.field{min-height:130px;resize:vertical;font-size:13px;line-height:1.5}
 .ledger-item .d.plus{color:#6d7a57}.ledger-item .d.minus{color:var(--danger)}
 .switch-row{display:flex;align-items:center;justify-content:space-between;gap:12px}
 
-/* --- импорт --- */
-.dropzone{border:1.5px dashed var(--accent);border-radius:var(--radius);background:var(--surface);
-  padding:26px 18px;text-align:center;transition:background .15s ease}
-.dropzone.over{background:var(--surface-2)}
-.import-result{display:none;border-radius:12px;padding:13px 15px;font-size:13px;line-height:1.6;margin-top:12px}
-.import-result.ok{display:block;background:#EFF0E6;border:1px solid #C9CBAE;color:#454f33}
-.import-result.bad{display:block;background:#FAECE8;border:1px solid #E0BBAF;color:#6e3527}
-.import-result li{margin-left:16px}
+/* --- нативная реклама (веб-режим: место размещения) --- */
+.native-demo{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+  padding:13px 15px;margin-bottom:14px;position:relative}
+.native-demo-tag{position:absolute;top:10px;right:12px;font-size:9.5px;letter-spacing:.14em;
+  color:var(--muted);font-weight:700;text-transform:uppercase}
+.native-demo-title{font-family:var(--serif);font-weight:700;font-size:15px;margin-bottom:3px}
 
 /* --- нижняя навигация --- */
 .tabbar{display:flex;border-top:1px solid var(--line);background:var(--surface);padding-bottom:env(safe-area-inset-bottom);flex:0 0 auto}

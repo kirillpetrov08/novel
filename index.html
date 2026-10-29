@@ -26,6 +26,7 @@
       </div>
 
       <div id="continue-block"></div>
+      <div id="native-ad-slot"></div>
 
       <h2 class="h2">Библиотека</h2>
       <div id="story-list"><div class="loading-note">Загружаем истории из папки stores/…</div></div>
@@ -49,8 +50,6 @@
         <p class="detail-desc" id="detail-desc"></p>
         <div class="endings-line" id="detail-endings"></div>
         <div id="detail-actions"></div>
-        <p class="muted small" id="detail-source" style="margin-top:14px"></p>
-        <div id="detail-imported-actions"></div>
       </div>
     </div>
   </section>
@@ -86,6 +85,7 @@
           <div class="badge" id="ending-badge"></div>
           <p id="ending-text"></p>
           <div id="ending-rewards"></div>
+          <button class="btn btn-accent" id="ending-double" style="display:none"></button>
           <button class="btn btn-primary" id="ending-again">Пройти ещё раз — другие выборы</button>
           <button class="btn btn-ghost" id="ending-library">В библиотеку</button>
         </div>
@@ -145,7 +145,7 @@
 
       <h2 class="h2">История операций</h2>
       <div class="row-card" id="ledger"><p class="muted">Операций пока нет.</p></div>
-      <p class="muted small" style="margin-top:6px">Реклама сейчас — демо-заглушка на несколько секунд. Реальный рекламный SDK подключается в одном месте: файл <b>js/backend.js</b>.</p>
+      <p class="muted small" style="margin-top:6px">Короткий рекламный ролик — и кристаллы твои. Награда начисляется, если досмотреть рекламу до конца.</p>
     </div></div>
   </section>
 
@@ -190,7 +190,7 @@
           <button class="mini-btn" id="typewriter-toggle"></button>
         </div>
         <div class="switch-row">
-          <div><div class="row-title">Сбросить весь прогресс</div><div class="row-sub">Кристаллы, прохождения и импортированные истории будут удалены.</div></div>
+          <div><div class="row-title">Сбросить весь прогресс</div><div class="row-sub">Кристаллы и прохождения историй будут удалены.</div></div>
           <button class="mini-btn" id="reset-all-btn" style="background:var(--danger)">Сброс</button>
         </div>
       </div>
@@ -198,46 +198,10 @@
     </div></div>
   </section>
 
-  <!-- ===================== ИМПОРТ ===================== -->
-  <section class="screen" id="screen-import">
-    <header class="topbar">
-      <div class="logo">ИМПОРТ<small>ДОБАВИТЬ ИСТОРИЮ ВРУЧНУЮ</small></div>
-      <button class="crystals-pill js-gems" data-go="shop"><span class="gem">◆</span><span class="js-gems-num">0</span></button>
-    </header>
-    <div class="scroll"><div class="pad">
-      <p class="muted" style="margin-bottom:13px">Основной способ — <b>папка истории в репозитории</b>: <b>stores/1/</b> (сюжет <b>story.json</b> + фото рядом), <b>stores/2/</b>, … Истории вшиваются в приложение при сборке. Здесь можно быстро проверить историю до коммита: перетащи story.json, выбери файл или вставь JSON текстом.</p>
-
-      <div class="dropzone" id="dropzone">
-        <div style="font-size:30px;margin-bottom:8px">✦</div>
-        <div class="row-title">Перетащи сюда файл .json</div>
-        <p class="muted" style="margin:6px 0 14px">или</p>
-        <button class="btn btn-accent" id="pick-file-btn" style="max-width:260px;margin:0 auto">Выбрать файл</button>
-        <input type="file" id="file-input" accept=".json,application/json" multiple hidden>
-      </div>
-
-      <h2 class="h2">…или вставь JSON текстом</h2>
-      <textarea class="field" id="paste-input" placeholder='{"id":"my-story","title":"…", …}'></textarea>
-      <button class="btn btn-primary" id="paste-btn" style="margin-top:11px">Добавить в библиотеку</button>
-
-      <div class="import-result" id="import-result"></div>
-
-      <h2 class="h2">Правила формата</h2>
-      <div class="row-card muted" style="line-height:1.7">
-        • Одна папка = одна история: сюжет и фото вместе.<br>
-        • В репозитории: <b>stores/1/story.json</b>, <b>stores/2/story.json</b>… — номера папок подряд, без пропусков. Пути к фото в story.json — относительные (<b>cover.jpg</b>, <b>images/bg-01.jpg</b>).<br>
-        • Полная схема и шаблон: папка <b>stores/_template/</b> и <b>STORY_FORMAT.md</b>.<br>
-        • Проверка перед коммитом: <b>npm run validate</b><br>
-        • Битый файл не ломает приложение — ошибка покажется в библиотеке.
-      </div>
-      <div id="imported-list"></div>
-    </div></div>
-  </section>
-
   <!-- нижняя навигация -->
   <nav class="tabbar" id="tabbar">
     <button data-go="library" class="active"><span class="ic">❦</span>Библиотека</button>
     <button data-go="shop"><span class="ic">◆</span>Кристаллы</button>
-    <button data-go="import"><span class="ic">＋</span>Импорт</button>
     <button data-go="profile"><span class="ic">♡</span>Профиль</button>
   </nav>
 </div>
@@ -248,7 +212,7 @@
     <h3>Реклама</h3>
     <div class="ad-fake">
       <div class="t1">Здесь будет реклама</div>
-      <div class="t2">Демо-заглушка. Реальный SDK подключается в js/backend.js → Ads.showRewarded()</div>
+      <div class="t2">Веб-режим разработки. В Android-приложении здесь — настоящая реклама Яндекса</div>
     </div>
     <div class="ad-progress"><div id="ad-bar"></div></div>
     <p class="muted" style="text-align:center;margin-top:10px" id="ad-countdown"></p>
