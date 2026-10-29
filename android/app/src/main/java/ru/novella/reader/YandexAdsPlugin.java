@@ -462,8 +462,8 @@ public class YandexAdsPlugin extends Plugin {
         StarRatingView(Context context) { super(context); }
 
         @Override
-        public void setRating(Float value) {
-            if (value == null || value <= 0f) {
+        public void setRating(float value) {
+            if (value <= 0f) {
                 setVisibility(GONE);
                 return;
             }
