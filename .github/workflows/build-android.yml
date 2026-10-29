@@ -83,12 +83,29 @@ jobs:
       - name: Собрать APK (тест) и AAB (RuStore)
         working-directory: android
         run: |
+          set -o pipefail
           chmod +x gradlew
           VERSION_NAME=$(node -p "require('../package.json').version")
           ./gradlew :app:assembleDebug :app:bundleRelease \
             -PappVersionCode=${{ github.run_number }} \
             -PappVersionName=$VERSION_NAME \
-            --stacktrace
+            --stacktrace 2>&1 | tee ../gradle-build.log
+
+      - name: Диагностика упавшей сборки (лог в аннотации и summary)
+        if: failure()
+        run: |
+          echo '## Последние 150 строк лога Gradle' >> "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
+          tail -n 150 gradle-build.log >> "$GITHUB_STEP_SUMMARY" || true
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
+          python3 - <<'PY'
+          import pathlib
+          p = pathlib.Path('gradle-build.log')
+          lines = p.read_text(errors='ignore').splitlines()[-150:] if p.exists() else ['лог не создан']
+          for i in range(0, len(lines), 25):
+              chunk = '%0A'.join(l.replace('%', '%25') for l in lines[i:i+25])
+              print(f"::error title=Gradle log {i//25+1}::{chunk}")
+          PY
 
       - name: Артефакт — тестовый APK
         uses: actions/upload-artifact@v4
