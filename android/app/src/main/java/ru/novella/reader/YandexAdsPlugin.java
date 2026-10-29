@@ -459,16 +459,24 @@ public class YandexAdsPlugin extends Plugin {
 
     /** Рейтинг приложения для нативного шаблона: SDK ожидает View, реализующую Rating. */
     private static final class StarRatingView extends TextView implements Rating {
+        private float currentRating = 0f;
+
         StarRatingView(Context context) { super(context); }
 
         @Override
         public void setRating(float value) {
+            currentRating = value;
             if (value <= 0f) {
                 setVisibility(GONE);
                 return;
             }
             setVisibility(VISIBLE);
             setText(String.format(Locale.US, "★ %.1f", value));
+        }
+
+        @Override
+        public float getRating() {
+            return currentRating;
         }
     }
 
