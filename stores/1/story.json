@@ -52,7 +52,7 @@
     "kirill": {
       "name": "Кирилл Дымов",
       "color": "#7A6A5A",
-      "image": ""
+      "image": "images/kirill.png"
     }
   },
   "scenes": {
@@ -160,7 +160,7 @@
       "next": "s4"
     },
     "s3b": {
-      "bg": "images/bg-house.jpg",
+      "bg": "images/bg-porch-night.jpg",
       "bgGradient": [
         "#C9C6BA",
         "#5E6159"
@@ -464,7 +464,7 @@
       "next": "s9"
     },
     "s8c": {
-      "bg": "images/bg-cafe.jpg",
+      "bg": "images/bg-cafe-night.jpg",
       "bgGradient": [
         "#DCD0B4",
         "#7E6A4E"
@@ -501,7 +501,7 @@
       "next": "s9"
     },
     "s9": {
-      "bg": "images/bg-night-sea.jpg",
+      "bg": "images/bg-breakwater-dusk.jpg",
       "bgGradient": [
         "#6E7268",
         "#2E3A3C"
@@ -548,7 +548,7 @@
       ]
     },
     "s10a": {
-      "bg": "images/bg-night-sea.jpg",
+      "bg": "images/bg-breakwater-dusk.jpg",
       "bgGradient": [
         "#6A6E64",
         "#2C3738"
@@ -581,7 +581,7 @@
       "next": "s11"
     },
     "s10b": {
-      "bg": "images/bg-night-sea.jpg",
+      "bg": "images/bg-breakwater-dusk.jpg",
       "bgGradient": [
         "#63675E",
         "#283233"
@@ -619,7 +619,7 @@
       "next": "s11"
     },
     "s11": {
-      "bg": "images/bg-night-sea.jpg",
+      "bg": "images/bg-house-storm.jpg",
       "bgGradient": [
         "#54595A",
         "#1E2628"
@@ -706,7 +706,7 @@
       "next": "s13"
     },
     "s12b": {
-      "bg": "images/bg-house.jpg",
+      "bg": "images/bg-house-storm.jpg",
       "bgGradient": [
         "#C0B9A8",
         "#3E423C"
@@ -736,7 +736,7 @@
       "next": "s13"
     },
     "s12c": {
-      "bg": "images/bg-night-sea.jpg",
+      "bg": "images/bg-generator-storm.jpg",
       "bgGradient": [
         "#555A58",
         "#20282A"
@@ -772,7 +772,7 @@
       "next": "s13"
     },
     "s13": {
-      "bg": "images/bg-house.jpg",
+      "bg": "images/bg-house-kitchen.jpg",
       "bgGradient": [
         "#D8D2C2",
         "#8C8A7C"
@@ -824,7 +824,7 @@
       ]
     },
     "s14a": {
-      "bg": "images/bg-house.jpg",
+      "bg": "images/bg-house-kitchen.jpg",
       "bgGradient": [
         "#DAD3C1",
         "#8A8676"
@@ -856,7 +856,7 @@
       "next": "s15"
     },
     "s14b": {
-      "bg": "images/bg-house.jpg",
+      "bg": "images/bg-house-kitchen.jpg",
       "bgGradient": [
         "#D9D2C0",
         "#87846F"
@@ -888,7 +888,7 @@
       "next": "s15"
     },
     "s14c": {
-      "bg": "images/bg-house.jpg",
+      "bg": "images/bg-house-kitchen.jpg",
       "bgGradient": [
         "#D6CEBB",
         "#7E7A64"
@@ -925,7 +925,7 @@
       "next": "s15"
     },
     "s15": {
-      "bg": "images/bg-lighthouse.jpg",
+      "bg": "images/bg-lighthouse-gallery.jpg",
       "bgGradient": [
         "#E0D3B8",
         "#8C7A5C"
@@ -978,7 +978,7 @@
       ]
     },
     "s16a": {
-      "bg": "images/bg-lighthouse.jpg",
+      "bg": "images/bg-lighthouse-gallery.jpg",
       "bgGradient": [
         "#E7D9BC",
         "#9A8461"
@@ -1011,7 +1011,7 @@
       "next": "s17"
     },
     "s16b": {
-      "bg": "images/bg-lighthouse.jpg",
+      "bg": "images/bg-lighthouse-gallery.jpg",
       "bgGradient": [
         "#E2D5B9",
         "#8E7C5C"
@@ -1039,7 +1039,7 @@
       "next": "s17"
     },
     "s16c": {
-      "bg": "images/bg-lighthouse.jpg",
+      "bg": "images/bg-lighthouse-gallery.jpg",
       "bgGradient": [
         "#E9D8B8",
         "#A07F58"
@@ -1217,7 +1217,7 @@
       "next": "s19"
     },
     "s19": {
-      "bg": "",
+      "bg": "images/bg-square.jpg",
       "bgGradient": [
         "#DFD3BC",
         "#8A7A63"
@@ -1270,7 +1270,7 @@
       "next": "ending_ashore"
     },
     "ending_light": {
-      "bg": "images/bg-lighthouse.jpg",
+      "bg": "images/bg-lighthouse-gallery.jpg",
       "bgGradient": [
         "#F0E4C8",
         "#B99C6E"
@@ -1306,7 +1306,7 @@
       }
     },
     "ending_truth": {
-      "bg": "",
+      "bg": "images/bg-square.jpg",
       "bgGradient": [
         "#E7DAC2",
         "#94836A"
@@ -1342,7 +1342,7 @@
       }
     },
     "ending_ashore": {
-      "bg": "images/bg-pier.jpg",
+      "bg": "images/bg-pier-departure.jpg",
       "bgGradient": [
         "#CFC9BB",
         "#6E7268"
