@@ -132,5 +132,42 @@
       "type": "character",
       "prompt": "Waist-up portrait of a man about 38, dark blond hair slicked back, pale grey eyes, clean-shaven, navy wool overcoat, grey leather gloves, thin hostile smile, leaning slightly in, cold pale eyes, plain light beige background, clean edges, no other people, soft romantic visual novel art, warm beige and muted earthy color palette, gentle diffused light, minimalist elegant composition, cinematic, no text, no watermark"
     }
-  ]
+  ],
+  "sceneBackgrounds": {
+    "s1": "images/bg-greenhouse-night.jpg",
+    "s2": "images/bg-greenhouse-night.jpg",
+    "s3a": "images/bg-greenhouse-night.jpg",
+    "s3b": "images/bg-greenhouse-night.jpg",
+    "s4": "images/bg-potting-shed.jpg",
+    "s5": "images/bg-potting-shed.jpg",
+    "s6a": "images/bg-greenhouse-night.jpg",
+    "s6b": "images/bg-greenhouse-night.jpg",
+    "s7": "images/bg-veranda.jpg",
+    "s8a": "images/bg-veranda.jpg",
+    "s8b": "images/bg-veranda.jpg",
+    "s8c": "images/bg-veranda.jpg",
+    "s9": "images/bg-roof-night.jpg",
+    "s10a": "images/bg-roof-night.jpg",
+    "s10b": "images/bg-roof-night.jpg",
+    "s11": "images/bg-greenhouse-night.jpg",
+    "s12a": "images/bg-potting-shed.jpg",
+    "s12b": "images/bg-greenhouse-night.jpg",
+    "s12c": "images/bg-greenhouse-night.jpg",
+    "s13": "images/bg-potting-shed.jpg",
+    "s14a": "images/bg-potting-shed.jpg",
+    "s14b": "images/bg-potting-shed.jpg",
+    "s14c": "images/bg-potting-shed.jpg",
+    "s15": "images/bg-veranda.jpg",
+    "s16a": "images/bg-veranda.jpg",
+    "s16b": "images/bg-veranda.jpg",
+    "s16c": "images/bg-veranda.jpg",
+    "s17": "images/bg-greenhouse-night.jpg",
+    "s18a": "images/bg-greenhouse-night.jpg",
+    "s18b": "images/bg-greenhouse-night.jpg",
+    "s18c": "images/bg-greenhouse-night.jpg",
+    "s19": "images/bg-veranda.jpg",
+    "ending_bloom": "images/bg-greenhouse-night.jpg",
+    "ending_garden": "images/bg-greenhouse-day.jpg",
+    "ending_winter": "images/bg-roof-night.jpg"
+  }
 }

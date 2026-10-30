@@ -132,5 +132,41 @@
       "type": "character",
       "prompt": "Waist-up portrait of a man about 45, very short dark hair greying at the temples, clean-shaven, charcoal wool coat, black leather folder in his hand, thin cold smile, leaning slightly in, eyes flat and appraising, plain light beige background, clean edges, no other people, soft romantic visual novel art, warm beige and muted earthy color palette, gentle diffused light, minimalist elegant composition, cinematic, no text, no watermark"
     }
-  ]
+  ],
+  "sceneBackgrounds": {
+    "s1": "images/bg-lake-ice.jpg",
+    "s2": "images/bg-lounge.jpg",
+    "s3a": "images/bg-bathhouse.jpg",
+    "s3b": "images/bg-room.jpg",
+    "s4": "images/bg-bathhouse.jpg",
+    "s6a": "images/bg-bathhouse.jpg",
+    "s6b": "images/bg-lake-ice.jpg",
+    "s7": "images/bg-lounge.jpg",
+    "s8a": "images/bg-lounge.jpg",
+    "s8b": "images/bg-lounge.jpg",
+    "s8c": "images/bg-lounge.jpg",
+    "s9": "images/bg-terrace-night.jpg",
+    "s10a": "images/bg-terrace-night.jpg",
+    "s10b": "images/bg-terrace-night.jpg",
+    "s11": "images/bg-bathhouse.jpg",
+    "s12a": "images/bg-bathhouse.jpg",
+    "s12b": "images/bg-bathhouse.jpg",
+    "s12c": "images/bg-bathhouse.jpg",
+    "s13": "images/bg-lounge.jpg",
+    "s14a": "images/bg-room.jpg",
+    "s14b": "images/bg-bathhouse.jpg",
+    "s14c": "images/bg-lounge.jpg",
+    "s15": "images/bg-lake-ice.jpg",
+    "s16a": "images/bg-lake-ice.jpg",
+    "s16b": "images/bg-lake-ice.jpg",
+    "s16c": "images/bg-lake-ice.jpg",
+    "s17": "images/bg-room.jpg",
+    "s18a": "images/bg-lounge.jpg",
+    "s18b": "images/bg-room.jpg",
+    "s18c": "images/bg-room.jpg",
+    "s19": "images/bg-lounge.jpg",
+    "ending_steam": "images/bg-bathhouse.jpg",
+    "ending_water": "images/bg-lounge.jpg",
+    "ending_road": "images/bg-lake-ice.jpg"
+  }
 }
