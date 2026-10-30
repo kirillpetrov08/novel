@@ -153,16 +153,16 @@ img{max-width:100%;display:block}
 .player-gems{background:rgba(255,253,248,.92);border-radius:999px;padding:7px 12px;font-weight:700;font-size:13.5px;display:flex;gap:6px;align-items:center}
 .player-progress{position:absolute;top:0;left:0;height:3px;background:var(--accent);z-index:6;transition:width .3s ease;max-width:100%}
 
-/* персонажи на сцене: портретные карточки поверх фона.
-   Арт историй — бюстовые портреты на ровном фоне (без прозрачности),
-   поэтому карточка с object-fit:cover выглядит намеренно, а не «прямоугольником». */
-.chars{position:absolute;inset:auto 0 0 0;height:64%;display:flex;align-items:flex-end;justify-content:center;gap:10px;padding:0 14px;pointer-events:none}
-.char{flex:1 1 0;min-width:0;max-width:272px;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;
-  transition:opacity .3s ease, transform .3s ease;opacity:.72;transform:translateY(5px) scale(.985)}
+/* Персонажи: прозрачные спрайты поверх фона сцены.
+   Размер зависит от числа фигур: один герой — крупнее, трое — компактнее. */
+.chars{position:absolute;inset:auto 0 0 0;height:61%;display:flex;align-items:flex-end;justify-content:center;gap:8px;padding:0 16px;pointer-events:none}
+.char{flex:1 1 0;min-width:0;max-width:302px;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;
+  transition:opacity .3s ease, transform .3s ease;opacity:.68;transform:translateY(4px) scale(.99)}
+.chars[data-count="2"] .char{max-width:210px}
+.chars[data-count="3"] .char{max-width:148px}
 .char.speaking{opacity:1;transform:translateY(0) scale(1)}
-.char img{width:100%;height:100%;max-height:100%;aspect-ratio:3/4;object-fit:cover;object-position:50% 16%;
-  border-radius:20px 20px 0 0;border:1px solid rgba(255,253,248,.7);border-bottom:none;
-  box-shadow:0 14px 34px rgba(30,25,18,.38)}
+.char img{width:100%;height:100%;max-height:100%;object-fit:contain;object-position:50% 100%;
+  filter:drop-shadow(0 10px 22px rgba(30,25,18,.35))}
 .char .monogram{
   width:104px;height:104px;border-radius:50%;margin-bottom:26%;
   display:flex;align-items:center;justify-content:center;
@@ -171,8 +171,15 @@ img{max-width:100%;display:block}
   text-shadow:0 1px 6px rgba(0,0,0,.3);
 }
 
+/* Нижняя колонка плеера: выборы и реплика в обычном потоке друг над другом.
+   Поэтому кнопки выбора физически не могут наехать на текст фразы героя. */
+.player-lower{position:absolute;left:0;right:0;bottom:0;z-index:7;display:flex;flex-direction:column;gap:9px;
+  padding:0 12px calc(12px + env(safe-area-inset-bottom))}
+.stage.choices-open .stage-shade{background:linear-gradient(to top,rgba(30,25,18,.68) 0%,rgba(30,25,18,.22) 52%,transparent 72%)}
+.stage.choices-open .dialogue{pointer-events:none}
+
 /* диалог */
-.dialogue-wrap{position:absolute;left:0;right:0;bottom:0;z-index:5;padding:0 12px calc(12px + env(safe-area-inset-bottom))}
+.dialogue-wrap{position:relative}
 .dialogue{
   background:rgba(255,253,248,.97);border:1px solid var(--line);border-radius:18px;
   padding:16px 17px 13px;min-height:128px;max-height:38dvh;overflow-y:auto;
@@ -187,10 +194,9 @@ img{max-width:100%;display:block}
 @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(3px)}}
 
 /* выборы */
-.choices{position:absolute;left:0;right:0;bottom:0;z-index:7;padding:0 12px calc(12px + env(safe-area-inset-bottom));
-  display:none;flex-direction:column;gap:9px;max-height:72dvh;overflow-y:auto}
+.choices{display:none;flex-direction:column;gap:9px;max-height:min(38dvh,340px);overflow-y:auto;overscroll-behavior:contain;
+  scrollbar-width:thin;padding:2px}
 .choices.open{display:flex}
-.choices::before{content:'';position:fixed;inset:0;background:rgba(30,25,18,.45);z-index:-1}
 .choice{
   background:rgba(255,253,248,.98);border:1px solid var(--line);border-radius:14px;
   padding:14px 16px;font-size:15px;font-weight:600;line-height:1.4;text-align:left;width:100%;

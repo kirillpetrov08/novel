@@ -229,6 +229,10 @@ const UI = {
   },
 
   /* ---------------- ПЛЕЕР ---------------- */
+  setChoicesOpen(open) {
+    $('#choices').classList.toggle('open', open);
+    $('#stage').classList.toggle('choices-open', open);
+  },
   async play(id, mode) {
     if (this._startingStory) return;
     this._startingStory = true;
@@ -237,7 +241,7 @@ const UI = {
     const story = Loader.get(id);
     if (!story) return;
     $('#ending-ov').classList.remove('open');
-    $('#choices').classList.remove('open');
+    this.setChoicesOpen(false);
     this.go('player');
     Engine.open(story, mode);
   },
@@ -254,7 +258,7 @@ const UI = {
     const story = Engine.story, sc = Engine.scene();
     $('#player-title').textContent = story.title;
     $('#player-progress').style.width = Engine.progressPct() + '%';
-    $('#choices').classList.remove('open');
+    this.setChoicesOpen(false);
     $('#ending-ov').classList.remove('open');
 
     const bg = $('#stage-bg');
@@ -282,6 +286,7 @@ const UI = {
       } else div.appendChild(this.monogram(ch));
       wrap.appendChild(div);
     });
+    wrap.dataset.count = String(wrap.children.length || 1);
     this.preloadBg(story, sc);
   },
 
@@ -305,8 +310,14 @@ const UI = {
     }
     txt.className = 'dialogue-text ' + (ln.type === 'narration' ? 'narration' : ln.type === 'thought' ? 'thought' : '');
     $('#dialogue-next').style.visibility = 'hidden';
-    // подсветка говорящего
-    $$('#chars .char').forEach(el => el.classList.toggle('speaking', !ln.who || el.dataset.cid === ln.who));
+    // Подсветка говорящего: учитываем эмоциональные варианты вида matvey_soft
+    // (у них то же отображаемое имя, что у базового персонажа matvey).
+    const speakerName = ch ? ch.name : null;
+    $$('#chars .char').forEach(el => {
+      const shown = (story.characters || {})[el.dataset.cid];
+      const same = !ln.who || el.dataset.cid === ln.who || (!!speakerName && !!shown && shown.name === speakerName);
+      el.classList.toggle('speaking', same);
+    });
     Engine.startTyping(txt, String(ln.text));
     if (!Store.data.settings.typewriter) $('#dialogue-next').style.visibility = 'visible';
     $('#player-progress').style.width = Engine.progressPct() + '%';
@@ -331,7 +342,7 @@ const UI = {
       b.addEventListener('click', () => Engine.choose(idx));
       wrap.appendChild(b);
     });
-    wrap.classList.add('open');
+    this.setChoicesOpen(true);
   },
 
   renderEnding({ ending, notes, reward }) {
@@ -342,7 +353,7 @@ const UI = {
       db.style.display = 'flex';
       db.textContent = `▶ Реклама: удвоить награду · ещё +${this.endingReward} ◆`;
     } else db.style.display = 'none';
-    $('#choices').classList.remove('open');
+    this.setChoicesOpen(false);
     $('#ending-title').textContent = ending.title || 'Финал';
     $('#ending-badge').textContent = ending.badge || '';
     $('#ending-text').textContent = ending.text || '';

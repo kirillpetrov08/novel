@@ -37,122 +37,122 @@
     "heroine": {
       "name": "Вера",
       "color": "#8A6D4B",
-      "image": "images/heroine.jpg"
+      "image": "images/heroine.webp"
     },
     "matvey": {
       "name": "Матвей Соколов",
       "color": "#5C6650",
-      "image": "images/matvey.jpg"
+      "image": "images/matvey.webp"
     },
     "agata": {
       "name": "Агата Тимофеевна",
       "color": "#9A7B5F",
-      "image": "images/agata.jpg"
+      "image": "images/agata.webp"
     },
     "kirill": {
       "name": "Кирилл Дымов",
       "color": "#7A6A5A",
-      "image": "images/kirill.jpg"
+      "image": "images/kirill.webp"
     },
     "heroine_soft": {
       "name": "Вера",
       "color": "#8A6D4B",
-      "image": "images/heroine_soft.jpg"
+      "image": "images/heroine_soft.webp"
     },
     "heroine_storm": {
       "name": "Вера",
       "color": "#8A6D4B",
-      "image": "images/heroine_storm.jpg"
+      "image": "images/heroine_storm.webp"
     },
     "heroine_night": {
       "name": "Вера",
       "color": "#8A6D4B",
-      "image": "images/heroine_night.jpg"
+      "image": "images/heroine_night.webp"
     },
     "heroine_brave": {
       "name": "Вера",
       "color": "#8A6D4B",
-      "image": "images/heroine_brave.jpg"
+      "image": "images/heroine_brave.webp"
     },
     "matvey_soft": {
       "name": "Матвей Соколов",
       "color": "#5C6650",
-      "image": "images/matvey_soft.jpg"
+      "image": "images/matvey_soft.webp"
     },
     "matvey_storm": {
       "name": "Матвей Соколов",
       "color": "#5C6650",
-      "image": "images/matvey_storm.jpg"
+      "image": "images/matvey_storm.webp"
     },
     "matvey_hurt": {
       "name": "Матвей Соколов",
       "color": "#5C6650",
-      "image": "images/matvey_hurt.jpg"
+      "image": "images/matvey_hurt.webp"
     },
     "matvey_close": {
       "name": "Матвей Соколов",
       "color": "#5C6650",
-      "image": "images/matvey_close.jpg"
+      "image": "images/matvey_close.webp"
     },
     "agata_grief": {
       "name": "Агата Тимофеевна",
       "color": "#9A7B5F",
-      "image": "images/agata_grief.jpg"
+      "image": "images/agata_grief.webp"
     },
     "kirill_close": {
       "name": "Кирилл Дымов",
       "color": "#7A6A5A",
-      "image": "images/kirill_close.jpg"
+      "image": "images/kirill_close.webp"
     },
     "heroine_wonder": {
       "name": "Вера",
       "color": "#8A6D4B",
-      "image": "images/heroine_wonder.jpg"
+      "image": "images/heroine_wonder.webp"
     },
     "heroine_doubt": {
       "name": "Вера",
       "color": "#8A6D4B",
-      "image": "images/heroine_doubt.jpg"
+      "image": "images/heroine_doubt.webp"
     },
     "heroine_exhausted": {
       "name": "Вера",
       "color": "#8A6D4B",
-      "image": "images/heroine_exhausted.jpg"
+      "image": "images/heroine_exhausted.webp"
     },
     "heroine_tears": {
       "name": "Вера",
       "color": "#8A6D4B",
-      "image": "images/heroine_tears.jpg"
+      "image": "images/heroine_tears.webp"
     },
     "matvey_guard": {
       "name": "Матвей Соколов",
       "color": "#5C6650",
-      "image": "images/matvey_guard.jpg"
+      "image": "images/matvey_guard.webp"
     },
     "matvey_laugh": {
       "name": "Матвей Соколов",
       "color": "#5C6650",
-      "image": "images/matvey_laugh.jpg"
+      "image": "images/matvey_laugh.webp"
     },
     "matvey_public": {
       "name": "Матвей Соколов",
       "color": "#5C6650",
-      "image": "images/matvey_public.jpg"
+      "image": "images/matvey_public.webp"
     },
     "agata_warm": {
       "name": "Агата Тимофеевна",
       "color": "#9A7B5F",
-      "image": "images/agata_warm.jpg"
+      "image": "images/agata_warm.webp"
     },
     "agata_welcoming": {
       "name": "Агата Тимофеевна",
       "color": "#9A7B5F",
-      "image": "images/agata_welcoming.jpg"
+      "image": "images/agata_welcoming.webp"
     },
     "kirill_tired": {
       "name": "Кирилл Дымов",
       "color": "#7A6A5A",
-      "image": "images/kirill_tired.jpg"
+      "image": "images/kirill_tired.webp"
     }
   },
   "scenes": {
