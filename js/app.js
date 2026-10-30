@@ -193,7 +193,6 @@ const UI = {
 
     const paidCount = Object.values(story.scenes).reduce((n, s) => n + (s.choices || []).filter(c => c.crystals).length, 0);
     const chips = [
-      story.author ? 'Автор: ' + story.author : null,
       story.estimatedMinutes ? '~' + story.estimatedMinutes + ' минут' : null,
       'Сцен: ' + Object.keys(story.scenes).length,
       'Финалов: ' + this.endingsTotal(story),
