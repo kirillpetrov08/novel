@@ -53,11 +53,61 @@
       "name": "Кирилл Дымов",
       "color": "#7A6A5A",
       "image": "images/kirill.png"
+    },
+    "heroine_soft": {
+      "name": "Вера",
+      "color": "#8A6D4B",
+      "image": "images/heroine_soft.png"
+    },
+    "heroine_storm": {
+      "name": "Вера",
+      "color": "#8A6D4B",
+      "image": "images/heroine_storm.png"
+    },
+    "heroine_night": {
+      "name": "Вера",
+      "color": "#8A6D4B",
+      "image": "images/heroine_night.png"
+    },
+    "heroine_brave": {
+      "name": "Вера",
+      "color": "#8A6D4B",
+      "image": "images/heroine_brave.png"
+    },
+    "matvey_soft": {
+      "name": "Матвей Соколов",
+      "color": "#5C6650",
+      "image": "images/matvey_soft.png"
+    },
+    "matvey_storm": {
+      "name": "Матвей Соколов",
+      "color": "#5C6650",
+      "image": "images/matvey_storm.png"
+    },
+    "matvey_hurt": {
+      "name": "Матвей Соколов",
+      "color": "#5C6650",
+      "image": "images/matvey_hurt.png"
+    },
+    "matvey_close": {
+      "name": "Матвей Соколов",
+      "color": "#5C6650",
+      "image": "images/matvey_close.png"
+    },
+    "agata_grief": {
+      "name": "Агата Тимофеевна",
+      "color": "#9A7B5F",
+      "image": "images/agata_grief.png"
+    },
+    "kirill_close": {
+      "name": "Кирилл Дымов",
+      "color": "#7A6A5A",
+      "image": "images/kirill_close.png"
     }
   },
   "scenes": {
     "s1": {
-      "bg": "images/bg-pier-dawn.jpg",
+      "bg": "images/bg-pier.jpg",
       "bgGradient": [
         "#D7D0BE",
         "#7E837C"
@@ -160,7 +210,7 @@
       "next": "s4"
     },
     "s3b": {
-      "bg": "images/bg-porch-night.jpg",
+      "bg": "images/bg-house.jpg",
       "bgGradient": [
         "#C9C6BA",
         "#5E6159"
@@ -274,7 +324,7 @@
       ],
       "show": [
         "heroine",
-        "matvey"
+        "matvey_hurt"
       ],
       "lines": [
         {
@@ -305,7 +355,7 @@
       "next": "s7"
     },
     "s6b": {
-      "bg": "images/bg-lighthouse.jpg",
+      "bg": "images/bg-lighthouse-day.jpg",
       "bgGradient": [
         "#E1D8C4",
         "#8A8F7C"
@@ -343,13 +393,13 @@
       "next": "s7"
     },
     "s7": {
-      "bg": "images/bg-cafe-evening.jpg",
+      "bg": "images/bg-cafe.jpg",
       "bgGradient": [
         "#EADFC5",
         "#A68A64"
       ],
       "show": [
-        "heroine",
+        "heroine_soft",
         "agata"
       ],
       "lines": [
@@ -470,8 +520,8 @@
         "#7E6A4E"
       ],
       "show": [
-        "heroine",
-        "agata"
+        "heroine_soft",
+        "agata_grief"
       ],
       "lines": [
         {
@@ -501,14 +551,14 @@
       "next": "s9"
     },
     "s9": {
-      "bg": "images/bg-breakwater-dusk.jpg",
+      "bg": "images/bg-night-sea.jpg",
       "bgGradient": [
         "#6E7268",
         "#2E3A3C"
       ],
       "show": [
         "heroine",
-        "matvey"
+        "matvey_hurt"
       ],
       "lines": [
         {
@@ -548,14 +598,14 @@
       ]
     },
     "s10a": {
-      "bg": "images/bg-breakwater-night.jpg",
+      "bg": "images/bg-night-sea.jpg",
       "bgGradient": [
         "#6A6E64",
         "#2C3738"
       ],
       "show": [
         "heroine",
-        "matvey"
+        "matvey_soft"
       ],
       "lines": [
         {
@@ -581,7 +631,7 @@
       "next": "s11"
     },
     "s10b": {
-      "bg": "images/bg-breakwater-night.jpg",
+      "bg": "images/bg-night-sea.jpg",
       "bgGradient": [
         "#63675E",
         "#283233"
@@ -625,8 +675,8 @@
         "#1E2628"
       ],
       "show": [
-        "heroine",
-        "matvey"
+        "heroine_storm",
+        "matvey_storm"
       ],
       "lines": [
         {
@@ -676,8 +726,8 @@
         "#1B2224"
       ],
       "show": [
-        "heroine",
-        "matvey"
+        "heroine_storm",
+        "matvey_storm"
       ],
       "lines": [
         {
@@ -712,7 +762,7 @@
         "#3E423C"
       ],
       "show": [
-        "heroine"
+        "heroine_storm"
       ],
       "lines": [
         {
@@ -736,14 +786,14 @@
       "next": "s13"
     },
     "s12c": {
-      "bg": "images/bg-generator-storm.jpg",
+      "bg": "images/bg-night-sea.jpg",
       "bgGradient": [
         "#555A58",
         "#20282A"
       ],
       "show": [
-        "heroine",
-        "matvey"
+        "heroine_storm",
+        "matvey_storm"
       ],
       "lines": [
         {
@@ -830,7 +880,7 @@
         "#8A8676"
       ],
       "show": [
-        "heroine",
+        "heroine_brave",
         "kirill"
       ],
       "lines": [
@@ -862,7 +912,7 @@
         "#87846F"
       ],
       "show": [
-        "heroine",
+        "heroine_brave",
         "kirill"
       ],
       "lines": [
@@ -894,8 +944,8 @@
         "#7E7A64"
       ],
       "show": [
-        "heroine",
-        "kirill"
+        "heroine_brave",
+        "kirill_close"
       ],
       "lines": [
         {
@@ -931,8 +981,8 @@
         "#8C7A5C"
       ],
       "show": [
-        "heroine",
-        "matvey"
+        "heroine_soft",
+        "matvey_soft"
       ],
       "lines": [
         {
@@ -984,8 +1034,8 @@
         "#9A8461"
       ],
       "show": [
-        "heroine",
-        "matvey"
+        "heroine_soft",
+        "matvey_soft"
       ],
       "lines": [
         {
@@ -1017,8 +1067,8 @@
         "#8E7C5C"
       ],
       "show": [
-        "heroine",
-        "matvey"
+        "heroine_brave",
+        "matvey_hurt"
       ],
       "lines": [
         {
@@ -1045,8 +1095,8 @@
         "#A07F58"
       ],
       "show": [
-        "heroine",
-        "matvey"
+        "heroine_soft",
+        "matvey_close"
       ],
       "lines": [
         {
@@ -1077,7 +1127,7 @@
         "#2A1E1C"
       ],
       "show": [
-        "heroine"
+        "heroine_night"
       ],
       "lines": [
         {
@@ -1128,13 +1178,13 @@
       ]
     },
     "s18a": {
-      "bg": "images/bg-darkroom-drying.jpg",
+      "bg": "images/bg-darkroom.jpg",
       "bgGradient": [
         "#8A5A4E",
         "#2B1F1D"
       ],
       "show": [
-        "heroine"
+        "heroine_night"
       ],
       "lines": [
         {
@@ -1160,7 +1210,7 @@
         "#9C8462"
       ],
       "show": [
-        "heroine",
+        "heroine_soft",
         "agata"
       ],
       "lines": [
@@ -1186,13 +1236,13 @@
       "next": "s19"
     },
     "s18c": {
-      "bg": "images/bg-darkroom-drying.jpg",
+      "bg": "images/bg-darkroom.jpg",
       "bgGradient": [
         "#87584C",
         "#2C201E"
       ],
       "show": [
-        "heroine"
+        "heroine_night"
       ],
       "lines": [
         {
@@ -1223,9 +1273,9 @@
         "#8A7A63"
       ],
       "show": [
-        "heroine",
+        "heroine_brave",
         "matvey",
-        "kirill"
+        "kirill_close"
       ],
       "lines": [
         {
@@ -1276,8 +1326,8 @@
         "#B99C6E"
       ],
       "show": [
-        "heroine",
-        "matvey"
+        "heroine_soft",
+        "matvey_soft"
       ],
       "lines": [
         {
@@ -1306,14 +1356,14 @@
       }
     },
     "ending_truth": {
-      "bg": "images/bg-square-day.jpg",
+      "bg": "images/bg-square.jpg",
       "bgGradient": [
         "#E7DAC2",
         "#94836A"
       ],
       "show": [
-        "heroine",
-        "matvey"
+        "heroine_brave",
+        "matvey_soft"
       ],
       "lines": [
         {
@@ -1342,7 +1392,7 @@
       }
     },
     "ending_ashore": {
-      "bg": "images/bg-pier-departure.jpg",
+      "bg": "images/bg-pier.jpg",
       "bgGradient": [
         "#CFC9BB",
         "#6E7268"
