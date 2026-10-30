@@ -103,6 +103,56 @@
       "name": "Кирилл Дымов",
       "color": "#7A6A5A",
       "image": "images/kirill_close.png"
+    },
+    "heroine_wonder": {
+      "name": "Вера",
+      "color": "#8A6D4B",
+      "image": "images/heroine_wonder.png"
+    },
+    "heroine_doubt": {
+      "name": "Вера",
+      "color": "#8A6D4B",
+      "image": "images/heroine_doubt.png"
+    },
+    "heroine_exhausted": {
+      "name": "Вера",
+      "color": "#8A6D4B",
+      "image": "images/heroine_exhausted.png"
+    },
+    "heroine_tears": {
+      "name": "Вера",
+      "color": "#8A6D4B",
+      "image": "images/heroine_tears.png"
+    },
+    "matvey_guard": {
+      "name": "Матвей Соколов",
+      "color": "#5C6650",
+      "image": "images/matvey_guard.png"
+    },
+    "matvey_laugh": {
+      "name": "Матвей Соколов",
+      "color": "#5C6650",
+      "image": "images/matvey_laugh.png"
+    },
+    "matvey_public": {
+      "name": "Матвей Соколов",
+      "color": "#5C6650",
+      "image": "images/matvey_public.png"
+    },
+    "agata_warm": {
+      "name": "Агата Тимофеевна",
+      "color": "#9A7B5F",
+      "image": "images/agata_warm.png"
+    },
+    "agata_welcoming": {
+      "name": "Агата Тимофеевна",
+      "color": "#9A7B5F",
+      "image": "images/agata_welcoming.png"
+    },
+    "kirill_tired": {
+      "name": "Кирилл Дымов",
+      "color": "#7A6A5A",
+      "image": "images/kirill_tired.png"
     }
   },
   "scenes": {
@@ -143,7 +193,7 @@
         "#A98F6D"
       ],
       "show": [
-        "heroine"
+        "heroine_doubt"
       ],
       "lines": [
         {
@@ -186,7 +236,7 @@
         "#8E7A5C"
       ],
       "show": [
-        "heroine"
+        "heroine_wonder"
       ],
       "lines": [
         {
@@ -217,7 +267,7 @@
       ],
       "show": [
         "heroine",
-        "matvey"
+        "matvey_guard"
       ],
       "lines": [
         {
@@ -254,7 +304,7 @@
       ],
       "show": [
         "heroine",
-        "matvey"
+        "matvey_guard"
       ],
       "lines": [
         {
@@ -286,7 +336,7 @@
       ],
       "show": [
         "heroine",
-        "matvey"
+        "matvey_guard"
       ],
       "lines": [
         {
@@ -399,8 +449,8 @@
         "#A68A64"
       ],
       "show": [
-        "heroine_soft",
-        "agata"
+        "heroine",
+        "agata_welcoming"
       ],
       "lines": [
         {
@@ -450,8 +500,8 @@
         "#9C8463"
       ],
       "show": [
-        "heroine",
-        "agata"
+        "heroine_wonder",
+        "agata_welcoming"
       ],
       "lines": [
         {
@@ -727,7 +777,7 @@
       ],
       "show": [
         "heroine_storm",
-        "matvey_storm"
+        "matvey_laugh"
       ],
       "lines": [
         {
@@ -828,7 +878,7 @@
         "#8C8A7C"
       ],
       "show": [
-        "heroine",
+        "heroine_exhausted",
         "kirill"
       ],
       "lines": [
@@ -880,7 +930,7 @@
         "#8A8676"
       ],
       "show": [
-        "heroine_brave",
+        "heroine_exhausted",
         "kirill"
       ],
       "lines": [
@@ -912,7 +962,7 @@
         "#87846F"
       ],
       "show": [
-        "heroine_brave",
+        "heroine_exhausted",
         "kirill"
       ],
       "lines": [
@@ -945,7 +995,7 @@
       ],
       "show": [
         "heroine_brave",
-        "kirill_close"
+        "kirill_tired"
       ],
       "lines": [
         {
@@ -1211,7 +1261,7 @@
       ],
       "show": [
         "heroine_soft",
-        "agata"
+        "agata_warm"
       ],
       "lines": [
         {
@@ -1274,7 +1324,7 @@
       ],
       "show": [
         "heroine_brave",
-        "matvey",
+        "matvey_public",
         "kirill_close"
       ],
       "lines": [
@@ -1398,7 +1448,7 @@
         "#6E7268"
       ],
       "show": [
-        "heroine"
+        "heroine_tears"
       ],
       "lines": [
         {
