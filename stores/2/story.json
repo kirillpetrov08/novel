@@ -30,62 +30,62 @@
     "heroine": {
       "name": "Вера",
       "color": "#8B6657",
-      "image": "images/heroine.png"
+      "image": "images/heroine.webp"
     },
     "heroine_smile": {
       "name": "Вера",
       "color": "#8B6657",
-      "image": "images/heroine_smile.png"
+      "image": "images/heroine_smile.webp"
     },
     "heroine_doubt": {
       "name": "Вера",
       "color": "#8B6657",
-      "image": "images/heroine_doubt.png"
+      "image": "images/heroine_doubt.webp"
     },
     "heroine_brave": {
       "name": "Вера",
       "color": "#8B6657",
-      "image": "images/heroine_brave.png"
+      "image": "images/heroine_brave.webp"
     },
     "hero": {
       "name": "Егор",
       "color": "#7D6B58",
-      "image": "images/hero.png"
+      "image": "images/hero.webp"
     },
     "hero_smile": {
       "name": "Егор",
       "color": "#7D6B58",
-      "image": "images/hero_smile.png"
+      "image": "images/hero_smile.webp"
     },
     "hero_doubt": {
       "name": "Егор",
       "color": "#7D6B58",
-      "image": "images/hero_doubt.png"
+      "image": "images/hero_doubt.webp"
     },
     "hero_close": {
       "name": "Егор",
       "color": "#7D6B58",
-      "image": "images/hero_close.png"
+      "image": "images/hero_close.webp"
     },
     "friend": {
       "name": "Лада",
       "color": "#A56A58",
-      "image": "images/friend.png"
+      "image": "images/friend.webp"
     },
     "friend_smile": {
       "name": "Лада",
       "color": "#A56A58",
-      "image": "images/friend_smile.png"
+      "image": "images/friend_smile.webp"
     },
     "friend_doubt": {
       "name": "Лада",
       "color": "#A56A58",
-      "image": "images/friend_doubt.png"
+      "image": "images/friend_doubt.webp"
     },
     "friend_brave": {
       "name": "Лада",
       "color": "#A56A58",
-      "image": "images/friend_brave.png"
+      "image": "images/friend_brave.webp"
     }
   },
   "scenes": {
