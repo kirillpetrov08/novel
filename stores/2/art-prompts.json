@@ -1,0 +1,136 @@
+{
+  "story": "stores/2",
+  "style": "soft romantic visual novel art, warm beige and muted earthy color palette, gentle diffused light, minimalist elegant composition, cinematic, no text, no watermark",
+  "images": [
+    {
+      "file": "cover.jpg",
+      "type": "cover",
+      "prompt": "Vertical 2:3 book cover, a woman about 27, copper-chestnut hair loosely pinned up, green eyes, freckles, plaid shirt under a dark green canvas gardening apron, standing in a glass greenhouse at night beside a man about 32, thick dark hair, short trimmed dark beard, warm brown eyes, mustard-brown chunky knit sweater with rolled sleeves, both leaning toward a single potted jasmine bush in bloom between them, warm lamp glow, frost patterns on the glass, quiet intimacy, soft romantic visual novel art, warm beige and muted earthy color palette, gentle diffused light, minimalist elegant composition, cinematic, no text, no watermark"
+    },
+    {
+      "file": "images/bg-greenhouse-night.jpg",
+      "type": "background",
+      "prompt": "Vertical 9:16 empty scene, interior of an old glass botanical greenhouse at night, tall palms and ferns in terracotta pots, a cast iron stove glowing faintly, one hanging work lamp casting warm pools of light, condensation on the glass roof, empty gravel path, calm empty lower third of the frame suitable for text overlay, no people, soft romantic visual novel art, warm beige and muted earthy color palette, gentle diffused light, minimalist elegant composition, cinematic, no text, no watermark"
+    },
+    {
+      "file": "images/bg-greenhouse-day.jpg",
+      "type": "background",
+      "prompt": "Vertical 9:16 empty scene, interior of an old glass botanical greenhouse in winter daylight, pale sun shafts through misted glass panels, ferns and potted palms, terracotta pots, wooden benches with plant labels, worn gravel path, calm empty lower third of the frame suitable for text overlay, no people, soft romantic visual novel art, warm beige and muted earthy color palette, gentle diffused light, minimalist elegant composition, cinematic, no text, no watermark"
+    },
+    {
+      "file": "images/bg-potting-shed.jpg",
+      "type": "background",
+      "prompt": "Vertical 9:16 empty scene, a potting shed workroom, wooden shelves of seed jars and paper labels, hand tools and twine, a stool with a clay pot, one dusty window, warm bulb light, calm empty lower third of the frame suitable for text overlay, no people, soft romantic visual novel art, warm beige and muted earthy color palette, gentle diffused light, minimalist elegant composition, cinematic, no text, no watermark"
+    },
+    {
+      "file": "images/bg-veranda.jpg",
+      "type": "background",
+      "prompt": "Vertical 9:16 empty scene, a wooden veranda of an old greenhouse in winter evening, small table with two cups of tea, warm wall lamp, frosted windows onto a dark garden, felt boots by the door, calm empty lower third of the frame suitable for text overlay, no people, soft romantic visual novel art, warm beige and muted earthy color palette, gentle diffused light, minimalist elegant composition, cinematic, no text, no watermark"
+    },
+    {
+      "file": "images/bg-roof-night.jpg",
+      "type": "background",
+      "prompt": "Vertical 9:16 empty scene, the roof of a glass greenhouse at night, glowing glass dome seen from above, iron railing and an old iron ladder, snow patches, distant city lights, freezing sky, calm empty lower third of the frame suitable for text overlay, no people, soft romantic visual novel art, warm beige and muted earthy color palette, gentle diffused light, minimalist elegant composition, cinematic, no text, no watermark"
+    },
+    {
+      "file": "images/nika.png",
+      "type": "character",
+      "prompt": "Waist-up portrait of a woman about 27, copper-chestnut hair loosely pinned up, green eyes, freckles, plaid shirt under a dark green canvas gardening apron, calm neutral expression, arms at her sides, looking straight at the viewer, plain light beige background, clean edges, no other people, soft romantic visual novel art, warm beige and muted earthy color palette, gentle diffused light, minimalist elegant composition, cinematic, no text, no watermark"
+    },
+    {
+      "file": "images/nika_smile.png",
+      "type": "character",
+      "prompt": "Waist-up portrait of a woman about 27, copper-chestnut hair loosely pinned up, green eyes, freckles, plaid shirt under a dark green canvas gardening apron, soft genuine smile, eyes lowered, relaxed shoulders, plain light beige background, clean edges, no other people, soft romantic visual novel art, warm beige and muted earthy color palette, gentle diffused light, minimalist elegant composition, cinematic, no text, no watermark"
+    },
+    {
+      "file": "images/nika_laugh.png",
+      "type": "character",
+      "prompt": "Waist-up portrait of a woman about 27, copper-chestnut hair loosely pinned up, green eyes, freckles, plaid shirt under a dark green canvas gardening apron, open laugh, head slightly tilted back, one hand raised, plain light beige background, clean edges, no other people, soft romantic visual novel art, warm beige and muted earthy color palette, gentle diffused light, minimalist elegant composition, cinematic, no text, no watermark"
+    },
+    {
+      "file": "images/nika_doubt.png",
+      "type": "character",
+      "prompt": "Waist-up portrait of a woman about 27, copper-chestnut hair loosely pinned up, green eyes, freckles, plaid shirt under a dark green canvas gardening apron, sceptical, one eyebrow raised, mouth pressed into a doubtful line, holding a tin of seeds, plain light beige background, clean edges, no other people, soft romantic visual novel art, warm beige and muted earthy color palette, gentle diffused light, minimalist elegant composition, cinematic, no text, no watermark"
+    },
+    {
+      "file": "images/nika_brave.png",
+      "type": "character",
+      "prompt": "Waist-up portrait of a woman about 27, copper-chestnut hair loosely pinned up, green eyes, freckles, plaid shirt under a dark green canvas gardening apron, chin lifted, steady defiant eyes, one fist clenched at her side, plain light beige background, clean edges, no other people, soft romantic visual novel art, warm beige and muted earthy color palette, gentle diffused light, minimalist elegant composition, cinematic, no text, no watermark"
+    },
+    {
+      "file": "images/nika_tired.png",
+      "type": "character",
+      "prompt": "Waist-up portrait of a woman about 27, copper-chestnut hair loosely pinned up, green eyes, freckles, plaid shirt under a dark green canvas gardening apron, three a.m. exhaustion, messy hair, tired eyes with faint dark circles, plain light beige background, clean edges, no other people, soft romantic visual novel art, warm beige and muted earthy color palette, gentle diffused light, minimalist elegant composition, cinematic, no text, no watermark"
+    },
+    {
+      "file": "images/nika_wonder.png",
+      "type": "character",
+      "prompt": "Waist-up portrait of a woman about 27, copper-chestnut hair loosely pinned up, green eyes, freckles, plaid shirt under a dark green canvas gardening apron, wide eyes, lips parted in awe, looking up at something off-frame, plain light beige background, clean edges, no other people, soft romantic visual novel art, warm beige and muted earthy color palette, gentle diffused light, minimalist elegant composition, cinematic, no text, no watermark"
+    },
+    {
+      "file": "images/nika_blush.png",
+      "type": "character",
+      "prompt": "Waist-up portrait of a woman about 27, copper-chestnut hair loosely pinned up, green eyes, freckles, plaid shirt under a dark green canvas gardening apron, flushed cheeks, shy smile, looking away, plain light beige background, clean edges, no other people, soft romantic visual novel art, warm beige and muted earthy color palette, gentle diffused light, minimalist elegant composition, cinematic, no text, no watermark"
+    },
+    {
+      "file": "images/timur.png",
+      "type": "character",
+      "prompt": "Waist-up portrait of a man about 32, thick dark hair, short trimmed dark beard, warm brown eyes, mustard-brown chunky knit sweater with rolled sleeves, neutral warm expression, hands dirty with soil, looking straight at the viewer, plain light beige background, clean edges, no other people, soft romantic visual novel art, warm beige and muted earthy color palette, gentle diffused light, minimalist elegant composition, cinematic, no text, no watermark"
+    },
+    {
+      "file": "images/timur_smile.png",
+      "type": "character",
+      "prompt": "Waist-up portrait of a man about 32, thick dark hair, short trimmed dark beard, warm brown eyes, mustard-brown chunky knit sweater with rolled sleeves, rare warm smile, leaning slightly forward, plain light beige background, clean edges, no other people, soft romantic visual novel art, warm beige and muted earthy color palette, gentle diffused light, minimalist elegant composition, cinematic, no text, no watermark"
+    },
+    {
+      "file": "images/timur_laugh.png",
+      "type": "character",
+      "prompt": "Waist-up portrait of a man about 32, thick dark hair, short trimmed dark beard, warm brown eyes, mustard-brown chunky knit sweater with rolled sleeves, sudden genuine laugh, head tilted back, plain light beige background, clean edges, no other people, soft romantic visual novel art, warm beige and muted earthy color palette, gentle diffused light, minimalist elegant composition, cinematic, no text, no watermark"
+    },
+    {
+      "file": "images/timur_hurt.png",
+      "type": "character",
+      "prompt": "Waist-up portrait of a man about 32, thick dark hair, short trimmed dark beard, warm brown eyes, mustard-brown chunky knit sweater with rolled sleeves, looking away with quiet pain, brows drawn together, plain light beige background, clean edges, no other people, soft romantic visual novel art, warm beige and muted earthy color palette, gentle diffused light, minimalist elegant composition, cinematic, no text, no watermark"
+    },
+    {
+      "file": "images/timur_close.png",
+      "type": "character",
+      "prompt": "Waist-up portrait of a man about 32, thick dark hair, short trimmed dark beard, warm brown eyes, mustard-brown chunky knit sweater with rolled sleeves, very close to the viewer, looking down, lips slightly parted, warm lamplight on his face, plain light beige background, clean edges, no other people, soft romantic visual novel art, warm beige and muted earthy color palette, gentle diffused light, minimalist elegant composition, cinematic, no text, no watermark"
+    },
+    {
+      "file": "images/timur_brave.png",
+      "type": "character",
+      "prompt": "Waist-up portrait of a man about 32, thick dark hair, short trimmed dark beard, warm brown eyes, mustard-brown chunky knit sweater with rolled sleeves, jaw set, direct challenging stare, chin lifted, plain light beige background, clean edges, no other people, soft romantic visual novel art, warm beige and muted earthy color palette, gentle diffused light, minimalist elegant composition, cinematic, no text, no watermark"
+    },
+    {
+      "file": "images/timur_soil.png",
+      "type": "character",
+      "prompt": "Waist-up portrait of a man about 32, thick dark hair, short trimmed dark beard, warm brown eyes, mustard-brown chunky knit sweater with rolled sleeves, hands covered in soil up to the wrists, holding a small clay pot, plain light beige background, clean edges, no other people, soft romantic visual novel art, warm beige and muted earthy color palette, gentle diffused light, minimalist elegant composition, cinematic, no text, no watermark"
+    },
+    {
+      "file": "images/timur_surprised.png",
+      "type": "character",
+      "prompt": "Waist-up portrait of a man about 32, thick dark hair, short trimmed dark beard, warm brown eyes, mustard-brown chunky knit sweater with rolled sleeves, eyebrows raised, caught off guard, mouth slightly open, plain light beige background, clean edges, no other people, soft romantic visual novel art, warm beige and muted earthy color palette, gentle diffused light, minimalist elegant composition, cinematic, no text, no watermark"
+    },
+    {
+      "file": "images/aglaya.png",
+      "type": "character",
+      "prompt": "Waist-up portrait of a woman about 70, silver hair in a bun, round thin-rimmed glasses, burgundy cardigan over a pale blouse, neutral stern expression, holding a seed label, plain light beige background, clean edges, no other people, soft romantic visual novel art, warm beige and muted earthy color palette, gentle diffused light, minimalist elegant composition, cinematic, no text, no watermark"
+    },
+    {
+      "file": "images/aglaya_warm.png",
+      "type": "character",
+      "prompt": "Waist-up portrait of a woman about 70, silver hair in a bun, round thin-rimmed glasses, burgundy cardigan over a pale blouse, proud warm smile with damp eyes, holding an old lantern, plain light beige background, clean edges, no other people, soft romantic visual novel art, warm beige and muted earthy color palette, gentle diffused light, minimalist elegant composition, cinematic, no text, no watermark"
+    },
+    {
+      "file": "images/lev.png",
+      "type": "character",
+      "prompt": "Waist-up portrait of a man about 38, dark blond hair slicked back, pale grey eyes, clean-shaven, navy wool overcoat, grey leather gloves, polite neutral expression, a folder in one hand, plain light beige background, clean edges, no other people, soft romantic visual novel art, warm beige and muted earthy color palette, gentle diffused light, minimalist elegant composition, cinematic, no text, no watermark"
+    },
+    {
+      "file": "images/lev_cold.png",
+      "type": "character",
+      "prompt": "Waist-up portrait of a man about 38, dark blond hair slicked back, pale grey eyes, clean-shaven, navy wool overcoat, grey leather gloves, thin hostile smile, leaning slightly in, cold pale eyes, plain light beige background, clean edges, no other people, soft romantic visual novel art, warm beige and muted earthy color palette, gentle diffused light, minimalist elegant composition, cinematic, no text, no watermark"
+    }
+  ]
+}
