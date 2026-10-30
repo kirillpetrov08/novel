@@ -251,7 +251,15 @@ const UI = {
     (scene.choices || []).forEach(c => targets.add(c.next));
     (scene.branch || []).forEach(b => targets.add(b.to));
     if (scene.next) targets.add(scene.next);
-    targets.forEach(t => { const bg = story.scenes[t] && story.scenes[t].bg; if (bg) { const i = new Image(); i.src = bg; } });
+    targets.forEach(t => {
+      const sc = story.scenes[t];
+      if (!sc) return;
+      if (sc.bg) { const i = new Image(); i.src = sc.bg; }
+      (sc.show || []).forEach(cid => {
+        const img = ((story.characters || {})[cid] || {}).image;
+        if (img) { const i = new Image(); i.src = img; }
+      });
+    });
   },
 
   renderScene() {
@@ -309,6 +317,7 @@ const UI = {
       spk.style.color = safeColor(ch.color) || 'var(--accent-dark)';
     }
     txt.className = 'dialogue-text ' + (ln.type === 'narration' ? 'narration' : ln.type === 'thought' ? 'thought' : '');
+    $('#dialogue').scrollTop = 0; // новая реплика всегда с начала, даже если прошлую прокручивали
     $('#dialogue-next').style.visibility = 'hidden';
     // Подсветка говорящего: учитываем эмоциональные варианты вида matvey_soft
     // (у них то же отображаемое имя, что у базового персонажа matvey).
@@ -532,7 +541,8 @@ const UI = {
     // плеер
     $('#dialogue').addEventListener('click', () => Engine.advance());
     $('#stage').addEventListener('click', e => {
-      if (e.target === $('#stage') || e.target.classList.contains('stage-bg') || e.target.classList.contains('stage-shade')) Engine.advance();
+      if ($('#choices').classList.contains('open') || $('#ending-ov').classList.contains('open')) return;
+      if (e.target === $('#stage') || e.target.closest('#stage-bg') || e.target.closest('.stage-shade')) Engine.advance();
     });
     document.addEventListener('keydown', e => {
       if (this.screen === 'player' && (e.code === 'Space' || e.code === 'Enter') && !$('#choices').classList.contains('open')) {
