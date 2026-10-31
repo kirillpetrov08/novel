@@ -5,7 +5,7 @@ name: Сборка Android (APK + AAB для RuStore)
 #   • novella-debug-apk   — тестовая сборка, ставится прямо на телефон
 #   • novella-release-apk — релизный APK для RuStore (подписанный, если заданы секреты)
 #   • novella-release-aab — то же приложение в формате AAB для RuStore
-# Дополнительно (ветки main и arena/e5c78877-novel) обновляется GitHub-релиз
+# Дополнительно (ветки main и arena/*) обновляется GitHub-релиз
 # «app-latest» — на странице репозитория (Releases) лежат novella.apk (тест),
 # novella-release.apk и novella.aab (для RuStore) с обычной кнопкой скачивания.
 on:
@@ -145,7 +145,7 @@ jobs:
           if-no-files-found: error
 
       - name: Опубликовать APK (тест + релиз) и AAB в GitHub Release (кнопка скачивания)
-        if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/arena/e5c78877-novel'
+        if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/arena/')
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
@@ -171,7 +171,7 @@ jobs:
           echo "✓ Релиз app-latest обновлён: novella.apk, novella-release.apk и novella.aab доступны на странице Releases" >> "$GITHUB_STEP_SUMMARY"
 
       - name: APK отдельной веткой apk-latest (агент забирает файл гитом в чат)
-        if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/arena/e5c78877-novel'
+        if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/arena/')
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
