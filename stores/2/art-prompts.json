@@ -1,0 +1,131 @@
+{
+  "story": "stores/2",
+  "style": "semi-realistic painterly digital illustration, soft visible brushstrokes, muted watercolor-like shading, warm beige and earthy palette, gentle diffused light, elegant minimalist composition, cinematic, no photorealism, no anime, no manga, no 3D render, no text, no watermark",
+  "images": [
+    {
+      "file": "cover.jpg",
+      "type": "cover",
+      "prompt": "Vertical 2:3 illustrated book cover without any lettering. A woman and a man stand together at an old seaside clockwork bench, a small brass tide clock between them, warm wistful closeness, upper bodies visible. The clock face has only plain tick marks and no numerals or lettering. Use the two reference portraits for character identity and clothing. Adult woman, 25 years old, oval face with a small freckle beside her nose, chin-length wavy chestnut hair tucked behind one ear, gray-green eyes, fair skin, slender build, wearing a cream linen shirt under a moss-green cardigan. Adult man, 28 years old, long face with a straight nose, slightly tousled dark brown hair, amber-brown eyes, olive skin, lean build, wearing a sand-colored shirt and a dark brown vest. semi-realistic painterly digital illustration, soft visible brushstrokes, muted watercolor-like shading, warm beige and earthy palette, gentle diffused light, elegant minimalist composition, cinematic, no photorealism, no anime, no manga, no 3D render, no text, no watermark"
+    },
+    {
+      "file": "images/bg-workshop.jpg",
+      "type": "background",
+      "prompt": "Vertical 9:16 empty old clock workshop in a small coastal town, workbench, brass gears, a stopped tide clock and warm morning window light, calm uncluttered lower third. No people, no characters, no silhouettes. semi-realistic painterly digital illustration, soft visible brushstrokes, muted watercolor-like shading, warm beige and earthy palette, gentle diffused light, elegant minimalist composition, cinematic, no photorealism, no anime, no manga, no 3D render, no text, no watermark"
+    },
+    {
+      "file": "images/bg-pier.jpg",
+      "type": "background",
+      "prompt": "Vertical 9:16 empty wooden pier at a northern coastal town, quiet sea, moored boats and pale daylight, calm uncluttered lower third, boats with plain unmarked surfaces and no lettering or numbers. No people, no characters, no silhouettes. semi-realistic painterly digital illustration, soft visible brushstrokes, muted watercolor-like shading, warm beige and earthy palette, gentle diffused light, elegant minimalist composition, cinematic, no photorealism, no anime, no manga, no 3D render, no text, no watermark"
+    },
+    {
+      "file": "images/bg-archive.jpg",
+      "type": "background",
+      "prompt": "Vertical 9:16 empty small harbor archive, shelves of boxes and a simple wooden desk with old papers, warm indirect daylight, calm uncluttered lower third. No people, no characters, no silhouettes. semi-realistic painterly digital illustration, soft visible brushstrokes, muted watercolor-like shading, warm beige and earthy palette, gentle diffused light, elegant minimalist composition, cinematic, no photorealism, no anime, no manga, no 3D render, no text, no watermark"
+    },
+    {
+      "file": "images/bg-square.jpg",
+      "type": "background",
+      "prompt": "Vertical 9:16 empty coastal town square beside an old clock tower, stone paving, closed shopfronts and overcast warm evening, calm uncluttered lower third. No people, no characters, no silhouettes. semi-realistic painterly digital illustration, soft visible brushstrokes, muted watercolor-like shading, warm beige and earthy palette, gentle diffused light, elegant minimalist composition, cinematic, no photorealism, no anime, no manga, no 3D render, no text, no watermark"
+    },
+    {
+      "file": "images/bg-roof.jpg",
+      "type": "background",
+      "prompt": "Vertical 9:16 empty rooftop of an old seaside clock tower at dusk, brass bell and view over quiet harbor, sky with muted sunset, calm uncluttered lower third. No people, no characters, no silhouettes. semi-realistic painterly digital illustration, soft visible brushstrokes, muted watercolor-like shading, warm beige and earthy palette, gentle diffused light, elegant minimalist composition, cinematic, no photorealism, no anime, no manga, no 3D render, no text, no watermark"
+    },
+    {
+      "file": "images/heroine.png",
+      "type": "character",
+      "prompt": "Single person centered waist-up character portrait, entire head and shoulders visible, figure fills 75 percent of frame, hands fully inside frame, vertical 3:4. Background exactly solid flat light beige #EADFCB, no gradient, no shadow, no furniture, no frame or ground. Adult woman, 25 years old, oval face with a small freckle beside her nose, chin-length wavy chestnut hair tucked behind one ear, gray-green eyes, fair skin, slender build, wearing a cream linen shirt under a moss-green cardigan. Neutral thoughtful expression. semi-realistic painterly digital illustration, soft visible brushstrokes, muted watercolor-like shading, warm beige and earthy palette, gentle diffused light, elegant minimalist composition, cinematic, no photorealism, no anime, no manga, no 3D render, no text, no watermark"
+    },
+    {
+      "file": "images/heroine_smile.png",
+      "type": "character",
+      "prompt": "Use reference portrait for same person and outfit. Single person centered waist-up, entire head and shoulders visible, hands within frame, vertical 3:4. Background exactly solid flat light beige #EADFCB, no gradient, no shadow, no furniture, no frame or ground. Adult woman, 25 years old, oval face with a small freckle beside her nose, chin-length wavy chestnut hair tucked behind one ear, gray-green eyes, fair skin, slender build, wearing a cream linen shirt under a moss-green cardigan. Gentle smile. semi-realistic painterly digital illustration, soft visible brushstrokes, muted watercolor-like shading, warm beige and earthy palette, gentle diffused light, elegant minimalist composition, cinematic, no photorealism, no anime, no manga, no 3D render, no text, no watermark"
+    },
+    {
+      "file": "images/heroine_doubt.png",
+      "type": "character",
+      "prompt": "Use reference portrait for same person and outfit. Single person centered waist-up, entire head and shoulders visible, hands within frame, vertical 3:4. Background exactly solid flat light beige #EADFCB, no gradient, no shadow, no furniture, no frame or ground. Adult woman, 25 years old, oval face with a small freckle beside her nose, chin-length wavy chestnut hair tucked behind one ear, gray-green eyes, fair skin, slender build, wearing a cream linen shirt under a moss-green cardigan. Doubtful expression. semi-realistic painterly digital illustration, soft visible brushstrokes, muted watercolor-like shading, warm beige and earthy palette, gentle diffused light, elegant minimalist composition, cinematic, no photorealism, no anime, no manga, no 3D render, no text, no watermark"
+    },
+    {
+      "file": "images/heroine_brave.png",
+      "type": "character",
+      "prompt": "Use reference portrait for same person and outfit. Single person centered waist-up, entire head and shoulders visible, hands within frame, vertical 3:4. Background exactly solid flat light beige #EADFCB, no gradient, no shadow, no furniture, no frame or ground. Adult woman, 25 years old, oval face with a small freckle beside her nose, chin-length wavy chestnut hair tucked behind one ear, gray-green eyes, fair skin, slender build, wearing a cream linen shirt under a moss-green cardigan. Courageous determined expression. semi-realistic painterly digital illustration, soft visible brushstrokes, muted watercolor-like shading, warm beige and earthy palette, gentle diffused light, elegant minimalist composition, cinematic, no photorealism, no anime, no manga, no 3D render, no text, no watermark"
+    },
+    {
+      "file": "images/hero.png",
+      "type": "character",
+      "prompt": "Single person centered waist-up character portrait, entire head and shoulders visible, figure fills 75 percent of frame, hands fully inside frame, vertical 3:4. Background exactly solid flat light beige #EADFCB, no gradient, no shadow, no furniture, no frame or ground. Adult man, 28 years old, long face with a straight nose, slightly tousled dark brown hair, amber-brown eyes, olive skin, lean build, wearing a sand-colored shirt and a dark brown vest. Neutral thoughtful expression. semi-realistic painterly digital illustration, soft visible brushstrokes, muted watercolor-like shading, warm beige and earthy palette, gentle diffused light, elegant minimalist composition, cinematic, no photorealism, no anime, no manga, no 3D render, no text, no watermark"
+    },
+    {
+      "file": "images/hero_smile.png",
+      "type": "character",
+      "prompt": "Use reference portrait for same person and outfit. Single person centered waist-up, entire head and shoulders visible, hands within frame, vertical 3:4. Background exactly solid flat light beige #EADFCB, no gradient, no shadow, no furniture, no frame or ground. Adult man, 28 years old, long face with a straight nose, slightly tousled dark brown hair, amber-brown eyes, olive skin, lean build, wearing a sand-colored shirt and a dark brown vest. Gentle smile. His hands are clasped together clearly visible above the lower frame edge. semi-realistic painterly digital illustration, soft visible brushstrokes, muted watercolor-like shading, warm beige and earthy palette, gentle diffused light, elegant minimalist composition, cinematic, no photorealism, no anime, no manga, no 3D render, no text, no watermark"
+    },
+    {
+      "file": "images/hero_doubt.png",
+      "type": "character",
+      "prompt": "Use reference portrait for same person and outfit. Single person centered waist-up, entire head and shoulders visible, hands within frame, vertical 3:4. Background exactly solid flat light beige #EADFCB, no gradient, no shadow, no furniture, no frame or ground. Adult man, 28 years old, long face with a straight nose, slightly tousled dark brown hair, amber-brown eyes, olive skin, lean build, wearing a sand-colored shirt and a dark brown vest. Doubtful expression. semi-realistic painterly digital illustration, soft visible brushstrokes, muted watercolor-like shading, warm beige and earthy palette, gentle diffused light, elegant minimalist composition, cinematic, no photorealism, no anime, no manga, no 3D render, no text, no watermark"
+    },
+    {
+      "file": "images/hero_close.png",
+      "type": "character",
+      "prompt": "Use reference portrait for same person and outfit. Single person centered waist-up, entire head and shoulders visible, hands within frame, vertical 3:4. Background exactly solid flat light beige #EADFCB, no gradient, no shadow, no furniture, no frame or ground. Adult man, 28 years old, long face with a straight nose, slightly tousled dark brown hair, amber-brown eyes, olive skin, lean build, wearing a sand-colored shirt and a dark brown vest. Tender intimate expression, leaning slightly forward. semi-realistic painterly digital illustration, soft visible brushstrokes, muted watercolor-like shading, warm beige and earthy palette, gentle diffused light, elegant minimalist composition, cinematic, no photorealism, no anime, no manga, no 3D render, no text, no watermark"
+    },
+    {
+      "file": "images/friend.png",
+      "type": "character",
+      "prompt": "Single person centered waist-up character portrait, entire head and shoulders visible, figure fills 75 percent of frame, hands fully inside frame, vertical 3:4. Background exactly solid flat light beige #EADFCB, no gradient, no shadow, no furniture, no frame or ground. Adult woman, 27 years old, round face with high cheekbones, long black hair in a loose braid over one shoulder, dark brown eyes, warm brown skin, sturdy build, wearing a rust-colored linen shirt and a navy blue apron. Neutral thoughtful expression. semi-realistic painterly digital illustration, soft visible brushstrokes, muted watercolor-like shading, warm beige and earthy palette, gentle diffused light, elegant minimalist composition, cinematic, no photorealism, no anime, no manga, no 3D render, no text, no watermark"
+    },
+    {
+      "file": "images/friend_smile.png",
+      "type": "character",
+      "prompt": "Use reference portrait for same person and outfit. Single person centered waist-up, entire head and shoulders visible, hands within frame, vertical 3:4. Background exactly solid flat light beige #EADFCB, no gradient, no shadow, no furniture, no frame or ground. Adult woman, 27 years old, round face with high cheekbones, long black hair in a loose braid over one shoulder, dark brown eyes, warm brown skin, sturdy build, wearing a rust-colored linen shirt and a navy blue apron. Warm smile. semi-realistic painterly digital illustration, soft visible brushstrokes, muted watercolor-like shading, warm beige and earthy palette, gentle diffused light, elegant minimalist composition, cinematic, no photorealism, no anime, no manga, no 3D render, no text, no watermark"
+    },
+    {
+      "file": "images/friend_doubt.png",
+      "type": "character",
+      "prompt": "Use reference portrait for same person and outfit. Single person centered waist-up, entire head and shoulders visible, hands within frame, vertical 3:4. Background exactly solid flat light beige #EADFCB, no gradient, no shadow, no furniture, no frame or ground. Adult woman, 27 years old, round face with high cheekbones, long black hair in a loose braid over one shoulder, dark brown eyes, warm brown skin, sturdy build, wearing a rust-colored linen shirt and a navy blue apron. Concerned doubtful expression. semi-realistic painterly digital illustration, soft visible brushstrokes, muted watercolor-like shading, warm beige and earthy palette, gentle diffused light, elegant minimalist composition, cinematic, no photorealism, no anime, no manga, no 3D render, no text, no watermark"
+    },
+    {
+      "file": "images/friend_brave.png",
+      "type": "character",
+      "prompt": "Use reference portrait for same person and outfit. Single person centered waist-up, entire head and shoulders visible, hands within frame, vertical 3:4. Background exactly solid flat light beige #EADFCB, no gradient, no shadow, no furniture, no frame or ground. Adult woman, 27 years old, round face with high cheekbones, long black hair in a loose braid over one shoulder, dark brown eyes, warm brown skin, sturdy build, wearing a rust-colored linen shirt and a navy blue apron. Courageous determined expression. semi-realistic painterly digital illustration, soft visible brushstrokes, muted watercolor-like shading, warm beige and earthy palette, gentle diffused light, elegant minimalist composition, cinematic, no photorealism, no anime, no manga, no 3D render, no text, no watermark"
+    }
+  ],
+  "sceneBackgrounds": {
+    "s1": "images/bg-workshop.jpg",
+    "s2": "images/bg-workshop.jpg",
+    "s2a": "images/bg-pier.jpg",
+    "s2b": "images/bg-workshop.jpg",
+    "s3": "images/bg-pier.jpg",
+    "s4": "images/bg-pier.jpg",
+    "s4a": "images/bg-pier.jpg",
+    "s4b": "images/bg-archive.jpg",
+    "s5": "images/bg-archive.jpg",
+    "s6": "images/bg-archive.jpg",
+    "s6a": "images/bg-archive.jpg",
+    "s6b": "images/bg-workshop.jpg",
+    "s7": "images/bg-square.jpg",
+    "s8": "images/bg-roof.jpg",
+    "s8a": "images/bg-roof.jpg",
+    "s8b": "images/bg-roof.jpg",
+    "s9": "images/bg-archive.jpg",
+    "s10": "images/bg-archive.jpg",
+    "s10a": "images/bg-archive.jpg",
+    "s10b": "images/bg-archive.jpg",
+    "s11": "images/bg-workshop.jpg",
+    "s12": "images/bg-workshop.jpg",
+    "s12a": "images/bg-workshop.jpg",
+    "s12b": "images/bg-workshop.jpg",
+    "s13": "images/bg-roof.jpg",
+    "s14": "images/bg-square.jpg",
+    "s14a": "images/bg-square.jpg",
+    "s14b": "images/bg-square.jpg",
+    "s15": "images/bg-square.jpg",
+    "s16": "images/bg-pier.jpg",
+    "ending_together": "images/bg-pier.jpg",
+    "ending_tower": "images/bg-roof.jpg",
+    "ending_departure": "images/bg-pier.jpg"
+  }
+}

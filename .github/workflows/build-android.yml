@@ -1,0 +1,187 @@
+name: Сборка Android (APK + AAB для RuStore)
+
+# Когда собирать: вручную из вкладки Actions и автоматически при коммите
+# новой истории / кода приложения. Результат — артефакты запуска:
+#   • novella-debug-apk   — тестовая сборка, ставится прямо на телефон
+#   • novella-release-apk — релизный APK для RuStore (подписанный, если заданы секреты)
+#   • novella-release-aab — то же приложение в формате AAB для RuStore
+# Дополнительно (ветки main и arena/e5c78877-novel) обновляется GitHub-релиз
+# «app-latest» — на странице репозитория (Releases) лежат novella.apk (тест),
+# novella-release.apk и novella.aab (для RuStore) с обычной кнопкой скачивания.
+on:
+  workflow_dispatch:
+  push:
+    branches: [main, "arena/**"]
+    paths:
+      - "stores/**"
+      - "android/**"
+      - "js/**"
+      - "css/**"
+      - "index.html"
+      - "tools/**"
+      - "assets/**"
+      - "package.json"
+      - "package-lock.json"
+      - "capacitor.config.json"
+      - ".github/workflows/build-android.yml"
+
+concurrency:
+  group: android-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write  # публикация APK/AAB в GitHub Release
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - uses: android-actions/setup-android@v3
+        with:
+          packages: "platform-tools platforms;android-36 build-tools;36.0.0"
+
+      - name: Установить зависимости
+        run: npm ci
+
+      - name: Проверить истории
+        run: npm run validate
+
+      - name: Собрать веб-часть и синхронизировать Android
+        run: npm run build:android
+
+      - name: Есть ли ключ подписи в секретах
+        id: ks
+        env:
+          B64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+        run: echo "has=$([ -n "$B64" ] && echo true || echo false)" >> "$GITHUB_OUTPUT"
+
+      - name: Настроить подпись релиза
+        if: steps.ks.outputs.has == 'true'
+        env:
+          B64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+          STORE_PW: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          KEY_PW: ${{ secrets.ANDROID_KEY_PASSWORD }}
+        run: |
+          echo "$B64" | base64 -d > android/release.jks
+          cat > android/keystore.properties <<EOF
+          storeFile=release.jks
+          storePassword=$STORE_PW
+          keyAlias=$ALIAS
+          keyPassword=$KEY_PW
+          EOF
+
+      - name: Предупреждение о неподписанном релизе
+        if: steps.ks.outputs.has != 'true'
+        run: echo "::warning::Секреты подписи не заданы — релизные APK и AAB будут НЕподписанными. RuStore их не примет. Настройка ключа — в RUSTORE.md, раздел 2."
+
+      - name: Собрать APK (тест + релиз) и AAB (RuStore)
+        working-directory: android
+        run: |
+          set -o pipefail
+          chmod +x gradlew
+          VERSION_NAME=$(node -p "require('../package.json').version")
+          ./gradlew :app:assembleDebug :app:assembleRelease :app:bundleRelease \
+            -PappVersionCode=${{ github.run_number }} \
+            -PappVersionName=$VERSION_NAME \
+            --stacktrace 2>&1 | tee ../gradle-build.log
+
+      - name: Диагностика упавшей сборки (лог в аннотации и summary)
+        if: failure()
+        run: |
+          { echo '## Ошибки из лога Gradle'; echo '```';
+            grep -nE 'error:|What went wrong|Execution failed|Caused by:|FAILED|e: file' gradle-build.log | head -n 120 || true;
+            echo '```'; echo '## Последние 60 строк'; echo '```';
+            tail -n 60 gradle-build.log || true; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
+          python3 - <<'PY'
+          import pathlib, re
+          p = pathlib.Path('gradle-build.log')
+          all_lines = p.read_text(errors='ignore').splitlines() if p.exists() else ['лог не создан']
+          pat = re.compile(r'error:|What went wrong|Execution failed|Caused by:|FAILED|e: file')
+          picked = [l for l in all_lines if pat.search(l)][:110] + ['--- TAIL ---'] + all_lines[-40:]
+          for i in range(0, len(picked), 25):
+              chunk = '%0A'.join(l.replace('%', '%25') for l in picked[i:i+25])
+              print(f"::error title=Gradle log {i//25+1}::{chunk}")
+          PY
+
+      - name: Проверка содержимого APK
+        run: |
+          unzip -l android/app/build/outputs/apk/debug/app-debug.apk > apk-list.txt
+          grep -q 'assets/public/index.html' apk-list.txt
+          grep -q 'assets/public/js/engine.js' apk-list.txt
+          unzip -p android/app/build/outputs/apk/debug/app-debug.apk assets/public/js/stories-bundle.js | grep -q 'BUNDLED_BUILD = true'
+          echo '✓ APK содержит приложение и вшитые истории' >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Артефакт — тестовый APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: novella-debug-apk
+          path: android/app/build/outputs/apk/debug/app-debug.apk
+          if-no-files-found: error
+
+      - name: Артефакт — AAB для RuStore
+        uses: actions/upload-artifact@v4
+        with:
+          name: novella-release-aab
+          path: android/app/build/outputs/bundle/release/app-release.aab
+          if-no-files-found: error
+
+      - name: Артефакт — релизный APK для RuStore
+        uses: actions/upload-artifact@v4
+        with:
+          name: novella-release-apk
+          path: android/app/build/outputs/apk/release/*.apk
+          if-no-files-found: error
+
+      - name: Опубликовать APK (тест + релиз) и AAB в GitHub Release (кнопка скачивания)
+        if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/arena/e5c78877-novel'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          cp android/app/build/outputs/apk/debug/app-debug.apk novella.apk
+          cp android/app/build/outputs/apk/release/app-release.apk novella-release.apk 2>/dev/null || cp android/app/build/outputs/apk/release/app-release-unsigned.apk novella-release.apk
+          cp android/app/build/outputs/bundle/release/app-release.aab novella.aab
+          # Скользящий релиз: пересоздаём, чтобы тег указывал на собранный коммит
+          gh release delete app-latest --yes --cleanup-tag 2>/dev/null || true
+          printf '%s\n' \
+            "## Что скачивать" \
+            "" \
+            "- **novella.apk** — тестовая сборка: скачать на телефон и установить (разрешить установку из браузера/файлов)." \
+            "- **novella-release.apk** — релизный APK для RuStore (примет магазин только после настройки ключа подписи, см. RUSTORE.md)." \
+            "- **novella.aab** — то же приложение в формате AAB для RuStore (тоже требует настроенного ключа подписи)." \
+            "" \
+            "Собрано автоматически из коммита ${{ github.sha }} (${{ github.ref_name }}), запуск №${{ github.run_number }}." \
+            > release-notes.md
+          gh release create app-latest novella.apk novella-release.apk novella.aab \
+            --prerelease \
+            --title "Новелла — APK на телефон и файлы для RuStore" \
+            --notes-file release-notes.md \
+            --target "${{ github.sha }}"
+          echo "✓ Релиз app-latest обновлён: novella.apk, novella-release.apk и novella.aab доступны на странице Releases" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: APK отдельной веткой apk-latest (агент забирает файл гитом в чат)
+        if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/arena/e5c78877-novel'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          rm -rf /tmp/apk-branch && mkdir -p /tmp/apk-branch
+          cp android/app/build/outputs/apk/debug/app-debug.apk /tmp/apk-branch/novella.apk
+          cd /tmp/apk-branch
+          git init -q
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add novella.apk
+          git commit -qm "novella.apk из запуска №${{ github.run_number }} (${{ github.sha }})"
+          git push --force "https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}.git" HEAD:apk-latest
+          echo "✓ novella.apk также опубликован служебной веткой apk-latest" >> "$GITHUB_STEP_SUMMARY"

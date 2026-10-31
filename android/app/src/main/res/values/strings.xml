@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Новелла</string>
+    <string name="title_activity_main">Новелла</string>
+    <string name="package_name">ru.novella.reader</string>
+    <string name="custom_url_scheme">ru.novella.reader</string>
+</resources>

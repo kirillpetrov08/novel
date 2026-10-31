@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="«Новелла» — романтические визуальные новеллы, где каждый твой выбор меняет финал.">
+<title>Новелла — интерактивные истории</title>
+<link rel="icon" type="image/png" href="icon.png">
+<style>
+  /* Палитра, шрифты и кнопки — как в самом приложении (css/style.css). */
+  :root{
+    --bg:#EFE9DC; --app-bg:#F7F2E7; --surface:#FFFDF8; --surface-2:#F1EADB;
+    --ink:#2B2620; --muted:#8A7D68; --line:#DFD3BC;
+    --accent:#8A6D4B; --accent-dark:#6B5439; --crystal:#9A7B4F;
+    --radius:16px;
+    --serif:Georgia,'Times New Roman',serif;
+    --sans:system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.65 var(--sans)}
+  .wrap{max-width:720px;margin:0 auto;padding:26px 16px 56px}
+
+  .masthead{background:var(--app-bg);border:1px solid var(--line);border-radius:var(--radius);
+    padding:22px 28px;display:flex;align-items:center;gap:18px}
+  .masthead img{width:64px;height:64px;border-radius:16px;border:1px solid var(--line)}
+  .logo{font-family:var(--serif);font-weight:700;font-size:34px;letter-spacing:.06em;line-height:1}
+  .logo small{display:block;font-family:var(--sans);font-weight:700;font-size:11px;
+    letter-spacing:.34em;color:var(--muted);margin-top:9px}
+
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+    padding:38px 38px 40px;margin-top:16px;text-align:center}
+  .tagline{font-family:var(--serif);font-size:24px;line-height:1.4;margin:2px 0 14px}
+  .tagline .mark{color:var(--crystal)}
+  .chips{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:18px 0 28px}
+  .chip{background:var(--surface-2);border:1px solid var(--line);border-radius:999px;
+    padding:6px 14px;font-size:14px;font-weight:600;color:var(--accent-dark)}
+  .btns{display:flex;flex-direction:column;gap:12px;max-width:420px;margin:0 auto}
+  .btn{display:block;border-radius:14px;padding:15px 20px;font-weight:700;font-size:16px;
+    text-decoration:none;border:1px solid transparent}
+  .btn-primary{background:var(--ink);color:var(--app-bg)}
+  .btn-ghost{background:transparent;border-color:var(--line);color:var(--ink)}
+
+  .foot{color:var(--muted);font-size:14px;text-align:center;margin-top:20px}
+  .foot .mark{color:var(--crystal)}
+
+  @media (max-width:560px){
+    .card{padding:28px 20px 32px}
+    .logo{font-size:26px}
+    .masthead img{width:52px;height:52px;border-radius:13px}
+    .tagline{font-size:21px}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="masthead">
+    <img src="icon.png" alt="Иконка приложения «Новелла»">
+    <div class="logo">НОВЭЛЛА<small>ИНТЕРАКТИВНЫЕ ИСТОРИИ</small></div>
+  </header>
+
+  <main class="card">
+    <p class="tagline"><span class="mark">◆</span> Романтические визуальные новеллы, где каждый твой выбор меняет финал</p>
+    <div class="chips">
+      <span class="chip">6 историй внутри</span>
+      <span class="chip">по 3 финала</span>
+      <span class="chip">читается офлайн</span>
+      <span class="chip">18+</span>
+    </div>
+    <div class="btns">
+      <a class="btn btn-primary" href="privacy.html">Политика конфиденциальности</a>
+      <a class="btn btn-ghost" href="https://github.com/kirillpetrov08/novel">Проект на GitHub</a>
+    </div>
+  </main>
+
+  <p class="foot"><span class="mark">◆</span> «Новелла» · Android · ru.novella.reader</p>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,86 @@
+apply plugin: 'com.android.application'
+
+// Подпись релиза для RuStore. Ключ НЕ хранится в Git:
+// локально — файл android/keystore.properties (см. RUSTORE.md),
+// в GitHub Actions он создаётся из секретов репозитория.
+def keystorePropsFile = rootProject.file("keystore.properties")
+def keystoreProps = new Properties()
+if (keystorePropsFile.exists()) {
+    keystoreProps.load(new FileInputStream(keystorePropsFile))
+}
+
+// Версии: CI передаёт -PappVersionCode=<номер запуска> (растёт сам) и
+// -PappVersionName из package.json. Локально без флагов — 1 / "1.0.0",
+// перед ручным релизом в Android Studio передавай параметры или правь фолбэки.
+def appVersionCodeValue = (findProperty('appVersionCode') ?: '1').toString().toInteger()
+def appVersionNameValue = (findProperty('appVersionName') ?: '1.0.0').toString()
+
+android {
+    namespace = "ru.novella.reader"
+    compileSdk = rootProject.ext.compileSdkVersion
+    defaultConfig {
+        applicationId "ru.novella.reader"
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        // Значения вычислены выше, до android{}: findProperty внутри DSL-замыканий AGP не работает.
+        versionCode appVersionCodeValue
+        versionName appVersionNameValue
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        aaptOptions {
+             // Files and dirs to omit from the packaged assets dir, modified to accommodate modern web apps.
+             // Default: https://android.googlesource.com/platform/frameworks/base/+/282e181b58cf72b6ca770dc7ca5f91f135444502/tools/aapt/AaptAssets.cpp#61
+            ignoreAssetsPattern = '!.svn:!.git:!.ds_store:!*.scc:.*:!CVS:!thumbs.db:!picasa.ini:!*~'
+        }
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+// Подпись релиза применяем императивно ПОСЛЕ android{}: внутри вложенных
+// DSL-замыканий AGP (signingConfigs/buildTypes) локальные переменные скрипта
+// недоступны (MissingPropertyException). Без keystore.properties получится
+// неподписанный AAB — для RuStore нужен подписанный (см. RUSTORE.md, раздел 2).
+// storeFile в keystore.properties указывается относительно папки android/.
+if (keystorePropsFile.exists()) {
+    def releaseSigning = android.signingConfigs.maybeCreate("release")
+    releaseSigning.storeFile = rootProject.file(keystoreProps['storeFile'])
+    releaseSigning.storePassword = keystoreProps['storePassword']
+    releaseSigning.keyAlias = keystoreProps['keyAlias']
+    releaseSigning.keyPassword = keystoreProps['keyPassword']
+    android.buildTypes.getByName("release").signingConfig = releaseSigning
+}
+
+repositories {
+    flatDir{
+        dirs '../capacitor-cordova-android-plugins/src/main/libs', 'libs'
+    }
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation "androidx.appcompat:appcompat:$androidxAppCompatVersion"
+    implementation "androidx.coordinatorlayout:coordinatorlayout:$androidxCoordinatorLayoutVersion"
+    implementation "androidx.core:core-splashscreen:$coreSplashScreenVersion"
+    implementation project(':capacitor-android')
+    testImplementation "junit:junit:$junitVersion"
+    androidTestImplementation "androidx.test.ext:junit:$androidxJunitVersion"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$androidxEspressoCoreVersion"
+    implementation project(':capacitor-cordova-android-plugins')
+    // Yandex Mobile Ads SDK (рекламные блоки R-M-* из кабинета РСЯ; ID — в js/config.js)
+    implementation 'com.yandex.android:mobileads:8.6.0'
+}
+
+apply from: 'capacitor.build.gradle'
+
+try {
+    def servicesJSON = file('google-services.json')
+    if (servicesJSON.text) {
+        apply plugin: 'com.google.gms.google-services'
+    }
+} catch(Exception e) {
+    logger.info("google-services.json not found, google-services plugin not applied. Push Notifications won't work")
+}
