@@ -159,3 +159,19 @@ jobs:
             --notes-file release-notes.md \
             --target "${{ github.sha }}"
           echo "✓ Релиз app-latest обновлён: novella.apk и novella.aab доступны на странице Releases" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: APK отдельной веткой apk-latest (агент забирает файл гитом в чат)
+        if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/arena/e5c78877-novel'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          rm -rf /tmp/apk-branch && mkdir -p /tmp/apk-branch
+          cp android/app/build/outputs/apk/debug/app-debug.apk /tmp/apk-branch/novella.apk
+          cd /tmp/apk-branch
+          git init -q
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add novella.apk
+          git commit -qm "novella.apk из запуска №${{ github.run_number }} (${{ github.sha }})"
+          git push --force "https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}.git" HEAD:apk-latest
+          echo "✓ novella.apk также опубликован служебной веткой apk-latest" >> "$GITHUB_STEP_SUMMARY"
