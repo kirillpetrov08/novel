@@ -7,7 +7,7 @@ name: GitHub Pages (политика конфиденциальности)
 on:
   workflow_dispatch:
   push:
-    branches: [main, "arena/e5c78877-novel"]
+    branches: [main, "arena/**"]
     paths:
       - "docs/**"
       - ".github/workflows/pages.yml"
