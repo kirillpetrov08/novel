@@ -458,7 +458,7 @@
           "effect": {
             "resolve": 1
           },
-          "crystals": 10
+          "crystals": 5
         },
         {
           "text": "Искать в мастерской вместе с Ладой",
@@ -609,7 +609,7 @@
           "effect": {
             "trust": 1
           },
-          "crystals": 8,
+          "crystals": 5,
           "requires": {
             "trust": 1
           }
@@ -765,7 +765,7 @@
           "effect": {
             "resolve": 1
           },
-          "crystals": 12
+          "crystals": 5
         },
         {
           "text": "Попросить Ладу проверить карту",
@@ -917,7 +917,7 @@
           "effect": {
             "trust": 1
           },
-          "crystals": 10,
+          "crystals": 5,
           "requires": {
             "resolve": 1
           }

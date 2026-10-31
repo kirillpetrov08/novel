@@ -74,7 +74,7 @@
         {
           "text": "Текст особого выбора за кристаллы",
           "next": "s3",
-          "crystals": 10,
+          "crystals": 5,
           "effect": {
             "stat1": 1
           }
