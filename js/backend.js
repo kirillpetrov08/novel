@@ -22,6 +22,9 @@
 const Ads = {
   _inited: false,
   _nativeVisible: false,
+  _nativeHeight: 0,      // высота нативной карточки (dp) — под слот в библиотеке
+  _nativePromise: null,  // текущая загрузка native (защита от параллельных вызовов)
+  onNativeResized: null, // выставляет UI: (heightDp) => подправить высоту слота
 
   plugin() {
     return (window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.YandexAds) || null;
@@ -37,7 +40,15 @@ const Ads = {
       // Предзагрузка полноэкранных форматов: показ потом мгновенный.
       p.preloadInterstitial({ adUnitId: CONFIG.ads.interstitial });
       p.preloadRewarded({ adUnitId: CONFIG.ads.rewarded });
-      if (p.addListener) p.addListener('nativeClosed', () => { this._nativeVisible = false; });
+      if (p.addListener) {
+        p.addListener('nativeClosed', () => { this._nativeVisible = false; });
+        p.addListener('nativeResized', e => {
+          if (e && e.height) {
+            this._nativeHeight = e.height;
+            if (this.onNativeResized) this.onNativeResized(e.height);
+          }
+        });
+      }
     } catch (e) { /* без рекламы приложение продолжает работать */ }
   },
 
@@ -80,15 +91,34 @@ const Ads = {
     } catch (e) { return false; }
   },
 
-  /* --- Native: карточка поверх нижней части библиотеки --- */
-  async showNative(bottomMarginDp) {
+  /* --- Native: карточка лежит точно поверх слота между историями в библиотеке.
+         JS резервирует слот в потоке списка, плагин рисует поверх него и едет за скроллом. --- */
+  _rectArgs(rect) {
+    return { x: Math.round(rect.left), y: Math.round(rect.top), width: Math.round(rect.width) };
+  },
+  isNativeShown() { return this._nativeVisible; },
+  /* Первый показ: загружает рекламу, возвращает её высоту для слота. */
+  async showNative(rect) {
     const p = this.plugin();
-    if (!p || this._nativeVisible) return false;
-    try {
-      const r = await p.showNative({ adUnitId: CONFIG.ads.native, bottomMarginDp: Math.round(bottomMarginDp || 68) });
-      this._nativeVisible = !!(r && r.shown);
-      return this._nativeVisible;
-    } catch (e) { return false; }
+    if (!p || !rect) return { shown: false, height: 0 };
+    if (this._nativeVisible) { this.positionNative(rect, true); return { shown: true, height: this._nativeHeight }; }
+    if (this._nativePromise) return this._nativePromise;
+    this._nativePromise = (async () => {
+      try {
+        const r = await p.showNative({ adUnitId: CONFIG.ads.native, ...this._rectArgs(rect) });
+        this._nativeVisible = !!(r && r.shown);
+        this._nativeHeight = (r && r.height) || 0;
+        return { shown: this._nativeVisible, height: this._nativeHeight };
+      } catch (e) { return { shown: false, height: 0 }; }
+      finally { this._nativePromise = null; }
+    })();
+    return this._nativePromise;
+  },
+  /* Переставить уже показанную карточку (скролл/resize) или спрятать без уничтожения. */
+  positionNative(rect, visible) {
+    const p = this.plugin();
+    if (!p || !this._nativeVisible || !rect) return;
+    try { p.positionNative({ ...this._rectArgs(rect), visible: !!visible }); } catch (e) {}
   },
   hideNative() {
     const p = this.plugin();

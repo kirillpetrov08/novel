@@ -23,6 +23,8 @@ const UI = {
   endingDoubled: false,
   _startingStory: false,
   nativeDismissedSession: false,
+  nativeHeight: 0,         // высота нативной карточки (dp) для резерва слота
+  _nativeSyncQueued: false,
   pendingRef: null,
   confirmResolve: null,
   storesLoaded: false,
@@ -48,11 +50,15 @@ const UI = {
     setTimeout(() => { t.classList.add('out'); setTimeout(() => t.remove(), 320); }, ms);
   },
 
-  openModal(id) { Ads.hideNative(); $('#' + id).classList.add('open'); },
+  openModal(id) {
+    // нативная карточка — Android-вью поверх WebView: под модалкой видимой не держим
+    const slot = $('#native-ad-slot');
+    if (slot) Ads.positionNative(slot.getBoundingClientRect(), false);
+    $('#' + id).classList.add('open');
+  },
   closeModal(id) {
     $('#' + id).classList.remove('open');
-    // нативная карточка — Android-вью поверх WebView: возвращаем только без модалок
-    if (this.screen === 'library' && !$('.modal-ov.open')) this.updateNativeSlot('library');
+    if (this.screen === 'library' && !$('.modal-ov.open')) this.syncNativePosition();
   },
 
   confirm(title, text, yesLabel = 'Да') {
@@ -71,21 +77,61 @@ const UI = {
     });
   },
 
-  /* Нативная реклама R-M-…-3: в Android — настоящая карточка поверх низа
-     библиотеки; в веб-разработке — визуальная заглушка места размещения. */
+  /* Нативная реклама R-M-…-3: слот стоит В ПОТОКЕ между карточками историй
+     (создаётся в renderLibrary после первой истории) и ничего не перекрывает.
+     В Android настоящая карточка плагина ложится точно поверх слота и едет
+     за ним при скролле; в веб-разработке в слоте — визуальная заглушка.
+     Уход с экрана библиотеки карточку уничтожает (на возврате — свежая). */
   updateNativeSlot(name) {
-    const slot = $('#native-ad-slot');
-    if (name !== 'library') { Ads.hideNative(); if (slot) slot.innerHTML = ''; return; }
+    if (name !== 'library') { Ads.hideNative(); return; }
+    this.syncNativePosition();
+  },
+
+  /* Слот нативной рекламы для списка историй. */
+  nativeSlotEl() {
+    const slot = document.createElement('div');
+    slot.id = 'native-ad-slot';
+    slot.className = 'native-slot';
     if (Ads.isNative()) {
-      if (!this.nativeDismissedSession) {
-        const tabH = $('#tabbar') && $('#tabbar').offsetHeight ? $('#tabbar').offsetHeight : 56;
-        Ads.showNative(tabH + 10);
-      }
-    } else if (slot && !slot.innerHTML) {
+      slot.style.height = (this.nativeHeight || 300) + 'px';
+    } else {
       slot.innerHTML = `<div class="native-demo"><span class="native-demo-tag">Реклама</span>
         <div class="native-demo-title">Нативная карточка Яндекса</div>
         <div class="muted small">В Android-приложении здесь настоящий блок ${CONFIG.ads.native}. В веб-режиме — только место размещения.</div></div>`;
     }
+    return slot;
+  },
+
+  /* Подгоняет Android-карточку под текущее положение слота (скролл/resize/рендер/модалки). */
+  syncNativePosition() {
+    if (!Ads.isNative() || this._nativeSyncQueued) return;
+    this._nativeSyncQueued = true;
+    requestAnimationFrame(async () => {
+      this._nativeSyncQueued = false;
+      if (this.screen !== 'library' || this.nativeDismissedSession) return;
+      const slot = $('#native-ad-slot');
+      if (!slot) { Ads.hideNative(); return; }
+      const rect = slot.getBoundingClientRect();
+      const inView = rect.bottom > 0 && rect.top < window.innerHeight && !$('.modal-ov.open');
+      if (!Ads.isNativeShown()) {
+        if (!inView) return; // слот за экраном — рекламу впустую не грузим
+        const r = await Ads.showNative(rect);
+        if (this.screen !== 'library') { Ads.hideNative(); return; } // ушли с экрана, пока грузилась
+        const live = $('#native-ad-slot'); // слот мог пересоздаться перерендером за время загрузки
+        if (!live) return;
+        if (r.shown) {
+          if (r.height && r.height !== this.nativeHeight) {
+            this.nativeHeight = r.height;
+            live.style.height = r.height + 'px';
+          }
+          this.syncNativePosition(); // высота слота могла сдвинуть его позицию
+        } else {
+          live.style.display = 'none'; // рекламы нет — не оставляем пустую дыру
+        }
+        return;
+      }
+      Ads.positionNative(rect, inView);
+    });
   },
 
   /* ---------------- БИБЛИОТЕКА ---------------- */
@@ -154,10 +200,15 @@ const UI = {
       }
       wrap.appendChild(empty);
     } else {
-      list.forEach(e => wrap.appendChild(this.storyCard(e)));
+      list.forEach((e, i) => {
+        wrap.appendChild(this.storyCard(e));
+        // Нативная реклама — между историями: слот в потоке после первой карточки
+        if (i === 0 && !this.nativeDismissedSession) wrap.appendChild(this.nativeSlotEl());
+      });
     }
     this.renderDiagnostics();
     this.renderRefBanner();
+    this.syncNativePosition();
   },
 
   renderDiagnostics() {
@@ -537,6 +588,11 @@ const UI = {
     }));
     document.addEventListener('crystals-changed', () => this.renderGems(false));
 
+    // нативная реклама следует за слотом при скролле библиотеки
+    const libScroll = $('#screen-library .scroll');
+    if (libScroll) libScroll.addEventListener('scroll', () => this.syncNativePosition(), { passive: true });
+    window.addEventListener('resize', () => this.syncNativePosition());
+
     // плеер
     $('#dialogue').addEventListener('click', () => Engine.advance());
     $('#stage').addEventListener('click', e => {
@@ -645,7 +701,15 @@ const UI = {
 
     Ads.init(); // Яндекс: инициализация + предзагрузка interstitial/rewarded (Android)
     const yandex = Ads.plugin();
-    if (yandex && yandex.addListener) yandex.addListener('nativeClosed', () => { this.nativeDismissedSession = true; });
+    if (yandex && yandex.addListener) yandex.addListener('nativeClosed', () => {
+      this.nativeDismissedSession = true;
+      const s = $('#native-ad-slot'); if (s) s.style.display = 'none';
+    });
+    Ads.onNativeResized = h => {
+      this.nativeHeight = h;
+      const s = $('#native-ad-slot'); if (s) s.style.height = h + 'px';
+      this.syncNativePosition();
+    };
 
     // Android-сборка: истории вшиты (офлайн);
     // веб-разработка: stores/N/story.json подгружаются по сети по мере готовности

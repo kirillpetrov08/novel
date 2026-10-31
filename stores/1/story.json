@@ -484,7 +484,7 @@
         {
           "text": "Остаться после закрытия",
           "next": "s8c",
-          "crystals": 12,
+          "crystals": 10,
           "effect": {
             "matvey": 1,
             "memory": 1
@@ -760,7 +760,7 @@
         {
           "text": "Взять бабушкин фонарь",
           "next": "s12c",
-          "crystals": 10,
+          "crystals": 8,
           "effect": {
             "brave": 1,
             "matvey": 1
@@ -914,7 +914,7 @@
         {
           "text": "Показать ему негатив",
           "next": "s14c",
-          "crystals": 12,
+          "crystals": 10,
           "effect": {
             "brave": 1,
             "memory": 1
@@ -1066,7 +1066,7 @@
         {
           "text": "Прижаться лбом к его лбу",
           "next": "s16c",
-          "crystals": 15,
+          "crystals": 12,
           "requires": {
             "matvey": 2
           },
@@ -1215,7 +1215,7 @@
         {
           "text": "Позвонить в областную газету",
           "next": "s18c",
-          "crystals": 10,
+          "crystals": 8,
           "requires": {
             "brave": 2
           },

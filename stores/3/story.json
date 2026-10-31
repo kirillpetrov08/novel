@@ -473,7 +473,7 @@
         {
           "text": "Не отступить — взять его за воротник",
           "next": "s6a",
-          "crystals": 12,
+          "crystals": 10,
           "requires": {
             "trust": 1
           },
@@ -634,7 +634,7 @@
         {
           "text": "Найти его ночью у печи",
           "next": "s8a",
-          "crystals": 15,
+          "crystals": 12,
           "requires": {
             "desire": 1
           },
@@ -800,7 +800,7 @@
         {
           "text": "Схватить его ладонь у своих волос",
           "next": "s10a",
-          "crystals": 12,
+          "crystals": 10,
           "effect": {
             "desire": 1
           }
@@ -957,7 +957,7 @@
         {
           "text": "Пойти на встречу с Ильёй",
           "next": "s12a",
-          "crystals": 15,
+          "crystals": 12,
           "requires": {
             "trust": 2
           },
@@ -1127,7 +1127,7 @@
         {
           "text": "Остаться до утра",
           "next": "s15a",
-          "crystals": 10,
+          "crystals": 8,
           "requires": {
             "desire": 2,
             "trust": 2

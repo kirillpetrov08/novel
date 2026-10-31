@@ -19,6 +19,11 @@
   --radius:16px;
   --serif:Georgia,'Times New Roman',serif;
   --sans:system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif;
+  /* Безопасные зоны под системные панели телефона (статус-бар сверху, жесты снизу):
+     Capacitor SystemBars прокидывает настоящие значения --safe-area-inset-*;
+     env() — запасной вариант для веб-режима. На устройствах без edge-to-edge = 0. */
+  --sat: var(--safe-area-inset-top, env(safe-area-inset-top, 0px));
+  --sab: var(--safe-area-inset-bottom, env(safe-area-inset-bottom, 0px));
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%}
@@ -46,7 +51,7 @@ img{max-width:100%;display:block}
 /* --- шапка --- */
 .topbar{
   display:flex;align-items:center;justify-content:space-between;gap:12px;
-  padding:14px 16px 10px;border-bottom:1px solid var(--line);background:var(--app-bg);
+  padding:calc(14px + var(--sat)) 16px 10px;border-bottom:1px solid var(--line);background:var(--app-bg);
 }
 .logo{font-family:var(--serif);font-size:22px;letter-spacing:.14em;font-weight:700}
 .logo small{display:block;font-family:var(--sans);font-size:10px;letter-spacing:.22em;color:var(--muted);font-weight:600;margin-top:2px}
@@ -132,7 +137,7 @@ img{max-width:100%;display:block}
 .detail-cover .genre{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:#E7DCC4;font-weight:700}
 .detail-cover h1{font-family:var(--serif);font-size:27px;line-height:1.15;margin-top:5px;
   display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
-.detail-cover .back{position:absolute;top:14px;left:14px;z-index:2}
+.detail-cover .back{position:absolute;top:calc(14px + var(--sat));left:14px;z-index:2}
 .chips{display:flex;flex-wrap:wrap;gap:7px;margin:12px 0}
 .chip{background:var(--surface-2);border:1px solid var(--line);border-radius:999px;padding:5px 11px;font-size:11.5px;font-weight:600;color:var(--accent-dark)}
 .detail-desc{font-size:14.5px;line-height:1.65}
@@ -147,11 +152,11 @@ img{max-width:100%;display:block}
 .stage-bg{position:absolute;inset:0;transition:opacity .35s ease}
 .stage-bg img{width:100%;height:100%;object-fit:cover}
 .stage-shade{position:absolute;inset:0;background:linear-gradient(to top,rgba(30,25,18,.55) 0%,transparent 45%)}
-.player-top{position:absolute;top:0;left:0;right:0;z-index:5;display:flex;align-items:center;gap:9px;padding:12px}
+.player-top{position:absolute;top:0;left:0;right:0;z-index:5;display:flex;align-items:center;gap:9px;padding:calc(12px + var(--sat)) 12px 12px}
 .player-title{flex:1;min-width:0;color:#FFFDF8;font-family:var(--serif);font-weight:700;font-size:14.5px;
   text-shadow:0 1px 6px rgba(0,0,0,.5);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .player-gems{background:rgba(255,253,248,.92);border-radius:999px;padding:7px 12px;font-weight:700;font-size:13.5px;display:flex;gap:6px;align-items:center}
-.player-progress{position:absolute;top:0;left:0;height:3px;background:var(--accent);z-index:6;transition:width .3s ease;max-width:100%}
+.player-progress{position:absolute;top:var(--sat);left:0;height:3px;background:var(--accent);z-index:6;transition:width .3s ease;max-width:100%}
 
 /* Персонажи: прозрачные спрайты поверх фона сцены.
    Область фигур — обычный flex-элемент сцены НАД нижней колонкой: она всегда
@@ -183,7 +188,7 @@ img{max-width:100%;display:block}
    Поэтому кнопки выбора не наезжают на фразу, а область персонажей выше
    автоматически сжимается ровно до верха этой колонки. */
 .player-lower{position:relative;flex:0 0 auto;z-index:7;display:flex;flex-direction:column;gap:9px;
-  padding:0 12px calc(12px + env(safe-area-inset-bottom))}
+  padding:0 12px calc(12px + var(--sab))}
 .stage.choices-open .stage-shade{background:linear-gradient(to top,rgba(30,25,18,.68) 0%,rgba(30,25,18,.22) 52%,transparent 72%)}
 .stage.choices-open .dialogue{pointer-events:none}
 
@@ -263,15 +268,18 @@ textarea.field{min-height:130px;resize:vertical;font-size:13px;line-height:1.5}
 .ledger-item .d.plus{color:#6d7a57}.ledger-item .d.minus{color:var(--danger)}
 .switch-row{display:flex;align-items:center;justify-content:space-between;gap:12px}
 
-/* --- нативная реклама (веб-режим: место размещения) --- */
+/* --- нативная реклама: слот между карточками историй --- */
+.native-slot{margin-bottom:12px;border-radius:var(--radius)}
+/* Android: пустой резерв высоты — настоящая карточка плагина лежит точно поверх */
+.native-slot:empty{background:var(--surface);border:1px solid var(--line)}
 .native-demo{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
-  padding:13px 15px;margin-bottom:14px;position:relative}
+  padding:13px 15px;position:relative}
 .native-demo-tag{position:absolute;top:10px;right:12px;font-size:9.5px;letter-spacing:.14em;
   color:var(--muted);font-weight:700;text-transform:uppercase}
 .native-demo-title{font-family:var(--serif);font-weight:700;font-size:15px;margin-bottom:3px}
 
 /* --- нижняя навигация --- */
-.tabbar{display:flex;border-top:1px solid var(--line);background:var(--surface);padding-bottom:env(safe-area-inset-bottom);flex:0 0 auto}
+.tabbar{display:flex;border-top:1px solid var(--line);background:var(--surface);padding-bottom:var(--sab);flex:0 0 auto}
 .tabbar button{flex:1;padding:9px 2px 8px;font-size:10.5px;font-weight:700;color:var(--muted);
   display:flex;flex-direction:column;align-items:center;gap:3px;letter-spacing:.03em;min-height:56px;justify-content:center}
 .tabbar button .ic{font-size:19px;line-height:1}
@@ -300,7 +308,7 @@ textarea.field{min-height:130px;resize:vertical;font-size:13px;line-height:1.5}
 .log-item.choice-made{color:var(--accent-dark);font-weight:700}
 
 /* тосты */
-#toasts{position:fixed;top:14px;left:50%;transform:translateX(-50%);z-index:100;display:flex;flex-direction:column;gap:8px;align-items:center;pointer-events:none;width:min(440px,92vw)}
+#toasts{position:fixed;top:calc(14px + var(--sat));left:50%;transform:translateX(-50%);z-index:100;display:flex;flex-direction:column;gap:8px;align-items:center;pointer-events:none;width:min(440px,92vw)}
 .toast{background:var(--ink);color:#F7F2E7;border-radius:999px;padding:11px 19px;font-size:13.5px;font-weight:700;
   box-shadow:0 10px 26px rgba(0,0,0,.3);text-align:center;max-width:100%;
   animation:toastIn .25s ease}
