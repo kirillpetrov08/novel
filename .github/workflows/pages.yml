@@ -24,9 +24,8 @@ concurrency:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+    # environment НЕ указываем осознанно: github-pages по умолчанию разрешает деплой
+    # только с ветки по умолчанию, а мы деплоим с рабочей ветки arena/*.
     steps:
       - uses: actions/checkout@v4
       - uses: actions/configure-pages@v5
