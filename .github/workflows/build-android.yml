@@ -3,10 +3,11 @@ name: Сборка Android (APK + AAB для RuStore)
 # Когда собирать: вручную из вкладки Actions и автоматически при коммите
 # новой истории / кода приложения. Результат — артефакты запуска:
 #   • novella-debug-apk   — тестовая сборка, ставится прямо на телефон
-#   • novella-release-aab — файл для загрузки в RuStore (подписанный, если заданы секреты)
+#   • novella-release-apk — релизный APK для RuStore (подписанный, если заданы секреты)
+#   • novella-release-aab — то же приложение в формате AAB для RuStore
 # Дополнительно (ветки main и arena/e5c78877-novel) обновляется GitHub-релиз
-# «app-latest» — на странице репозитория (Releases) лежат novella.apk и
-# novella.aab с обычной кнопкой скачивания.
+# «app-latest» — на странице репозитория (Releases) лежат novella.apk (тест),
+# novella-release.apk и novella.aab (для RuStore) с обычной кнопкой скачивания.
 on:
   workflow_dispatch:
   push:
@@ -83,15 +84,15 @@ jobs:
 
       - name: Предупреждение о неподписанном релизе
         if: steps.ks.outputs.has != 'true'
-        run: echo "::warning::Секреты подписи не заданы — AAB будет НЕподписанным. RuStore его не примет. Настройка ключа — в RUSTORE.md, раздел 2."
+        run: echo "::warning::Секреты подписи не заданы — релизные APK и AAB будут НЕподписанными. RuStore их не примет. Настройка ключа — в RUSTORE.md, раздел 2."
 
-      - name: Собрать APK (тест) и AAB (RuStore)
+      - name: Собрать APK (тест + релиз) и AAB (RuStore)
         working-directory: android
         run: |
           set -o pipefail
           chmod +x gradlew
           VERSION_NAME=$(node -p "require('../package.json').version")
-          ./gradlew :app:assembleDebug :app:bundleRelease \
+          ./gradlew :app:assembleDebug :app:assembleRelease :app:bundleRelease \
             -PappVersionCode=${{ github.run_number }} \
             -PappVersionName=$VERSION_NAME \
             --stacktrace 2>&1 | tee ../gradle-build.log
@@ -136,12 +137,20 @@ jobs:
           path: android/app/build/outputs/bundle/release/app-release.aab
           if-no-files-found: error
 
-      - name: Опубликовать APK и AAB в GitHub Release (кнопка скачивания)
+      - name: Артефакт — релизный APK для RuStore
+        uses: actions/upload-artifact@v4
+        with:
+          name: novella-release-apk
+          path: android/app/build/outputs/apk/release/*.apk
+          if-no-files-found: error
+
+      - name: Опубликовать APK (тест + релиз) и AAB в GitHub Release (кнопка скачивания)
         if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/arena/e5c78877-novel'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           cp android/app/build/outputs/apk/debug/app-debug.apk novella.apk
+          cp android/app/build/outputs/apk/release/app-release.apk novella-release.apk 2>/dev/null || cp android/app/build/outputs/apk/release/app-release-unsigned.apk novella-release.apk
           cp android/app/build/outputs/bundle/release/app-release.aab novella.aab
           # Скользящий релиз: пересоздаём, чтобы тег указывал на собранный коммит
           gh release delete app-latest --yes --cleanup-tag 2>/dev/null || true
@@ -149,16 +158,17 @@ jobs:
             "## Что скачивать" \
             "" \
             "- **novella.apk** — тестовая сборка: скачать на телефон и установить (разрешить установку из браузера/файлов)." \
-            "- **novella.aab** — файл для RuStore (примет магазин только после настройки ключа подписи, см. RUSTORE.md)." \
+            "- **novella-release.apk** — релизный APK для RuStore (примет магазин только после настройки ключа подписи, см. RUSTORE.md)." \
+            "- **novella.aab** — то же приложение в формате AAB для RuStore (тоже требует настроенного ключа подписи)." \
             "" \
             "Собрано автоматически из коммита ${{ github.sha }} (${{ github.ref_name }}), запуск №${{ github.run_number }}." \
             > release-notes.md
-          gh release create app-latest novella.apk novella.aab \
+          gh release create app-latest novella.apk novella-release.apk novella.aab \
             --prerelease \
-            --title "Новелла — тестовая сборка (APK на телефон)" \
+            --title "Новелла — APK на телефон и файлы для RuStore" \
             --notes-file release-notes.md \
             --target "${{ github.sha }}"
-          echo "✓ Релиз app-latest обновлён: novella.apk и novella.aab доступны на странице Releases" >> "$GITHUB_STEP_SUMMARY"
+          echo "✓ Релиз app-latest обновлён: novella.apk, novella-release.apk и novella.aab доступны на странице Releases" >> "$GITHUB_STEP_SUMMARY"
 
       - name: APK отдельной веткой apk-latest (агент забирает файл гитом в чат)
         if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/arena/e5c78877-novel'
