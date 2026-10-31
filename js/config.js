@@ -31,6 +31,9 @@ const CONFIG = {
   referrals: {
     newcomerBonus: 15,     // новичку за ввод чужого кода / переход по ссылке
     inviterBonus: 20,      // пригласившему — когда новичок пройдёт первую историю
+    // Страница приложения в RuStore: rustore.ru/catalog/app/<applicationId>.
+    // Используется в приглашениях друзей. ПОСЛЕ публикации сверить с реальной ссылкой!
+    storeUrl: 'https://www.rustore.ru/catalog/app/ru.novella.reader',
   },
 
   stores: {

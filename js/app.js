@@ -458,7 +458,7 @@ const UI = {
     dBtn.disabled = dailyDone;
 
     $('#complete-sub').textContent = `Первое прохождение истории: +${c.completeStory} ◆. Каждый новый финал: +${c.newEnding} ◆.`;
-    $('#ref-shop-sub').textContent = `Друг по твоей ссылке получает +${CONFIG.referrals.newcomerBonus} ◆, а ты +${CONFIG.referrals.inviterBonus} ◆, когда он пройдёт первую историю.`;
+    $('#ref-shop-sub').textContent = `Друг по твоему приглашению получает +${CONFIG.referrals.newcomerBonus} ◆, а ты +${CONFIG.referrals.inviterBonus} ◆, когда он пройдёт первую историю.`;
 
     const led = $('#ledger');
     const items = [...(Store.data.ledger || [])].reverse().slice(0, 15);
@@ -525,7 +525,7 @@ const UI = {
   renderProfile() {
     $('#my-ref-code').textContent = Referrals.myCode();
     $('#my-ref-link').textContent = Referrals.myLink();
-    $('#ref-rules').textContent = `Друг переходит по ссылке или вводит твой код и сразу получает +${CONFIG.referrals.newcomerBonus} ◆. Когда он пройдёт свою первую историю до конца, тебе начисляется +${CONFIG.referrals.inviterBonus} ◆.`;
+    $('#ref-rules').textContent = `Отправь другу приглашение кнопкой выше: по ссылке он скачает приложение в RuStore, введёт твой код в Профиле и сразу получит +${CONFIG.referrals.newcomerBonus} ◆. Когда он пройдёт свою первую историю до конца, тебе начисляется +${CONFIG.referrals.inviterBonus} ◆.`;
     const st = Referrals.stats();
     $('#ref-invited').textContent = st.invited;
     $('#ref-completed').textContent = st.completed;
@@ -641,7 +641,7 @@ const UI = {
 
     // профиль
     $('#copy-code-btn').addEventListener('click', () => this.copyText(Referrals.myCode(), 'Код скопирован'));
-    $('#copy-link-btn').addEventListener('click', () => this.copyText(Referrals.myLink(), 'Ссылка скопирована — отправь её другу'));
+    $('#copy-link-btn').addEventListener('click', () => this.copyText(Referrals.myInviteText(), 'Приглашение скопировано — отправь его другу'));
     $('#claim-btn').addEventListener('click', () => this.claimRef($('#claim-input').value));
     $('#ref-banner-btn').addEventListener('click', () => this.claimRef(this.pendingRef));
     $('#typewriter-toggle').addEventListener('click', () => {

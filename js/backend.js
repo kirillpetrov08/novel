@@ -143,11 +143,18 @@ const Ads = {
 
 const Referrals = {
   myCode() { return Store.data.user.refCode; },
+  /* Ссылка на скачивание приложения (страница в RuStore). Друг ставит приложение
+     по ней и вводит код вручную в Профиле; автоактивация по ?ref= осталась только
+     для веб-превью разработки (разбор параметра — в app.js при старте). */
   myLink() {
-    const base = location.origin && location.origin !== 'null'
-      ? location.origin + location.pathname
-      : location.pathname;
-    return `${base}?ref=${this.myCode()}`;
+    return CONFIG.referrals.storeUrl;
+  },
+
+  /* Готовый текст приглашения для мессенджера: ссылка на скачивание + код. */
+  myInviteText() {
+    return `«${CONFIG.appName}» — интерактивные истории любви, где твои выборы меняют финал ♡\n` +
+      `Скачай в RuStore: ${this.myLink()}\n` +
+      `И введи мой код ${this.myCode()} в разделе «Профиль» — получишь +${CONFIG.referrals.newcomerBonus} ◆ на особые выборы.`;
   },
 
   /* Новичок активирует чужой код (по ссылке ?ref= или вручную). Один раз в жизни аккаунта. */
