@@ -69,10 +69,13 @@
 - Конфликт: старую студию закрывают, архив продают; последний прямой эфир; голос наставницы в архиве — правда через 15 лет.
 - Финалы: desire «Прямой эфир» (Желание) / trust «Голос остаётся» (Доверие) / neutral «После эфира» (Эфир).
 - Фоны: bg-studio, bg-control, bg-archive, bg-city, bg-rooftop, bg-street.
-- [ ] план
-- [ ] story.json
-- [ ] art-prompts.json
+- [x] план
+- [x] story.json (34 сцены, 21 выбор, 5 платных по 5, ending-объекты, все проверки пройдены)
+- [x] art-prompts.json (24 файла + 34 sceneBackgrounds)
 - [ ] картинки 0/24
+- [ ] пачка 1 (1–10): 4 базы + 6 состояний Даши
+- [ ] пачка 2 (11–20): heroine_tender, hero×4, friend×2, bg-studio, bg-street
+- [ ] пачка 3 (21–24): bg-city, bg-rooftop, bg-hall, bg-morning, cover
 - [ ] самопроверка
 - [ ] коммит
 
@@ -83,3 +86,4 @@
 - ход 4: stores/8 story.json + art-prompts.json готовы (ALL CHECKS PASSED, validate ✓). stores/7: ждёт пачка 2 (heroine_tender упёрлась в лимит).
 - ход 5: stores/9 story.json + art-prompts.json готовы (ALL CHECKS PASSED, validate ✓). Пишу stores/10.
 - ход 6: stores/10 story.json + art-prompts.json готовы (ALL CHECKS PASSED, validate ✓). Пишу stores/11.
+- ход 7: stores/11 story.json + art-prompts.json готовы (ALL CHECKS PASSED, validate ✓). ВСЕ 5 ТЕКСТОВ ГОТОВЫ. Дальше только картинки: stores/7 (14 ост.), 8, 9, 10, 11 (по 24).
