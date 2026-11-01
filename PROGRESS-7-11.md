@@ -54,10 +54,13 @@
 - Конфликт: владелец продаёт цирк отелю, труппу упраздняют; шоу в пути; предательство.
 - Финалы: desire «Выше всех» (Желание) / trust «Свой полёт» (Доверие) / neutral «После представления» (Полёт).
 - Фоны: bg-bigtop, bg-ring, bg-tentback, bg-train, bg-steppe, bg-night.
-- [ ] план
-- [ ] story.json
-- [ ] art-prompts.json
+- [x] план
+- [x] story.json (34 сцены, 21 выбор, 5 платных по 5, ending-объекты, все проверки пройдены)
+- [x] art-prompts.json (24 файла + 34 sceneBackgrounds)
 - [ ] картинки 0/24
+- [ ] пачка 1 (1–10): 4 базы + 6 состояний Лиды
+- [ ] пачка 2 (11–20): heroine_tender, hero×4, friend×2, bg-tent, bg-rope
+- [ ] пачка 3 (21–24): bg-office, bg-makeup, bg-garden, bg-night, cover
 - [ ] самопроверка
 - [ ] коммит
 
@@ -79,3 +82,4 @@
 - ход 3: stores/7 коммит (story+art-prompts+10 картинок). Лимит 10/ход подтверждён (ошибка на 11-м вызове). Продолжаю текстом: stores/8.
 - ход 4: stores/8 story.json + art-prompts.json готовы (ALL CHECKS PASSED, validate ✓). stores/7: ждёт пачка 2 (heroine_tender упёрлась в лимит).
 - ход 5: stores/9 story.json + art-prompts.json готовы (ALL CHECKS PASSED, validate ✓). Пишу stores/10.
+- ход 6: stores/10 story.json + art-prompts.json готовы (ALL CHECKS PASSED, validate ✓). Пишу stores/11.
