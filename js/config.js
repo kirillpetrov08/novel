@@ -56,6 +56,5 @@ const CONFIG = {
     maxExtraSlots: 3,       // максимум доп. слотов
     rateMinDaysBetween: 3,  // не просить оценку чаще, чем раз в N дней
     rateMaxAsks: 3,         // и не больше N раз всего
-    autoDelayMs: 1500,      // пауза авточтения после допечатанной реплики
   },
 };

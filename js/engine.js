@@ -38,6 +38,10 @@ const Engine = {
       this.state = this.freshState(story);
     }
     if (!this.state.seen) this.state.seen = (this.state.visited || []).slice();
+    // Защита от сохранений прошлой версии истории: сцена могла укоротиться.
+    const sc0 = this.scene();
+    if (sc0) this.state.lineIndex = Math.max(0, Math.min(this.state.lineIndex || 0, sc0.lines.length - 1));
+    this._finishedSceneId = null;
     // снимок «уже читано до этого захода» — граница для пропуска прочитанного
     this.seenBefore = new Set([...(this.state.seen || []), ...(this.state.visited || [])]);
     this.persist();
@@ -98,6 +102,7 @@ const Engine = {
 
   goTo(sceneId) {
     if (!this.story.scenes[sceneId]) return;
+    this._finishedSceneId = null;
     this.state.sceneId = sceneId;
     this.state.lineIndex = 0;
     if (!this.state.visited.includes(sceneId)) this.state.visited.push(sceneId);
@@ -112,6 +117,7 @@ const Engine = {
     if (!this.state || !this.scene()) return false;
     if (this.seenBefore && !this.seenBefore.has(this.state.sceneId)) return false;
     this.stopTyping();
+    this._finishedSceneId = null;
     const fromScene = this.state.sceneId, fromLine = this.state.lineIndex;
     let guard = 0;
     while (guard++ < 1500) {
@@ -136,6 +142,7 @@ const Engine = {
   advance() {
     if (this.typing && !this.typing.done) { this.finishTyping(); return; }
     const sc = this.scene();
+    if (!sc || !sc.lines) return;
     if (this.state.lineIndex < sc.lines.length - 1) {
       this.state.lineIndex++;
       this.persist();
@@ -164,6 +171,7 @@ const Engine = {
   /* Если сцена открывается сразу на выборах/финале без тапа — UI спросит это. */
   scenePhase() {
     const sc = this.scene();
+    if (!sc || !sc.lines) return 'lines';
     const lastLine = this.state.lineIndex >= sc.lines.length - 1;
     if (!lastLine) return 'lines';
     if (sc.ending) return 'ending-ready';
@@ -173,6 +181,10 @@ const Engine = {
 
   finish(sc) {
     const endingId = this.state.sceneId;
+    // Финал эмитится один раз на вход в сцену: повторные тапы/пробелы на уже
+    // открытом экране финала не должны заново крутить награды и счётчики заданий.
+    if (this._finishedSceneId === endingId) return;
+    this._finishedSceneId = endingId;
     const isNewEnding = !this.state.endingsFound.includes(endingId);
     const firstComplete = !this.state.completedBefore && !this.state.completed;
     if (isNewEnding) this.state.endingsFound.push(endingId);

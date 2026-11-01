@@ -36,12 +36,21 @@ const Ads = {
   },
   isNative() { return !!this.plugin(); },
 
+  /* Страховка от «молчащего» плагина: ни один вызов рекламы не должен вечно
+     держать интерфейс (иначе, например, история вообще не откроется). */
+  _withTimeout(promise, ms, fallback) {
+    return Promise.race([
+      promise,
+      new Promise(res => setTimeout(() => res(fallback), ms)),
+    ]);
+  },
+
   async init() {
     const p = this.plugin();
     if (!p || this._inited) return;
-    this._inited = true;
     try {
       await p.initialize();
+      this._inited = true;
       // Предзагрузка полноэкранных форматов: показ потом мгновенный.
       p.preloadInterstitial({ adUnitId: CONFIG.ads.interstitial });
       p.preloadRewarded({ adUnitId: CONFIG.ads.rewarded });
@@ -72,7 +81,7 @@ const Ads = {
     const p = this.plugin();
     if (!p) return false;
     try {
-      const r = await p.showRewarded({ adUnitId: CONFIG.ads.rewarded });
+      const r = await this._withTimeout(p.showRewarded({ adUnitId: CONFIG.ads.rewarded }), 75000, null);
       p.preloadRewarded({ adUnitId: CONFIG.ads.rewarded });
       return !!(r && r.rewarded);
     } catch (e) { return false; }
@@ -99,7 +108,7 @@ const Ads = {
     const p = this.plugin();
     if (!p) return false; // в веб-разработке просто пропускаем
     try {
-      const r = await p.showInterstitial({ adUnitId: CONFIG.ads.interstitial });
+      const r = await this._withTimeout(p.showInterstitial({ adUnitId: CONFIG.ads.interstitial }), 60000, null);
       const shown = !!(r && r.shown);
       if (shown) { Store.data.ads.lastInterstitialAt = Date.now(); Store.save(); }
       return shown;
@@ -154,7 +163,7 @@ const Ads = {
     if (cur.promise) return cur.promise;
     cur.promise = (async () => {
       try {
-        const r = await p.showFeedAd({ id, adUnitId, kind, ...this._rectArgs(rect) });
+        const r = await this._withTimeout(p.showFeedAd({ id, adUnitId, kind, ...this._rectArgs(rect) }), 15000, null);
         cur.shown = !!(r && r.shown);
         cur.height = (r && r.height) || 0;
         return { shown: cur.shown, height: cur.height };

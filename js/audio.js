@@ -58,6 +58,8 @@ const Ambient = {
         o.start(t); o.stop(t + dur + 0.1);
       });
     });
+    // Фильтр аккорда отключаем после затухания, иначе узлы копятся часами.
+    setTimeout(() => { try { lp.disconnect(); } catch (e) {} }, (dur + 0.5) * 1000);
   },
 
   stop() {

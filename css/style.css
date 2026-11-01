@@ -24,6 +24,8 @@
      env() — запасной вариант для веб-режима. На устройствах без edge-to-edge = 0. */
   --sat: var(--safe-area-inset-top, env(safe-area-inset-top, 0px));
   --sab: var(--safe-area-inset-bottom, env(safe-area-inset-bottom, 0px));
+  --sal: var(--safe-area-inset-left, env(safe-area-inset-left, 0px));
+  --sar: var(--safe-area-inset-right, env(safe-area-inset-right, 0px));
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%}
@@ -31,8 +33,13 @@ body{
   font-family:var(--sans);color:var(--ink);background:var(--bg);
   -webkit-tap-highlight-color:transparent;
   overflow-wrap:break-word;
+  /* Телефонные жесты не должны мешать игре: без pull-to-refresh, резинового
+     скролла всего окна и двойного тапа-зума по кнопкам. */
+  overscroll-behavior:none;
+  touch-action:manipulation;
 }
-button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit;
+  touch-action:manipulation;-webkit-touch-callout:none;user-select:none;-webkit-user-select:none}
 input,textarea{font-family:inherit;color:inherit}
 img{max-width:100%;display:block}
 
@@ -45,13 +52,14 @@ img{max-width:100%;display:block}
 }
 .screen{display:none;flex-direction:column;flex:1;min-height:0}
 .screen.active{display:flex}
-.scroll{overflow-y:auto;flex:1;min-height:0;-webkit-overflow-scrolling:touch}
+.scroll{overflow-y:auto;flex:1;min-height:0;-webkit-overflow-scrolling:touch;overscroll-behavior:contain}
 .pad{padding:16px}
 
 /* --- шапка --- */
 .topbar{
   display:flex;align-items:center;justify-content:space-between;gap:12px;
-  padding:calc(14px + var(--sat)) 16px 10px;border-bottom:1px solid var(--line);background:var(--app-bg);
+  padding:calc(14px + var(--sat)) calc(16px + var(--sar)) 10px calc(16px + var(--sal));
+  border-bottom:1px solid var(--line);background:var(--app-bg);
 }
 .logo{font-family:var(--serif);font-size:22px;letter-spacing:.14em;font-weight:700}
 .logo small{display:block;font-family:var(--sans);font-size:10px;letter-spacing:.22em;color:var(--muted);font-weight:600;margin-top:2px}
@@ -112,8 +120,11 @@ img{max-width:100%;display:block}
 .btn-danger{background:var(--surface);border:1px solid var(--line);color:var(--danger)}
 .btn[disabled]{opacity:.45;pointer-events:none}
 .btn-row{display:flex;gap:10px}.btn-row .btn{flex:1}
-.icon-btn{width:40px;height:40px;flex:0 0 40px;display:flex;align-items:center;justify-content:center;
-  border-radius:12px;background:rgba(255,253,248,.9);border:1px solid var(--line);font-size:17px}
+/* 44px — комфортная зона попадания пальцем; меньше промахов у краёв экрана */
+.icon-btn{width:44px;height:44px;flex:0 0 44px;display:flex;align-items:center;justify-content:center;
+  border-radius:13px;background:rgba(255,253,248,.92);border:1px solid var(--line);font-size:18px;
+  transition:transform .12s ease}
+.icon-btn:active{transform:scale(.94)}
 
 /* --- пустое состояние и диагностика --- */
 .empty{
@@ -137,7 +148,9 @@ img{max-width:100%;display:block}
 .detail-cover .genre{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:#E7DCC4;font-weight:700}
 .detail-cover h1{font-family:var(--serif);font-size:27px;line-height:1.15;margin-top:5px;
   display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
-.detail-cover .back{position:absolute;top:calc(14px + var(--sat));left:14px;z-index:2}
+.detail-cover .back{position:absolute;top:calc(14px + var(--sat));left:calc(14px + var(--sal));z-index:2}
+/* У экрана истории нет нижней навигации: контент не должен прятаться под панель жестов */
+#screen-detail .pad{padding-bottom:calc(20px + var(--sab))}
 .chips{display:flex;flex-wrap:wrap;gap:7px;margin:12px 0}
 .chip{background:var(--surface-2);border:1px solid var(--line);border-radius:999px;padding:5px 11px;font-size:11.5px;font-weight:600;color:var(--accent-dark)}
 .detail-desc{font-size:14.5px;line-height:1.65}
@@ -152,11 +165,24 @@ img{max-width:100%;display:block}
 .stage-bg{position:absolute;inset:0;transition:opacity .35s ease}
 .stage-bg img{width:100%;height:100%;object-fit:cover}
 .stage-shade{position:absolute;inset:0;background:linear-gradient(to top,rgba(30,25,18,.55) 0%,transparent 45%)}
-.player-top{position:absolute;top:0;left:0;right:0;z-index:5;display:flex;align-items:center;gap:9px;padding:calc(12px + var(--sat)) 12px 12px}
-.player-title{flex:1;min-width:0;color:#FFFDF8;font-family:var(--serif);font-weight:700;font-size:14.5px;
-  text-shadow:0 1px 6px rgba(0,0,0,.5);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.player-gems{background:rgba(255,253,248,.92);border-radius:999px;padding:7px 12px;font-weight:700;font-size:13.5px;display:flex;gap:6px;align-items:center}
-.player-progress{position:absolute;top:var(--sat);left:0;height:3px;background:var(--accent);z-index:6;transition:width .3s ease;max-width:100%}
+/* Верх плеера: мягкая тёмная вуаль под кнопками (читаемо на любом фоне сцены) */
+.player-top{position:absolute;top:0;left:0;right:0;z-index:5;display:flex;align-items:center;gap:8px;
+  padding:calc(10px + var(--sat)) calc(12px + var(--sar)) 18px calc(12px + var(--sal));
+  background:linear-gradient(to bottom,rgba(30,25,18,.42) 0%,rgba(30,25,18,.16) 55%,transparent 100%);
+  pointer-events:none}
+.player-top>*{pointer-events:auto}
+.player-top .icon-btn{background:rgba(255,253,248,.9);border-color:rgba(223,211,188,.9);
+  box-shadow:0 4px 14px rgba(30,25,18,.28);color:var(--accent-dark);
+  -webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px)}
+.player-title{flex:1;min-width:0;color:#FFFDF8;font-family:var(--serif);font-weight:700;font-size:15px;letter-spacing:.02em;
+  text-shadow:0 1px 8px rgba(0,0,0,.55);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.player-title::before{content:'❦ ';color:#E7DCC4;font-weight:400}
+.player-gems{background:rgba(255,253,248,.92);border:1px solid rgba(223,211,188,.9);border-radius:999px;
+  padding:0 14px;min-height:44px;font-weight:800;font-size:14px;display:flex;gap:6px;align-items:center;
+  box-shadow:0 4px 14px rgba(30,25,18,.28);-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px)}
+.player-progress{position:absolute;top:var(--sat);left:0;height:3px;border-radius:0 3px 3px 0;
+  background:linear-gradient(90deg,#B49B72,var(--accent));box-shadow:0 1px 6px rgba(138,109,75,.6);
+  z-index:6;transition:width .3s ease;max-width:100%}
 
 /* Персонажи: прозрачные спрайты поверх фона сцены.
    Область фигур — обычный flex-элемент сцены НАД нижней колонкой: она всегда
@@ -164,7 +190,7 @@ img{max-width:100%;display:block}
    отступ лишь прячет самый низ бюста за карточкой (22px), поэтому головы и
    плечи всех героев гарантированно остаются над диалоговым окном. */
 .chars{position:relative;z-index:1;flex:1 1 auto;min-height:0;display:flex;align-items:flex-end;justify-content:center;
-  gap:8px;padding:64px 16px 0;margin-bottom:-22px;pointer-events:none}
+  gap:8px;padding:calc(60px + var(--sat)) calc(16px + var(--sar)) 0 calc(16px + var(--sal));margin-bottom:-22px;pointer-events:none}
 .char{position:relative;flex:1 1 0;min-width:0;max-width:302px;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;
   transition:opacity .3s ease, transform .3s ease;opacity:.68;transform:translateY(4px) scale(.99)}
 .chars[data-count="2"]{gap:4px;padding-left:10px;padding-right:10px}
@@ -188,23 +214,31 @@ img{max-width:100%;display:block}
    Поэтому кнопки выбора не наезжают на фразу, а область персонажей выше
    автоматически сжимается ровно до верха этой колонки. */
 .player-lower{position:relative;flex:0 0 auto;z-index:7;display:flex;flex-direction:column;gap:9px;
-  padding:0 12px calc(12px + var(--sab))}
+  padding:0 calc(12px + var(--sar)) calc(12px + var(--sab)) calc(12px + var(--sal))}
 .stage.choices-open .stage-shade{background:linear-gradient(to top,rgba(30,25,18,.68) 0%,rgba(30,25,18,.22) 52%,transparent 72%)}
 .stage.choices-open .dialogue{pointer-events:none}
 
-/* диалог */
-.dialogue-wrap{position:relative}
+/* диалог: «бумажная» карточка с тонкой двойной рамкой и табличкой имени,
+   как в классических визуальных новеллах, но в фирменной бежевой палитре */
+.dialogue-wrap{position:relative;margin-top:12px}
 .dialogue{
-  background:rgba(255,253,248,.97);border:1px solid var(--line);border-radius:18px;
-  padding:16px 17px 13px;min-height:128px;max-height:38dvh;overflow-y:auto;
-  box-shadow:0 12px 34px rgba(0,0,0,.28);cursor:pointer;position:relative;
+  background:linear-gradient(180deg,rgba(255,253,248,.98),rgba(250,245,233,.97));
+  border:1px solid var(--line);border-radius:18px;
+  padding:15px 18px 14px;min-height:128px;max-height:38dvh;overflow-y:auto;
+  box-shadow:0 12px 34px rgba(0,0,0,.28), inset 0 0 0 3px rgba(255,253,248,.9), inset 0 0 0 4px rgba(223,211,188,.55);
+  cursor:pointer;position:relative;overscroll-behavior:contain;
 }
-.speaker{font-family:var(--serif);font-weight:700;font-size:15px;margin-bottom:6px;letter-spacing:.02em;
-  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.dialogue-text{font-size:16px;line-height:1.6;white-space:pre-wrap}
+.dialogue.has-speaker{padding-top:19px}
+/* табличка с именем говорящего — пилюля на верхней кромке карточки */
+.speaker{position:absolute;top:-13px;left:16px;z-index:2;max-width:calc(100% - 32px);
+  background:var(--surface);border:1px solid var(--line);border-radius:999px;
+  padding:4px 13px 5px;box-shadow:0 4px 12px rgba(30,25,18,.16);
+  font-family:var(--serif);font-weight:700;font-size:14.5px;letter-spacing:.02em;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;pointer-events:none}
+.dialogue-text{font-size:16px;line-height:1.62;white-space:pre-wrap}
 .dialogue-text.narration{font-style:italic;color:#4a4236}
 .dialogue-text.thought{font-style:italic;color:#6b5d47}
-.dialogue-next{position:absolute;right:14px;bottom:9px;color:var(--accent);font-size:13px;animation:bob 1.4s ease-in-out infinite}
+.dialogue-next{position:absolute;right:15px;bottom:9px;color:var(--accent);font-size:14px;animation:bob 1.4s ease-in-out infinite}
 @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(3px)}}
 
 /* выборы */
@@ -212,12 +246,16 @@ img{max-width:100%;display:block}
   scrollbar-width:thin;padding:2px}
 .choices.open{display:flex}
 .choice{
-  background:rgba(255,253,248,.98);border:1px solid var(--line);border-radius:14px;
+  background:linear-gradient(180deg,rgba(255,253,248,.98),rgba(250,245,233,.97));border:1px solid var(--line);border-radius:14px;
   padding:14px 16px;font-size:15px;font-weight:600;line-height:1.4;text-align:left;width:100%;
-  display:flex;align-items:center;gap:10px;transition:transform .12s ease;
+  display:flex;align-items:center;gap:10px;transition:transform .12s ease;min-height:52px;
   box-shadow:0 8px 22px rgba(0,0,0,.22);
 }
 .choice:active{transform:scale(.985)}
+.choice-mark{flex:0 0 auto;color:var(--accent);font-size:14px;line-height:1}
+/* особый (платный) выбор подсвечен бронзовой рамкой — как кристалл ◆ в шапках */
+.choice.paid-choice{border-color:var(--accent);box-shadow:0 8px 22px rgba(0,0,0,.22), inset 0 0 0 1px rgba(138,109,75,.35)}
+.choice.paid-choice .choice-mark{color:var(--crystal)}
 .choice .txt{flex:1;min-width:0}
 .choice .cost{flex:0 0 auto;display:flex;align-items:center;gap:5px;font-weight:800;color:var(--crystal);
   background:var(--surface-2);border:1px solid var(--line);border-radius:999px;padding:4px 10px;font-size:13px}
@@ -226,10 +264,13 @@ img{max-width:100%;display:block}
 .choice .lock-note{display:block;font-size:11.5px;color:var(--muted);font-weight:600;margin-top:3px}
 
 /* финал */
-.ending-ov{position:absolute;inset:0;z-index:9;display:none;align-items:center;justify-content:center;padding:20px;background:rgba(30,25,18,.66)}
+.ending-ov{position:absolute;inset:0;z-index:9;display:none;align-items:center;justify-content:center;
+  padding:calc(20px + var(--sat)) calc(20px + var(--sar)) calc(20px + var(--sab)) calc(20px + var(--sal));
+  background:rgba(30,25,18,.66)}
 .ending-ov.open{display:flex}
-.ending-card{background:var(--surface);border-radius:20px;padding:28px 22px;max-width:400px;width:100%;text-align:center;
-  max-height:86dvh;overflow-y:auto;box-shadow:0 20px 50px rgba(0,0,0,.4)}
+.ending-card{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:28px 22px;max-width:400px;width:100%;text-align:center;
+  max-height:100%;overflow-y:auto;overscroll-behavior:contain;
+  box-shadow:0 20px 50px rgba(0,0,0,.4), inset 0 0 0 3px rgba(255,253,248,.9), inset 0 0 0 4px rgba(223,211,188,.55)}
 .ending-card .kicker{font-size:11px;letter-spacing:.24em;color:var(--muted);font-weight:700}
 .ending-card h2{font-family:var(--serif);font-size:25px;margin:9px 0 6px;line-height:1.2}
 .ending-card .badge{color:var(--accent);font-weight:700;font-size:13.5px}
@@ -279,18 +320,21 @@ textarea.field{min-height:130px;resize:vertical;font-size:13px;line-height:1.5}
 .native-demo-title{font-family:var(--serif);font-weight:700;font-size:15px;margin-bottom:3px}
 
 /* --- нижняя навигация --- */
-.tabbar{display:flex;border-top:1px solid var(--line);background:var(--surface);padding-bottom:var(--sab);flex:0 0 auto}
+.tabbar{display:flex;border-top:1px solid var(--line);background:var(--surface);
+  padding:0 var(--sar) var(--sab) var(--sal);flex:0 0 auto}
 .tabbar button{flex:1;padding:9px 2px 8px;font-size:10.5px;font-weight:700;color:var(--muted);
   display:flex;flex-direction:column;align-items:center;gap:3px;letter-spacing:.03em;min-height:56px;justify-content:center}
 .tabbar button .ic{font-size:19px;line-height:1}
 .tabbar button.active{color:var(--accent-dark)}
 
 /* --- модалки --- */
+/* Модалки целиком внутри безопасной зоны: кнопки не под статус-баром и не под панелью жестов */
 .modal-ov{position:fixed;inset:0;z-index:50;display:none;align-items:center;justify-content:center;
-  background:rgba(30,25,18,.6);padding:20px}
+  background:rgba(30,25,18,.6);
+  padding:calc(16px + var(--sat)) calc(16px + var(--sar)) calc(16px + var(--sab)) calc(16px + var(--sal))}
 .modal-ov.open{display:flex}
 .modal{background:var(--surface);border-radius:19px;padding:24px 20px;width:100%;max-width:400px;
-  max-height:88dvh;overflow-y:auto;box-shadow:0 20px 50px rgba(0,0,0,.4)}
+  max-height:100%;overflow-y:auto;overscroll-behavior:contain;box-shadow:0 20px 50px rgba(0,0,0,.4)}
 .modal h3{font-family:var(--serif);font-size:20px;margin-bottom:9px;line-height:1.25}
 .modal p{font-size:14px;line-height:1.6;color:#4a4236}
 .modal .btn{margin-top:10px}

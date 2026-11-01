@@ -11,7 +11,12 @@ function refCodeFrom(id) {
   let h = 0; for (const c of id) h = (h * 31 + c.charCodeAt(0)) >>> 0;
   return 'NV-' + h.toString(36).toUpperCase().padStart(6, '0').slice(0, 6);
 }
-function todayKey() { return new Date().toISOString().slice(0, 10); }
+/* Ключ дня по ЛОКАЛЬНОЙ дате телефона (не UTC!): иначе «завтра» для ежедневного
+   бонуса, заданий и серии дней наступало бы в 3 часа ночи по Москве. */
+function todayKey(d = new Date()) {
+  const p = n => String(n).padStart(2, '0');
+  return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())}`;
+}
 
 function defaultSave() {
   const id = uid();
@@ -28,7 +33,6 @@ function defaultSave() {
       typewriter: true,               // печатная машинка: текст по символам
       typeMs: null,                   // скорость машинки (мс); null = из конфига
       fontSize: 'm',                  // 's' | 'm' | 'l' — размер текста реплик
-      autoPlay: false,                // авточтение: реплики листаются сами
       music: true,                    // фоновая музыка/атмосфера (WebAudio)
       weatherFx: true,                // живые эффекты погоды (снег/дождь) в сценах
       notify: false,                  // локальные уведомления (Android)
@@ -58,7 +62,9 @@ const Store = {
     if (this.data.ads.lastInterstitialAt === undefined) this.data.ads.lastInterstitialAt = 0;
     // мягкая миграция вложенных объектов для старых сохранений
     const def = defaultSave();
+    this.data.user = Object.assign({}, def.user, this.data.user || {});
     this.data.settings = Object.assign({}, def.settings, this.data.settings || {});
+    delete this.data.settings.autoPlay; // авточтение убрано из приложения
     this.data.meta = Object.assign({}, def.meta, this.data.meta || {});
     this.data.meta.streak = Object.assign({}, def.meta.streak, this.data.meta.streak || {});
     this.data.meta.lifetime = Object.assign({}, def.meta.lifetime, this.data.meta.lifetime || {});

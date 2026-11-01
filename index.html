@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
 <meta name="theme-color" content="#F7F2E7">
 <title>Новелла — интерактивные истории</title>
 <link rel="stylesheet" href="css/style.css">
@@ -65,9 +65,8 @@
         <button class="icon-btn" id="player-exit" aria-label="Выйти из истории">←</button>
         <div class="player-title" id="player-title"></div>
         <button class="icon-btn" id="player-skip" aria-label="Пропустить прочитанное" title="Пропустить прочитанное">»</button>
-        <button class="icon-btn" id="player-auto" aria-label="Авточтение" title="Авточтение">▷</button>
         <button class="icon-btn" id="player-saves" aria-label="Сохранения" title="Сохранения">⚑</button>
-        <button class="icon-btn" id="player-log" aria-label="Журнал">≡</button>
+        <button class="icon-btn" id="player-log" aria-label="Журнал">☰</button>
         <button class="player-gems js-gems" aria-label="Кристаллы"><span style="color:var(--crystal)">◆</span><span class="js-gems-num">0</span></button>
       </div>
       <div class="chars" id="chars"></div>
@@ -76,8 +75,8 @@
       <div class="player-lower">
         <div class="choices" id="choices"></div>
         <div class="dialogue-wrap">
+          <div class="speaker" id="speaker" style="display:none"></div>
           <div class="dialogue" id="dialogue">
-            <div class="speaker" id="speaker"></div>
             <div class="dialogue-text" id="dialogue-text"></div>
             <div class="dialogue-next" id="dialogue-next">▾</div>
           </div>
@@ -86,7 +85,7 @@
 
       <div class="ending-ov" id="ending-ov">
         <div class="ending-card">
-          <div class="kicker">ФИНАЛ ИСТОРИИ</div>
+          <div class="kicker">❦ &nbsp;ФИНАЛ ИСТОРИИ&nbsp; ❦</div>
           <h2 id="ending-title"></h2>
           <div class="badge" id="ending-badge"></div>
           <p id="ending-text"></p>
@@ -213,10 +212,6 @@
             <button data-font="m">Обычно</button>
             <button data-font="l">Крупнее</button>
           </div>
-        </div>
-        <div class="switch-row" style="margin-bottom:14px">
-          <div><div class="row-title">Авточтение</div><div class="row-sub">Реплики листаются сами. Останавливается на выборах. В плеере — кнопка ▷.</div></div>
-          <button class="mini-btn" id="autoplay-toggle"></button>
         </div>
         <div class="switch-row" style="margin-bottom:14px">
           <div><div class="row-title">Музыка и атмосфера</div><div class="row-sub">Спокойный фон во время чтения. Работает без интернета.</div></div>

@@ -84,7 +84,6 @@ const WeatherFX = {
 
 const UI = {
   screen: 'library',
-  autoTimer: null,
   detailId: null,
   pendingChoice: null,   // {idx, cost} — выбор, на который не хватило кристаллов
   pendingRewardGrant: null, // колбэк начисления для демо-рекламы в веб-режиме
@@ -111,8 +110,10 @@ const UI = {
     if (name === 'shop') this.renderShop();
     if (name === 'profile') this.renderProfile();
     if (name === 'shelf') this.renderShelf();
-    if (name !== 'player') { Engine.stopTyping(); this.clearAuto(); WeatherFX.apply(null); }
-    window.scrollTo(0, 0);
+    if (name !== 'player') { Engine.stopTyping(); WeatherFX.apply(null); }
+    // Экран истории всегда открывается сверху; позиция скролла библиотеки
+    // намеренно сохраняется (удобно возвращаться к списку).
+    if (name === 'detail') { const s = $('#screen-detail .scroll'); if (s) s.scrollTop = 0; }
   },
 
   toast(text, ms = 2600) {
@@ -129,6 +130,10 @@ const UI = {
   },
   closeModal(id) {
     $('#' + id).classList.remove('open');
+    // Закрытие ЛЮБЫМ способом (кнопка, аппаратная «Назад», фон) обязано завершать
+    // висящие состояния: confirm-промис и недосмотренную демо-рекламу.
+    if (id === 'modal-confirm' && this.confirmResolve) { this.confirmResolve(false); this.confirmResolve = null; }
+    if (id === 'modal-ad') this.pendingRewardGrant = null;
     if (this.screen === 'library' && !$('.modal-ov.open')) this.syncFeedAds();
   },
 
@@ -185,7 +190,8 @@ const UI = {
       const positionShown = () => slots.forEach(slot => {
         const id = slot.dataset.slot;
         if (this.feedDismissed[id] || !Ads.isFeedShown(id)) return;
-        Ads.positionFeedAd(id, slot.getBoundingClientRect(), inView(slot.getBoundingClientRect()));
+        const rect = slot.getBoundingClientRect();
+        Ads.positionFeedAd(id, rect, inView(rect));
       });
       positionShown();
       for (const slot of slots) {
@@ -253,7 +259,7 @@ const UI = {
     if (!tabs) return;
     if (!hasShort || !hasLong) { tabs.innerHTML = ''; tabs.style.display = 'none'; return; }
     tabs.style.display = '';
-    const mk = (val, label) => `<button data-fmt="${val}" class="${this.libFormat === val ? 'on' : ''}">${label}</button>`;
+    const mk = (val, label) => `<button data-fmt="${val}" class="${this.libFormat === val ? 'active' : ''}">${label}</button>`;
     tabs.innerHTML = mk('short', 'Короткие · 15–20 мин') + mk('long', 'Длинные · 1–2 часа');
     tabs.querySelectorAll('button').forEach(b => b.addEventListener('click', () => {
       if (this.libFormat === b.dataset.fmt) return;
@@ -458,7 +464,6 @@ const UI = {
     });
     wrap.dataset.count = String(wrap.children.length || 1);
     WeatherFX.apply(WeatherFX.guess(sc));
-    $('#player-auto').classList.toggle('active', !!Store.data.settings.autoPlay);
     this.preloadBg(story, sc);
   },
 
@@ -477,9 +482,10 @@ const UI = {
     if (ln.type === 'narration' || !ch) { spk.style.display = 'none'; }
     else {
       spk.style.display = 'block';
-      spk.textContent = ch.name + (ln.type === 'thought' ? ' · мысли' : '');
+      spk.textContent = '❦ ' + ch.name + (ln.type === 'thought' ? ' · мысли' : '');
       spk.style.color = safeColor(ch.color) || 'var(--accent-dark)';
     }
+    $('#dialogue').classList.toggle('has-speaker', spk.style.display !== 'none');
     txt.className = 'dialogue-text ' + (ln.type === 'narration' ? 'narration' : ln.type === 'thought' ? 'thought' : '');
     $('#dialogue').scrollTop = 0; // новая реплика всегда с начала, даже если прошлую прокручивали
     $('#dialogue-next').style.visibility = 'hidden';
@@ -492,7 +498,7 @@ const UI = {
       el.classList.toggle('speaking', same);
     });
     Engine.startTyping(txt, String(ln.text));
-    if (!Store.data.settings.typewriter) { $('#dialogue-next').style.visibility = 'visible'; this.scheduleAuto(); }
+    if (!Store.data.settings.typewriter) $('#dialogue-next').style.visibility = 'visible';
     $('#player-progress').style.width = Engine.progressPct() + '%';
   },
 
@@ -507,11 +513,12 @@ const UI = {
       const paid = Engine.isPaid(ch, idx);
       const cost = ch.crystals || 0;
       if (lockReason) b.classList.add('locked');
+      if (cost > 0 && !paid) b.classList.add('paid-choice');
       let right = '';
       if (cost > 0) right = paid
         ? `<span class="cost paid">✓ куплено</span>`
         : `<span class="cost">◆ ${cost}</span>`;
-      b.innerHTML = `<span class="txt">${esc(ch.text)}${lockReason ? `<span class="lock-note">🔒 ${esc(lockReason)}</span>` : ''}</span>${right}`;
+      b.innerHTML = `<span class="choice-mark">${cost > 0 ? '◆' : '❦'}</span><span class="txt">${esc(ch.text)}${lockReason ? `<span class="lock-note">✕ ${esc(lockReason)}</span>` : ''}</span>${right}`;
       b.addEventListener('click', () => Engine.choose(idx));
       wrap.appendChild(b);
     });
@@ -651,7 +658,7 @@ const UI = {
 
     const u = Store.data.user;
     $('#claim-card').style.display = u.refClaimed ? 'none' : 'block';
-    $('#claim-note').textContent = u.referredBy ? '' : '';
+    $('#claim-note').textContent = u.referredBy ? `Бонус новичка уже активирован по коду ${u.referredBy}.` : '';
     $('#profile-id-line').textContent = `ID игрока: ${u.id}${u.referredBy ? ` · приглашён по коду ${u.referredBy}` : ''}`;
 
     this.notifyAchievements(Meta.checkAchievements());
@@ -662,7 +669,6 @@ const UI = {
     const speedKey = !cfg.typewriter ? 'instant' : (cfg.typeMs >= 24 ? 'slow' : (cfg.typeMs && cfg.typeMs <= 8 ? 'fast' : 'normal'));
     $$('#seg-speed button').forEach(b => b.classList.toggle('active', b.dataset.speed === speedKey));
     $$('#seg-font button').forEach(b => b.classList.toggle('active', b.dataset.font === (cfg.fontSize || 'm')));
-    $('#autoplay-toggle').textContent = cfg.autoPlay ? 'Вкл' : 'Выкл';
     $('#music-toggle').textContent = cfg.music ? 'Вкл' : 'Выкл';
     $('#weather-toggle').textContent = cfg.weatherFx ? 'Вкл' : 'Выкл';
     $('#notify-toggle').textContent = cfg.notify ? 'Вкл' : 'Выкл';
@@ -728,7 +734,7 @@ const UI = {
           <div class="story-genre">${story.format === 'long' ? 'Длинный роман · ' : ''}открыто ${found.length} из ${ends.length}</div>
           <div class="shelf-ends">${ends.map(e => found.includes(e.id)
             ? `<span class="end-chip open">✓ ${esc(e.title || 'Финал')}${e.badge ? ` · ${esc(e.badge)}` : ''}</span>`
-            : `<span class="end-chip locked">🔒 ? ? ?${e.badge ? ` · ${esc(e.badge)}` : ''}</span>`).join('')}</div>
+            : `<span class="end-chip locked">◇ ? ? ?${e.badge ? ` · ${esc(e.badge)}` : ''}</span>`).join('')}</div>
         </div>`;
       wrap.appendChild(card);
     });
@@ -769,8 +775,12 @@ const UI = {
     const story = Engine.story; if (!story) return;
     const sv = Meta.listSaves(story.id)[idx]; if (!sv) return;
     Engine.stopTyping();
-    this.clearAuto();
     Engine.state = JSON.parse(JSON.stringify(sv.snap));
+    // Закладка могла быть сделана в прошлой версии истории: проверяем границы.
+    if (!story.scenes[Engine.state.sceneId]) { this.toast('Это сохранение больше не подходит к истории'); Engine.state = Engine.freshState(story); }
+    const scL = story.scenes[Engine.state.sceneId];
+    Engine.state.lineIndex = Math.max(0, Math.min(Engine.state.lineIndex || 0, scL.lines.length - 1));
+    Engine._finishedSceneId = null;
     if (!Engine.state.seen) Engine.state.seen = (Engine.state.visited || []).slice();
     Engine.seenBefore = new Set([...(Engine.state.seen || []), ...(Engine.state.visited || [])]);
     Engine.persist();
@@ -779,17 +789,6 @@ const UI = {
     this.closeModal('modal-saves');
     this.toast('Сохранение загружено');
   },
-
-  /* ---------------- АВТОЧТЕНИЕ ---------------- */
-  scheduleAuto() {
-    this.clearAuto();
-    if (!Store.data.settings.autoPlay || this.screen !== 'player') return;
-    if ($('#choices').classList.contains('open') || $('#ending-ov').classList.contains('open') || $('.modal-ov.open')) return;
-    this.autoTimer = setTimeout(() => {
-      if (this.screen === 'player' && !$('#choices').classList.contains('open') && !$('#ending-ov').classList.contains('open') && !$('.modal-ov.open')) Engine.advance();
-    }, CONFIG.meta.autoDelayMs);
-  },
-  clearAuto() { if (this.autoTimer) { clearTimeout(this.autoTimer); this.autoTimer = null; } },
 
   applyReadSettings() {
     document.body.dataset.font = Store.data.settings.fontSize || 'm';
@@ -880,11 +879,7 @@ const UI = {
         return;
       }
       const closeEl = e.target.closest('[data-close]');
-      if (closeEl) {
-        this.closeModal(closeEl.dataset.close);
-        if (closeEl.dataset.close === 'modal-confirm' && this.confirmResolve) { this.confirmResolve(false); this.confirmResolve = null; }
-        return;
-      }
+      if (closeEl) { this.closeModal(closeEl.dataset.close); return; }
     });
     // кристаллы-пилюли в плеере открывают «где взять», остальные ведут в магазин (data-go выше)
     $$('.js-gems').forEach(b => b.addEventListener('click', () => {
@@ -902,26 +897,19 @@ const UI = {
     window.addEventListener('resize', () => { this.syncFeedAds(); WeatherFX._resize(); });
 
     // плеер
-    $('#dialogue').addEventListener('click', () => { this.clearAuto(); Engine.advance(); });
+    $('#dialogue').addEventListener('click', () => Engine.advance());
     $('#stage').addEventListener('click', e => {
       if ($('#choices').classList.contains('open') || $('#ending-ov').classList.contains('open')) return;
-      if (e.target === $('#stage') || e.target.closest('#stage-bg') || e.target.closest('.stage-shade')) { this.clearAuto(); Engine.advance(); }
+      if (e.target === $('#stage') || e.target.closest('#stage-bg') || e.target.closest('.stage-shade')) Engine.advance();
     });
     document.addEventListener('keydown', e => {
-      if (this.screen === 'player' && (e.code === 'Space' || e.code === 'Enter') && !$('#choices').classList.contains('open')) {
-        e.preventDefault(); this.clearAuto(); Engine.advance();
+      const blocked = $('#choices').classList.contains('open') || $('#ending-ov').classList.contains('open') || $('.modal-ov.open');
+      if (this.screen === 'player' && (e.code === 'Space' || e.code === 'Enter') && !blocked) {
+        e.preventDefault(); Engine.advance();
       }
     });
     $('#player-skip').addEventListener('click', () => {
-      this.clearAuto();
       if (!Engine.skipRead()) this.toast('Дальше — ещё не прочитанное ♡');
-    });
-    $('#player-auto').addEventListener('click', () => {
-      const st = Store.data.settings;
-      st.autoPlay = !st.autoPlay; Store.save();
-      $('#player-auto').classList.toggle('active', st.autoPlay);
-      this.toast(st.autoPlay ? 'Авточтение включено — листаю сама' : 'Авточтение выключено');
-      if (st.autoPlay) this.scheduleAuto(); else this.clearAuto();
     });
     $('#player-saves').addEventListener('click', () => { this.renderSaves(); this.openModal('modal-saves'); });
     $('#player-exit').addEventListener('click', () => this.go('library'));
@@ -980,11 +968,6 @@ const UI = {
       Store.data.settings.fontSize = b.dataset.font; Store.save();
       this.applyReadSettings(); this.renderProfile();
     });
-    $('#autoplay-toggle').addEventListener('click', () => {
-      Store.data.settings.autoPlay = !Store.data.settings.autoPlay; Store.save();
-      if (!Store.data.settings.autoPlay) this.clearAuto();
-      this.renderProfile();
-    });
     $('#music-toggle').addEventListener('click', () => {
       Store.data.settings.music = !Store.data.settings.music; Store.save();
       Ambient.sync(); this.renderProfile();
@@ -1017,11 +1000,12 @@ const UI = {
 
     // confirm
     $('#confirm-yes').addEventListener('click', () => {
+      const res = this.confirmResolve; this.confirmResolve = null; // до closeModal, иначе он ответит «нет»
       this.closeModal('modal-confirm');
-      if (this.confirmResolve) { this.confirmResolve(true); this.confirmResolve = null; }
+      if (res) res(true);
     });
     $('#modal-confirm').addEventListener('click', e => {
-      if (e.target.id === 'modal-confirm' && this.confirmResolve) { this.confirmResolve(false); this.confirmResolve = null; }
+      if (e.target.id === 'modal-confirm') this.closeModal('modal-confirm'); // тап по фону = «Отмена»
     });
 
     // события движка
@@ -1037,11 +1021,10 @@ const UI = {
         if (payload && payload.paid) Meta.bump('paidChoices');
         this.notifyAchievements(Meta.checkAchievements());
       }
-      if (type === 'typing-done') { $('#dialogue-next').style.visibility = 'visible'; this.scheduleAuto(); }
+      if (type === 'typing-done') $('#dialogue-next').style.visibility = 'visible';
       if (type === 'show-choices') this.renderChoices();
       if (type === 'ending') {
         Meta.bump('endings');
-        this.clearAuto();
         this.renderEnding(payload);
         const fresh = Meta.checkAchievements();
         setTimeout(() => this.notifyAchievements(fresh), 700);
@@ -1051,7 +1034,7 @@ const UI = {
         }
       }
       if (type === 'stat-change') payload.forEach((c, i) => setTimeout(() => this.toast(c, 1800), i * 350));
-      if (type === 'locked') this.toast('🔒 ' + payload);
+      if (type === 'locked') this.toast('✕ ' + payload);
       if (type === 'crystals-spent') { this.renderGems(true); }
       if (type === 'need-crystals') {
         this.pendingChoice = payload;
@@ -1119,7 +1102,7 @@ const UI = {
     if (window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.App) {
       window.Capacitor.Plugins.App.addListener('backButton', () => {
         const openModal = $('.modal-ov.open');
-        if (openModal) { openModal.classList.remove('open'); return; }
+        if (openModal) { this.closeModal(openModal.id); return; } // через closeModal: завершает confirm/рекламу и возвращает фид
         if ($('#ending-ov').classList.contains('open')) { this.go('library'); return; }
         if (this.screen === 'player' || this.screen === 'detail') { this.go('library'); return; }
         if (this.screen !== 'library') { this.go('library'); return; }
