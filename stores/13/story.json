@@ -23,17 +23,17 @@
   "heroine": {
    "name": "Анна",
    "color": "#6E5A44",
-   "image": "images/heroine.png"
+   "image": "images/heroine.jpg"
   },
   "heroine_smile": {
    "name": "Анна",
    "color": "#6E5A44",
-   "image": "images/heroine_smile.png"
+   "image": "images/heroine_smile.jpg"
   },
   "heroine_doubt": {
    "name": "Анна",
    "color": "#6E5A44",
-   "image": "images/heroine_doubt.png"
+   "image": "images/heroine_doubt.jpg"
   },
   "heroine_brave": {
    "name": "Анна",

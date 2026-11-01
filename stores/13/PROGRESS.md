@@ -29,5 +29,9 @@ bg-workshop.jpg (служебная теплица и чердак купола)
 - [x] Текст story.json (a–f): 168 сцен, 482 реплики, 64 мин, 31 точка выбора, 11 платных ×5◆
 - [x] art-prompts.json (21 позиция, sceneBackgrounds на все 168 сцен)
 - [x] BFS-баланс финалов: все 168 сцен достижимы; FREE → «Зимний сад» + «Своя оранжерея»; desire freeMax=9, порог 10; trust≥12, resolve≥7
-- [ ] Картинки: cover, 6 фонов, 14 портретов (пачками ≤10, по одной)
+- [~] Картинки (10/21): cover ✓, все 6 фонов ✓, портреты: heroine, heroine_smile, heroine_doubt ✓
+  Осталось (11): heroine_brave, heroine_tender, heroine_vulnerable, hero, hero_smile,
+  hero_doubt, hero_tender, hero_close, friend, friend_smile, director.
+  Промпты — в art-prompts.json (внешность повторять дословно). После генерации:
+  tools/optimize-story-images.py stores/13 (PNG->JPG, пути в story.json обновит сам)
 - [ ] Спрайты WebP (tools/make-character-sprites.py stores/13) — после всех портретов
