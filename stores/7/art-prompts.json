@@ -1,0 +1,162 @@
+{
+  "story": "stores/7",
+  "style": "semi-realistic painterly digital illustration, soft visible brushstrokes, muted watercolor-like shading, warm beige and earthy palette, gentle diffused light, elegant minimalist composition, cinematic, no photorealism, no anime, no manga, no 3D render, no text, no watermark",
+  "images": [
+    {
+      "file": "images/heroine.png",
+      "type": "character",
+      "prompt": "Vertical portrait, portrait orientation, taller than wide, 3:4 aspect ratio. Single person centered waist-up character portrait, entire head and shoulders visible, figure fills 75 percent of frame, hands fully inside frame. Background exactly solid flat light beige #EADFCB, no gradient, no shadow, no furniture, no frame or ground. Adult woman, 31 years old, oval face with light freckles, ash blonde hair in a short bob, bright gray eyes, fair cool-toned skin, slim build, wearing a dark blue t-shirt with the sleeves of a black work vest. calm professional expression looking at viewer with a hint of tiredness. semi-realistic painterly digital illustration, soft visible brushstrokes, muted watercolor-like shading, warm beige and earthy palette, gentle diffused light, elegant minimalist composition, cinematic, no photorealism, no anime, no manga, no 3D render, no text, no watermark"
+    },
+    {
+      "file": "images/heroine_smile.png",
+      "type": "character",
+      "prompt": "Use reference portrait for same person and outfit. Vertical portrait, portrait orientation, taller than wide, 3:4 aspect ratio. Single person centered waist-up, entire head and shoulders visible, hands within frame. Background exactly solid flat light beige #EADFCB, no gradient, no shadow, no furniture, no frame or ground. Adult woman, 31 years old, oval face with light freckles, ash blonde hair in a short bob, bright gray eyes, fair cool-toned skin, slim build, wearing a dark blue t-shirt with the sleeves of a black work vest. warm open smile, eyes softly lit, relaxed confident posture. semi-realistic painterly digital illustration, soft visible brushstrokes, muted watercolor-like shading, warm beige and earthy palette, gentle diffused light, elegant minimalist composition, cinematic, no photorealism, no anime, no manga, no 3D render, no text, no watermark"
+    },
+    {
+      "file": "images/heroine_doubt.png",
+      "type": "character",
+      "prompt": "Use reference portrait for same person and outfit. Vertical portrait, portrait orientation, taller than wide, 3:4 aspect ratio. Single person centered waist-up, entire head and shoulders visible, hands within frame. Background exactly solid flat light beige #EADFCB, no gradient, no shadow, no furniture, no frame or ground. Adult woman, 31 years old, oval face with light freckles, ash blonde hair in a short bob, bright gray eyes, fair cool-toned skin, slim build, wearing a dark blue t-shirt with the sleeves of a black work vest. slightly furrowed brow, worried thoughtful expression, lips pressed together, one hand raised near chin. semi-realistic painterly digital illustration, soft visible brushstrokes, muted watercolor-like shading, warm beige and earthy palette, gentle diffused light, elegant minimalist composition, cinematic, no photorealism, no anime, no manga, no 3D render, no text, no watermark"
+    },
+    {
+      "file": "images/heroine_brave.png",
+      "type": "character",
+      "prompt": "Use reference portrait for same person and outfit. Vertical portrait, portrait orientation, taller than wide, 3:4 aspect ratio. Single person centered waist-up, entire head and shoulders visible, hands within frame. Background exactly solid flat light beige #EADFCB, no gradient, no shadow, no furniture, no frame or ground. Adult woman, 31 years old, oval face with light freckles, ash blonde hair in a short bob, bright gray eyes, fair cool-toned skin, slim build, wearing a dark blue t-shirt with the sleeves of a black work vest. determined set jaw, resolute raised chin, eyes bright with resolve, squared shoulders. semi-realistic painterly digital illustration, soft visible brushstrokes, muted watercolor-like shading, warm beige and earthy palette, gentle diffused light, elegant minimalist composition, cinematic, no photorealism, no anime, no manga, no 3D render, no text, no watermark"
+    },
+    {
+      "file": "images/heroine_blush.png",
+      "type": "character",
+      "prompt": "Use reference portrait for same person and outfit. Vertical portrait, portrait orientation, taller than wide, 3:4 aspect ratio. Single person centered waist-up, entire head and shoulders visible, hands within frame. Background exactly solid flat light beige #EADFCB, no gradient, no shadow, no furniture, no frame or ground. Adult woman, 31 years old, oval face with light freckles, ash blonde hair in a short bob, bright gray eyes, fair cool-toned skin, slim build, wearing a dark blue t-shirt with the sleeves of a black work vest. soft bashful blush on cheeks, downcast eyes, faint shy smile, one hand tucking a strand of hair behind the ear. semi-realistic painterly digital illustration, soft visible brushstrokes, muted watercolor-like shading, warm beige and earthy palette, gentle diffused light, elegant minimalist composition, cinematic, no photorealism, no anime, no manga, no 3D render, no text, no watermark"
+    },
+    {
+      "file": "images/heroine_desire.png",
+      "type": "character",
+      "prompt": "Use reference portrait for same person and outfit. Vertical portrait, portrait orientation, taller than wide, 3:4 aspect ratio. Single person centered waist-up, entire head and shoulders visible, hands within frame. Background exactly solid flat light beige #EADFCB, no gradient, no shadow, no furniture, no frame or ground. Adult woman, 31 years old, oval face with light freckles, ash blonde hair in a short bob, bright gray eyes, fair cool-toned skin, slim build, wearing a dark blue t-shirt with the sleeves of a black work vest. slow parted lips, lowered lashes, warm intense gaze, flushed cheeks, hair slightly loose from the bob. Fully clothed, tasteful sensual mood, no nudity. semi-realistic painterly digital illustration, soft visible brushstrokes, muted watercolor-like shading, warm beige and earthy palette, gentle diffused light, elegant minimalist composition, cinematic, no photorealism, no anime, no manga, no 3D render, no text, no watermark"
+    },
+    {
+      "file": "images/heroine_vulnerable.png",
+      "type": "character",
+      "prompt": "Use reference portrait for same person and outfit. Vertical portrait, portrait orientation, taller than wide, 3:4 aspect ratio. Single person centered waist-up, entire head and shoulders visible, hands within frame. Background exactly solid flat light beige #EADFCB, no gradient, no shadow, no furniture, no frame or ground. Adult woman, 31 years old, oval face with light freckles, ash blonde hair in a short bob, bright gray eyes, fair cool-toned skin, slim build, wearing a dark blue t-shirt with the sleeves of a black work vest. tear-brimming eyes, parted lips, guarded but open expression, hand pressed to chest. semi-realistic painterly digital illustration, soft visible brushstrokes, muted watercolor-like shading, warm beige and earthy palette, gentle diffused light, elegant minimalist composition, cinematic, no photorealism, no anime, no manga, no 3D render, no text, no watermark"
+    },
+    {
+      "file": "images/heroine_tender.png",
+      "type": "character",
+      "prompt": "Use reference portrait for same person and outfit. Vertical portrait, portrait orientation, taller than wide, 3:4 aspect ratio. Single person centered waist-up, entire head and shoulders visible, hands within frame. Background exactly solid flat light beige #EADFCB, no gradient, no shadow, no furniture, no frame or ground. Adult woman, 31 years old, oval face with light freckles, ash blonde hair in a short bob, bright gray eyes, fair cool-toned skin, slim build, wearing a dark blue t-shirt with the sleeves of a black work vest. gentle serene smile, soft relaxed eyes, peaceful loving expression, head slightly tilted. semi-realistic painterly digital illustration, soft visible brushstrokes, muted watercolor-like shading, warm beige and earthy palette, gentle diffused light, elegant minimalist composition, cinematic, no photorealism, no anime, no manga, no 3D render, no text, no watermark"
+    },
+    {
+      "file": "images/hero.png",
+      "type": "character",
+      "prompt": "Vertical portrait, portrait orientation, taller than wide, 3:4 aspect ratio. Single person centered waist-up character portrait, entire head and shoulders visible, figure fills 75 percent of frame, hands fully inside frame. Background exactly solid flat light beige #EADFCB, no gradient, no shadow, no furniture, no frame or ground. Adult man, 36 years old, angular face with light stubble, dark hair with a side part falling over the forehead, warm dark brown eyes, tanned skin, tall slender build, wearing a dark green linen shirt with rolled-up sleeves and an open charcoal jacket. composed quiet expression looking at viewer, slightly guarded. semi-realistic painterly digital illustration, soft visible brushstrokes, muted watercolor-like shading, warm beige and earthy palette, gentle diffused light, elegant minimalist composition, cinematic, no photorealism, no anime, no manga, no 3D render, no text, no watermark"
+    },
+    {
+      "file": "images/hero_smile.png",
+      "type": "character",
+      "prompt": "Use reference portrait for same person and outfit. Vertical portrait, portrait orientation, taller than wide, 3:4 aspect ratio. Single person centered waist-up, entire head and shoulders visible, hands within frame. Background exactly solid flat light beige #EADFCB, no gradient, no shadow, no furniture, no frame or ground. Adult man, 36 years old, angular face with light stubble, dark hair with a side part falling over the forehead, warm dark brown eyes, tanned skin, tall slender build, wearing a dark green linen shirt with rolled-up sleeves and an open charcoal jacket. broad genuine smile, warm crinkled eyes, relaxed open posture. semi-realistic painterly digital illustration, soft visible brushstrokes, muted watercolor-like shading, warm beige and earthy palette, gentle diffused light, elegant minimalist composition, cinematic, no photorealism, no anime, no manga, no 3D render, no text, no watermark"
+    },
+    {
+      "file": "images/hero_doubt.png",
+      "type": "character",
+      "prompt": "Use reference portrait for same person and outfit. Vertical portrait, portrait orientation, taller than wide, 3:4 aspect ratio. Single person centered waist-up, entire head and shoulders visible, hands within frame. Background exactly solid flat light beige #EADFCB, no gradient, no shadow, no furniture, no frame or ground. Adult man, 36 years old, angular face with light stubble, dark hair with a side part falling over the forehead, warm dark brown eyes, tanned skin, tall slender build, wearing a dark green linen shirt with rolled-up sleeves and an open charcoal jacket. brow slightly drawn, tired heavy-lidded eyes, mouth in a tight line, one hand rubbing the back of the neck. semi-realistic painterly digital illustration, soft visible brushstrokes, muted watercolor-like shading, warm beige and earthy palette, gentle diffused light, elegant minimalist composition, cinematic, no photorealism, no anime, no manga, no 3D render, no text, no watermark"
+    },
+    {
+      "file": "images/hero_close.png",
+      "type": "character",
+      "prompt": "Use reference portrait for same person and outfit. Vertical portrait, portrait orientation, taller than wide, 3:4 aspect ratio. Single person centered waist-up, entire head and shoulders visible, hands within frame. Background exactly solid flat light beige #EADFCB, no gradient, no shadow, no furniture, no frame or ground. Adult man, 36 years old, angular face with light stubble, dark hair with a side part falling over the forehead, warm dark brown eyes, tanned skin, tall slender build, wearing a dark green linen shirt with rolled-up sleeves and an open charcoal jacket. close-up intense tender gaze, slight soft smile, warm focused expression, head slightly tilted toward viewer. semi-realistic painterly digital illustration, soft visible brushstrokes, muted watercolor-like shading, warm beige and earthy palette, gentle diffused light, elegant minimalist composition, cinematic, no photorealism, no anime, no manga, no 3D render, no text, no watermark"
+    },
+    {
+      "file": "images/hero_tender.png",
+      "type": "character",
+      "prompt": "Use reference portrait for same person and outfit. Vertical portrait, portrait orientation, taller than wide, 3:4 aspect ratio. Single person centered waist-up, entire head and shoulders visible, hands within frame. Background exactly solid flat light beige #EADFCB, no gradient, no shadow, no furniture, no frame or ground. Adult man, 36 years old, angular face with light stubble, dark hair with a side part falling over the forehead, warm dark brown eyes, tanned skin, tall slender build, wearing a dark green linen shirt with rolled-up sleeves and an open charcoal jacket. soft protective smile, gentle relaxed eyes, calm loving expression, hand lightly raised as if steadying someone. semi-realistic painterly digital illustration, soft visible brushstrokes, muted watercolor-like shading, warm beige and earthy palette, gentle diffused light, elegant minimalist composition, cinematic, no photorealism, no anime, no manga, no 3D render, no text, no watermark"
+    },
+    {
+      "file": "images/friend.png",
+      "type": "character",
+      "prompt": "Vertical portrait, portrait orientation, taller than wide, 3:4 aspect ratio. Single person centered waist-up character portrait, entire head and shoulders visible, figure fills 75 percent of frame, hands fully inside frame. Background exactly solid flat light beige #EADFCB, no gradient, no shadow, no furniture, no frame or ground. Adult woman, 29 years old, round face with a small scar above one eyebrow, red hair in a messy bun, green eyes, warm freckled skin, sturdy build, wearing an ochre knit sweater under an open flannel shirt. warm friendly expression looking at viewer with a slight knowing smile. semi-realistic painterly digital illustration, soft visible brushstrokes, muted watercolor-like shading, warm beige and earthy palette, gentle diffused light, elegant minimalist composition, cinematic, no photorealism, no anime, no manga, no 3D render, no text, no watermark"
+    },
+    {
+      "file": "images/friend_smile.png",
+      "type": "character",
+      "prompt": "Use reference portrait for same person and outfit. Vertical portrait, portrait orientation, taller than wide, 3:4 aspect ratio. Single person centered waist-up, entire head and shoulders visible, hands within frame. Background exactly solid flat light beige #EADFCB, no gradient, no shadow, no furniture, no frame or ground. Adult woman, 29 years old, round face with a small scar above one eyebrow, red hair in a messy bun, green eyes, warm freckled skin, sturdy build, wearing an ochre knit sweater under an open flannel shirt. bright cheerful laugh, crinkled eyes, warm open expression. semi-realistic painterly digital illustration, soft visible brushstrokes, muted watercolor-like shading, warm beige and earthy palette, gentle diffused light, elegant minimalist composition, cinematic, no photorealism, no anime, no manga, no 3D render, no text, no watermark"
+    },
+    {
+      "file": "images/friend_doubt.png",
+      "type": "character",
+      "prompt": "Use reference portrait for same person and outfit. Vertical portrait, portrait orientation, taller than wide, 3:4 aspect ratio. Single person centered waist-up, entire head and shoulders visible, hands within frame. Background exactly solid flat light beige #EADFCB, no gradient, no shadow, no furniture, no frame or ground. Adult woman, 29 years old, round face with a small scar above one eyebrow, red hair in a messy bun, green eyes, warm freckled skin, sturdy build, wearing an ochre knit sweater under an open flannel shirt. concerned frown, worried eyes, one hand gesturing frozen mid-word. semi-realistic painterly digital illustration, soft visible brushstrokes, muted watercolor-like shading, warm beige and earthy palette, gentle diffused light, elegant minimalist composition, cinematic, no photorealism, no anime, no manga, no 3D render, no text, no watermark"
+    },
+    {
+      "file": "images/director.png",
+      "type": "character",
+      "prompt": "Vertical portrait, portrait orientation, taller than wide, 3:4 aspect ratio. Single person centered waist-up character portrait, entire head and shoulders visible, figure fills 75 percent of frame, hands fully inside frame. Background exactly solid flat light beige #EADFCB, no gradient, no shadow, no furniture, no frame or ground. Adult man, 54 years old, square face with a double chin, gray hair combed to the side, pale blue eyes, pinkish skin, heavy build, wearing a dark suit jacket over a burgundy shirt with the top button open. smooth measured expression looking at viewer, confident producer calm. semi-realistic painterly digital illustration, soft visible brushstrokes, muted watercolor-like shading, warm beige and earthy palette, gentle diffused light, elegant minimalist composition, cinematic, no photorealism, no anime, no manga, no 3D render, no text, no watermark"
+    },
+    {
+      "file": "images/bg-stage.jpg",
+      "type": "background",
+      "prompt": "Vertical 9:16 empty scene. Vertical 9:16 empty theater stage, deep red velvet curtains, polished wooden floor, a single ghost light in the center, hint of dark audience seats at the top, warm spotlight. No people, no characters, no silhouettes. semi-realistic painterly digital illustration, soft visible brushstrokes, muted watercolor-like shading, warm beige and earthy palette, gentle diffused light, elegant minimalist composition, cinematic, no photorealism, no anime, no manga, no 3D render, no text, no watermark"
+    },
+    {
+      "file": "images/bg-backstage.jpg",
+      "type": "background",
+      "prompt": "Vertical 9:16 empty scene. Vertical 9:16 empty theater backstage corridor, mirrors, costume racks, warm practical lamps, coiled cables on the floor, half-open door to the dark stage. No people, no characters, no silhouettes. semi-realistic painterly digital illustration, soft visible brushstrokes, muted watercolor-like shading, warm beige and earthy palette, gentle diffused light, elegant minimalist composition, cinematic, no photorealism, no anime, no manga, no 3D render, no text, no watermark"
+    },
+    {
+      "file": "images/bg-hall.jpg",
+      "type": "background",
+      "prompt": "Vertical 9:16 empty scene. Vertical 9:16 empty theater audience hall, rows of red velvet seats, gilded proscenium, chandelier, warm amber light, quiet solemn atmosphere. No people, no characters, no silhouettes. semi-realistic painterly digital illustration, soft visible brushstrokes, muted watercolor-like shading, warm beige and earthy palette, gentle diffused light, elegant minimalist composition, cinematic, no photorealism, no anime, no manga, no 3D render, no text, no watermark"
+    },
+    {
+      "file": "images/bg-office.jpg",
+      "type": "background",
+      "prompt": "Vertical 9:16 empty scene. Vertical 9:16 empty theater director office, wooden desk with an open program booklet, framed portrait, window with an autumn evening view, warm desk lamp. No people, no characters, no silhouettes. semi-realistic painterly digital illustration, soft visible brushstrokes, muted watercolor-like shading, warm beige and earthy palette, gentle diffused light, elegant minimalist composition, cinematic, no photorealism, no anime, no manga, no 3D render, no text, no watermark"
+    },
+    {
+      "file": "images/bg-light.jpg",
+      "type": "background",
+      "prompt": "Vertical 9:16 empty scene. Vertical 9:16 empty lighting control room, dimmer console with rows of glowing switches, hanging cables, small window with a view of the dark stage, warm amber light. No people, no characters, no silhouettes. semi-realistic painterly digital illustration, soft visible brushstrokes, muted watercolor-like shading, warm beige and earthy palette, gentle diffused light, elegant minimalist composition, cinematic, no photorealism, no anime, no manga, no 3D render, no text, no watermark"
+    },
+    {
+      "file": "images/bg-garden.jpg",
+      "type": "background",
+      "prompt": "Vertical 9:16 empty scene. Vertical 9:16 empty old theater courtyard, brick facade with a marquee, wooden bench, golden autumn leaves, first evening lights. No people, no characters, no silhouettes. semi-realistic painterly digital illustration, soft visible brushstrokes, muted watercolor-like shading, warm beige and earthy palette, gentle diffused light, elegant minimalist composition, cinematic, no photorealism, no anime, no manga, no 3D render, no text, no watermark"
+    },
+    {
+      "file": "cover.jpg",
+      "type": "cover",
+      "prompt": "Vertical 2:3 illustrated book cover without any lettering. An adult man and an adult woman stand very close together on an old theater stage at golden hour, both fully clothed — she in a black work vest over a dark blue t-shirt with an ash blonde bob, he in a charcoal jacket over a dark green linen shirt with light stubble — his hand resting gently on her shoulder, gazes warm and quiet, deep red velvet curtains and a soft ghost light behind them, intimate but tasteful mood, upper bodies visible. Use the two reference portraits for character identity and clothing. Restrained elegant composition, no text, no watermark. semi-realistic painterly digital illustration, soft visible brushstrokes, muted watercolor-like shading, warm beige and earthy palette, gentle diffused light, elegant minimalist composition, cinematic, no photorealism, no anime, no manga, no 3D render, no text, no watermark"
+    }
+  ],
+  "sceneBackgrounds": {
+    "s1": "images/bg-garden.jpg",
+    "s2": "images/bg-backstage.jpg",
+    "s2a": "images/bg-backstage.jpg",
+    "s2b": "images/bg-backstage.jpg",
+    "s3": "images/bg-stage.jpg",
+    "s4": "images/bg-office.jpg",
+    "s4a": "images/bg-stage.jpg",
+    "s5": "images/bg-backstage.jpg",
+    "s6": "images/bg-light.jpg",
+    "s6a": "images/bg-light.jpg",
+    "s6b": "images/bg-light.jpg",
+    "s7": "images/bg-office.jpg",
+    "s8": "images/bg-backstage.jpg",
+    "s8a": "images/bg-light.jpg",
+    "s8b": "images/bg-backstage.jpg",
+    "s9": "images/bg-garden.jpg",
+    "s10": "images/bg-backstage.jpg",
+    "s10a": "images/bg-light.jpg",
+    "s10b": "images/bg-light.jpg",
+    "s11": "images/bg-stage.jpg",
+    "s12": "images/bg-office.jpg",
+    "s12a": "images/bg-office.jpg",
+    "s12b": "images/bg-office.jpg",
+    "s13": "images/bg-stage.jpg",
+    "s14": "images/bg-garden.jpg",
+    "s15": "images/bg-garden.jpg",
+    "s15a": "images/bg-garden.jpg",
+    "s15b": "images/bg-garden.jpg",
+    "s16": "images/bg-garden.jpg",
+    "s16a": "images/bg-stage.jpg",
+    "s17": "images/bg-garden.jpg",
+    "ending_svet": "images/bg-garden.jpg",
+    "ending_prosvet": "images/bg-stage.jpg",
+    "ending_zal": "images/bg-hall.jpg"
+  }
+}
