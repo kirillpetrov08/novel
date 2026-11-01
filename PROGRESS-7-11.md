@@ -79,6 +79,15 @@
 - [ ] самопроверка
 - [ ] коммит
 
+## ИТОГ (финальное состояние)
+
+- stores/7: текст готов (коммит dbee59a + 9f66eea), картинки 10/24 (пачка 1 портретов).
+- stores/8/9/10/11: текст готов (коммиты d0d0b15, e598bb3, 10b595e, 9f66eea... см. git log), картинки 0/24.
+- generate_image: жёсткий лимит 10 сгенерированных изображений исчерпан на всю сессию; все последующие вызовы возвращают «limit of 10 reached». Фолбэк по ТЗ: доставляем ТЕКСТ + ПРОМПТЫ, КАРТИНОК НЕТ (кроме 10 уже сгенерированных в stores/7).
+- Для дособора картинок (новый сеанс): брать промпты из stores/N/art-prompts.json; оставшиеся файлы:
+  - stores/7: bg-office, bg-light, bg-garden, cover + (пачка 2: heroine_tender, hero_smile, hero_doubt, hero_close, hero_tender, friend_smile, friend_doubt, bg-stage, bg-backstage, bg-hall)
+  - stores/8/9/10/11: все 24 файла.
+
 ## Журнал хода
 - ход 1: формат ending-объекта подтверждён по движку (js/engine.js finish → emit('ending', {ending: sc.ending}); js/app.js renderEnding читает title/badge/text). Чек-лист создан.
 - ход 2: stores/7: story.json + art-prompts.json готовы, пачка картинок 1/24 (10 шт).
