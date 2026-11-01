@@ -97,9 +97,10 @@
 
 ## Состояние картинок
 
-- stores/7: **24/24 ГОТОВО** (wire-art 0 нехваток, validate ✓) — финальный коммит ниже.
-- stores/8: 6/24 (heroine, hero, friend, director, heroine_smile, heroine_doubt).
-- stores/9/10/11: 0/24.
+- stores/7: **24/24 ГОТОВО** (коммит 140bc30).
+- stores/8: **24/24 ГОТОВО** (wire-art 0 нехваток, validate ✓) — финальный коммит ниже.
+- stores/9: 6/24 (4 базы + heroine_smile + heroine_doubt).
+- stores/10/11: 0/24.
 
 ## Журнал хода
 - ход 1: формат ending-объекта подтверждён по движку (js/engine.js finish → emit('ending', {ending: sc.ending}); js/app.js renderEnding читает title/badge/text). Чек-лист создан.
@@ -111,3 +112,4 @@
 - ход 7: stores/11 story.json + art-prompts.json готовы (ALL CHECKS PASSED, validate ✓). ВСЕ 5 ТЕКСТОВ ГОТОВЫ. Дальше только картинки: stores/7 (14 ост.), 8, 9, 10, 11 (по 24).
 - ход 8: восстановление из origin (3215688); stores/7 +10 картинок (3 bg + 7 референсных портретов) = 20/24.
 - ход 9: stores/7 завершён 24/24 (bg-office, bg-light, bg-garden, cover) + stores/8 старт: 6/24.
+- ход 10: stores/8 завершён 24/24 (3 bg + cover + 4 состояния); stores/9 старт: 6/24.
