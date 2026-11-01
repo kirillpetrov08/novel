@@ -325,3 +325,6 @@ textarea.field{min-height:130px;resize:vertical;font-size:13px;line-height:1.5}
 .loading-note{text-align:center;color:var(--muted);font-size:13px;padding:22px 10px}
 @media (max-height:620px){.chars{padding-top:52px}}
 @media (prefers-reduced-motion:reduce){*{animation-duration:.001s !important;transition-duration:.001s !important}}
+
+/* Заголовки секций библиотеки (короткие / длинные) */
+.lib-head{margin:22px 2px 10px}

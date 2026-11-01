@@ -137,6 +137,14 @@ const UI = {
   /* ---------------- БИБЛИОТЕКА ---------------- */
   endingsTotal(story) { return Object.values(story.scenes).filter(s => s.ending).length; },
 
+  fmtDuration(min) {
+    if (!min) return '';
+    if (min < 60) return '~' + min + ' минут';
+    const h = Math.round(min / 30) / 2;
+    const hs = Number.isInteger(h) ? String(h) : String(h).replace('.', ',');
+    return '~' + hs + (h === 1 ? ' час' : ' часа');
+  },
+
   storyCard({ story, source }) {
     const p = Store.getProgress(story.id);
     const pct = p ? Math.min(100, Math.round(((p.visited || []).length / Object.keys(story.scenes).length) * 100)) : 0;
@@ -150,7 +158,7 @@ const UI = {
       </div>
       <div class="story-meta">
         <div class="story-title">${esc(story.title)}</div>
-        <div class="story-genre">${esc(story.genre || '')}${story.estimatedMinutes ? ` · ~${story.estimatedMinutes} мин` : ''}</div>
+        <div class="story-genre">${esc(story.genre || '')}${story.estimatedMinutes ? ' · ' + this.fmtDuration(story.estimatedMinutes) : ''}</div>
         <div class="story-desc">${esc(story.description)}</div>
         <div class="story-foot">
           ${p && !p.completed
@@ -200,11 +208,26 @@ const UI = {
       }
       wrap.appendChild(empty);
     } else {
-      list.forEach((e, i) => {
-        wrap.appendChild(this.storyCard(e));
-        // Нативная реклама — между историями: слот в потоке после первой карточки
-        if (i === 0 && !this.nativeDismissedSession) wrap.appendChild(this.nativeSlotEl());
-      });
+      const shorts = list.filter(e => e.story.format !== 'long');
+      const longs = list.filter(e => e.story.format === 'long');
+      let firstCard = true;
+      const addGroup = (items, title) => {
+        if (!items.length) return;
+        if (shorts.length && longs.length) {
+          const h = document.createElement('h2');
+          h.className = 'h2 lib-head';
+          h.textContent = title;
+          wrap.appendChild(h);
+        }
+        items.forEach(e => {
+          wrap.appendChild(this.storyCard(e));
+          // Нативная реклама — между историями: слот в потоке после первой карточки
+          if (firstCard && !this.nativeDismissedSession) wrap.appendChild(this.nativeSlotEl());
+          firstCard = false;
+        });
+      };
+      addGroup(shorts, 'Короткие новеллы · 15–20 минут');
+      addGroup(longs, 'Длинные романы · 1–2 часа');
     }
     this.renderDiagnostics();
     this.renderRefBanner();
@@ -244,7 +267,8 @@ const UI = {
 
     const paidCount = Object.values(story.scenes).reduce((n, s) => n + (s.choices || []).filter(c => c.crystals).length, 0);
     const chips = [
-      story.estimatedMinutes ? '~' + story.estimatedMinutes + ' минут' : null,
+      story.format === 'long' ? 'Длинный роман' : null,
+      story.estimatedMinutes ? this.fmtDuration(story.estimatedMinutes) : null,
       'Сцен: ' + Object.keys(story.scenes).length,
       'Финалов: ' + this.endingsTotal(story),
       paidCount ? `Особых выборов ◆: ${paidCount}` : null,

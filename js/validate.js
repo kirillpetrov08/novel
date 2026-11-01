@@ -12,6 +12,10 @@ function validateStory(story) {
     if (!story[f]) err(`Нет обязательного поля "${f}"`);
   if (story.id && !/^[a-z0-9-]+$/.test(story.id))
     err(`id "${story.id}" — только латиница, цифры и дефис`);
+  if (story.format !== undefined && !['short', 'long'].includes(story.format))
+    err(`format "${story.format}" — допустимы только "short" или "long"`);
+  if (story.format === 'long' && (story.estimatedMinutes || 0) < 45)
+    warn('format "long", а estimatedMinutes < 45 — проверь длительность');
 
   const scenes = (story.scenes && typeof story.scenes === 'object') ? story.scenes : {};
   const stats = story.stats || {}, chars = story.characters || {};
