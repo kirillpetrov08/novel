@@ -88,6 +88,13 @@
   - stores/7: bg-office, bg-light, bg-garden, cover + (пачка 2: heroine_tender, hero_smile, hero_doubt, hero_close, hero_tender, friend_smile, friend_doubt, bg-stage, bg-backstage, bg-hall)
   - stores/8/9/10/11: все 24 файла.
 
+## Состояние картинок (после сброса воркспейса)
+
+- Воркспейс был сброшен до b994c83; всё восстановлено из origin (reset --hard origin/arena/ba68efdb-novel → 3215688).
+- Лимит 10/ход СЧИТАЕТ УСПЕШНЫЕ генерации (7 отказов «source not found» не сожгли квоту).
+- stores/7: 20/24 (10 базовых+состояния пачка1, heroine_tender, hero×4, friend×2, bg-stage/bg-backstage/bg-hall). Осталось: bg-office, bg-light, bg-garden, cover.
+- stores/8/9/10/11: 0/24, images/ нет (создаётся первой генерацией).
+
 ## Журнал хода
 - ход 1: формат ending-объекта подтверждён по движку (js/engine.js finish → emit('ending', {ending: sc.ending}); js/app.js renderEnding читает title/badge/text). Чек-лист создан.
 - ход 2: stores/7: story.json + art-prompts.json готовы, пачка картинок 1/24 (10 шт).
@@ -96,3 +103,4 @@
 - ход 5: stores/9 story.json + art-prompts.json готовы (ALL CHECKS PASSED, validate ✓). Пишу stores/10.
 - ход 6: stores/10 story.json + art-prompts.json готовы (ALL CHECKS PASSED, validate ✓). Пишу stores/11.
 - ход 7: stores/11 story.json + art-prompts.json готовы (ALL CHECKS PASSED, validate ✓). ВСЕ 5 ТЕКСТОВ ГОТОВЫ. Дальше только картинки: stores/7 (14 ост.), 8, 9, 10, 11 (по 24).
+- ход 8: восстановление из origin (3215688); stores/7 +10 картинок (3 bg + 7 референсных портретов) = 20/24.
