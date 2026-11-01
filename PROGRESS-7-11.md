@@ -39,10 +39,13 @@
 - Конфликт: траулер пишут на списание; последний рейс за улов, чтобы закрыть долг; шторм.
 - Финалы: desire «Штиль» (Желание) / trust «Держим курс» (Доверие) / neutral «Открытая вода» (Море).
 - Фоны: bg-deck, bg-bridge, bg-engine, bg-cabin, bg-ice, bg-night.
-- [ ] план
-- [ ] story.json
-- [ ] art-prompts.json
+- [x] план
+- [x] story.json (34 сцены, 21 выбор, 5 платных по 5, ending-объекты, все проверки пройдены)
+- [x] art-prompts.json (24 файла + 34 sceneBackgrounds)
 - [ ] картинки 0/24
+- [ ] пачка 1 (1–10): 4 базы + 6 состояний Миры
+- [ ] пачка 2 (11–20): heroine_tender, hero×4, friend×2, bg-deck, bg-bridge
+- [ ] пачка 3 (21–24): bg-engine, bg-cabin, bg-ice, bg-night, cover
 - [ ] самопроверка
 - [ ] коммит
 
@@ -75,3 +78,4 @@
 - ход 2: stores/7: story.json + art-prompts.json готовы, пачка картинок 1/24 (10 шт).
 - ход 3: stores/7 коммит (story+art-prompts+10 картинок). Лимит 10/ход подтверждён (ошибка на 11-м вызове). Продолжаю текстом: stores/8.
 - ход 4: stores/8 story.json + art-prompts.json готовы (ALL CHECKS PASSED, validate ✓). stores/7: ждёт пачка 2 (heroine_tender упёрлась в лимит).
+- ход 5: stores/9 story.json + art-prompts.json готовы (ALL CHECKS PASSED, validate ✓). Пишу stores/10.
