@@ -91,9 +91,11 @@ const UI = {
   endingReward: 0,       // награда текущего финала — база для удвоения ×2
   endingDoubled: false,
   _startingStory: false,
-  nativeDismissedSession: false,
-  nativeHeight: 0,         // высота нативной карточки (dp) для резерва слота
-  _nativeSyncQueued: false,
+  libFormat: 'short',      // вкладка библиотеки: 'short' | 'long'
+  feedSeed: '',            // сид раскладки рекламы в ленте на эту сессию
+  feedDismissed: {},       // slotId -> true: слоты, закрытые крестиком до конца сессии
+  feedHeights: {},         // slotId -> высота (dp) для резерва DOM-слота
+  _feedSyncQueued: false,
   pendingRef: null,
   confirmResolve: null,
   storesLoaded: false,
@@ -104,7 +106,7 @@ const UI = {
     $$('.screen').forEach(el => el.classList.toggle('active', el.id === 'screen-' + name));
     $('#tabbar').style.display = (name === 'player' || name === 'detail') ? 'none' : 'flex';
     $$('#tabbar button').forEach(b => b.classList.toggle('active', b.dataset.go === name));
-    this.updateNativeSlot(name);
+    if (name !== 'library') Ads.hideAllFeedAds(); // рекламные вью живут только на экране библиотеки
     if (name === 'library') this.renderLibrary();
     if (name === 'shop') this.renderShop();
     if (name === 'profile') this.renderProfile();
@@ -121,14 +123,13 @@ const UI = {
   },
 
   openModal(id) {
-    // нативная карточка — Android-вью поверх WebView: под модалкой видимой не держим
-    const slot = $('#native-ad-slot');
-    if (slot) Ads.positionNative(slot.getBoundingClientRect(), false);
+    // рекламные вью плагина лежат поверх WebView: под модалкой видимыми не держим
+    $$('.ad-slot').forEach(slot => Ads.positionFeedAd(slot.dataset.slot, slot.getBoundingClientRect(), false));
     $('#' + id).classList.add('open');
   },
   closeModal(id) {
     $('#' + id).classList.remove('open');
-    if (this.screen === 'library' && !$('.modal-ov.open')) this.syncNativePosition();
+    if (this.screen === 'library' && !$('.modal-ov.open')) this.syncFeedAds();
   },
 
   confirm(title, text, yesLabel = 'Да') {
@@ -147,60 +148,63 @@ const UI = {
     });
   },
 
-  /* Нативная реклама R-M-…-3: слот стоит В ПОТОКЕ между карточками историй
-     (создаётся в renderLibrary после первой истории) и ничего не перекрывает.
-     В Android настоящая карточка плагина ложится точно поверх слота и едет
-     за ним при скролле; в веб-разработке в слоте — визуальная заглушка.
-     Уход с экрана библиотеки карточку уничтожает (на возврате — свежая). */
-  updateNativeSlot(name) {
-    if (name !== 'library') { Ads.hideNative(); return; }
-    this.syncNativePosition();
-  },
-
-  /* Слот нативной рекламы для списка историй. */
-  nativeSlotEl() {
+  /* Реклама в ленте библиотеки: слоты стоят В ПОТОКЕ между карточками историй
+     в случайных местах (раскладка сессии — Meta.planFeedAds) и ничего не перекрывают.
+     В Android настоящие вью плагина (нативная карточка + баннеры «Лента») ложатся
+     точно поверх своих слотов и едут за ними при скролле; в веб-разработке в слотах —
+     визуальные заглушки. Уход с экрана библиотеки вью уничтожает (на возврате — свежие). */
+  feedSlotEl(slotId, item) {
     const slot = document.createElement('div');
-    slot.id = 'native-ad-slot';
-    slot.className = 'native-slot';
+    slot.className = 'native-slot ad-slot';
+    slot.dataset.slot = slotId;
+    slot.dataset.unit = item.unit;
+    slot.dataset.kind = item.kind;
     if (Ads.isNative()) {
-      slot.style.height = (this.nativeHeight || 300) + 'px';
+      slot.style.height = (this.feedHeights[slotId] || (item.kind === 'native' ? 300 : 120)) + 'px';
     } else {
+      const label = item.kind === 'native' ? 'Нативная карточка Яндекса' : 'Баннер «Лента» Яндекса';
       slot.innerHTML = `<div class="native-demo"><span class="native-demo-tag">Реклама</span>
-        <div class="native-demo-title">Нативная карточка Яндекса</div>
-        <div class="muted small">В Android-приложении здесь настоящий блок ${CONFIG.ads.native}. В веб-режиме — только место размещения.</div></div>`;
+        <div class="native-demo-title">${label}</div>
+        <div class="muted small">В Android-приложении здесь настоящий блок ${item.unit}. В веб-режиме — только место размещения.</div></div>`;
     }
     return slot;
   },
 
-  /* Подгоняет Android-карточку под текущее положение слота (скролл/resize/рендер/модалки). */
-  syncNativePosition() {
-    if (!Ads.isNative() || this._nativeSyncQueued) return;
-    this._nativeSyncQueued = true;
+  /* Подгоняет Android-вью под текущие положения их слотов (скролл/resize/рендер/модалки).
+     Порядок важен: показанное двигаем сразу, новое грузим только когда слот в кадре. */
+  syncFeedAds() {
+    if (!Ads.isNative() || this._feedSyncQueued) return;
+    this._feedSyncQueued = true;
     requestAnimationFrame(async () => {
-      this._nativeSyncQueued = false;
-      if (this.screen !== 'library' || this.nativeDismissedSession) return;
-      const slot = $('#native-ad-slot');
-      if (!slot) { Ads.hideNative(); return; }
-      const rect = slot.getBoundingClientRect();
-      const inView = rect.bottom > 0 && rect.top < window.innerHeight && !$('.modal-ov.open');
-      if (!Ads.isNativeShown()) {
-        if (!inView) return; // слот за экраном — рекламу впустую не грузим
-        const r = await Ads.showNative(rect);
-        if (this.screen !== 'library') { Ads.hideNative(); return; } // ушли с экрана, пока грузилась
-        const live = $('#native-ad-slot'); // слот мог пересоздаться перерендером за время загрузки
-        if (!live) return;
+      this._feedSyncQueued = false;
+      if (this.screen !== 'library') return;
+      const slots = $$('#story-list .ad-slot');
+      const liveIds = new Set(slots.map(s => s.dataset.slot));
+      Object.keys(Ads._feed || {}).forEach(id => { if (!liveIds.has(id)) Ads.hideFeedAd(id); });
+      const inView = rect => rect.bottom > 0 && rect.top < window.innerHeight && !$('.modal-ov.open');
+      const positionShown = () => slots.forEach(slot => {
+        const id = slot.dataset.slot;
+        if (this.feedDismissed[id] || !Ads.isFeedShown(id)) return;
+        Ads.positionFeedAd(id, slot.getBoundingClientRect(), inView(slot.getBoundingClientRect()));
+      });
+      positionShown();
+      for (const slot of slots) {
+        const id = slot.dataset.slot;
+        if (this.feedDismissed[id]) { slot.style.display = 'none'; continue; }
+        if (Ads.isFeedShown(id)) continue;
+        const rect = slot.getBoundingClientRect();
+        if (!inView(rect)) continue; // слот за экраном — рекламу впустую не грузим
+        const r = await Ads.showFeedAd(id, slot.dataset.unit, slot.dataset.kind, rect);
+        if (this.screen !== 'library') { Ads.hideAllFeedAds(); return; } // ушли с экрана, пока грузилась
+        const live = document.querySelector(`.ad-slot[data-slot="${id}"]`); // слот мог пересоздаться перерендером
+        if (!live) continue;
         if (r.shown) {
-          if (r.height && r.height !== this.nativeHeight) {
-            this.nativeHeight = r.height;
-            live.style.height = r.height + 'px';
-          }
-          this.syncNativePosition(); // высота слота могла сдвинуть его позицию
+          if (r.height) { this.feedHeights[id] = r.height; live.style.height = r.height + 'px'; }
         } else {
           live.style.display = 'none'; // рекламы нет — не оставляем пустую дыру
         }
-        return;
       }
-      Ads.positionNative(rect, inView);
+      positionShown(); // высоты слотов могли сдвинуть нижние карточки
     });
   },
 
@@ -242,6 +246,23 @@ const UI = {
     return btn;
   },
 
+  /* Вкладки формата в начале библиотеки: короткие новеллы / длинные романы.
+     Показываются только когда есть оба формата; счётчиков историй здесь нет. */
+  renderLibTabs(hasShort, hasLong) {
+    const tabs = $('#lib-tabs');
+    if (!tabs) return;
+    if (!hasShort || !hasLong) { tabs.innerHTML = ''; tabs.style.display = 'none'; return; }
+    tabs.style.display = '';
+    const mk = (val, label) => `<button data-fmt="${val}" class="${this.libFormat === val ? 'on' : ''}">${label}</button>`;
+    tabs.innerHTML = mk('short', 'Короткие · 15–20 мин') + mk('long', 'Длинные · 1–2 часа');
+    tabs.querySelectorAll('button').forEach(b => b.addEventListener('click', () => {
+      if (this.libFormat === b.dataset.fmt) return;
+      this.libFormat = b.dataset.fmt;
+      Ads.hideAllFeedAds();
+      this.renderLibrary();
+    }));
+  },
+
   renderLibrary() {
     const list = Loader.list();
     const wrap = $('#story-list');
@@ -280,28 +301,23 @@ const UI = {
     } else {
       const shorts = list.filter(e => e.story.format !== 'long');
       const longs = list.filter(e => e.story.format === 'long');
-      let firstCard = true;
-      const addGroup = (items, title) => {
-        if (!items.length) return;
-        if (shorts.length && longs.length) {
-          const h = document.createElement('h2');
-          h.className = 'h2 lib-head';
-          h.textContent = title;
-          wrap.appendChild(h);
-        }
-        items.forEach(e => {
-          wrap.appendChild(this.storyCard(e));
-          // Нативная реклама — между историями: слот в потоке после первой карточки
-          if (firstCard && !this.nativeDismissedSession) wrap.appendChild(this.nativeSlotEl());
-          firstCard = false;
-        });
-      };
-      addGroup(shorts, 'Короткие новеллы · 15–20 минут');
-      addGroup(longs, 'Длинные романы · 1–2 часа');
+      if (!longs.length) this.libFormat = 'short';
+      if (!shorts.length) this.libFormat = 'long';
+      this.renderLibTabs(shorts.length > 0, longs.length > 0);
+      const items = this.libFormat === 'long' ? longs : shorts;
+      // Реклама — в потоке между карточками, места и блоки случайны в пределах сессии
+      const plan = Meta.planFeedAds(items.length, this.feedSeed + ':' + this.libFormat);
+      const byAfter = {};
+      plan.forEach((p, i) => { byAfter[p.after] = { ...p, slot: 'feed-' + i }; });
+      items.forEach((e, idx) => {
+        wrap.appendChild(this.storyCard(e));
+        const ad = byAfter[idx];
+        if (ad && !this.feedDismissed[ad.slot]) wrap.appendChild(this.feedSlotEl(ad.slot, ad));
+      });
     }
     this.renderDiagnostics();
     this.renderRefBanner();
-    this.syncNativePosition();
+    this.syncFeedAds();
   },
 
   renderDiagnostics() {
@@ -640,7 +656,6 @@ const UI = {
 
     this.notifyAchievements(Meta.checkAchievements());
     this.renderQuests();
-    this.renderAchievements();
 
     // настройки чтения
     const cfg = Store.data.settings;
@@ -693,6 +708,7 @@ const UI = {
 
   /* ---------------- ПОЛКА ФИНАЛОВ ---------------- */
   renderShelf() {
+    this.renderAchievements(); // достижения живут на «Полке», отдельно от рефералов в Профиле
     const opened = Meta.endingsOpened(), total = Meta.endingsTotalAll();
     $('#shelf-total').textContent = `✦ ${opened} из ${total}`;
     const wrap = $('#shelf-list');
@@ -880,10 +896,10 @@ const UI = {
     }));
     document.addEventListener('crystals-changed', () => this.renderGems(false));
 
-    // нативная реклама следует за слотом при скролле библиотеки
+    // рекламные вью следуют за своими слотами при скролле библиотеки
     const libScroll = $('#screen-library .scroll');
-    if (libScroll) libScroll.addEventListener('scroll', () => this.syncNativePosition(), { passive: true });
-    window.addEventListener('resize', () => { this.syncNativePosition(); WeatherFX._resize(); });
+    if (libScroll) libScroll.addEventListener('scroll', () => this.syncFeedAds(), { passive: true });
+    window.addEventListener('resize', () => { this.syncFeedAds(); WeatherFX._resize(); });
 
     // плеер
     $('#dialogue').addEventListener('click', () => { this.clearAuto(); Engine.advance(); });
@@ -1072,15 +1088,17 @@ const UI = {
     }
 
     Ads.init(); // Яндекс: инициализация + предзагрузка interstitial/rewarded (Android)
-    const yandex = Ads.plugin();
-    if (yandex && yandex.addListener) yandex.addListener('nativeClosed', () => {
-      this.nativeDismissedSession = true;
-      const s = $('#native-ad-slot'); if (s) s.style.display = 'none';
-    });
-    Ads.onNativeResized = h => {
-      this.nativeHeight = h;
-      const s = $('#native-ad-slot'); if (s) s.style.height = h + 'px';
-      this.syncNativePosition();
+    this.feedSeed = Store.data.user.id + ':' + Date.now(); // раскладка рекламы в ленте на эту сессию
+    Ads.onFeedClosed = id => {
+      this.feedDismissed[id] = true;
+      const s = document.querySelector(`.ad-slot[data-slot="${id}"]`);
+      if (s) s.style.display = 'none';
+    };
+    Ads.onFeedResized = (id, h) => {
+      this.feedHeights[id] = h;
+      const s = document.querySelector(`.ad-slot[data-slot="${id}"]`);
+      if (s) s.style.height = h + 'px';
+      this.syncFeedAds();
     };
 
     // Android-сборка: истории вшиты (офлайн);

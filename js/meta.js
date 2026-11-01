@@ -89,9 +89,6 @@ const Meta = {
   /* progress() -> {cur, max}; награда начисляется сразу при получении. */
   ACHIEVEMENTS: [
     { id: 'a-first-ending', icon: '❦', title: 'Первый финал',        desc: 'Дойди до любого финала',              reward: 5,  progress: () => ({ cur: Meta.endingsOpened(), max: 1 }) },
-    { id: 'a-stories-3',    icon: '✎', title: 'Три истории',         desc: 'Прочитай 3 истории до конца',         reward: 10, progress: () => ({ cur: Meta.storiesCompleted(), max: 3 }) },
-    { id: 'a-stories-6',    icon: '♡', title: 'Полбиблиотеки',       desc: 'Прочитай 6 историй до конца',         reward: 15, progress: () => ({ cur: Meta.storiesCompleted(), max: 6 }) },
-    { id: 'a-stories-10',   icon: '♡', title: 'Вся в историях',      desc: 'Прочитай 10 историй до конца',        reward: 25, progress: () => ({ cur: Meta.storiesCompleted(), max: 10 }) },
     { id: 'a-collector',    icon: '✦', title: 'Коллекционер',        desc: 'Открой ВСЕ финалы одной истории',     reward: 15, progress: () => ({ cur: Meta.hasFullStory() ? 1 : 0, max: 1 }) },
     { id: 'a-endings-10',   icon: '❦', title: 'Охотница за финалами',desc: 'Открой 10 разных финалов',            reward: 15, progress: () => ({ cur: Meta.endingsOpened(), max: 10 }) },
     { id: 'a-long',         icon: '☾', title: 'Длинный роман',       desc: 'Прочитай до конца длинный роман',     reward: 20, progress: () => ({ cur: Meta.longCompleted() ? 1 : 0, max: 1 }) },
@@ -157,6 +154,39 @@ const Meta = {
     const r = this.m().rate;
     r.state = state; r.lastAsk = Date.now(); r.asks = (r.asks || 0) + 1;
     Store.save();
+  },
+
+  /* ---------------- рекламные слоты в ленте библиотеки ---------------- */
+  /* Случайные (но стабильные внутри сессии) позиции рекламы между карточками.
+     seedStr задаёт раскладку: внутри одной сессии перерендеры не «прыгают»,
+     между запусками места разные. Возвращает [{after, unit, kind}],
+     after — индекс карточки, ПОСЛЕ которой вставить слот (между историями). */
+  planFeedAds(count, seedStr) {
+    if (!count || count < 2) return [];
+    let h = 2166136261;
+    const s = String(seedStr || 'feed');
+    for (let i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 16777619) >>> 0; }
+    const rnd = () => { h ^= h << 13; h >>>= 0; h ^= h >> 17; h ^= h << 5; h >>>= 0; return h / 4294967296; };
+    // Позиции 0..count-2 — строго между карточками; шаг между слотами не меньше
+    // minGap, старт и джиттер случайны, число слотов гарантировано конструкцией.
+    const minGap = count >= 7 ? 3 : 2;
+    const maxSlots = Math.floor((count - 2) / minGap) + 1;
+    const slots = Math.min(count >= 7 ? 3 : count >= 3 ? 2 : 1, maxSlots);
+    const span = (count - 1) - (slots - 1) * minGap; // допустимые старты: 0..span-1
+    const base = Math.floor(rnd() * span);
+    let shift = 0;
+    const maxShift = span - 1 - base;
+    const positions = [];
+    for (let i = 0; i < slots; i++) {
+      if (i > 0) shift += Math.floor(rnd() * (maxShift - shift + 1));
+      positions.push(base + i * minGap + shift);
+    }
+    const units = [{ unit: CONFIG.ads.native, kind: 'native' },
+      ...(CONFIG.ads.bannerFeed || []).map(u => ({ unit: u, kind: 'banner' }))];
+    // случайный порядок блоков без повторов подряд
+    const order = units.slice();
+    for (let i = order.length - 1; i > 0; i--) { const j = Math.floor(rnd() * (i + 1)); [order[i], order[j]] = [order[j], order[i]]; }
+    return positions.map((after, i) => ({ after, unit: order[i % order.length].unit, kind: order[i % order.length].kind }));
   },
 
   /* ---------------- слоты-закладки (сохранения) ---------------- */

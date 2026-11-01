@@ -9,7 +9,9 @@
                     кристаллов», удвоение награды за финал
      • interstitial R-M-20304990-2 — между новеллами: вход в историю
                     из библиотеки и выход с экрана финала
-     • native       R-M-20304990-3 — нативная карточка в библиотеке
+     • native       R-M-20304990-3 — нативная карточка в ленте библиотеки
+     • bannerFeed   R-M-20304990-5/-6 — баннеры «Лента» там же; слоты стоят
+                    в случайных местах между карточками (Meta.planFeedAds)
    В веб-режиме разработки (нет плагина) rewarded заменяется
    демо-таймером, interstitial пропускается, native — карточкой-
    заглушкой, чтобы было видно место размещения.
@@ -25,6 +27,9 @@ const Ads = {
   _nativeHeight: 0,      // высота нативной карточки (dp) — под слот в библиотеке
   _nativePromise: null,  // текущая загрузка native (защита от параллельных вызовов)
   onNativeResized: null, // выставляет UI: (heightDp) => подправить высоту слота
+  _feed: {},             // лента библиотеки: slotId -> {shown, height, promise}
+  onFeedResized: null,   // выставляет UI: (slotId, heightDp) => подправить высоту слота
+  onFeedClosed: null,    // выставляет UI: (slotId) => пользователь закрыл карточку крестиком
 
   plugin() {
     return (window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.YandexAds) || null;
@@ -47,6 +52,16 @@ const Ads = {
             this._nativeHeight = e.height;
             if (this.onNativeResized) this.onNativeResized(e.height);
           }
+        });
+        p.addListener('feedClosed', e => {
+          const id = e && e.id; if (!id) return;
+          if (this._feed[id]) this._feed[id].shown = false;
+          if (this.onFeedClosed) this.onFeedClosed(id);
+        });
+        p.addListener('feedResized', e => {
+          const id = e && e.id; if (!id || !e.height) return;
+          if (this._feed[id]) this._feed[id].height = e.height;
+          if (this.onFeedResized) this.onFeedResized(id, e.height);
         });
       }
     } catch (e) { /* без рекламы приложение продолжает работать */ }
@@ -124,6 +139,44 @@ const Ads = {
     const p = this.plugin();
     this._nativeVisible = false;
     if (p) { try { p.hideNative(); } catch (e) {} }
+  },
+
+  /* --- Feed: несколько рекламных слотов в ленте библиотеки (native + баннеры «Лента»).
+         Каждый слот — Android-вью плагина поверх своего DOM-слота, едет за скроллом.
+         Раскладку (где и какой блок) считает Meta.planFeedAds. --- */
+  isFeedShown(id) { return !!(this._feed[id] && this._feed[id].shown); },
+  feedHeight(id) { return (this._feed[id] && this._feed[id].height) || 0; },
+  async showFeedAd(id, adUnitId, kind, rect) {
+    const p = this.plugin();
+    if (!p || !rect || !id) return { shown: false, height: 0 };
+    const cur = this._feed[id] || (this._feed[id] = { shown: false, height: 0, promise: null });
+    if (cur.shown) { this.positionFeedAd(id, rect, true); return { shown: true, height: cur.height }; }
+    if (cur.promise) return cur.promise;
+    cur.promise = (async () => {
+      try {
+        const r = await p.showFeedAd({ id, adUnitId, kind, ...this._rectArgs(rect) });
+        cur.shown = !!(r && r.shown);
+        cur.height = (r && r.height) || 0;
+        return { shown: cur.shown, height: cur.height };
+      } catch (e) { return { shown: false, height: 0 }; }
+      finally { cur.promise = null; }
+    })();
+    return cur.promise;
+  },
+  positionFeedAd(id, rect, visible) {
+    const p = this.plugin();
+    if (!p || !rect || !this.isFeedShown(id)) return;
+    try { p.positionFeedAd({ id, ...this._rectArgs(rect), visible: !!visible }); } catch (e) {}
+  },
+  hideFeedAd(id) {
+    const p = this.plugin();
+    if (this._feed[id]) { this._feed[id].shown = false; this._feed[id].height = 0; }
+    if (p) { try { p.hideFeedAd({ id }); } catch (e) {} }
+  },
+  hideAllFeedAds() {
+    Object.keys(this._feed).forEach(id => { this._feed[id].shown = false; this._feed[id].height = 0; });
+    const p = this.plugin();
+    if (p) { try { p.hideAllFeedAds(); } catch (e) {} }
   },
 
   /* --- Лимиты именно для кнопки в магазине (фарм кристаллов) --- */

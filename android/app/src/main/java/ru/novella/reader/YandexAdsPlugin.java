@@ -48,6 +48,15 @@ import com.yandex.mobile.ads.rewarded.RewardedAd;
 import com.yandex.mobile.ads.rewarded.RewardedAdEventListener;
 import com.yandex.mobile.ads.rewarded.RewardedAdLoadListener;
 import com.yandex.mobile.ads.rewarded.RewardedAdLoader;
+import com.yandex.mobile.ads.banner.BannerAdEventListener;
+import com.yandex.mobile.ads.banner.BannerAdSize;
+import com.yandex.mobile.ads.banner.BannerAdView;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Локальный Capacitor-плагин Yandex Mobile Ads SDK (com.yandex.android:mobileads).
@@ -61,8 +70,13 @@ import com.yandex.mobile.ads.rewarded.RewardedAdLoader;
  *   showNative({adUnitId, x, y, width})           -> { shown, height } карточка поверх WebView точно по rect JS-слота (dp от начала WebView)
  *   positionNative({x, y, width, visible})        -> {} двигает уже показанную карточку за слотом (скролл библиотеки)
  *   hideNative()                                  -> {}
+ *   showFeedAd({id, adUnitId, kind, x, y, width}) -> { shown, height } слот ленты библиотеки:
+ *                                                    kind=native — та же карточка, kind=banner — BannerAdView («Лента»)
+ *   positionFeedAd({id, x, y, width, visible})    -> {} двигает слот ленты за его DOM-местом
+ *   hideFeedAd({id}) / hideAllFeedAds()           -> {}
  * События в JS: "nativeClosed" — пользователь закрыл нативную карточку крестиком;
- *               "nativeResized" {height} — высота карточки изменилась (JS подгоняет слот).
+ *               "nativeResized" {height} — высота карточки изменилась (JS подгоняет слот);
+ *               "feedClosed" {id} / "feedResized" {id, height} — то же для слотов ленты.
  *
  * Вся показы/загрузки — только главный поток (требование SDK).
  */
@@ -88,6 +102,12 @@ public class YandexAdsPlugin extends Plugin {
     private boolean nativeLoading = false;
     private int nativeHeightDp = 0;           // высота карточки (dp) — JS резервирует слот такой же высоты
     private boolean nativeCancelled = false;  // hideNative во время загрузки: загруженное уже не показываем
+
+    // Лента библиотеки: несколько рекламных слотов одновременно (native + баннеры).
+    private final Map<String, View> feedViews = new HashMap<>();        // slotId -> обёртка поверх WebView
+    private final Map<String, Integer> feedHeights = new HashMap<>();   // slotId -> высота (dp)
+    private final Set<String> feedLoading = new HashSet<>();            // слоты в процессе загрузки
+    private final Set<String> feedCancelled = new HashSet<>();          // скрытые во время загрузки — не показывать
 
     // ---------------------------------------------------------------
     @PluginMethod
@@ -338,31 +358,38 @@ public class YandexAdsPlugin extends Plugin {
 
     /** Ставит карточку точно поверх JS-слота: rect приходит в dp от начала WebView. */
     private void applyNativeRect(int xDp, int yDp, int widthDp, boolean visible) {
-        if (nativeWrapper == null || !(nativeWrapper.getParent() instanceof ViewGroup)) return;
-        ViewGroup root = (ViewGroup) nativeWrapper.getParent();
+        applyRect(nativeWrapper, xDp, yDp, widthDp, visible, hDp -> {
+            if (hDp == nativeHeightDp) return;
+            nativeHeightDp = hDp;
+            JSObject ev = new JSObject();
+            ev.put("height", hDp);
+            notifyListeners("nativeResized", ev);
+        });
+    }
+
+    /** Ставит произвольную рекламную вью точно поверх её JS-слота (rect — dp от начала WebView).
+        onHeight (nullable) получает фактическую высоту в dp после layout — JS подгоняет слот. */
+    private void applyRect(View view, int xDp, int yDp, int widthDp, boolean visible,
+                           java.util.function.IntConsumer onHeight) {
+        if (view == null || !(view.getParent() instanceof ViewGroup)) return;
+        ViewGroup root = (ViewGroup) view.getParent();
         int[] origin = webOriginInRoot(root);
-        FrameLayout.LayoutParams lp = (FrameLayout.LayoutParams) nativeWrapper.getLayoutParams();
+        FrameLayout.LayoutParams lp = (FrameLayout.LayoutParams) view.getLayoutParams();
         lp.gravity = Gravity.TOP | Gravity.START;
         lp.leftMargin = origin[0] + dp(xDp);
         lp.topMargin = origin[1] + dp(yDp);
         lp.rightMargin = 0;
         lp.bottomMargin = 0;
         if (widthDp > 0) lp.width = dp(widthDp);
-        nativeWrapper.setLayoutParams(lp);
-        nativeWrapper.setVisibility(visible ? View.VISIBLE : View.GONE);
-        if (visible) {
-            // Высота могла поменяться (новая ширина) — сообщить JS, чтобы слот совпал с карточкой.
-            nativeWrapper.post(() -> {
-                if (nativeWrapper == null) return;
-                int hPx = nativeWrapper.getHeight();
+        view.setLayoutParams(lp);
+        view.setVisibility(visible ? View.VISIBLE : View.GONE);
+        if (visible && onHeight != null) {
+            // Высота могла поменяться (новая ширина) — сообщить JS, чтобы слот совпал с вью.
+            view.post(() -> {
+                int hPx = view.getHeight();
                 if (hPx <= 0) return;
                 int hDp = Math.round(hPx / getContext().getResources().getDisplayMetrics().density);
-                if (hDp != nativeHeightDp) {
-                    nativeHeightDp = hDp;
-                    JSObject ev = new JSObject();
-                    ev.put("height", hDp);
-                    notifyListeners("nativeResized", ev);
-                }
+                onHeight.accept(hDp);
             });
         }
     }
@@ -391,13 +418,50 @@ public class YandexAdsPlugin extends Plugin {
         return tv;
     }
 
-    /** Шаблон нативной карточки в фирменной бежевой палитре, строится программно.
-        Возвращает высоту карточки в dp (0 — не удалось показать). */
+    /** Рендер одиночной нативной карточки (легаси-API showNative). Возвращает высоту в dp. */
     private int renderNative(NativeAd nativeAd, int xDp, int yDp, int widthDp) {
-        Activity activity = getActivity();
-        if (activity == null) return 0;
-        Context ctx = activity;
+        if (getActivity() == null) return 0;
         removeNative();
+        FrameLayout wrapper = buildNativeCard(nativeAd, () -> {
+            removeNative();
+            notifyListeners("nativeClosed", new JSObject());
+        });
+        if (wrapper == null) return 0;
+        nativeWrapper = wrapper;
+        attachToRoot(wrapper, widthDp);
+        applyNativeRect(xDp, yDp, widthDp, true);
+        nativeHeightDp = measureHeightDp(wrapper, widthDp);
+        return nativeHeightDp;
+    }
+
+    /** Добавляет рекламную вью поверх WebView в корневой контейнер окна. */
+    private void attachToRoot(View view, int widthDp) {
+        Activity activity = getActivity();
+        if (activity == null) return;
+        ViewGroup root = activity.findViewById(android.R.id.content);
+        int widthPx = widthDp > 0 ? dp(widthDp) : ViewGroup.LayoutParams.MATCH_PARENT;
+        FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(widthPx, ViewGroup.LayoutParams.WRAP_CONTENT, Gravity.TOP | Gravity.START);
+        root.addView(view, lp);
+        view.bringToFront();
+    }
+
+    /** Собственная высота вью в dp при заданной ширине слота. */
+    private int measureHeightDp(View view, int widthDp) {
+        Activity activity = getActivity();
+        ViewGroup root = activity != null ? activity.findViewById(android.R.id.content) : null;
+        int specW = widthDp > 0
+            ? View.MeasureSpec.makeMeasureSpec(dp(widthDp), View.MeasureSpec.EXACTLY)
+            : View.MeasureSpec.makeMeasureSpec(Math.max(root != null ? root.getWidth() : 1, 1), View.MeasureSpec.AT_MOST);
+        view.measure(specW, View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
+        return Math.round(view.getMeasuredHeight() / getContext().getResources().getDisplayMetrics().density);
+    }
+
+    /** Шаблон нативной карточки в фирменной бежевой палитре, строится программно.
+        onClose — клик по крестику (владелец убирает карточку и шлёт событие в JS). */
+    private FrameLayout buildNativeCard(NativeAd nativeAd, Runnable onClose) {
+        Activity activity = getActivity();
+        if (activity == null) return null;
+        Context ctx = activity;
 
         // Обёртка: сама карточка + крестик в углу (крестик — sibling NativeAdView, не перехватывает её клики).
         FrameLayout wrapper = new FrameLayout(ctx);
@@ -505,10 +569,7 @@ public class YandexAdsPlugin extends Plugin {
         FrameLayout.LayoutParams closeLp = new FrameLayout.LayoutParams(dp(26), dp(26), Gravity.TOP | Gravity.END);
         closeLp.topMargin = dp(6);
         closeLp.rightMargin = dp(6);
-        close.setOnClickListener(v -> {
-            removeNative();
-            notifyListeners("nativeClosed", new JSObject());
-        });
+        close.setOnClickListener(v -> { if (onClose != null) onClose.run(); });
         wrapper.addView(close, closeLp);
 
         NativeAdViewBinder binder = new NativeAdViewBinder.Builder(adView)
@@ -529,20 +590,170 @@ public class YandexAdsPlugin extends Plugin {
                 .build();
         nativeAd.bindNativeAd(binder);
 
-        ViewGroup root = activity.findViewById(android.R.id.content);
-        int widthPx = widthDp > 0 ? dp(widthDp) : ViewGroup.LayoutParams.MATCH_PARENT;
-        FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(widthPx, ViewGroup.LayoutParams.WRAP_CONTENT, Gravity.TOP | Gravity.START);
-        root.addView(wrapper, lp);
-        wrapper.bringToFront();
-        nativeWrapper = wrapper;
-        applyNativeRect(xDp, yDp, widthDp, true);
-        // Замер собственной высоты: JS зарезервирует под карточку слот той же высоты в потоке списка.
-        int specW = widthDp > 0
-            ? View.MeasureSpec.makeMeasureSpec(dp(widthDp), View.MeasureSpec.EXACTLY)
-            : View.MeasureSpec.makeMeasureSpec(Math.max(root.getWidth(), 1), View.MeasureSpec.AT_MOST);
-        wrapper.measure(specW, View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
-        nativeHeightDp = Math.round(wrapper.getMeasuredHeight() / ctx.getResources().getDisplayMetrics().density);
-        return nativeHeightDp;
+        return wrapper;
+    }
+
+    // =========================== FEED (лента библиотеки) ===========================
+    // Несколько рекламных слотов одновременно: нативная карточка (тот же шаблон, что
+    // у showNative) и баннеры «Лента» BannerAdView. Каждый слот — Android-вью поверх
+    // своего DOM-места между карточками историй; раскладку считает JS (Meta.planFeedAds).
+
+    private void feedResolve(PluginCall call, boolean shown, int heightDp) {
+        JSObject ret = new JSObject();
+        ret.put("shown", shown);
+        ret.put("height", heightDp);
+        call.resolve(ret);
+    }
+
+    private void applyFeedRect(String id, View view, int xDp, int yDp, int widthDp, boolean visible) {
+        applyRect(view, xDp, yDp, widthDp, visible, hDp -> {
+            Integer prev = feedHeights.get(id);
+            if (prev != null && prev == hDp) return;
+            feedHeights.put(id, hDp);
+            JSObject ev = new JSObject();
+            ev.put("id", id);
+            ev.put("height", hDp);
+            notifyListeners("feedResized", ev);
+        });
+    }
+
+    private void removeFeedView(String id) {
+        View v = feedViews.remove(id);
+        feedHeights.remove(id);
+        if (v == null) return;
+        if (v instanceof BannerAdView) ((BannerAdView) v).destroy();
+        if (v.getParent() instanceof ViewGroup) ((ViewGroup) v.getParent()).removeView(v);
+    }
+
+    @PluginMethod
+    public void showFeedAd(PluginCall call) {
+        String id = call.getString("id");
+        String adUnitId = call.getString("adUnitId");
+        String kind = call.getString("kind", "banner");
+        int xDp = call.getInt("x", 0);
+        int yDp = call.getInt("y", 0);
+        int widthDp = call.getInt("width", 0);
+        ui(() -> {
+            Context ctx = getContext();
+            Activity activity = getActivity();
+            if (id == null || adUnitId == null || ctx == null || activity == null) {
+                feedResolve(call, false, 0);
+                return;
+            }
+            View existing = feedViews.get(id);
+            if (existing != null) { // слот уже показан — только переставить под DOM-место
+                applyFeedRect(id, existing, xDp, yDp, widthDp, true);
+                Integer h = feedHeights.get(id);
+                feedResolve(call, true, h != null ? h : 0);
+                return;
+            }
+            if (feedLoading.contains(id)) { feedResolve(call, false, 0); return; }
+            feedLoading.add(id);
+            feedCancelled.remove(id);
+            if ("native".equals(kind)) loadFeedNative(call, id, adUnitId, xDp, yDp, widthDp);
+            else loadFeedBanner(call, id, adUnitId, xDp, yDp, widthDp);
+        });
+    }
+
+    private void loadFeedNative(PluginCall call, String id, String adUnitId, int xDp, int yDp, int widthDp) {
+        Context ctx = getContext();
+        if (nativeLoader == null) nativeLoader = new NativeAdLoader(ctx);
+        nativeLoader.loadAd(new AdRequest.Builder(adUnitId).build(), new NativeAdLoadListener() {
+            @Override
+            public void onAdLoaded(@NonNull NativeAd nativeAd) {
+                feedLoading.remove(id);
+                if (feedCancelled.contains(id)) { feedResolve(call, false, 0); return; }
+                FrameLayout wrapper = buildNativeCard(nativeAd, () -> {
+                    removeFeedView(id);
+                    JSObject ev = new JSObject();
+                    ev.put("id", id);
+                    notifyListeners("feedClosed", ev);
+                });
+                if (wrapper == null) { feedResolve(call, false, 0); return; }
+                feedViews.put(id, wrapper);
+                attachToRoot(wrapper, widthDp);
+                applyFeedRect(id, wrapper, xDp, yDp, widthDp, true);
+                int h = measureHeightDp(wrapper, widthDp);
+                feedHeights.put(id, h);
+                feedResolve(call, h > 0, h);
+            }
+            @Override
+            public void onAdFailedToLoad(@NonNull AdRequestError error) {
+                feedLoading.remove(id);
+                feedResolve(call, false, 0);
+            }
+        });
+    }
+
+    private void loadFeedBanner(PluginCall call, String id, String adUnitId, int xDp, int yDp, int widthDp) {
+        Activity activity = getActivity();
+        Context ctx = activity != null ? activity : getContext();
+        BannerAdView banner = new BannerAdView(ctx);
+        // Адаптивный inline-баннер: ширина слота, высота — не больше 260dp (SDK подберёт размер).
+        banner.setAdSize(BannerAdSize.inline(ctx, widthDp > 0 ? widthDp : 320, 260));
+        final boolean[] done = {false};
+        banner.setBannerAdEventListener(new BannerAdEventListener() {
+            @Override
+            public void onAdLoaded() {
+                if (done[0]) return;
+                done[0] = true;
+                feedLoading.remove(id);
+                if (feedCancelled.contains(id)) { banner.destroy(); feedResolve(call, false, 0); return; }
+                feedViews.put(id, banner);
+                attachToRoot(banner, widthDp);
+                applyFeedRect(id, banner, xDp, yDp, widthDp, true);
+                int h = measureHeightDp(banner, widthDp);
+                feedHeights.put(id, h);
+                feedResolve(call, h > 0, h);
+            }
+            @Override
+            public void onAdFailedToLoad(@NonNull AdRequestError error) {
+                if (done[0]) return;
+                done[0] = true;
+                feedLoading.remove(id);
+                banner.destroy();
+                feedResolve(call, false, 0);
+            }
+            @Override public void onAdClicked() {}
+            @Override public void onLeftApplication() {}
+            @Override public void onReturnedToApplication() {}
+            @Override public void onImpression(@Nullable ImpressionData impressionData) {}
+        });
+        banner.loadAd(new AdRequest.Builder(adUnitId).build());
+    }
+
+    @PluginMethod
+    public void positionFeedAd(PluginCall call) {
+        String id = call.getString("id");
+        int xDp = call.getInt("x", 0);
+        int yDp = call.getInt("y", 0);
+        int widthDp = call.getInt("width", 0);
+        boolean visible = call.getBoolean("visible", true);
+        ui(() -> {
+            if (id == null) return;
+            View v = feedViews.get(id);
+            if (v != null) applyFeedRect(id, v, xDp, yDp, widthDp, visible);
+        });
+        call.resolve();
+    }
+
+    @PluginMethod
+    public void hideFeedAd(PluginCall call) {
+        String id = call.getString("id");
+        if (id != null) {
+            feedCancelled.add(id);
+            ui(() -> removeFeedView(id));
+        }
+        call.resolve();
+    }
+
+    @PluginMethod
+    public void hideAllFeedAds(PluginCall call) {
+        feedCancelled.addAll(feedLoading);
+        ui(() -> {
+            for (String id : new ArrayList<>(feedViews.keySet())) removeFeedView(id);
+        });
+        call.resolve();
     }
 
     /** Рейтинг приложения для нативного шаблона: SDK ожидает View, реализующую Rating. */
@@ -578,6 +789,13 @@ public class YandexAdsPlugin extends Plugin {
         interstitialLoader = null;
         rewardedLoader = null;
         nativeLoader = null;
+        for (View v : feedViews.values()) {
+            if (v instanceof BannerAdView) ((BannerAdView) v).destroy();
+        }
+        feedViews.clear();
+        feedHeights.clear();
+        feedLoading.clear();
+        feedCancelled.clear();
         super.handleOnDestroy();
     }
 }

@@ -327,7 +327,7 @@ textarea.field{min-height:130px;resize:vertical;font-size:13px;line-height:1.5}
 @media (prefers-reduced-motion:reduce){*{animation-duration:.001s !important;transition-duration:.001s !important}}
 
 /* Заголовки секций библиотеки (короткие / длинные) */
-.lib-head{margin:22px 2px 10px}
+.lib-tabs{margin:2px 2px 14px}
 
 /* ================= МЕТАПРОГРЕСС: задания, достижения, полка ================= */
 .seg{display:flex;gap:6px;flex-wrap:wrap}
