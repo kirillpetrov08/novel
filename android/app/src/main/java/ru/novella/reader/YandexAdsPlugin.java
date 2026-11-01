@@ -715,8 +715,6 @@ public class YandexAdsPlugin extends Plugin {
                 feedResolve(call, false, 0);
             }
             @Override public void onAdClicked() {}
-            @Override public void onLeftApplication() {}
-            @Override public void onReturnedToApplication() {}
             @Override public void onImpression(@Nullable ImpressionData impressionData) {}
         });
         banner.loadAd(new AdRequest.Builder(adUnitId).build());
