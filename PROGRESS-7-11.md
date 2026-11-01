@@ -13,7 +13,7 @@
 - [x] план
 - [x] story.json (34 сцены, 21 выбор, 5 платных по 5, ending-объекты)
 - [x] art-prompts.json (24 файла + 34 sceneBackgrounds)
-- [x] картинки 10/24 (пачка 1: 4 базы + 6 состояний Риты)
+- [x] картинки 10/24 (пачка 1: 4 базы + 6 состояний Риты; 11-й вызов упёрся в лимит 10/ход, как и в stores/5-6)
 - [ ] пачка 2 (11–20): heroine_tender, hero×4, friend×2, bg-stage, bg-backstage
 - [ ] пачка 3 (21–24): bg-hall, bg-office, bg-light, bg-garden, cover
 - [ ] самопроверка
@@ -24,10 +24,13 @@
 - Конфликт: закрытие аэродрома; последний рейс в большой город в окно погоды.
 - Финалы: desire «Высота» (Желание) / trust «Погода подходит» (Доверие) / neutral «Последний рейс» (Рейс).
 - Фоны: bg-tower, bg-runway, bg-hangar, bg-office, bg-taxiway, bg-snow.
-- [ ] план
-- [ ] story.json
-- [ ] art-prompts.json
+- [x] план
+- [x] story.json (34 сцены, 21 выбор, 5 платных по 5, ending-объекты, все проверки пройдены)
+- [x] art-prompts.json (24 файла + 34 sceneBackgrounds)
 - [ ] картинки 0/24
+- [ ] пачка 1 (1–10): 4 базы + 6 состояний Софьи
+- [ ] пачка 2 (11–20): heroine_tender, hero×4, friend×2, bg-tower, bg-runway
+- [ ] пачка 3 (21–24): bg-hangar, bg-office, bg-taxiway, bg-snow, cover
 - [ ] самопроверка
 - [ ] коммит
 
@@ -70,3 +73,5 @@
 ## Журнал хода
 - ход 1: формат ending-объекта подтверждён по движку (js/engine.js finish → emit('ending', {ending: sc.ending}); js/app.js renderEnding читает title/badge/text). Чек-лист создан.
 - ход 2: stores/7: story.json + art-prompts.json готовы, пачка картинок 1/24 (10 шт).
+- ход 3: stores/7 коммит (story+art-prompts+10 картинок). Лимит 10/ход подтверждён (ошибка на 11-м вызове). Продолжаю текстом: stores/8.
+- ход 4: stores/8 story.json + art-prompts.json готовы (ALL CHECKS PASSED, validate ✓). stores/7: ждёт пачка 2 (heroine_tender упёрлась в лимит).
