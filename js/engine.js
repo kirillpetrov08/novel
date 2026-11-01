@@ -16,12 +16,15 @@ const Engine = {
   freshState(story) {
     const stats = {};
     Object.keys(story.stats || {}).forEach(k => stats[k] = 0);
+    const prev = Store.getProgress(story.id) || {};
     return {
       sceneId: story.start, lineIndex: 0, stats,
       paid: [], visited: [story.start], log: [],
+      // seen: сцены, виденные в ЛЮБОМ прохождении (для «пропуска прочитанного»)
+      seen: prev.seen || prev.visited || [story.start],
       completed: false,
-      endingsFound: (Store.getProgress(story.id) || {}).endingsFound || [],
-      completedBefore: (Store.getProgress(story.id) || {}).completed || false,
+      endingsFound: prev.endingsFound || [],
+      completedBefore: prev.completed || false,
     };
   },
 
@@ -34,6 +37,9 @@ const Engine = {
     } else {
       this.state = this.freshState(story);
     }
+    if (!this.state.seen) this.state.seen = (this.state.visited || []).slice();
+    // снимок «уже читано до этого захода» — граница для пропуска прочитанного
+    this.seenBefore = new Set([...(this.state.seen || []), ...(this.state.visited || [])]);
     this.persist();
     this.render();
   },
@@ -86,6 +92,7 @@ const Engine = {
 
     this.state.log.push({ type: 'choice', text: choice.text });
     this.applyEffect(choice.effect);
+    this.emit('choice-made', { paid: cost > 0 });
     this.goTo(choice.next);
   },
 
@@ -94,8 +101,35 @@ const Engine = {
     this.state.sceneId = sceneId;
     this.state.lineIndex = 0;
     if (!this.state.visited.includes(sceneId)) this.state.visited.push(sceneId);
+    if (this.state.seen && !this.state.seen.includes(sceneId)) this.state.seen.push(sceneId);
     this.persist();
     this.render();
+  },
+
+  /* Пропуск прочитанного: мгновенно листает уже виденные сцены до ближайшего
+     выбора, финала или первой непрочитанной сцены. Возвращает true, если сдвинулись. */
+  skipRead() {
+    if (!this.state || !this.scene()) return false;
+    if (this.seenBefore && !this.seenBefore.has(this.state.sceneId)) return false;
+    this.stopTyping();
+    const fromScene = this.state.sceneId, fromLine = this.state.lineIndex;
+    let guard = 0;
+    while (guard++ < 1500) {
+      const sc = this.scene();
+      if (!sc) break;
+      if (this.state.lineIndex < sc.lines.length - 1) { this.state.lineIndex = sc.lines.length - 1; continue; }
+      if (sc.ending || (sc.choices || []).length) break;
+      const target = this.resolveBranch(sc) || sc.next;
+      if (!target || !this.story.scenes[target]) break;
+      this.state.sceneId = target;
+      this.state.lineIndex = 0;
+      if (!this.state.visited.includes(target)) this.state.visited.push(target);
+      if (this.state.seen && !this.state.seen.includes(target)) this.state.seen.push(target);
+      if (this.seenBefore && !this.seenBefore.has(target)) break; // первая непрочитанная — стоп на её первой реплике
+    }
+    this.persist();
+    this.render();
+    return this.state.sceneId !== fromScene || this.state.lineIndex !== fromLine;
   },
 
   /* Тап по диалогу: допечатать строку ИЛИ шагнуть дальше. */
@@ -158,7 +192,7 @@ const Engine = {
       notes.push(`Новый финал открыт: +${CONFIG.crystals.newEnding} ◆`);
     }
     if (reward) Store.addCrystals(reward, `Финал «${sc.ending.title}»`);
-    this.emit('ending', { ending: sc.ending, reward, notes, isNewEnding });
+    this.emit('ending', { ending: sc.ending, reward, notes, isNewEnding, firstComplete });
   },
 
   progressPct() {
@@ -180,6 +214,7 @@ const Engine = {
       this.state.log.push({ type: ln.type, who: ln.who || null, text: ln.text, scene: this.state.sceneId, line: this.state.lineIndex });
       if (this.state.log.length > 500) this.state.log = this.state.log.slice(-500);
       this.persist();
+      this.emit('line-read'); // реплика показана впервые — для заданий и достижений
     }
     this.emit('render-line', ln);
   },
@@ -191,11 +226,12 @@ const Engine = {
     let i = 0;
     el.textContent = '';
     this.typing = { done: false, full: text, el, timer: null };
+    const ms = (Store.data.settings && Store.data.settings.typeMs) || CONFIG.text.typewriterMs;
     this.typing.timer = setInterval(() => {
       i += 2; // по 2 символа — плавно и без нагрузки
       el.textContent = text.slice(0, i);
       if (i >= text.length) this.finishTyping();
-    }, CONFIG.text.typewriterMs);
+    }, ms);
   },
   finishTyping() {
     if (!this.typing) return;

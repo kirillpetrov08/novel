@@ -14,8 +14,77 @@ const gradient = (pair, fallback = ['#E9DCC3', '#B49B72']) => {
   return `linear-gradient(165deg, ${a} 0%, ${b} 100%)`;
 };
 
+/* Живые эффекты погоды на canvas поверх фона сцены (снег/дождь).
+   Эффект берётся из scene.fx, если задан, иначе угадывается по имени фона
+   (snow/rain). Работает только в плеере, отключается в настройках. */
+const WeatherFX = {
+  canvas: null, ctx: null, raf: 0, mode: null, parts: [], w: 0, h: 0, last: 0,
+  guess(sc) {
+    if (!sc) return null;
+    if (sc.fx) return sc.fx;
+    const bg = sc.bg || '';
+    if (/snow/i.test(bg)) return 'snow';
+    if (/rain/i.test(bg)) return 'rain';
+    return null;
+  },
+  apply(mode) {
+    if (mode && Store.data && Store.data.settings && !Store.data.settings.weatherFx) mode = null;
+    if (mode === this.mode) { if (mode) this._resize(); return; }
+    this.mode = mode;
+    this.stop();
+    if (!mode) { this._clear(); return; }
+    this.canvas = document.querySelector('#weather-fx');
+    if (!this.canvas) return;
+    this.ctx = this.canvas.getContext('2d');
+    this._resize(); this._seed();
+    this.last = performance.now();
+    const step = t => { if (!this.mode) return; this._frame(t); this.raf = requestAnimationFrame(step); };
+    this.raf = requestAnimationFrame(step);
+  },
+  stop() { if (this.raf) cancelAnimationFrame(this.raf); this.raf = 0; },
+  _clear() { if (this.ctx && this.canvas) this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height); },
+  _resize() {
+    if (!this.canvas) return;
+    const r = this.canvas.getBoundingClientRect();
+    const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+    this.w = r.width; this.h = r.height;
+    this.canvas.width = Math.max(1, Math.round(r.width * dpr));
+    this.canvas.height = Math.max(1, Math.round(r.height * dpr));
+    if (this.ctx) this.ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  },
+  _seed() { const n = this.mode === 'snow' ? 80 : 110; this.parts = []; for (let i = 0; i < n; i++) this.parts.push(this._new(true)); },
+  _new(anyY) {
+    const W = this.w || 360, H = this.h || 640;
+    if (this.mode === 'snow') return { x: Math.random() * W, y: anyY ? Math.random() * H : -4, r: 1 + Math.random() * 2.4, s: 14 + Math.random() * 30, ph: Math.random() * 6.28 };
+    return { x: Math.random() * (W + 40) - 20, y: anyY ? Math.random() * H : -16, l: 9 + Math.random() * 10, s: 420 + Math.random() * 260 };
+  },
+  _frame(t) {
+    const dt = Math.min(0.05, (t - this.last) / 1000); this.last = t;
+    const c = this.ctx, W = this.w, H = this.h;
+    if (!c || !W) return;
+    c.clearRect(0, 0, W, H);
+    if (this.mode === 'snow') {
+      c.fillStyle = 'rgba(255,252,245,.85)';
+      for (const p of this.parts) {
+        p.y += p.s * dt; p.x += Math.sin(t / 900 + p.ph) * 14 * dt;
+        if (p.y > H + 4 || p.x < -6 || p.x > W + 6) Object.assign(p, this._new(false));
+        c.beginPath(); c.arc(p.x, p.y, p.r, 0, 6.283); c.fill();
+      }
+    } else {
+      c.strokeStyle = 'rgba(220,230,240,.5)'; c.lineWidth = 1; c.beginPath();
+      for (const p of this.parts) {
+        p.y += p.s * dt; p.x += p.s * 0.18 * dt;
+        if (p.y > H + 18) Object.assign(p, this._new(false));
+        c.moveTo(p.x, p.y); c.lineTo(p.x - p.l * 0.18, p.y + p.l);
+      }
+      c.stroke();
+    }
+  },
+};
+
 const UI = {
   screen: 'library',
+  autoTimer: null,
   detailId: null,
   pendingChoice: null,   // {idx, cost} — выбор, на который не хватило кристаллов
   pendingRewardGrant: null, // колбэк начисления для демо-рекламы в веб-режиме
@@ -39,7 +108,8 @@ const UI = {
     if (name === 'library') this.renderLibrary();
     if (name === 'shop') this.renderShop();
     if (name === 'profile') this.renderProfile();
-    if (name !== 'player') Engine.stopTyping();
+    if (name === 'shelf') this.renderShelf();
+    if (name !== 'player') { Engine.stopTyping(); this.clearAuto(); WeatherFX.apply(null); }
     window.scrollTo(0, 0);
   },
 
@@ -318,6 +388,8 @@ const UI = {
     this.setChoicesOpen(false);
     this.go('player');
     Engine.open(story, mode);
+    Meta.bump('opened'); // задание дня «открой историю»
+    Ambient.sync();       // фоновая музыка — по жесту пользователя, как требуют браузеры
   },
 
   preloadBg(story, scene) {
@@ -369,6 +441,8 @@ const UI = {
       wrap.appendChild(div);
     });
     wrap.dataset.count = String(wrap.children.length || 1);
+    WeatherFX.apply(WeatherFX.guess(sc));
+    $('#player-auto').classList.toggle('active', !!Store.data.settings.autoPlay);
     this.preloadBg(story, sc);
   },
 
@@ -402,7 +476,7 @@ const UI = {
       el.classList.toggle('speaking', same);
     });
     Engine.startTyping(txt, String(ln.text));
-    if (!Store.data.settings.typewriter) $('#dialogue-next').style.visibility = 'visible';
+    if (!Store.data.settings.typewriter) { $('#dialogue-next').style.visibility = 'visible'; this.scheduleAuto(); }
     $('#player-progress').style.width = Engine.progressPct() + '%';
   },
 
@@ -476,9 +550,13 @@ const UI = {
     adBtn.title = can.ok ? '' : can.reason;
 
     const dailyDone = Store.data.lastDaily === todayKey();
-    $('#daily-sub').textContent = dailyDone ? 'Сегодня бонус уже получен. Загляни завтра.' : `+${c.dailyBonus} ◆ один раз в день — просто за вход.`;
+    const dailyAmount = Meta.dailyAmount();
+    const streak = Meta.streakCount();
+    $('#daily-sub').textContent = dailyDone
+      ? `Сегодня бонус уже получен. Серия дней: ${streak}. Загляни завтра — серия вырастет.`
+      : `+${dailyAmount} ◆ один раз в день — просто за вход.${streak > 1 ? ` Серия: ${streak} дн. подряд — бонус повышен.` : ' Заходи каждый день подряд — бонус будет расти.'}`;
     const dBtn = $('#daily-btn');
-    dBtn.textContent = dailyDone ? 'Получено' : `+${c.dailyBonus} ◆`;
+    dBtn.textContent = dailyDone ? 'Получено' : `+${dailyAmount} ◆`;
     dBtn.disabled = dailyDone;
 
     $('#complete-sub').textContent = `Первое прохождение истории: +${c.completeStory} ◆. Каждый новый финал: +${c.newEnding} ◆.`;
@@ -501,7 +579,7 @@ const UI = {
     if (Ads.isNative()) {
       this.toast('Загружаем рекламу…', 1500);
       const ok = await Ads.showRewardedNative();
-      if (ok) onReward();
+      if (ok) { Meta.bump('ads'); onReward(); }
       else this.toast('Чтобы получить награду, досмотри рекламу до конца');
       return;
     }
@@ -542,7 +620,7 @@ const UI = {
     const grant = this.pendingRewardGrant;
     this.pendingRewardGrant = null;
     this.closeModal('modal-ad');
-    if (grant) grant();
+    if (grant) { Meta.bump('ads'); grant(); }
   },
 
   /* ---------------- ПРОФИЛЬ / РЕФЕРАЛЫ ---------------- */
@@ -558,8 +636,173 @@ const UI = {
     const u = Store.data.user;
     $('#claim-card').style.display = u.refClaimed ? 'none' : 'block';
     $('#claim-note').textContent = u.referredBy ? '' : '';
-    $('#typewriter-toggle').textContent = Store.data.settings.typewriter ? 'Вкл' : 'Выкл';
     $('#profile-id-line').textContent = `ID игрока: ${u.id}${u.referredBy ? ` · приглашён по коду ${u.referredBy}` : ''}`;
+
+    this.notifyAchievements(Meta.checkAchievements());
+    this.renderQuests();
+    this.renderAchievements();
+
+    // настройки чтения
+    const cfg = Store.data.settings;
+    const speedKey = !cfg.typewriter ? 'instant' : (cfg.typeMs >= 24 ? 'slow' : (cfg.typeMs && cfg.typeMs <= 8 ? 'fast' : 'normal'));
+    $$('#seg-speed button').forEach(b => b.classList.toggle('active', b.dataset.speed === speedKey));
+    $$('#seg-font button').forEach(b => b.classList.toggle('active', b.dataset.font === (cfg.fontSize || 'm')));
+    $('#autoplay-toggle').textContent = cfg.autoPlay ? 'Вкл' : 'Выкл';
+    $('#music-toggle').textContent = cfg.music ? 'Вкл' : 'Выкл';
+    $('#weather-toggle').textContent = cfg.weatherFx ? 'Вкл' : 'Выкл';
+    $('#notify-toggle').textContent = cfg.notify ? 'Вкл' : 'Выкл';
+    if (!Notify.available()) $('#notify-sub').textContent = 'Напоминание вечером: ежедневные кристаллы и задания. Работает в Android-приложении.';
+  },
+
+  renderQuests() {
+    const box = $('#quests-box'); if (!box) return;
+    const qs = Meta.todayQuests();
+    box.innerHTML = `<p class="muted small" style="margin-bottom:4px">Серия дней: <b>${Meta.streakCount()}</b> · задания обновятся завтра</p>` + qs.map(q => {
+      const st = Meta.questState(q);
+      const btn = st.claimed
+        ? `<button class="mini-btn" disabled>Получено</button>`
+        : st.done
+          ? `<button class="mini-btn accent" data-quest="${q.id}">+${q.reward} ◆</button>`
+          : `<span class="muted" style="font-weight:700">${st.cur}/${q.goal}</span>`;
+      return `<div class="quest-row"><div class="quest-ic">${q.icon}</div>
+        <div class="grow" style="flex:1;min-width:0"><div class="row-title">${esc(q.title)}</div><div class="row-sub">${esc(q.desc)}</div>
+        <div class="mini-track"><div class="mini-fill" style="width:${Math.round((st.cur / q.goal) * 100)}%"></div></div></div>${btn}</div>`;
+    }).join('');
+  },
+
+  renderAchievements() {
+    const box = $('#ach-box'); if (!box) return;
+    const ach = Store.data.meta.ach || {};
+    box.innerHTML = Meta.ACHIEVEMENTS.map(a => {
+      let p = { cur: 0, max: 1 }; try { p = a.progress(); } catch (e) {}
+      const got = !!ach[a.id];
+      const cur = Math.min(p.cur, p.max);
+      return `<div class="ach-row ${got ? 'done' : 'locked'}"><div class="ach-ic">${a.icon}</div>
+        <div class="grow" style="flex:1;min-width:0"><div class="row-title">${esc(a.title)}</div><div class="row-sub">${esc(a.desc)}</div>
+        ${got ? '' : `<div class="mini-track"><div class="mini-fill" style="width:${Math.round((cur / p.max) * 100)}%"></div></div>`}</div>
+        <span class="${got ? '' : 'muted'}" style="font-weight:700;white-space:nowrap">${got ? `✓ +${a.reward} ◆` : `${cur}/${p.max}`}</span></div>`;
+    }).join('');
+  },
+
+  notifyAchievements(fresh) {
+    if (!fresh || !fresh.length) return;
+    if (fresh.length === 1) this.toast(`✦ Достижение «${fresh[0].title}» · +${fresh[0].reward} ◆`, 3200);
+    else this.toast(`✦ Достижений открыто: ${fresh.length} · +${fresh.reduce((n, a) => n + a.reward, 0)} ◆`, 3200);
+    this.renderGems(true);
+  },
+
+  /* ---------------- ПОЛКА ФИНАЛОВ ---------------- */
+  renderShelf() {
+    const opened = Meta.endingsOpened(), total = Meta.endingsTotalAll();
+    $('#shelf-total').textContent = `✦ ${opened} из ${total}`;
+    const wrap = $('#shelf-list');
+    wrap.innerHTML = '';
+    Loader.list().forEach(({ story }) => {
+      const ends = Object.entries(story.scenes).filter(([, s]) => s.ending)
+        .map(([id, s]) => ({ id, title: s.ending.title, badge: s.ending.badge }));
+      const found = (Store.getProgress(story.id) || {}).endingsFound || [];
+      const card = document.createElement('button');
+      card.className = 'shelf-card';
+      card.dataset.openStory = story.id;
+      const coverImg = story.cover ? `<img src="${esc(story.cover)}" alt="" loading="lazy" onerror="this.remove()">` : '';
+      card.innerHTML = `
+        <div class="shelf-cover" style="background:${gradient(story.coverGradient)}"><span class="symbol">${esc(story.coverSymbol || '✦')}</span>${coverImg}</div>
+        <div style="flex:1;min-width:0">
+          <div class="story-title">${esc(story.title)}</div>
+          <div class="story-genre">${story.format === 'long' ? 'Длинный роман · ' : ''}открыто ${found.length} из ${ends.length}</div>
+          <div class="shelf-ends">${ends.map(e => found.includes(e.id)
+            ? `<span class="end-chip open">✓ ${esc(e.title || 'Финал')}${e.badge ? ` · ${esc(e.badge)}` : ''}</span>`
+            : `<span class="end-chip locked">🔒 ? ? ?${e.badge ? ` · ${esc(e.badge)}` : ''}</span>`).join('')}</div>
+        </div>`;
+      wrap.appendChild(card);
+    });
+    if (!wrap.children.length) wrap.innerHTML = '<div class="empty"><div class="big">✦</div><h3>Истории ещё загружаются</h3></div>';
+  },
+
+  /* ---------------- СОХРАНЕНИЯ-ЗАКЛАДКИ ---------------- */
+  renderSaves() {
+    const story = Engine.story; if (!story) return;
+    const saves = Meta.listSaves(story.id);
+    const total = Meta.slotsTotal();
+    const list = $('#saves-list');
+    let html = '';
+    for (let i = 0; i < total; i++) {
+      const sv = saves[i];
+      html += `<div class="save-slot"><div class="grow">
+        <div class="lbl">${sv ? esc(sv.label) : 'Пустой слот'}</div>
+        <div class="muted small">${sv ? new Date(sv.ts).toLocaleString('ru-RU') : 'Сюда можно поставить закладку'}</div></div>
+        ${sv ? `<button class="mini-btn accent" data-save-load="${i}">Открыть</button>` : ''}
+        <button class="mini-btn" data-save-put="${i}">${sv ? 'Перезаписать' : 'Сохранить'}</button>
+        ${sv ? `<button class="mini-btn" data-save-del="${i}" aria-label="Удалить">✕</button>` : ''}</div>`;
+    }
+    if (Meta.canBuySlot()) html += `<button class="btn btn-ghost" data-save-buy="1" style="margin-top:4px">+ Дополнительный слот · ${CONFIG.meta.extraSlotPrice} ◆</button>`;
+    else html += `<p class="muted small" style="margin-top:4px">Слотов: ${total} — это максимум.</p>`;
+    list.innerHTML = html;
+  },
+
+  putCurrentSave(idx) {
+    const story = Engine.story, state = Engine.state; if (!story || !state) return;
+    const snap = JSON.parse(JSON.stringify(state));
+    snap.log = (snap.log || []).slice(-200);
+    Meta.putSave(story.id, idx, `${story.title} · ${Engine.progressPct()}%`, snap);
+    this.toast('Закладка сохранена ⚑');
+    this.renderSaves();
+  },
+
+  loadSave(idx) {
+    const story = Engine.story; if (!story) return;
+    const sv = Meta.listSaves(story.id)[idx]; if (!sv) return;
+    Engine.stopTyping();
+    this.clearAuto();
+    Engine.state = JSON.parse(JSON.stringify(sv.snap));
+    if (!Engine.state.seen) Engine.state.seen = (Engine.state.visited || []).slice();
+    Engine.seenBefore = new Set([...(Engine.state.seen || []), ...(Engine.state.visited || [])]);
+    Engine.persist();
+    Engine.render();
+    if (Engine.scenePhase() === 'choices-ready' && !Store.data.settings.typewriter) this.renderChoices();
+    this.closeModal('modal-saves');
+    this.toast('Сохранение загружено');
+  },
+
+  /* ---------------- АВТОЧТЕНИЕ ---------------- */
+  scheduleAuto() {
+    this.clearAuto();
+    if (!Store.data.settings.autoPlay || this.screen !== 'player') return;
+    if ($('#choices').classList.contains('open') || $('#ending-ov').classList.contains('open') || $('.modal-ov.open')) return;
+    this.autoTimer = setTimeout(() => {
+      if (this.screen === 'player' && !$('#choices').classList.contains('open') && !$('#ending-ov').classList.contains('open') && !$('.modal-ov.open')) Engine.advance();
+    }, CONFIG.meta.autoDelayMs);
+  },
+  clearAuto() { if (this.autoTimer) { clearTimeout(this.autoTimer); this.autoTimer = null; } },
+
+  applyReadSettings() {
+    document.body.dataset.font = Store.data.settings.fontSize || 'm';
+  },
+
+  /* ---------------- ЗАПРОС ОЦЕНКИ ---------------- */
+  showRatePrompt() {
+    this._rateStars = 0;
+    $$('#rate-stars button').forEach(b => b.classList.remove('on'));
+    $('#rate-actions').innerHTML = '';
+    this.openModal('modal-rate');
+  },
+
+  ratePick(n) {
+    this._rateStars = n;
+    $$('#rate-stars button').forEach(b => b.classList.toggle('on', +b.dataset.star <= n));
+    const act = $('#rate-actions');
+    if (n >= 4) {
+      act.innerHTML = '<button class="btn btn-accent" id="rate-go">Оценить в RuStore ♡</button>';
+      $('#rate-go').addEventListener('click', () => {
+        Meta.rateAnswered('rated');
+        this.closeModal('modal-rate');
+        this.copyText(CONFIG.referrals.storeUrl, 'Спасибо! Ссылка на страницу приложения скопирована');
+        try { window.open(CONFIG.referrals.storeUrl, '_blank'); } catch (e) {}
+      });
+    } else {
+      act.innerHTML = '<p class="muted" style="margin:6px 0 10px">Спасибо за честность! Мы стараемся делать истории лучше.</p><button class="btn btn-primary" id="rate-thanks">Хорошо</button>';
+      $('#rate-thanks').addEventListener('click', () => { Meta.rateAnswered('later'); this.closeModal('modal-rate'); });
+    }
   },
 
   renderRefBanner() {
@@ -595,6 +838,31 @@ const UI = {
     document.addEventListener('click', e => {
       const goEl = e.target.closest('[data-go]');
       if (goEl) { this.go(goEl.dataset.go); return; }
+      const qBtn = e.target.closest('[data-quest]');
+      if (qBtn) {
+        if (Meta.claimQuest(qBtn.dataset.quest)) {
+          this.toast('Задание выполнено · награда получена ◆');
+          this.renderGems(true);
+          this.notifyAchievements(Meta.checkAchievements());
+          this.renderProfile();
+        }
+        return;
+      }
+      const openStory = e.target.closest('[data-open-story]');
+      if (openStory) { this.openDetail(openStory.dataset.openStory); return; }
+      const savePut = e.target.closest('[data-save-put]');
+      if (savePut) { this.putCurrentSave(+savePut.dataset.savePut); return; }
+      const saveLoad = e.target.closest('[data-save-load]');
+      if (saveLoad) { this.loadSave(+saveLoad.dataset.saveLoad); return; }
+      const saveDel = e.target.closest('[data-save-del]');
+      if (saveDel) { Meta.deleteSave(Engine.story.id, +saveDel.dataset.saveDel); this.renderSaves(); return; }
+      const saveBuy = e.target.closest('[data-save-buy]');
+      if (saveBuy) {
+        if (Meta.buySlot()) { this.toast('Новый слот сохранения открыт ⚑'); this.renderGems(true); }
+        else this.toast(`Не хватает кристаллов: слот стоит ${CONFIG.meta.extraSlotPrice} ◆`);
+        this.renderSaves();
+        return;
+      }
       const closeEl = e.target.closest('[data-close]');
       if (closeEl) {
         this.closeModal(closeEl.dataset.close);
@@ -615,19 +883,31 @@ const UI = {
     // нативная реклама следует за слотом при скролле библиотеки
     const libScroll = $('#screen-library .scroll');
     if (libScroll) libScroll.addEventListener('scroll', () => this.syncNativePosition(), { passive: true });
-    window.addEventListener('resize', () => this.syncNativePosition());
+    window.addEventListener('resize', () => { this.syncNativePosition(); WeatherFX._resize(); });
 
     // плеер
-    $('#dialogue').addEventListener('click', () => Engine.advance());
+    $('#dialogue').addEventListener('click', () => { this.clearAuto(); Engine.advance(); });
     $('#stage').addEventListener('click', e => {
       if ($('#choices').classList.contains('open') || $('#ending-ov').classList.contains('open')) return;
-      if (e.target === $('#stage') || e.target.closest('#stage-bg') || e.target.closest('.stage-shade')) Engine.advance();
+      if (e.target === $('#stage') || e.target.closest('#stage-bg') || e.target.closest('.stage-shade')) { this.clearAuto(); Engine.advance(); }
     });
     document.addEventListener('keydown', e => {
       if (this.screen === 'player' && (e.code === 'Space' || e.code === 'Enter') && !$('#choices').classList.contains('open')) {
-        e.preventDefault(); Engine.advance();
+        e.preventDefault(); this.clearAuto(); Engine.advance();
       }
     });
+    $('#player-skip').addEventListener('click', () => {
+      this.clearAuto();
+      if (!Engine.skipRead()) this.toast('Дальше — ещё не прочитанное ♡');
+    });
+    $('#player-auto').addEventListener('click', () => {
+      const st = Store.data.settings;
+      st.autoPlay = !st.autoPlay; Store.save();
+      $('#player-auto').classList.toggle('active', st.autoPlay);
+      this.toast(st.autoPlay ? 'Авточтение включено — листаю сама' : 'Авточтение выключено');
+      if (st.autoPlay) this.scheduleAuto(); else this.clearAuto();
+    });
+    $('#player-saves').addEventListener('click', () => { this.renderSaves(); this.openModal('modal-saves'); });
     $('#player-exit').addEventListener('click', () => this.go('library'));
     $('#player-log').addEventListener('click', () => { this.renderLog(); this.openModal('modal-log'); });
     $('#ending-again').addEventListener('click', () => { $('#ending-ov').classList.remove('open'); Engine.open(Engine.story, 'restart'); });
@@ -656,9 +936,11 @@ const UI = {
     $('#daily-btn').addEventListener('click', () => {
       if (Store.data.lastDaily === todayKey()) return;
       Store.data.lastDaily = todayKey(); Store.save();
-      Store.addCrystals(CONFIG.crystals.dailyBonus, 'Ежедневный бонус');
-      this.toast(`+${CONFIG.crystals.dailyBonus} ◆ — ежедневный бонус`);
+      const amount = Meta.dailyAmount(); const streak = Meta.streakCount();
+      Store.addCrystals(amount, streak > 1 ? `Ежедневный бонус (серия ${streak})` : 'Ежедневный бонус');
+      this.toast(`+${amount} ◆ — ежедневный бонус${streak > 1 ? ` · серия ${streak} дн.` : ''}`);
       this.renderGems(true); this.renderShop();
+      this.notifyAchievements(Meta.checkAchievements());
     });
     $('#need-ad-btn').addEventListener('click', () => this.watchAdFlow());
     $('#need-shop-btn').addEventListener('click', () => { this.closeModal('modal-need'); this.go('shop'); });
@@ -668,10 +950,49 @@ const UI = {
     $('#copy-link-btn').addEventListener('click', () => this.copyText(Referrals.myInviteText(), 'Приглашение скопировано — отправь его другу'));
     $('#claim-btn').addEventListener('click', () => this.claimRef($('#claim-input').value));
     $('#ref-banner-btn').addEventListener('click', () => this.claimRef(this.pendingRef));
-    $('#typewriter-toggle').addEventListener('click', () => {
-      Store.data.settings.typewriter = !Store.data.settings.typewriter; Store.save();
+    // настройки чтения
+    $('#seg-speed').addEventListener('click', e => {
+      const b = e.target.closest('[data-speed]'); if (!b) return;
+      const st = Store.data.settings;
+      const map = { instant: { tw: false, ms: null }, fast: { tw: true, ms: 6 }, normal: { tw: true, ms: 14 }, slow: { tw: true, ms: 28 } };
+      const v = map[b.dataset.speed]; if (!v) return;
+      st.typewriter = v.tw; st.typeMs = v.ms; Store.save();
       this.renderProfile();
     });
+    $('#seg-font').addEventListener('click', e => {
+      const b = e.target.closest('[data-font]'); if (!b) return;
+      Store.data.settings.fontSize = b.dataset.font; Store.save();
+      this.applyReadSettings(); this.renderProfile();
+    });
+    $('#autoplay-toggle').addEventListener('click', () => {
+      Store.data.settings.autoPlay = !Store.data.settings.autoPlay; Store.save();
+      if (!Store.data.settings.autoPlay) this.clearAuto();
+      this.renderProfile();
+    });
+    $('#music-toggle').addEventListener('click', () => {
+      Store.data.settings.music = !Store.data.settings.music; Store.save();
+      Ambient.sync(); this.renderProfile();
+    });
+    $('#weather-toggle').addEventListener('click', () => {
+      Store.data.settings.weatherFx = !Store.data.settings.weatherFx; Store.save();
+      this.renderProfile();
+    });
+    $('#notify-toggle').addEventListener('click', async () => {
+      const st = Store.data.settings;
+      st.notify = !st.notify; Store.save();
+      if (st.notify) {
+        if (!Notify.available()) this.toast('Уведомления работают в Android-приложении');
+        else if (!await Notify.sync(true)) { st.notify = false; Store.save(); this.toast('Разреши уведомления в настройках телефона'); }
+        else this.toast('Уведомления включены: напоминание в 19:00 ◆');
+      } else {
+        Notify.sync(false);
+        this.toast('Уведомления выключены');
+      }
+      this.renderProfile();
+    });
+    // запрос оценки
+    $$('#rate-stars button').forEach(b => b.addEventListener('click', () => this.ratePick(+b.dataset.star)));
+    $('#rate-later').addEventListener('click', () => { Meta.rateAnswered('later'); this.closeModal('modal-rate'); });
     $('#reset-all-btn').addEventListener('click', async () => {
       if (await this.confirm('Сбросить всё?', 'Кристаллы, прогресс всех историй и твой реферальный код будут удалены безвозвратно.', 'Сбросить всё')) {
         Store.resetAll(); location.href = location.pathname;
@@ -691,9 +1012,28 @@ const UI = {
     Engine.onEvent = (type, payload) => {
       if (type === 'render-scene') this.renderScene();
       if (type === 'render-line') this.renderLine(payload);
-      if (type === 'typing-done') $('#dialogue-next').style.visibility = 'visible';
+      if (type === 'line-read') {
+        Meta.bump('lines');
+        if (Store.data.meta.lifetime.lines % 25 === 0) this.notifyAchievements(Meta.checkAchievements());
+      }
+      if (type === 'choice-made') {
+        Meta.bump('choices');
+        if (payload && payload.paid) Meta.bump('paidChoices');
+        this.notifyAchievements(Meta.checkAchievements());
+      }
+      if (type === 'typing-done') { $('#dialogue-next').style.visibility = 'visible'; this.scheduleAuto(); }
       if (type === 'show-choices') this.renderChoices();
-      if (type === 'ending') this.renderEnding(payload);
+      if (type === 'ending') {
+        Meta.bump('endings');
+        this.clearAuto();
+        this.renderEnding(payload);
+        const fresh = Meta.checkAchievements();
+        setTimeout(() => this.notifyAchievements(fresh), 700);
+        // момент восторга после финала — лучшее время попросить оценку
+        if (payload.reward > 0 && Meta.shouldAskRate()) {
+          setTimeout(() => { if (!$('.modal-ov.open')) this.showRatePrompt(); }, 1800);
+        }
+      }
       if (type === 'stat-change') payload.forEach((c, i) => setTimeout(() => this.toast(c, 1800), i * 350));
       if (type === 'locked') this.toast('🔒 ' + payload);
       if (type === 'crystals-spent') { this.renderGems(true); }
@@ -708,7 +1048,15 @@ const UI = {
 
   async init() {
     Store.load();
+    Meta.touchDaily();        // серия дней + задания на сегодня
     this.bind();
+    this.applyReadSettings();
+    Notify.init();            // освежить расписание уведомлений, если включены
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) return;
+      Meta.touchDaily();      // день мог смениться, пока приложение было открыто
+      if (Ambient.started && Ambient.ctx && Ambient.ctx.state === 'suspended') Ambient.ctx.resume();
+    });
     this.renderGems(false);
 
     // стартовый бонус в историю операций + приветствие (один раз)
@@ -740,10 +1088,11 @@ const UI = {
     if (Loader.loadBundled()) {
       this.storesLoaded = true;
       this.renderLibrary();
+      this.notifyAchievements(Meta.checkAchievements());
     } else {
       this.renderLibrary();
       Loader.loadFromStores(() => { if (this.screen === 'library') this.renderLibrary(); })
-        .then(() => { this.storesLoaded = true; if (this.screen === 'library') this.renderLibrary(); })
+        .then(() => { this.storesLoaded = true; if (this.screen === 'library') this.renderLibrary(); this.notifyAchievements(Meta.checkAchievements()); })
         .catch(() => { this.storesLoaded = true; if (this.screen === 'library') this.renderLibrary(); });
     }
 
