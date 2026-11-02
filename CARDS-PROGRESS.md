@@ -27,16 +27,15 @@ no logos, no watermark». Даже если в старом манифесте �
   cg-ending-light/truth/ashore. Манифест восстановлен полностью (45 поз.).
 - №12 «До конечной» — 8/8: cg-meet a03, cg-night-kitchen a08, cg-market c03,
   cg-warm d03, cg-snow d04, cg-ending-noch/kon/perron.
-
-## В работе
-- №2 «Берег без спешки» — готово 4/6: cg-return s1, cg-clock s3, cg-gear s13,
-  cg-ending-together. Осталось (промпты в art-prompts.json):
-  cg-ending-departure, cg-ending-tower.
+- №2 «Берег без спешки» — 6/6: cg-return s1, cg-clock s3, cg-gear s13,
+  cg-ending-together, cg-ending-tower, cg-ending-departure.
+- №3 «Тепло обжига» — 6/6: cg-return s1, cg-kiln-first s6, cg-rain s10,
+  cg-ending-ogon, cg-ending-sveta, cg-ending-cherepok.
 
 ## Очередь (порядок и объём)
-Короткие №2–11 — по 5 карточек (завязка/встреча, поворот, кульминация,
-+ финалы выборочно; у коротких 3 финала — карточки на 2–3 из них по смыслу).
-Порядок: №3 «Тепло обжига», №4 «Красная лампа»,
+Остальные короткие №4–11 — по 5–6 карточек (завязка/встреча, поворот,
+кульминация и финалы по смыслу).
+Порядок: №4 «Красная лампа»,
 №5 «Ночная смена», №6 «Второе брожение», №7 «Антракт», №8 «На связи»,
 №9 «Семь морей», №10 «В полёте», №11 «Эфир».
 Внешность героев брать дословно из портретов в их art-prompts.json;

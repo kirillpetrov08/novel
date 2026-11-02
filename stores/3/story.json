@@ -121,6 +121,7 @@
   "scenes": {
     "s1": {
       "bg": "images/bg-atelier.jpg",
+      "cg": "images/cg-return.jpg",
       "bgGradient": [
         "#E9DCC3",
         "#B49B72"
@@ -435,6 +436,7 @@
     },
     "s6": {
       "bg": "images/bg-kiln.jpg",
+      "cg": "images/cg-kiln-first.jpg",
       "bgGradient": [
         "#E8C9A8",
         "#8A4B32"
@@ -763,6 +765,7 @@
     },
     "s10": {
       "bg": "images/bg-street-rain.jpg",
+      "cg": "images/cg-rain.jpg",
       "bgGradient": [
         "#D8CBB8",
         "#7A6F5E"
@@ -1273,6 +1276,7 @@
     },
     "ending_ogon": {
       "bg": "images/bg-kiln.jpg",
+      "cg": "images/cg-ending-ogon.jpg",
       "bgGradient": [
         "#E8C9A8",
         "#8A4B32"
@@ -1309,6 +1313,7 @@
     },
     "ending_sveta": {
       "bg": "images/bg-atelier.jpg",
+      "cg": "images/cg-ending-sveta.jpg",
       "bgGradient": [
         "#E9DCC3",
         "#B49B72"
@@ -1345,6 +1350,7 @@
     },
     "ending_cherepok": {
       "bg": "images/bg-street-rain.jpg",
+      "cg": "images/cg-ending-cherepok.jpg",
       "bgGradient": [
         "#D8CBB8",
         "#7A6F5E"
