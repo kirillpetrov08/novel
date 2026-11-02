@@ -99,6 +99,15 @@
   `{"file": "images/cg-….jpg", "type": "card", "scene": "<id сцены>", "prompt": "…"}`.
   Плеер покажет карточку в фирменной рамке вместо спрайтов (персонажи уже
   внутри иллюстрации). Внешность героев в промптах — дословно как в портретах.
+  **Единый стиль всех карточек** — в конец каждого промпта дословно добавляй:
+  «wide cinematic composition, characters large in frame and shown from the
+  waist up, soft oil painting illustration with gentle visible brushstrokes,
+  warm beige muted earthy palette of cream, sand, bronze, sage green and slate
+  grey, soft diffused natural light, semi-realistic painted faces with calm
+  tender expressions, romantic visual novel key visual, painterly detailed
+  background, not photorealistic, not anime, not 3D render, no text, no
+  lettering, no words, no logos, no watermark». Не клади в кадр читаемые
+  документы, вывески и таблички — модель рисует на них псевдотекст.
 - Генерируй **по одной картинке**, дожидаясь результата; `offer_options=false`.
 - Лимит платформы: **не больше 10 генераций подряд**. Генерируй пачками ≤10,
   после каждой пачки записывай прогресс в `stores/N/PROGRESS.md`

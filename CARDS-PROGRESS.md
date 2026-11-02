@@ -7,20 +7,36 @@ PROMPT_FOR_AI: 3–5). Этот файл — план доделки уже вы
 истории (type:"card", поле scene). После генерации: сжать до ширины 1200
 q84, прошить `scenes[scene].cg`, validate, build, commit.
 
+## Единый стиль карточек (обязательно)
+В конец каждого промпта — канонический блок: «wide cinematic composition,
+characters large in frame and shown from the waist up, soft oil painting
+illustration with gentle visible brushstrokes, warm beige muted earthy
+palette of cream, sand, bronze, sage green and slate grey, soft diffused
+natural light, semi-realistic painted faces with calm tender expressions,
+romantic visual novel key visual, painterly detailed background, not
+photorealistic, not anime, not 3D render, no text, no lettering, no words,
+no logos, no watermark». Даже если в старом манифесте истории своя строка
+стиля (как у №2), карточки делать этим блоком — он совпадает с живописью
+спрайтов (проверено: свой стиль №2 дал «акварельный» дрейф, переделано).
+Не класть в кадр читаемые бумаги/вывески (модель пишет псевдотекст;
+на cg-market №12 пришлось стирать инпеинтингом).
+
 ## Готово
 - №13 «Зимний сад» — 9 карточек (изначально).
 - №1 «Соль и свет» — 6 карточек: cg-arrival s1, cg-storm s11, cg-lamp s15,
   cg-ending-light/truth/ashore. Манифест восстановлен полностью (45 поз.).
+- №12 «До конечной» — 8/8: cg-meet a03, cg-night-kitchen a08, cg-market c03,
+  cg-warm d03, cg-snow d04, cg-ending-noch/kon/perron.
 
 ## В работе
-- №12 «До конечной» — готово 3/8: cg-meet a03, cg-night-kitchen a08,
-  cg-snow d04. Осталось (промпты уже в art-prompts.json):
-  cg-market c03, cg-warm d03, cg-ending-noch, cg-ending-kon, cg-ending-perron.
+- №2 «Берег без спешки» — готово 4/6: cg-return s1, cg-clock s3, cg-gear s13,
+  cg-ending-together. Осталось (промпты в art-prompts.json):
+  cg-ending-departure, cg-ending-tower.
 
 ## Очередь (порядок и объём)
 Короткие №2–11 — по 5 карточек (завязка/встреча, поворот, кульминация,
 + финалы выборочно; у коротких 3 финала — карточки на 2–3 из них по смыслу).
-Порядок: №2 «Берег без спешки», №3 «Тепло обжига», №4 «Красная лампа»,
+Порядок: №3 «Тепло обжига», №4 «Красная лампа»,
 №5 «Ночная смена», №6 «Второе брожение», №7 «Антракт», №8 «На связи»,
 №9 «Семь морей», №10 «В полёте», №11 «Эфир».
 Внешность героев брать дословно из портретов в их art-prompts.json;

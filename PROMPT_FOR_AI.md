@@ -253,6 +253,15 @@ no manga, no 3D render, no text, no watermark"
   в story.json проставляется "cg": "images/cg-….jpg", а в манифесте у карточки
   обязательное поле "scene" с id этой сцены; file равен scenes[scene].cg.
   Плеер покажет карточку в рамке вместо спрайтов персонажей.
+- Единый стиль всех карточек: в конец каждого промпта карточки дословно
+  добавляй «wide cinematic composition, characters large in frame and shown
+  from the waist up, soft oil painting illustration with gentle visible
+  brushstrokes, warm beige muted earthy palette of cream, sand, bronze, sage
+  green and slate grey, soft diffused natural light, semi-realistic painted
+  faces with calm tender expressions, romantic visual novel key visual,
+  painterly detailed background, not photorealistic, not anime, not 3D render,
+  no text, no lettering, no words, no logos, no watermark». Внешность героев —
+  дословно как в портретах. Не клади в кадр читаемые документы и вывески.
 - sceneBackgrounds содержит КАЖДУЮ сцену из story.json, включая финалы.
 - sceneBackgrounds[sceneId] в точности равен scenes[sceneId].bg.
 - Для character file равен image соответствующего ключа characters.
