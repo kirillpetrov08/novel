@@ -42,11 +42,13 @@ no logos, no watermark». Даже если в старом манифесте �
   cg-ending-dozhdi.
 - №7 «Антракт» — 6/6: cg-service-entrance s1, cg-light-booth s6,
   cg-premiere s13, cg-ending-svet, cg-ending-prosvet, cg-ending-zal.
+- №8 «На связи» — 6/6: cg-first-contact s1, cg-snowstorm-tower s6,
+  cg-last-flight s13, cg-ending-vysota, cg-ending-pogoda,
+  cg-ending-reys.
 
 ## Очередь (порядок и объём)
-Остальные короткие №8–11 — по 5–6 карточек (завязка/встреча, поворот,
+Остальные короткие №9–11 — по 5–6 карточек (завязка/встреча, поворот,
 кульминация и финалы по смыслу).
-Порядок: №8 «На связи»,
-№9 «Семь морей», №10 «В полёте», №11 «Эфир».
+Порядок: №9 «Семь морей», №10 «В полёте», №11 «Эфир».
 Внешность героев брать дословно из портретов в их art-prompts.json;
 сцены выбирать по карте story.json (проходные CHOICE-сцены и финалы).

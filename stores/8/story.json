@@ -121,6 +121,7 @@
   "scenes": {
     "s1": {
       "bg": "images/bg-tower.jpg",
+      "cg": "images/cg-first-contact.jpg",
       "bgGradient": [
         "#3A424A",
         "#7A8A94"
@@ -450,6 +451,7 @@
     },
     "s6": {
       "bg": "images/bg-tower.jpg",
+      "cg": "images/cg-snowstorm-tower.jpg",
       "bgGradient": [
         "#3A424A",
         "#7A8A94"
@@ -1066,6 +1068,7 @@
     },
     "s13": {
       "bg": "images/bg-runway.jpg",
+      "cg": "images/cg-last-flight.jpg",
       "bgGradient": [
         "#2E3A42",
         "#6E7A84"
@@ -1363,6 +1366,7 @@
     },
     "ending_vysota": {
       "bg": "images/bg-snow.jpg",
+      "cg": "images/cg-ending-vysota.jpg",
       "bgGradient": [
         "#B9C2C9",
         "#5A6B6E"
@@ -1390,6 +1394,7 @@
     },
     "ending_pogoda": {
       "bg": "images/bg-taxiway.jpg",
+      "cg": "images/cg-ending-pogoda.jpg",
       "bgGradient": [
         "#B9C2C9",
         "#5A6B6E"
@@ -1417,6 +1422,7 @@
     },
     "ending_reys": {
       "bg": "images/bg-tower.jpg",
+      "cg": "images/cg-ending-reys.jpg",
       "bgGradient": [
         "#3A424A",
         "#7A8A94"
