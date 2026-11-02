@@ -223,7 +223,8 @@
      "text": "Позвать Любу — она строит всех",
      "next": "a03c"
     }
-   ]
+   ],
+   "cg": "images/cg-meet.jpg"
   },
   "a03a": {
    "bg": "images/bg-platform.jpg",
@@ -582,7 +583,8 @@
      "text": "Уйти отдыхать перед ночной сменой",
      "next": "a08b"
     }
-   ]
+   ],
+   "cg": "images/cg-night-kitchen.jpg"
   },
   "a08a": {
    "bg": "images/bg-restaurant.jpg",
@@ -2400,7 +2402,8 @@
      "text": "Вернуться к пассажирам — им нужнее",
      "next": "d04b"
     }
-   ]
+   ],
+   "cg": "images/cg-snow.jpg"
   },
   "d04a": {
    "bg": "images/bg-snow.jpg",
