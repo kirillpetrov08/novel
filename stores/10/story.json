@@ -121,6 +121,7 @@
   "scenes": {
     "s1": {
       "bg": "images/bg-tent.jpg",
+      "cg": "images/cg-descent.jpg",
       "bgGradient": [
         "#B98A6A",
         "#6A4A42"
@@ -450,6 +451,7 @@
     },
     "s6": {
       "bg": "images/bg-rope.jpg",
+      "cg": "images/cg-rope-night.jpg",
       "bgGradient": [
         "#DCC79A",
         "#7A6A52"
@@ -1066,6 +1068,7 @@
     },
     "s13": {
       "bg": "images/bg-tent.jpg",
+      "cg": "images/cg-last-show.jpg",
       "bgGradient": [
         "#B98A6A",
         "#6A4A42"
@@ -1363,6 +1366,7 @@
     },
     "ending_vyshe": {
       "bg": "images/bg-night.jpg",
+      "cg": "images/cg-ending-vyshe.jpg",
       "bgGradient": [
         "#3A424A",
         "#8A6A5A"
@@ -1390,6 +1394,7 @@
     },
     "ending_polyot": {
       "bg": "images/bg-garden.jpg",
+      "cg": "images/cg-ending-polyot.jpg",
       "bgGradient": [
         "#8A9A6A",
         "#4A5A3A"
@@ -1417,6 +1422,7 @@
     },
     "ending_posle": {
       "bg": "images/bg-tent.jpg",
+      "cg": "images/cg-ending-posle.jpg",
       "bgGradient": [
         "#B98A6A",
         "#6A4A42"
