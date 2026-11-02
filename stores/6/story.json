@@ -121,6 +121,7 @@
  "scenes": {
   "s1": {
    "bg": "images/bg-vineyard.jpg",
+   "cg": "images/cg-first-frost.jpg",
    "bgGradient": [
     "#E3C78F",
     "#7A6A4A"
@@ -450,6 +451,7 @@
   },
   "s6": {
    "bg": "images/bg-cellar.jpg",
+   "cg": "images/cg-cellar-night.jpg",
    "bgGradient": [
     "#3A2E24",
     "#8A6A44"
@@ -1066,6 +1068,7 @@
   },
   "s13": {
    "bg": "images/bg-cellar.jpg",
+   "cg": "images/cg-crush.jpg",
    "bgGradient": [
     "#3A2E24",
     "#8A6A44"
@@ -1363,6 +1366,7 @@
   },
   "ending_brozhenie": {
    "bg": "images/bg-vineyard.jpg",
+   "cg": "images/cg-ending-brozhenie.jpg",
    "bgGradient": [
     "#E3C78F",
     "#7A6A4A"
@@ -1399,6 +1403,7 @@
   },
   "ending_pogreb": {
    "bg": "images/bg-cellar.jpg",
+   "cg": "images/cg-ending-pogreb.jpg",
    "bgGradient": [
     "#3A2E24",
     "#8A6A44"
@@ -1435,6 +1440,7 @@
   },
   "ending_dozhdi": {
    "bg": "images/bg-vineyard.jpg",
+   "cg": "images/cg-ending-dozhdi.jpg",
    "bgGradient": [
     "#E3C78F",
     "#7A6A4A"
