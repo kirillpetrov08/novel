@@ -23,72 +23,72 @@
   "heroine": {
    "name": "Анна",
    "color": "#6E5A44",
-   "image": "images/heroine.jpg"
+   "image": "images/heroine.webp"
   },
   "heroine_smile": {
    "name": "Анна",
    "color": "#6E5A44",
-   "image": "images/heroine_smile.jpg"
+   "image": "images/heroine_smile.webp"
   },
   "heroine_doubt": {
    "name": "Анна",
    "color": "#6E5A44",
-   "image": "images/heroine_doubt.jpg"
+   "image": "images/heroine_doubt.webp"
   },
   "heroine_brave": {
    "name": "Анна",
    "color": "#6E5A44",
-   "image": "images/heroine_brave.jpg"
+   "image": "images/heroine_brave.webp"
   },
   "heroine_tender": {
    "name": "Анна",
    "color": "#6E5A44",
-   "image": "images/heroine_tender.jpg"
+   "image": "images/heroine_tender.webp"
   },
   "heroine_vulnerable": {
    "name": "Анна",
    "color": "#6E5A44",
-   "image": "images/heroine_vulnerable.jpg"
+   "image": "images/heroine_vulnerable.webp"
   },
   "hero": {
    "name": "Тимур",
    "color": "#45525E",
-   "image": "images/hero.jpg"
+   "image": "images/hero.webp"
   },
   "hero_smile": {
    "name": "Тимур",
    "color": "#45525E",
-   "image": "images/hero_smile.jpg"
+   "image": "images/hero_smile.webp"
   },
   "hero_doubt": {
    "name": "Тимур",
    "color": "#45525E",
-   "image": "images/hero_doubt.jpg"
+   "image": "images/hero_doubt.webp"
   },
   "hero_tender": {
    "name": "Тимур",
    "color": "#45525E",
-   "image": "images/hero_tender.jpg"
+   "image": "images/hero_tender.webp"
   },
   "hero_close": {
    "name": "Тимур",
    "color": "#45525E",
-   "image": "images/hero_close.jpg"
+   "image": "images/hero_close.webp"
   },
   "friend": {
    "name": "Фаина",
    "color": "#7A6248",
-   "image": "images/friend.jpg"
+   "image": "images/friend.webp"
   },
   "friend_smile": {
    "name": "Фаина",
    "color": "#7A6248",
-   "image": "images/friend_smile.jpg"
+   "image": "images/friend_smile.webp"
   },
   "director": {
    "name": "Эдуард Маркович",
    "color": "#59504A",
-   "image": "images/director.png"
+   "image": "images/director.webp"
   }
  },
  "stats": {
