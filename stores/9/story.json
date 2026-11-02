@@ -121,6 +121,7 @@
   "scenes": {
     "s1": {
       "bg": "images/bg-deck.jpg",
+      "cg": "images/cg-pier-ice.jpg",
       "bgGradient": [
         "#9AA5A0",
         "#5A6B6E"
@@ -450,6 +451,7 @@
     },
     "s6": {
       "bg": "images/bg-engine.jpg",
+      "cg": "images/cg-engine-night.jpg",
       "bgGradient": [
         "#4A3A28",
         "#8A6A44"
@@ -1066,6 +1068,7 @@
     },
     "s13": {
       "bg": "images/bg-night.jpg",
+      "cg": "images/cg-last-voyage.jpg",
       "bgGradient": [
         "#2E3A42",
         "#5A6B6E"
@@ -1363,6 +1366,7 @@
     },
     "ending_shtil": {
       "bg": "images/bg-ice.jpg",
+      "cg": "images/cg-ending-shtil.jpg",
       "bgGradient": [
         "#B9C2C9",
         "#5A6B6E"
@@ -1390,6 +1394,7 @@
     },
     "ending_kurs": {
       "bg": "images/bg-deck.jpg",
+      "cg": "images/cg-ending-kurs.jpg",
       "bgGradient": [
         "#9AA5A0",
         "#5A6B6E"
@@ -1417,6 +1422,7 @@
     },
     "ending_voda": {
       "bg": "images/bg-bridge.jpg",
+      "cg": "images/cg-ending-voda.jpg",
       "bgGradient": [
         "#3A424A",
         "#7A8A94"

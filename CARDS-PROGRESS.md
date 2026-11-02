@@ -45,10 +45,13 @@ no logos, no watermark». Даже если в старом манифесте �
 - №8 «На связи» — 6/6: cg-first-contact s1, cg-snowstorm-tower s6,
   cg-last-flight s13, cg-ending-vysota, cg-ending-pogoda,
   cg-ending-reys.
+- №9 «Семь морей» — 6/6: cg-pier-ice s1, cg-engine-night s6,
+  cg-last-voyage s13, cg-ending-shtil, cg-ending-kurs,
+  cg-ending-voda.
 
 ## Очередь (порядок и объём)
-Остальные короткие №9–11 — по 5–6 карточек (завязка/встреча, поворот,
+Остальные короткие №10–11 — по 5–6 карточек (завязка/встреча, поворот,
 кульминация и финалы по смыслу).
-Порядок: №9 «Семь морей», №10 «В полёте», №11 «Эфир».
+Порядок: №10 «В полёте», №11 «Эфир».
 Внешность героев брать дословно из портретов в их art-prompts.json;
 сцены выбирать по карте story.json (проходные CHOICE-сцены и финалы).
