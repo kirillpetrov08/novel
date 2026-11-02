@@ -121,6 +121,7 @@
  "scenes": {
   "s1": {
    "bg": "images/bg-city.jpg",
+   "cg": "images/cg-night-entrance.jpg",
    "bgGradient": [
     "#C9CFD4",
     "#5A6B6E"
@@ -450,6 +451,7 @@
   },
   "s6": {
    "bg": "images/bg-resus.jpg",
+   "cg": "images/cg-monitor.jpg",
    "bgGradient": [
     "#2E3A3A",
     "#5A7A5E"
@@ -1071,6 +1073,7 @@
   },
   "s13": {
    "bg": "images/bg-op.jpg",
+   "cg": "images/cg-operation.jpg",
    "bgGradient": [
     "#333A42",
     "#7A8A94"
@@ -1368,6 +1371,7 @@
   },
   "ending_obshchaya": {
    "bg": "images/bg-city.jpg",
+   "cg": "images/cg-ending-obshchaya.jpg",
    "bgGradient": [
     "#DCC9A8",
     "#5A6B6E"
@@ -1404,6 +1408,7 @@
   },
   "ending_pulse": {
    "bg": "images/bg-hall.jpg",
+   "cg": "images/cg-ending-pulse.jpg",
    "bgGradient": [
     "#D8CDB4",
     "#6E7478"
@@ -1440,6 +1445,7 @@
   },
   "ending_posle": {
    "bg": "images/bg-hall.jpg",
+   "cg": "images/cg-ending-posle.jpg",
    "bgGradient": [
     "#D8CDB4",
     "#6E7478"
