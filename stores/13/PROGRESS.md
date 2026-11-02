@@ -29,9 +29,10 @@ bg-workshop.jpg (служебная теплица и чердак купола)
 - [x] Текст story.json (a–f): 168 сцен, 482 реплики, 64 мин, 31 точка выбора, 11 платных ×5◆
 - [x] art-prompts.json (21 позиция, sceneBackgrounds на все 168 сцен)
 - [x] BFS-баланс финалов: все 168 сцен достижимы; FREE → «Зимний сад» + «Своя оранжерея»; desire freeMax=9, порог 10; trust≥12, resolve≥7
-- [~] Картинки (10/21): cover ✓, все 6 фонов ✓, портреты: heroine, heroine_smile, heroine_doubt ✓
-  Осталось (11): heroine_brave, heroine_tender, heroine_vulnerable, hero, hero_smile,
-  hero_doubt, hero_tender, hero_close, friend, friend_smile, director.
-  Промпты — в art-prompts.json (внешность повторять дословно). После генерации:
-  tools/optimize-story-images.py stores/13 (PNG->JPG, пути в story.json обновит сам)
+- [~] Картинки (20/21): cover ✓, все 6 фонов ✓, портреты 13/14 ✓ (все оптимизированы в JPG).
+  Остался 1: director (Эдуард Маркович; промпт в art-prompts.json, «grey moustache, no beard»).
+  Затем: optimize-story-images.py stores/13 -> make-character-sprites.py stores/13
+  (venv /tmp/venv-bg: pillow есть; для спрайтов доустановить mediapipe==0.10.21,
+  opencv-python-headless==4.11.0.86, numpy==1.26.4) -> QA спрайтов -> validate -> build -> CI.
+  Фоны сцен уже прошиты (scene.bg 168/168); wire-art НЕ запускать (глобальный вреден).
 - [ ] Спрайты WebP (tools/make-character-sprites.py stores/13) — после всех портретов
