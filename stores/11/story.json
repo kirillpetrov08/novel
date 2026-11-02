@@ -121,6 +121,7 @@
   "scenes": {
     "s1": {
       "bg": "images/bg-studio.jpg",
+      "cg": "images/cg-night-studio.jpg",
       "bgGradient": [
         "#3A424A",
         "#8A6A5A"
@@ -450,6 +451,7 @@
     },
     "s6": {
       "bg": "images/bg-studio.jpg",
+      "cg": "images/cg-console-night.jpg",
       "bgGradient": [
         "#3A424A",
         "#8A6A5A"
@@ -1066,6 +1068,7 @@
     },
     "s13": {
       "bg": "images/bg-studio.jpg",
+      "cg": "images/cg-last-broadcast.jpg",
       "bgGradient": [
         "#3A424A",
         "#8A6A5A"
@@ -1363,6 +1366,7 @@
     },
     "ending_efir": {
       "bg": "images/bg-rooftop.jpg",
+      "cg": "images/cg-ending-efir.jpg",
       "bgGradient": [
         "#3A424A",
         "#8A6A84"
@@ -1390,6 +1394,7 @@
     },
     "ending_golos": {
       "bg": "images/bg-morning.jpg",
+      "cg": "images/cg-ending-golos.jpg",
       "bgGradient": [
         "#E0CDB0",
         "#8A6A52"
@@ -1417,6 +1422,7 @@
     },
     "ending_posle": {
       "bg": "images/bg-studio.jpg",
+      "cg": "images/cg-ending-posle.jpg",
       "bgGradient": [
         "#3A424A",
         "#8A6A5A"

@@ -51,10 +51,12 @@ no logos, no watermark». Даже если в старом манифесте �
 - №10 «В полёте» — 6/6: cg-descent s1, cg-rope-night s6,
   cg-last-show s13, cg-ending-vyshe, cg-ending-polyot,
   cg-ending-posle.
+- №11 «Эфир» — 6/6: cg-night-studio s1, cg-console-night s6,
+  cg-last-broadcast s13, cg-ending-efir, cg-ending-golos,
+  cg-ending-posle.
 
 ## Очередь (порядок и объём)
-Осталась последняя короткая история №11 — 5–6 карточек (завязка/встреча,
-поворот, кульминация и финалы по смыслу).
-Порядок: №11 «Эфир».
-Внешность героев брать дословно из портретов в их art-prompts.json;
-сцены выбирать по карте story.json (проходные CHOICE-сцены и финалы).
+Ретрофит завершён: карточки подключены во всех 13 историях.
+Внешность героев для будущих историй брать дословно из портретов в их
+art-prompts.json; сцены выбирать по карте story.json (проходные
+CHOICE-сцены и финалы).
