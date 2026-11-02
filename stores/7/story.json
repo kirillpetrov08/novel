@@ -121,6 +121,7 @@
   "scenes": {
     "s1": {
       "bg": "images/bg-garden.jpg",
+      "cg": "images/cg-service-entrance.jpg",
       "bgGradient": [
         "#D8B98A",
         "#6E5A4A"
@@ -450,6 +451,7 @@
     },
     "s6": {
       "bg": "images/bg-light.jpg",
+      "cg": "images/cg-light-booth.jpg",
       "bgGradient": [
         "#4A3A28",
         "#8A6A44"
@@ -1066,6 +1068,7 @@
     },
     "s13": {
       "bg": "images/bg-stage.jpg",
+      "cg": "images/cg-premiere.jpg",
       "bgGradient": [
         "#5A2E2E",
         "#8A5A4A"
@@ -1363,6 +1366,7 @@
     },
     "ending_svet": {
       "bg": "images/bg-garden.jpg",
+      "cg": "images/cg-ending-svet.jpg",
       "bgGradient": [
         "#D8B98A",
         "#6E5A4A"
@@ -1390,6 +1394,7 @@
     },
     "ending_prosvet": {
       "bg": "images/bg-stage.jpg",
+      "cg": "images/cg-ending-prosvet.jpg",
       "bgGradient": [
         "#5A2E2E",
         "#8A5A4A"
@@ -1417,6 +1422,7 @@
     },
     "ending_zal": {
       "bg": "images/bg-hall.jpg",
+      "cg": "images/cg-ending-zal.jpg",
       "bgGradient": [
         "#5A2E3A",
         "#8A5A5A"
