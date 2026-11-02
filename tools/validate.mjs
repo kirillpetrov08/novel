@@ -72,7 +72,7 @@ export function storyImagePaths(story) {
   const add = p => { if (p && typeof p === 'string') out.add(p); };
   add(story.cover);
   Object.values(story.characters || {}).forEach(c => add(c.image));
-  Object.values(story.scenes || {}).forEach(sc => add(sc.bg));
+  Object.values(story.scenes || {}).forEach(sc => { add(sc.bg); add(sc.cg); });
   return [...out];
 }
 

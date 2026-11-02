@@ -47,7 +47,7 @@ const Loader = {
     };
     s.cover = fix(s.cover);
     Object.values(s.characters || {}).forEach(c => { c.image = fix(c.image); });
-    Object.values(s.scenes || {}).forEach(sc => { sc.bg = fix(sc.bg); });
+    Object.values(s.scenes || {}).forEach(sc => { sc.bg = fix(sc.bg); sc.cg = fix(sc.cg); });
     return s;
   },
 

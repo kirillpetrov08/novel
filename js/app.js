@@ -423,6 +423,7 @@ const UI = {
       const sc = story.scenes[t];
       if (!sc) return;
       if (sc.bg) { const i = new Image(); i.src = sc.bg; }
+      if (sc.cg) { const i = new Image(); i.src = sc.cg; }
       (sc.show || []).forEach(cid => {
         const img = ((story.characters || {})[cid] || {}).image;
         if (img) { const i = new Image(); i.src = img; }
@@ -446,6 +447,16 @@ const UI = {
       img.onerror = () => img.remove();
       bg.appendChild(img);
     }
+    // Особая карточка ключевого момента: пока она на сцене, спрайты скрыты
+    const cgFrame = $('#cg-frame');
+    cgFrame.innerHTML = '';
+    if (sc.cg) {
+      const img = document.createElement('img');
+      img.src = sc.cg; img.alt = '';
+      img.onerror = () => { img.remove(); $('#stage').classList.remove('has-cg'); };
+      cgFrame.appendChild(img);
+    }
+    $('#stage').classList.toggle('has-cg', !!sc.cg);
     // персонажи
     const wrap = $('#chars');
     wrap.innerHTML = '';

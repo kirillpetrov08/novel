@@ -10,3 +10,6 @@ release.jks
 
 # Локальные настройки Android
 android/local.properties
+
+# Python
+__pycache__/

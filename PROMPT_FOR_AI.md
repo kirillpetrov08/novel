@@ -235,7 +235,8 @@ no manga, no 3D render, no text, no watermark"
   "images": [
     { "file": "cover.jpg", "type": "cover", "prompt": "..." },
     { "file": "images/bg-example.jpg", "type": "background", "prompt": "..." },
-    { "file": "images/heroine.png", "type": "character", "prompt": "..." }
+    { "file": "images/heroine.png", "type": "character", "prompt": "..." },
+    { "file": "images/cg-example.jpg", "type": "card", "scene": "s12", "prompt": "..." }
   ],
   "sceneBackgrounds": {
     "s1": "images/bg-example.jpg",
@@ -245,7 +246,13 @@ no manga, no 3D render, no text, no watermark"
 
 Правила:
 - images содержит КАЖДЫЙ реальный файл картинки ровно один раз.
-- Типы только: cover, background, character.
+- Типы только: cover, background, character, card.
+- Особые карточки ключевых моментов (type "card", файлы images/cg-*.jpg) —
+  3–5 штук на короткую историю: полные иллюстрации с персонажами в действии
+  (широкая композиция) на самые важные сцены, включая каждый финал. У сцены
+  в story.json проставляется "cg": "images/cg-….jpg", а в манифесте у карточки
+  обязательное поле "scene" с id этой сцены; file равен scenes[scene].cg.
+  Плеер покажет карточку в рамке вместо спрайтов персонажей.
 - sceneBackgrounds содержит КАЖДУЮ сцену из story.json, включая финалы.
 - sceneBackgrounds[sceneId] в точности равен scenes[sceneId].bg.
 - Для character file равен image соответствующего ключа characters.

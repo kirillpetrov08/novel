@@ -106,6 +106,60 @@
    "file": "images/director.png",
    "type": "portrait",
    "prompt": "Waist-up portrait of a 62-year-old man, neat grey hair, round glasses, grey moustache, no beard, wearing a brown tweed jacket over a knitted vest, dignified calm expression, wise gentle look, solid plain light beige background #EADFCB, soft oil painting illustration, warm beige muted palette, romantic visual novel character art, no text, no lettering, no logos, no watermark"
+  },
+  {
+   "file": "images/cg-orchid.jpg",
+   "type": "card",
+   "scene": "a02",
+   "prompt": "Early morning inside a grand palm greenhouse: a 30-year-old woman with dark brown hair in a low bun, green eyes, a beige sweater and a dark green gardener's apron stands in soft light before a glass cabinet with a rare white orchid raising a long flower spike, mist among palm leaves, quiet wonder, wide cinematic composition, soft oil painting illustration, warm beige muted palette, romantic visual novel art, no text, no lettering, no logos, no watermark"
+  },
+  {
+   "file": "images/cg-meet.jpg",
+   "type": "card",
+   "scene": "a10",
+   "prompt": "Winter morning at the service gate of a botanical garden: a 30-year-old woman with dark brown hair in a low bun, green eyes, a beige sweater and a dark green gardener's apron holding a thermos meets a 36-year-old man with short dark hair grey at the temples, short neat stubble, a dark slate shirt and a charcoal work jacket carrying a toolbox, light snow falling, the glass dome of a greenhouse glowing behind them, wide cinematic composition, soft oil painting illustration, warm beige muted palette, romantic visual novel art, no text, no lettering, no logos, no watermark"
+  },
+  {
+   "file": "images/cg-hug.jpg",
+   "type": "card",
+   "scene": "d06a",
+   "prompt": "Night in an old greenhouse boiler room: a 30-year-old woman with dark brown hair in a low bun, green eyes, a beige sweater and a dark green gardener's apron embraces a 36-year-old man with short dark hair grey at the temples, short neat stubble, a dark slate shirt and a charcoal work jacket whose jacket is covered with snow, warm light from pipes and gauges, steam in the air, relief and tenderness after a hard night, wide cinematic composition, soft oil painting illustration, warm beige muted palette, romantic visual novel art, no text, no lettering, no logos, no watermark"
+  },
+  {
+   "file": "images/cg-kiss.jpg",
+   "type": "card",
+   "scene": "e06a",
+   "prompt": "Under the glass dome of a grand greenhouse with a new steel framework above: a 30-year-old woman with dark brown hair in a low bun, green eyes, a beige sweater and a dark green gardener's apron stands on tiptoe and kisses a 36-year-old man with short dark hair grey at the temples, short neat stubble, a dark slate shirt and a charcoal work jacket on the cheek, palms around, bright winter daylight through glass, wide cinematic composition, soft oil painting illustration, warm beige muted palette, romantic visual novel art, no text, no lettering, no logos, no watermark"
+  },
+  {
+   "file": "images/cg-bloom.jpg",
+   "type": "card",
+   "scene": "f05x",
+   "prompt": "Midnight in a dim greenhouse: a huge white night-blooming flower with a pink heart fully open inside a lit glass cabinet, a 30-year-old woman with dark brown hair in a low bun, green eyes, a beige sweater and a dark green gardener's apron and a 36-year-old man with short dark hair grey at the temples, short neat stubble, a dark slate shirt and a charcoal work jacket standing close beside it in the dark among palm silhouettes and faint garlands, wide cinematic composition, soft oil painting illustration, warm beige muted palette, romantic visual novel art, no text, no lettering, no logos, no watermark"
+  },
+  {
+   "file": "images/cg-ending-night.jpg",
+   "type": "card",
+   "scene": "ending_night",
+   "prompt": "Night festival inside a glass greenhouse: a 30-year-old woman with dark brown hair in a low bun, green eyes, a beige sweater and a dark green gardener's apron and a 36-year-old man with short dark hair grey at the temples, short neat stubble, a dark slate shirt and a charcoal work jacket embracing under a blooming white orchid, warm garlands among palms, snow beyond the glass dome, wide cinematic composition, soft oil painting illustration, warm beige muted palette, romantic visual novel art, no text, no lettering, no logos, no watermark"
+  },
+  {
+   "file": "images/cg-ending-sad.jpg",
+   "type": "card",
+   "scene": "ending_sad",
+   "prompt": "Pale winter dawn in a botanical garden alley: a 30-year-old woman with dark brown hair in a low bun, green eyes, a beige sweater and a dark green gardener's apron and a 36-year-old man with short dark hair grey at the temples, short neat stubble, a dark slate shirt and a charcoal work jacket walking side by side with a small distance between them toward a glowing glass greenhouse, fresh snow, quiet bittersweet hope, wide cinematic composition, soft oil painting illustration, warm beige muted palette, romantic visual novel art, no text, no lettering, no logos, no watermark"
+  },
+  {
+   "file": "images/cg-ending-new.jpg",
+   "type": "card",
+   "scene": "ending_new",
+   "prompt": "Winter dawn on a snowy field: a 30-year-old woman with dark brown hair in a low bun, green eyes, a beige sweater and a dark green gardener's apron holding a ring of keys and a small potted seedling before the steel skeleton of a brand-new small greenhouse, a 36-year-old man with short dark hair grey at the temples, short neat stubble, a dark slate shirt and a charcoal work jacket beside her with rolled blueprints, first sunlight, wide cinematic composition, soft oil painting illustration, warm beige muted palette, romantic visual novel art, no text, no lettering, no logos, no watermark"
+  },
+  {
+   "file": "images/cg-diary.jpg",
+   "type": "card",
+   "scene": "b05",
+   "prompt": "Old archive basement with shelves of folders: a 30-year-old woman with dark brown hair in a low bun, green eyes, a beige sweater and a dark green gardener's apron and a 36-year-old man with short dark hair grey at the temples, short neat stubble, a dark slate shirt and a charcoal work jacket sitting on the floor between shelves with an open antique handwritten diary and a thermos, dust floating in warm lamplight, wide cinematic composition, soft oil painting illustration, warm beige muted palette, romantic visual novel art, no text, no lettering, no logos, no watermark"
   }
  ],
  "sceneBackgrounds": {

@@ -160,7 +160,8 @@
    "bgGradient": [
     "#DDE7CF",
     "#5F7355"
-   ]
+   ],
+   "cg": "images/cg-orchid.jpg"
   },
   "a03": {
    "bg": "images/bg-glasshouse.jpg",
@@ -437,7 +438,8 @@
    "bgGradient": [
     "#E8EEF2",
     "#7E93A6"
-   ]
+   ],
+   "cg": "images/cg-meet.jpg"
   },
   "a11": {
    "bg": "images/bg-glasshouse.jpg",
@@ -1150,7 +1152,8 @@
    "bgGradient": [
     "#E3D5BC",
     "#7A6A52"
-   ]
+   ],
+   "cg": "images/cg-diary.jpg"
   },
   "b06": {
    "bg": "images/bg-office.jpg",
@@ -2652,7 +2655,8 @@
    "bgGradient": [
     "#D8C9AE",
     "#6B5B45"
-   ]
+   ],
+   "cg": "images/cg-hug.jpg"
   },
   "d06b": {
    "bg": "images/bg-workshop.jpg",
@@ -3260,7 +3264,8 @@
    "bgGradient": [
     "#DDE7CF",
     "#5F7355"
-   ]
+   ],
+   "cg": "images/cg-kiss.jpg"
   },
   "e06b": {
    "bg": "images/bg-glasshouse.jpg",
@@ -3929,7 +3934,8 @@
    "bgGradient": [
     "#3E4A44",
     "#1E2A26"
-   ]
+   ],
+   "cg": "images/cg-ending-night.jpg"
   },
   "ending_sad": {
    "bg": "images/bg-festival.jpg",
@@ -3961,7 +3967,8 @@
    "bgGradient": [
     "#F2DFC0",
     "#8A6D4B"
-   ]
+   ],
+   "cg": "images/cg-ending-sad.jpg"
   },
   "ending_new": {
    "bg": "images/bg-snow-park.jpg",
@@ -3993,7 +4000,8 @@
    "bgGradient": [
     "#E8EEF2",
     "#7E93A6"
-   ]
+   ],
+   "cg": "images/cg-ending-new.jpg"
   },
   "a02x": {
    "bg": "images/bg-glasshouse.jpg",
@@ -4722,7 +4730,8 @@
    "bgGradient": [
     "#3E4A44",
     "#1E2A26"
-   ]
+   ],
+   "cg": "images/cg-bloom.jpg"
   },
   "c07x": {
    "bg": "images/bg-glasshouse.jpg",
