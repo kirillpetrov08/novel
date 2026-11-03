@@ -21,7 +21,7 @@ const WeatherFX = {
   canvas: null, ctx: null, raf: 0, mode: null, parts: [], w: 0, h: 0, last: 0,
   guess(sc) {
     if (!sc) return null;
-    if (sc.fx) return sc.fx;
+    if (sc.fx) return ['snow', 'rain'].includes(sc.fx) ? sc.fx : null;
     const bg = sc.bg || '';
     if (/snow/i.test(bg)) return 'snow';
     if (/rain/i.test(bg)) return 'rain';
@@ -141,6 +141,7 @@ const UI = {
   },
 
   confirm(title, text, yesLabel = 'Да') {
+    if (this.confirmResolve) { this.confirmResolve(false); this.confirmResolve = null; }
     $('#confirm-title').textContent = title;
     $('#confirm-text').textContent = text;
     $('#confirm-yes').textContent = yesLabel;
@@ -219,6 +220,10 @@ const UI = {
 
   /* ---------------- БИБЛИОТЕКА ---------------- */
   endingsTotal(story) { return Object.values(story.scenes).filter(s => s.ending).length; },
+  endingsFoundCount(story, p = Store.getProgress(story.id)) {
+    const valid = new Set(Object.entries(story.scenes).filter(([, s]) => s.ending).map(([id]) => id));
+    return [...new Set((p && p.endingsFound) || [])].filter(id => valid.has(id)).length;
+  },
 
   fmtDuration(min) {
     if (!min) return '';
@@ -247,7 +252,7 @@ const UI = {
           ${p && !p.completed
             ? `<div class="progress-track"><div class="progress-fill" style="width:${pct}%"></div></div><span class="progress-txt">${pct}%</span>`
             : `<span class="progress-txt">${p && p.completed
-                ? `Финалов открыто: ${(p.endingsFound || []).length}/${this.endingsTotal(story)}`
+                ? `Финалов открыто: ${this.endingsFoundCount(story, p)}/${this.endingsTotal(story)}`
                 : `Сцен: ${Object.keys(story.scenes).length} · Финалов: ${this.endingsTotal(story)}`}</span>`}
         </div>
       </div>`;
@@ -332,6 +337,9 @@ const UI = {
   renderDiagnostics() {
     const box = $('#library-diag');
     box.innerHTML = '';
+    // Встроенные истории проходят CI-валидацию до сборки. Предупреждения
+    // валидатора — инструмент разработчика, а не экран для читателей Android.
+    if (window.BUNDLED_BUILD) return;
     if (!Loader.diagnostics.length) return;
     const d = document.createElement('div');
     d.className = 'diag';
@@ -372,7 +380,7 @@ const UI = {
     $('#detail-chips').innerHTML = chips.map(c => `<span class="chip">${esc(c)}</span>`).join('');
 
     const p = Store.getProgress(id);
-    const found = p ? (p.endingsFound || []).length : 0;
+    const found = this.endingsFoundCount(story, p);
     $('#detail-endings').innerHTML = `<span style="font-size:20px">✦</span><span>Открыто финалов: <b>${found} из ${this.endingsTotal(story)}</b>. За первое прохождение — <b>+${CONFIG.crystals.completeStory} ◆</b>, за каждый новый финал — <b>+${CONFIG.crystals.newEnding} ◆</b>.</span>`;
 
     const act = $('#detail-actions');
@@ -457,7 +465,11 @@ const UI = {
     if (sc.cg) {
       const img = document.createElement('img');
       img.src = sc.cg; img.alt = '';
-      img.onerror = () => { img.remove(); $('#stage').classList.remove('has-cg'); };
+      img.onerror = () => {
+        const current = cgFrame.contains(img);
+        img.remove();
+        if (current) $('#stage').classList.remove('has-cg');
+      };
       cgFrame.appendChild(img);
     }
     $('#stage').classList.toggle('has-cg', !!sc.cg);
@@ -755,7 +767,8 @@ const UI = {
     Loader.list().forEach(({ story }) => {
       const ends = Object.entries(story.scenes).filter(([, s]) => s.ending)
         .map(([id, s]) => ({ id, title: s.ending.title, badge: s.ending.badge }));
-      const found = (Store.getProgress(story.id) || {}).endingsFound || [];
+      const foundIds = new Set((Store.getProgress(story.id) || {}).endingsFound || []);
+      const found = ends.map(e => e.id).filter(id => foundIds.has(id));
       const card = document.createElement('button');
       card.className = 'shelf-card';
       card.dataset.openStory = story.id;
@@ -1121,6 +1134,21 @@ const UI = {
       if (this.screen === 'shop') this.renderShop();
       if (Ambient.started && Ambient.ctx && Ambient.ctx.state === 'suspended') Ambient.ctx.resume();
     });
+    // Приложение может оставаться открытым через полночь или дольше кулдауна
+    // рекламы: раз в секунду освежаем только зависящие от времени состояния.
+    let timerDay = todayKey();
+    setInterval(() => {
+      const day = todayKey();
+      if (day !== timerDay) {
+        timerDay = day;
+        Meta.touchDaily();
+        Ads.syncAdsDay();
+        if (this.screen === 'library') this.renderLibrary();
+        if (this.screen === 'profile') this.renderProfile();
+        if (this.screen === 'shelf') this.renderShelf();
+      }
+      if (this.screen === 'shop' && !this._rewardedBusy && !$('#modal-ad').classList.contains('open')) this.renderShop();
+    }, 1000);
     this.renderGems(false);
 
     // стартовый бонус в историю операций + приветствие (один раз)

@@ -86,7 +86,7 @@
       </div>
 
       <div class="ending-ov" id="ending-ov">
-        <div class="ending-card">
+        <div class="ending-card" role="dialog" aria-modal="true" aria-labelledby="ending-title">
           <div class="kicker">❦ &nbsp;ФИНАЛ ИСТОРИИ&nbsp; ❦</div>
           <h2 id="ending-title"></h2>
           <div class="badge" id="ending-badge"></div>
@@ -266,7 +266,7 @@
 
 <!-- ===================== МОДАЛКИ ===================== -->
 <div class="modal-ov" id="modal-ad">
-  <div class="modal">
+  <div class="modal" role="dialog" aria-modal="true" aria-label="Реклама">
     <h3>Реклама</h3>
     <div class="ad-fake">
       <div class="t1">Здесь будет реклама</div>
@@ -279,7 +279,7 @@
 </div>
 
 <div class="modal-ov" id="modal-need">
-  <div class="modal">
+  <div class="modal" role="dialog" aria-modal="true" aria-label="Не хватает кристаллов">
     <h3>Не хватает кристаллов ◆</h3>
     <p id="need-text"></p>
     <button class="btn btn-accent" id="need-ad-btn">▶ Посмотреть рекламу и получить ◆</button>
@@ -289,7 +289,7 @@
 </div>
 
 <div class="modal-ov" id="modal-log">
-  <div class="modal">
+  <div class="modal" role="dialog" aria-modal="true" aria-label="Журнал реплик">
     <h3>Журнал</h3>
     <div class="log-list" id="log-list"></div>
     <button class="btn btn-ghost" data-close="modal-log" style="margin-top:14px">Закрыть</button>
@@ -297,7 +297,7 @@
 </div>
 
 <div class="modal-ov" id="modal-confirm">
-  <div class="modal">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="confirm-title" aria-describedby="confirm-text">
     <h3 id="confirm-title">Ты уверена?</h3>
     <p id="confirm-text"></p>
     <button class="btn btn-primary" id="confirm-yes">Да</button>
@@ -306,7 +306,7 @@
 </div>
 
 <div class="modal-ov" id="modal-welcome">
-  <div class="modal" style="text-align:center">
+  <div class="modal" role="dialog" aria-modal="true" aria-label="Добро пожаловать в Новеллу" style="text-align:center">
     <div style="font-size:38px;margin-bottom:8px">◆</div>
     <h3>Добро пожаловать в «Новеллу»</h3>
     <p id="welcome-text"></p>
@@ -315,7 +315,7 @@
 </div>
 
 <div class="modal-ov" id="modal-saves">
-  <div class="modal">
+  <div class="modal" role="dialog" aria-modal="true" aria-label="Сохранения">
     <h3>Сохранения ⚑</h3>
     <p class="muted" style="margin-bottom:10px">Закладки на важных развилках этой истории: вернись и выбери иначе, не перепроходя всё сначала.</p>
     <div id="saves-list"></div>
@@ -324,12 +324,12 @@
 </div>
 
 <div class="modal-ov" id="modal-rate">
-  <div class="modal" style="text-align:center">
+  <div class="modal" role="dialog" aria-modal="true" aria-label="Оценка истории" style="text-align:center">
     <div style="font-size:34px;margin-bottom:6px">♡</div>
     <h3>Понравилась история?</h3>
     <p class="muted">Твоя оценка правда помогает «Новелле» расти и выпускать новые истории чаще.</p>
-    <div class="stars" id="rate-stars">
-      <button data-star="1">★</button><button data-star="2">★</button><button data-star="3">★</button><button data-star="4">★</button><button data-star="5">★</button>
+    <div class="stars" id="rate-stars" role="group" aria-label="Выбери оценку от 1 до 5 звёзд">
+      <button data-star="1" aria-label="1 звезда">★</button><button data-star="2" aria-label="2 звезды">★</button><button data-star="3" aria-label="3 звезды">★</button><button data-star="4" aria-label="4 звезды">★</button><button data-star="5" aria-label="5 звёзд">★</button>
     </div>
     <div id="rate-actions"></div>
     <button class="btn btn-ghost" id="rate-later">Не сейчас</button>

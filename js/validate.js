@@ -52,6 +52,7 @@ function validateStory(story) {
     if (!isObj(sc)) { err(`Сцена "${id}": не объект`); continue; }
     if (sc.bg !== undefined && typeof sc.bg !== 'string') err(`Сцена "${id}": bg должно быть строкой-путем`);
     if (sc.cg !== undefined && typeof sc.cg !== 'string') err(`Сцена "${id}": cg должно быть строкой-путем`);
+    if (sc.fx !== undefined && !['snow', 'rain'].includes(sc.fx)) err(`Сцена "${id}": fx допустим только "snow" или "rain"`);
 
     const lines = Array.isArray(sc.lines) ? sc.lines : [];
     if (!lines.length) err(`Сцена "${id}": нет lines`);
@@ -69,6 +70,15 @@ function validateStory(story) {
     (Array.isArray(sc.show) ? sc.show : []).forEach(c => {
       if (typeof c !== 'string' || !chars[c]) err(`Сцена "${id}": в show неизвестный персонаж "${c}"`);
     });
+    if (!sc.cg) {
+      const shownNames = new Set((Array.isArray(sc.show) ? sc.show : []).map(c => chars[c] && chars[c].name).filter(Boolean));
+      const warnedSpeakers = new Set();
+      lines.forEach(ln => {
+        if (!isObj(ln) || !chars[ln.who] || shownNames.has(chars[ln.who].name) || warnedSpeakers.has(ln.who)) return;
+        warnedSpeakers.add(ln.who);
+        warn(`Сцена "${id}": говорящий "${ln.who}" отсутствует в show (допустимо только для голоса за кадром)`);
+      });
+    }
 
     const targets = [];
     const sceneChoices = Array.isArray(sc.choices) ? sc.choices : [];

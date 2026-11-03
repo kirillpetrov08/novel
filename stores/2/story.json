@@ -1047,7 +1047,8 @@
    ],
    "show": [
     "friend_brave",
-    "heroine"
+    "heroine",
+    "hero"
    ],
    "lines": [
     {
@@ -1163,7 +1164,8 @@
    ],
    "show": [
     "hero",
-    "friend"
+    "friend",
+    "heroine"
    ],
    "lines": [
     {

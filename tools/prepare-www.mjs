@@ -26,17 +26,20 @@ for (const it of items) {
   let data;
   try { data = JSON.parse(readFileSync(it.jsonPath, 'utf8')); }
   catch (e) { problems.push(`${it.jsonPath}: JSON не читается (${e.message})`); continue; }
-  for (const story of normalizeBundle(data)) {
+  const stories = normalizeBundle(data);
+  if (!stories.length) { problems.push(`${it.jsonPath}: внутри нет историй`); continue; }
+  for (const story of stories) {
+    const storyLabel = (story && (story.title || story.id)) || '?';
     const { errors, warnings } = validateStory(story);
-    warnings.forEach(w => console.log(`⚠ ${it.jsonPath} «${story.title || story.id}»: ${w}`));
-    if (story.id && ids.has(story.id)) errors.push(`Дублирующийся id "${story.id}"`);
-    if (story.id) ids.add(story.id);
+    warnings.forEach(w => console.log(`⚠ ${it.jsonPath} «${storyLabel}»: ${w}`));
+    if (story && story.id && ids.has(story.id)) errors.push(`Дублирующийся id "${story.id}"`);
+    if (story && story.id) ids.add(story.id);
     const imageBase = it.kind === 'folder' ? dirname(it.jsonPath) : '.';
-    storyImagePaths(story).forEach(p => {
+    if (story && typeof story === 'object' && !Array.isArray(story)) storyImagePaths(story).forEach(p => {
       if (/^(https?:|data:)/.test(p)) return;
       if (!existsSync(join(imageBase, p))) errors.push(`Картинка не найдена: ${p}`);
     });
-    if (errors.length) { errors.forEach(e => problems.push(`${it.jsonPath} «${story.title || story.id}»: ${e}`)); continue; }
+    if (errors.length) { errors.forEach(e => problems.push(`${it.jsonPath} «${storyLabel}»: ${e}`)); continue; }
     bundle.push({ base: it.base, story });
   }
 }
@@ -66,7 +69,8 @@ cpSync(join(ROOT, 'js'), join(WWW, 'js'), { recursive: true });
 if (existsSync(join(ROOT, 'stores'))) {
   cpSync(join(ROOT, 'stores'), join(WWW, 'stores'), {
     recursive: true,
-    filter: src => !src.includes('_template') && !src.endsWith('.md'),
+    // art-prompts.json — внутренний манифест генерации; приложению он не нужен.
+    filter: src => !src.includes('_template') && !src.endsWith('.md') && !src.endsWith('art-prompts.json'),
   });
 }
 if (existsSync(join(ROOT, 'assets'))) cpSync(join(ROOT, 'assets'), join(WWW, 'assets'), { recursive: true });

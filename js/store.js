@@ -32,7 +32,7 @@ function saveInt(v, fallback, min = -Infinity) {
 function saveBool(v, fallback) { return typeof v === 'boolean' ? v : fallback; }
 function saveText(v, fallback = '') { return typeof v === 'string' ? v : fallback; }
 function saveStringArray(v) {
-  return Array.isArray(v) ? v.filter(x => typeof x === 'string') : [];
+  return Array.isArray(v) ? [...new Set(v.filter(x => typeof x === 'string'))] : [];
 }
 function normalizePlayState(p) {
   const state = saveObj(p);
@@ -169,7 +169,7 @@ const Store = {
     meta.ach = ach;
 
     const rate = Object.assign({}, def.meta.rate, saveObj(meta.rate) || {});
-    rate.state = ['new', 'later', 'rated'].includes(rate.state) ? rate.state : def.meta.rate.state;
+    rate.state = ['new', 'later', 'rated', 'never'].includes(rate.state) ? rate.state : def.meta.rate.state;
     rate.lastAsk = Math.max(0, saveNum(rate.lastAsk, 0));
     rate.asks = saveInt(rate.asks, 0, 0);
     meta.rate = rate;
@@ -198,7 +198,10 @@ const Store = {
   save() {
     try { localStorage.setItem(SAVE_KEY, JSON.stringify(this.data)); } catch (e) { /* переполнено — не падаем */ }
   },
-  resetAll() { localStorage.removeItem(SAVE_KEY); this.load(); },
+  resetAll() {
+    try { localStorage.removeItem(SAVE_KEY); } catch (e) { /* load() ниже всё равно создаст чистое состояние в памяти */ }
+    this.load();
+  },
 
   /* --- кристаллы: единственный способ менять баланс --- */
   addCrystals(delta, reason) {

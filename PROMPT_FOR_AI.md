@@ -18,7 +18,7 @@
 и картинки придумываешь и делаешь ты. Не пересказывай существующие произведения.
 
 ПАРАМЕТРЫ ЗАКАЗА:
-- Номер папки: 2
+- Номер папки: N — следующий свободный номер в `stores/`; определи его перед началом и используй один и тот же N во всех путях ниже
 - Жанр: [необязательно]
 - Тема/сеттинг: [необязательно]
 - Тон и возраст: [по умолчанию романтика 16+, без откровенных сцен]
@@ -31,24 +31,26 @@
 Создай ровно одну новую папку и ничего не меняй в коде приложения
 и существующих историях:
 
-stores/2/
+stores/N/
   story.json
   cover.jpg
   art-prompts.json
   art-plan.md
   images/
     bg-*.jpg
+    cg-*.jpg
     <ключ_персонажа>.png
     <ключ_персонажа_эмоция>.png
 
-Если папка stores/2 уже существует, НЕ перезаписывай её: остановись и сообщи
+Если папка stores/N уже существует, НЕ перезаписывай её: остановись и сообщи
 о конфликте.
 
 Требования к комплектности:
 - 1 обложка;
 - 5–7 переиспользуемых фонов;
 - 12–20 изображений состояний персонажей;
-- story.json уже ссылается на реальные cover, bg и PNG персонажей;
+- 3–5 особых карточек ключевых моментов `images/cg-*.jpg`, включая каждый финал;
+- story.json уже ссылается на реальные cover, bg, cg и PNG персонажей;
 - art-prompts.json точно описывает каждый файл и фон каждой сцены;
 - art-plan.md содержит человекочитаемый список файлов и «библии внешности»
   персонажей.
@@ -94,7 +96,7 @@ story.json — один корневой объект, не массив и не
 Запрещено:
 - поле "author" или любая пометка об авторе;
 - комментарии и висячие запятые в JSON;
-- id "sol-i-svet" — он уже занят первой историей;
+- id, уже использованный любой существующей историей в `stores/`;
 - кириллица, пробелы и заглавные буквы в id истории, ключах stats,
   ключах characters, id сцен и именах файлов.
 
@@ -148,7 +150,7 @@ CHOICES:
 - Формат:
   { "text": "...", "next": "s5" }
   { "text": "...", "next": "s5", "effect": { "brave": 1 } }
-  { "text": "...", "next": "s5", "crystals": 12,
+  { "text": "...", "next": "s5", "crystals": 5,
     "requires": { "hero": 2 }, "effect": { "hero": 1 } }
 - В одной точке 2–3 выбора.
 - Всего 4–6 платных выборов с crystals; цена каждого — всегда ровно 5.
@@ -187,10 +189,12 @@ BRANCH:
 Нельзя смешивать фотореализм, аниме/мангу и 3D.
 
 К каждому английскому промпту дословно добавляй в конец стиль:
-"semi-realistic painterly digital illustration, soft visible brushstrokes,
-muted watercolor-like shading, warm beige and earthy palette, gentle diffused
-light, elegant minimalist composition, cinematic, no photorealism, no anime,
-no manga, no 3D render, no text, no watermark"
+"soft detailed oil painting illustration with gentle visible brushstrokes,
+warm beige muted earthy palette of cream, sand, bronze, sage green and slate
+grey, soft diffused natural light, semi-realistic painterly forms and calm
+tender faces where people are present, elegant minimalist cinematic
+composition, painterly detailed surroundings, not photorealistic, not anime,
+not manga, not 3D render, no text, no lettering, no words, no logos, no watermark"
 
 БИБЛИЯ ВНЕШНОСТИ:
 - Для каждого человека один раз сформулируй на английском неизменяемый блок:
@@ -201,18 +205,18 @@ no manga, no 3D render, no text, no watermark"
   как референсом, если твой генератор это умеет.
 - Запиши все библии внешности в art-plan.md.
 
-ОБЛОЖКА — stores/2/cover.jpg:
+ОБЛОЖКА — stores/N/cover.jpg:
 - JPG, вертикаль 2:3, желательно около 1000×1500.
 - Героиня и ключевой персонаж/предмет, тот же стиль и внешность.
 - Без названия, букв, логотипов и водяных знаков.
 
-ФОНЫ — stores/2/images/bg-<slug>.jpg:
+ФОНЫ — stores/N/images/bg-<slug>.jpg:
 - JPG, вертикаль 9:16, желательно около 1080×1920.
 - Только пустая локация: no people, no characters, no silhouettes.
 - Нижняя треть спокойная и не перегруженная — там будут персонажи и диалог.
 - 5–7 файлов на всю историю; переиспользуй их между сценами.
 
-ПЕРСОНАЖИ — stores/2/images/<ключ_состояния>.png:
+ПЕРСОНАЖИ — stores/N/images/<ключ_состояния>.png:
 - PNG, вертикаль 3:4 или 4:5, высота желательно не ниже 900 px.
 - Один человек, поясной портрет, по центру, вся голова и плечи в кадре.
 - Фигура занимает примерно 70–85% высоты; руки не обрезаны краями.
@@ -228,9 +232,9 @@ no manga, no 3D render, no text, no watermark"
 4. ART-PROMPTS.JSON — МАШИННЫЙ МАНИФЕСТ
 ============================================================
 
-Создай stores/2/art-prompts.json строго такой структуры:
+Создай stores/N/art-prompts.json строго такой структуры:
 {
-  "story": "stores/2",
+  "story": "stores/N",
   "style": "полная строка единого стиля из раздела 3",
   "images": [
     { "file": "cover.jpg", "type": "cover", "prompt": "..." },
@@ -295,7 +299,8 @@ no manga, no 3D render, no text, no watermark"
 13. Если в репозитории доступны команды, выполни:
     npm run validate
     python3 tools/wire-art.py --check
-    Вторая должна показать «не хватает 0» для stores/2.
+    Обе команды проверяют все истории, а не только новую. Для строки stores/N
+    должно быть «не хватает 0» и «изменений в json: 0»; чужие истории не исправляй.
 
 Не запускай конвертацию спрайтов и не меняй код приложения: после твоей
 сдачи импорт, вырезание прозрачных WebP, оптимизацию и сборку выполнит

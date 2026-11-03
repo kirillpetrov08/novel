@@ -136,7 +136,8 @@ const Ads = {
     if (this._nativePromise) return this._nativePromise;
     this._nativePromise = (async () => {
       try {
-        const r = await p.showNative({ adUnitId: CONFIG.ads.native, ...this._rectArgs(rect) });
+        const r = await this._withTimeout(p.showNative({ adUnitId: CONFIG.ads.native, ...this._rectArgs(rect) }), 15000, null);
+        if (r === null) { this.hideNative(); return { shown: false, height: 0 }; }
         this._nativeVisible = !!(r && r.shown);
         this._nativeHeight = (r && r.height) || 0;
         return { shown: this._nativeVisible, height: this._nativeHeight };

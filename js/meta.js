@@ -103,7 +103,16 @@ const Meta = {
   ],
 
   storiesCompleted() { return Object.values(Store.data.progress || {}).filter(p => p.completed).length; },
-  endingsOpened() { return Object.values(Store.data.progress || {}).reduce((n, p) => n + ((p.endingsFound || []).length), 0); },
+  validEndingIds(story, p = Store.getProgress(story.id)) {
+    const valid = new Set(Object.entries(story.scenes || {}).filter(([, sc]) => sc.ending).map(([id]) => id));
+    return [...new Set((p && p.endingsFound) || [])].filter(id => valid.has(id));
+  },
+  endingsOpened() {
+    if (typeof Loader === 'undefined' || !Loader.list().length) {
+      return Object.values(Store.data.progress || {}).reduce((n, p) => n + new Set(p.endingsFound || []).size, 0);
+    }
+    return Loader.list().reduce((n, { story }) => n + this.validEndingIds(story).length, 0);
+  },
   endingsTotalAll() {
     if (typeof Loader === 'undefined') return 0;
     return Loader.list().reduce((n, e) => n + Object.values(e.story.scenes).filter(s => s.ending).length, 0);
@@ -113,7 +122,7 @@ const Meta = {
     return Loader.list().some(({ story }) => {
       const total = Object.values(story.scenes).filter(s => s.ending).length;
       const p = Store.getProgress(story.id);
-      return total > 0 && p && (p.endingsFound || []).length >= total;
+      return total > 0 && p && this.validEndingIds(story, p).length >= total;
     });
   },
   longCompleted() {
@@ -150,9 +159,10 @@ const Meta = {
     if (Date.now() - (r.lastAsk || 0) < CONFIG.meta.rateMinDaysBetween * 86400000) return false;
     return this.endingsOpened() >= 1;
   },
-  rateAnswered(state) { // 'rated' | 'later'
+  rateAnswered(state) { // 'rated' | 'later' | 'never'
     const r = this.m().rate;
-    r.state = state; r.lastAsk = Date.now(); r.asks = (r.asks || 0) + 1;
+    r.state = ['rated', 'later', 'never'].includes(state) ? state : 'later';
+    r.lastAsk = Date.now(); r.asks = (r.asks || 0) + 1;
     Store.save();
   },
 

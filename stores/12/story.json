@@ -1851,6 +1851,7 @@
    ],
    "show": [
     "heroine",
+    "hero_doubt",
     "director"
    ],
    "lines": [
@@ -2897,7 +2898,7 @@
    ],
    "show": [
     "heroine_brave",
-    "hero_doubt"
+    "director"
    ],
    "lines": [
     {
@@ -3117,7 +3118,8 @@
     "#6E5B49"
    ],
    "show": [
-    "heroine"
+    "heroine",
+    "hero_doubt"
    ],
    "lines": [
     {

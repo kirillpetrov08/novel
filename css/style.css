@@ -45,7 +45,7 @@ img{max-width:100%;display:block}
 
 /* --- каркас: телефонная колонка по центру --- */
 #app{
-  max-width:480px;margin:0 auto;height:100dvh;min-height:100dvh;
+  max-width:480px;margin:0 auto;height:100vh;min-height:100vh;height:100dvh;min-height:100dvh;
   background:var(--app-bg);display:flex;flex-direction:column;position:relative;
   box-shadow:0 0 40px rgba(80,64,40,.15);
   overflow:hidden;
@@ -65,7 +65,7 @@ img{max-width:100%;display:block}
 .logo small{display:block;font-family:var(--sans);font-size:10px;letter-spacing:.22em;color:var(--muted);font-weight:600;margin-top:2px}
 .crystals-pill{
   display:flex;align-items:center;gap:7px;background:var(--surface);border:1px solid var(--line);
-  border-radius:999px;padding:8px 14px;font-weight:700;font-size:15px;min-height:40px;
+  border-radius:999px;padding:8px 14px;font-weight:700;font-size:15px;min-height:44px;
 }
 .crystals-pill .gem{color:var(--crystal);font-size:16px}
 .crystals-pill .plus{color:var(--accent);font-size:18px;line-height:1}
@@ -248,7 +248,7 @@ img{max-width:100%;display:block}
 .dialogue{
   background:linear-gradient(180deg,rgba(255,253,248,.98),rgba(250,245,233,.97));
   border:1px solid var(--line);border-radius:18px;
-  padding:15px 18px 14px;min-height:128px;max-height:38dvh;overflow-y:auto;
+  padding:15px 18px 14px;min-height:128px;max-height:38vh;max-height:38dvh;overflow-y:auto;
   box-shadow:0 12px 34px rgba(0,0,0,.28), inset 0 0 0 3px rgba(255,253,248,.9), inset 0 0 0 4px rgba(223,211,188,.55);
   cursor:pointer;position:relative;overscroll-behavior:contain;
 }
@@ -266,7 +266,7 @@ img{max-width:100%;display:block}
 @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(3px)}}
 
 /* выборы */
-.choices{display:none;flex-direction:column;gap:9px;max-height:min(38dvh,340px);overflow-y:auto;overscroll-behavior:contain;
+.choices{display:none;flex-direction:column;gap:9px;max-height:min(38vh,340px);max-height:min(38dvh,340px);overflow-y:auto;overscroll-behavior:contain;
   scrollbar-width:thin;padding:2px}
 .choices.open{display:flex}
 .choice{
@@ -399,7 +399,7 @@ textarea.field{min-height:130px;resize:vertical;font-size:13px;line-height:1.5}
 
 /* ================= МЕТАПРОГРЕСС: задания, достижения, полка ================= */
 .seg{display:flex;gap:6px;flex-wrap:wrap}
-.seg button{flex:1 1 auto;padding:10px 8px;border:1px solid var(--line);border-radius:11px;background:var(--surface-2);font-size:13px;font-weight:600;color:var(--ink);min-height:40px}
+.seg button{flex:1 1 auto;padding:10px 8px;border:1px solid var(--line);border-radius:11px;background:var(--surface-2);font-size:13px;font-weight:600;color:var(--ink);min-height:44px}
 .seg button.active{background:var(--ink);color:#F7F2E7;border-color:var(--ink)}
 .quest-row,.ach-row{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--line)}
 .quest-row:last-child,.ach-row:last-child{border-bottom:none}
