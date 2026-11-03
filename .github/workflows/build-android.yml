@@ -36,19 +36,19 @@ jobs:
     permissions:
       contents: write  # публикация APK/AAB в GitHub Release
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version: 22
           cache: npm
 
-      - uses: actions/setup-java@v4
+      - uses: actions/setup-java@v6
         with:
           distribution: temurin
           java-version: 21
 
-      - uses: android-actions/setup-android@v3
+      - uses: android-actions/setup-android@v4
         with:
           packages: "platform-tools platforms;android-36 build-tools;36.0.0"
 
@@ -197,21 +197,21 @@ jobs:
           echo '✓ Релизные APK и AAB подписаны одним ключом; подпись проверена в CI' >> "$GITHUB_STEP_SUMMARY"
 
       - name: Артефакт — тестовый APK
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: novella-debug-apk
           path: android/app/build/outputs/apk/debug/app-debug.apk
           if-no-files-found: error
 
       - name: Артефакт — AAB для RuStore
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: novella-release-aab
           path: android/app/build/outputs/bundle/release/app-release.aab
           if-no-files-found: error
 
       - name: Артефакт — релизный APK для RuStore
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: novella-release-apk
           path: android/app/build/outputs/apk/release/*.apk
