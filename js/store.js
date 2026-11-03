@@ -31,19 +31,40 @@ function saveInt(v, fallback, min = -Infinity) {
 }
 function saveBool(v, fallback) { return typeof v === 'boolean' ? v : fallback; }
 function saveText(v, fallback = '') { return typeof v === 'string' ? v : fallback; }
-function saveStringArray(v) {
-  return Array.isArray(v) ? [...new Set(v.filter(x => typeof x === 'string'))] : [];
+function saveStringArray(v, maxItems = 5000) {
+  if (!Array.isArray(v)) return [];
+  return [...new Set(v.filter(x => typeof x === 'string' && x.length <= 160))].slice(-maxItems);
+}
+function saveDayKey(v) {
+  return typeof v === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(v) ? v : '';
 }
 function normalizePlayState(p) {
   const state = saveObj(p);
   if (!state) return null;
-  state.sceneId = saveText(state.sceneId);
+  state.sceneId = saveText(state.sceneId).slice(0, 160);
   state.lineIndex = saveInt(state.lineIndex, 0, 0);
   const stats = saveObj(state.stats) || {};
-  Object.keys(stats).forEach(k => { stats[k] = saveNum(stats[k], 0); });
+  Object.keys(stats).slice(0, 64).forEach(k => {
+    const value = saveNum(stats[k], 0);
+    stats[k] = Math.max(-1000000, Math.min(1000000, value));
+  });
+  Object.keys(stats).slice(64).forEach(k => delete stats[k]);
   state.stats = stats;
-  ['paid', 'visited', 'endingsFound', 'seen'].forEach(k => { state[k] = saveStringArray(state[k]); });
-  state.log = Array.isArray(state.log) ? state.log.filter(x => !!saveObj(x)) : [];
+  state.paid = saveStringArray(state.paid, 5000);
+  state.visited = saveStringArray(state.visited, 5000);
+  state.endingsFound = saveStringArray(state.endingsFound, 200);
+  state.seen = saveStringArray(state.seen, 5000);
+  state.log = (Array.isArray(state.log) ? state.log : []).slice(-500).map(entry => {
+    const item = saveObj(entry);
+    if (!item) return null;
+    return {
+      type: ['narration', 'dialogue', 'thought', 'system', 'choice'].includes(item.type) ? item.type : 'narration',
+      who: typeof item.who === 'string' ? item.who.slice(0, 160) : null,
+      text: saveText(item.text).slice(0, 1000),
+      scene: saveText(item.scene).slice(0, 160),
+      line: saveInt(item.line, 0, 0),
+    };
+  }).filter(Boolean);
   state.completed = state.completed === true;
   state.completedBefore = state.completedBefore === true;
   return state;
@@ -101,8 +122,21 @@ const Store = {
       .filter(x => !!saveObj(x))
       .map(x => ({ t: saveNum(x.t, 0), delta: saveInt(x.delta, 0), reason: saveText(x.reason, 'Кристаллы') }))
       .slice(-200);
-    d.referralLedger = (Array.isArray(d.referralLedger) ? d.referralLedger : []).filter(x => !!saveObj(x));
-    d.lastDaily = saveText(d.lastDaily);
+    d.referralLedger = (Array.isArray(d.referralLedger) ? d.referralLedger : []).map(entry => {
+      const item = saveObj(entry);
+      if (!item) return null;
+      const code = saveText(item.code).trim().toUpperCase();
+      const newcomer = saveText(item.newcomer).slice(0, 80);
+      if (!/^NV-[A-Z0-9]{6}$/.test(code) || !newcomer) return null;
+      return {
+        code,
+        newcomer,
+        status: item.status === 'inviter-paid' ? 'inviter-paid' : 'joined',
+        t: Math.max(0, saveNum(item.t, 0)),
+        paidAt: Math.max(0, saveNum(item.paidAt, 0)),
+      };
+    }).filter(Boolean).slice(-200);
+    d.lastDaily = saveDayKey(saveText(d.lastDaily));
     d.welcomeShown = d.welcomeShown === true;
 
     // Прогресс историй: оставляем только состояния-объекты с корректными полями.
@@ -126,10 +160,13 @@ const Store = {
 
     // Мягкая миграция вложенных объектов для старых сохранений.
     const user = Object.assign({}, def.user, saveObj(d.user) || {});
-    user.id = saveText(user.id, def.user.id) || def.user.id;
-    user.refCode = saveText(user.refCode, refCodeFrom(user.id)) || refCodeFrom(user.id);
-    user.referredBy = typeof user.referredBy === 'string' && user.referredBy ? user.referredBy : null;
-    user.refClaimed = user.refClaimed === true;
+    user.id = saveText(user.id, def.user.id).slice(0, 80) || def.user.id;
+    user.refCode = saveText(user.refCode).trim().toUpperCase();
+    if (!/^NV-[A-Z0-9]{6}$/.test(user.refCode)) user.refCode = refCodeFrom(user.id);
+    user.referredBy = saveText(user.referredBy).trim().toUpperCase();
+    user.referredBy = /^NV-[A-Z0-9]{6}$/.test(user.referredBy) && user.referredBy !== user.refCode
+      ? user.referredBy : null;
+    user.refClaimed = user.refClaimed === true && !!user.referredBy;
     user.createdAt = Math.max(0, saveNum(user.createdAt, def.user.createdAt));
     d.user = user;
 
@@ -147,7 +184,7 @@ const Store = {
     const meta = Object.assign({}, def.meta, saveObj(d.meta) || {});
     const streak = Object.assign({}, def.meta.streak, saveObj(meta.streak) || {});
     streak.count = saveInt(streak.count, 0, 0);
-    streak.lastDay = saveText(streak.lastDay);
+    streak.lastDay = saveDayKey(saveText(streak.lastDay));
     meta.streak = streak;
 
     const lifetime = Object.assign({}, def.meta.lifetime, saveObj(meta.lifetime) || {});
@@ -155,16 +192,16 @@ const Store = {
     meta.lifetime = lifetime;
 
     const quests = Object.assign({}, def.meta.quests, saveObj(meta.quests) || {});
-    quests.day = saveText(quests.day);
+    quests.day = saveDayKey(saveText(quests.day));
     quests.counters = Object.assign({}, def.meta.quests.counters, saveObj(quests.counters) || {});
     Object.keys(def.meta.quests.counters).forEach(k => { quests.counters[k] = saveInt(quests.counters[k], 0, 0); });
-    quests.claimed = saveStringArray(quests.claimed);
+    quests.claimed = saveStringArray(quests.claimed, 12);
     meta.quests = quests;
 
     const ach = saveObj(meta.ach) || {};
-    Object.keys(ach).forEach(k => {
+    Object.keys(ach).forEach((k, idx) => {
       const t = saveNum(ach[k], NaN);
-      if (Number.isFinite(t) && t >= 0) ach[k] = t; else delete ach[k];
+      if (idx < 100 && k.length <= 80 && Number.isFinite(t) && t >= 0) ach[k] = t; else delete ach[k];
     });
     meta.ach = ach;
 
@@ -175,13 +212,16 @@ const Store = {
     meta.rate = rate;
 
     const saves = saveObj(meta.saves) || {};
+    const maxSaveSlots = Math.max(1,
+      saveInt(CONFIG.meta && CONFIG.meta.freeSaveSlots, 1, 0)
+      + saveInt(CONFIG.meta && CONFIG.meta.maxExtraSlots, 0, 0));
     Object.keys(saves).forEach(storyId => {
       const slots = saves[storyId];
       if (!Array.isArray(slots)) { delete saves[storyId]; return; }
-      saves[storyId] = slots.map(slot => {
+      saves[storyId] = slots.slice(0, maxSaveSlots).map(slot => {
         const item = saveObj(slot);
         const snap = item && normalizePlayState(item.snap);
-        return snap ? { ts: Math.max(0, saveNum(item.ts, 0)), label: saveText(item.label, 'Закладка'), snap } : null;
+        return snap ? { ts: Math.max(0, saveNum(item.ts, 0)), label: saveText(item.label, 'Закладка').slice(0, 120), snap } : null;
       });
     });
     meta.saves = saves;
@@ -196,7 +236,26 @@ const Store = {
     return this.data;
   },
   save() {
-    try { localStorage.setItem(SAVE_KEY, JSON.stringify(this.data)); } catch (e) { /* переполнено — не падаем */ }
+    if (!this.data) return;
+    try {
+      localStorage.setItem(SAVE_KEY, JSON.stringify(this.data));
+    } catch (e) {
+      // Квота WebView не должна стоить игроку всего прогресса: сначала жертвуем
+      // длинными журналами/историей операций и повторяем запись один раз.
+      try {
+        if (Array.isArray(this.data.ledger)) this.data.ledger = this.data.ledger.slice(-50);
+        Object.values(saveObj(this.data.progress) || {}).forEach(state => {
+          if (saveObj(state) && Array.isArray(state.log)) state.log = state.log.slice(-200);
+        });
+        Object.values(saveObj(this.data.meta && this.data.meta.saves) || {}).forEach(slots => {
+          if (!Array.isArray(slots)) return;
+          slots.forEach(slot => {
+            if (saveObj(slot) && saveObj(slot.snap) && Array.isArray(slot.snap.log)) slot.snap.log = slot.snap.log.slice(-100);
+          });
+        });
+        localStorage.setItem(SAVE_KEY, JSON.stringify(this.data));
+      } catch (_) { /* хранилище недоступно — состояние хотя бы живёт в памяти */ }
+    }
   },
   resetAll() {
     try { localStorage.removeItem(SAVE_KEY); } catch (e) { /* load() ниже всё равно создаст чистое состояние в памяти */ }

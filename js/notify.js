@@ -8,6 +8,7 @@
 const Notify = {
   ID_DAILY: 1001,
   ID_COMEBACK: 1002,
+  _syncPromise: null,
 
   plugin() {
     return (window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.LocalNotifications) || null;
@@ -15,8 +16,9 @@ const Notify = {
   available() { return !!this.plugin(); },
   enabled() { return !!(Store.data && Store.data.settings && Store.data.settings.notify); },
 
-  /* При старте: если игрок включил уведомления — освежить расписание. */
-  init() { if (this.enabled()) this.sync(false); },
+  /* При старте приводим системное расписание в соответствие настройке:
+     включено — освежить, выключено/сброшено — отменить старые напоминания. */
+  init() { this.sync(false); },
 
   async ensurePermission() {
     const p = this.plugin(); if (!p) return false;
@@ -34,8 +36,18 @@ const Notify = {
     return d;
   },
 
-  /* ask=true — можно запрашивать разрешение (клик по переключателю). */
-  async sync(ask) {
+  /* ask=true — можно запрашивать разрешение (клик по переключателю).
+     Синхронизации выполняются строго по очереди: параллельные cancel/schedule
+     от старта и переключателя не должны обгонять друг друга. */
+  sync(ask) {
+    const run = (this._syncPromise || Promise.resolve())
+      .catch(() => {})
+      .then(() => this._syncOnce(ask));
+    this._syncPromise = run;
+    return run.finally(() => { if (this._syncPromise === run) this._syncPromise = null; });
+  },
+
+  async _syncOnce(ask) {
     const p = this.plugin(); if (!p) return false;
     try { await p.cancel({ notifications: [{ id: this.ID_DAILY }, { id: this.ID_COMEBACK }] }); } catch (e) {}
     if (!this.enabled()) return true;

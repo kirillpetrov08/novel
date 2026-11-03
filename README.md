@@ -7,7 +7,7 @@
 - **Ядро**: HTML/CSS/JavaScript без фреймворков (`index.html`, `css/`, `js/`) — системные шрифты, ноль подзагрузок.
 - **Android**: [Capacitor](https://capacitorjs.com) (`android/`, package `ru.novella.reader`, minSdk 24, targetSdk 36).
 - **Истории**: одна история = одна папка `stores/N/` → `story.json` + фото рядом. При сборке `tools/prepare-www.mjs` валидирует их и вшивает в приложение.
-- **Сборка**: GitHub Actions (`.github/workflows/build-android.yml`) при каждом коммите в `main` собирает **тестовый APK** и **AAB для RuStore**, versionCode растёт автоматически. Подпись — из секретов репозитория (ключ не в Git!). Инструкция: [`RUSTORE.md`](RUSTORE.md).
+- **Сборка**: GitHub Actions (`.github/workflows/build-android.yml`) при каждом коммите в `main` или рабочую ветку `arena/**` собирает **тестовый APK** и **AAB для RuStore**, versionCode растёт автоматически. Подпись — из секретов репозитория (ключ не в Git!). Инструкция: [`RUSTORE.md`](RUSTORE.md).
 
 ## Быстрый старт
 

@@ -159,10 +159,21 @@ const Meta = {
     if (Date.now() - (r.lastAsk || 0) < CONFIG.meta.rateMinDaysBetween * 86400000) return false;
     return this.endingsOpened() >= 1;
   },
+  rateShown() {
+    // Показ засчитывается сразу: закрытие аппаратной кнопкой «Назад» не должно
+    // приводить к повторному запросу оценки после следующего же финала.
+    if (this._ratePromptCounted) return;
+    this._ratePromptCounted = true;
+    const r = this.m().rate;
+    r.lastAsk = Date.now(); r.asks = (r.asks || 0) + 1;
+    Store.save();
+  },
   rateAnswered(state) { // 'rated' | 'later' | 'never'
     const r = this.m().rate;
     r.state = ['rated', 'later', 'never'].includes(state) ? state : 'later';
-    r.lastAsk = Date.now(); r.asks = (r.asks || 0) + 1;
+    r.lastAsk = Date.now();
+    if (!this._ratePromptCounted) r.asks = (r.asks || 0) + 1;
+    this._ratePromptCounted = false;
     Store.save();
   },
 
@@ -212,9 +223,11 @@ const Meta = {
   listSaves(storyId) { return this.m().saves[storyId] || []; },
   putSave(storyId, idx, label, snap) {
     const meta = this.m();
+    if (!storyId || !Number.isInteger(idx) || idx < 0 || idx >= this.slotsTotal() || !snap || typeof snap !== 'object') return false;
     if (!meta.saves[storyId]) meta.saves[storyId] = [];
     meta.saves[storyId][idx] = { ts: Date.now(), label, snap };
     Store.save();
+    return true;
   },
   deleteSave(storyId, idx) {
     const arr = this.m().saves[storyId];

@@ -219,12 +219,12 @@ def _face_box(img: Image.Image):
     global _FACE_DETECTOR
     try:
         import mediapipe as mp
+        if _FACE_DETECTOR is None:
+            _FACE_DETECTOR = mp.solutions.face_detection.FaceDetection(
+                model_selection=1, min_detection_confidence=0.4
+            )
     except Exception:
         return None
-    if _FACE_DETECTOR is None:
-        _FACE_DETECTOR = mp.solutions.face_detection.FaceDetection(
-            model_selection=1, min_detection_confidence=0.4
-        )
     bg = Image.new("RGBA", img.size, (234, 223, 203, 255))
     bg.alpha_composite(img.convert("RGBA"))
     try:
@@ -258,7 +258,7 @@ def normalize_canvas(img: Image.Image, closeup: bool = False) -> Image.Image:
     mask = img.getchannel("A").point(lambda v: 255 if v > 16 else 0)
     bbox = mask.getbbox()
     if not bbox:
-        return img
+        return Image.new("RGBA", (CANVAS_W, CANVAS_H), (0, 0, 0, 0))
     fig = img.crop(bbox)
     fw, fh = fig.size
     face = _face_box(fig)
@@ -324,6 +324,7 @@ def main() -> int:
     os.makedirs(out_dir, exist_ok=True)
 
     changed = {}
+    obsolete = []
     total_before = total_after = 0
     for rel, stem in sorted(refs.items(), key=lambda x: x[1]):
         if only and stem not in only and rel not in only:
@@ -334,7 +335,9 @@ def main() -> int:
             continue
         sprite = normalize_canvas(make_sprite(src), closeup=stem.endswith("_close"))
         dst = os.path.join(out_dir, stem + ".webp")
-        sprite.save(dst, "WEBP", quality=WEBP_QUALITY, alpha_quality=100, method=6)
+        tmp = dst + ".tmp.webp"
+        sprite.save(tmp, "WEBP", quality=WEBP_QUALITY, alpha_quality=100, method=6)
+        os.replace(tmp, dst)
         total_before += os.path.getsize(src)
         total_after += os.path.getsize(dst)
         alpha = np.asarray(sprite.getchannel("A"))
@@ -346,15 +349,21 @@ def main() -> int:
             changed[rel] = new_rel
             old_path = os.path.join(story_dir, rel)
             if os.path.exists(old_path) and os.path.abspath(old_path) != os.path.abspath(dst):
-                os.remove(old_path)
+                obsolete.append(old_path)  # удалим после успешной записи story.json
 
     if changed:
-        text = open(story_json, encoding="utf-8").read()
+        with open(story_json, encoding="utf-8") as f:
+            text = f.read()
         for old, new in changed.items():
             text = text.replace(f'"{old}"', f'"{new}"')
-        with open(story_json, "w", encoding="utf-8") as f:
+        json.loads(text)  # проверяем до замены файла
+        tmp = story_json + ".tmp"
+        with open(tmp, "w", encoding="utf-8") as f:
             f.write(text)
-        json.load(open(story_json, encoding="utf-8"))
+        os.replace(tmp, story_json)
+        for old_path in obsolete:
+            if os.path.exists(old_path):
+                os.remove(old_path)
 
     print(
         f"Итого: спрайтов {len(changed) if changed else '— (preview)'}; "

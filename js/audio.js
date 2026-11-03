@@ -35,9 +35,18 @@ const Ambient = {
     } catch (e) { /* нет звука — не падаем */ }
   },
 
+  resume() {
+    if (!this.ctx || this.ctx.state !== 'suspended') return;
+    try {
+      const resumed = this.ctx.resume();
+      if (resumed && resumed.catch) resumed.catch(() => {});
+    } catch (e) {}
+  },
+
   _chord() {
     if (!this.ctx || !this.master) return;
-    if (this.ctx.state === 'suspended') this.ctx.resume();
+    if (typeof document !== 'undefined' && document.hidden) return; // в фоне контекст намеренно на паузе
+    this.resume();
     const t = this.ctx.currentTime;
     const dur = this.CHORD_SEC + 2.5;
     const notes = this.CHORDS[this.chordIdx++ % this.CHORDS.length];
@@ -70,7 +79,10 @@ const Ambient = {
     this.ctx = null; this.master = null;
     try {
       if (master && ctx) master.gain.linearRampToValueAtTime(0, ctx.currentTime + 0.6);
-      setTimeout(() => { try { ctx && ctx.close(); } catch (e) {} }, 800);
+      setTimeout(() => {
+        try { const closing = ctx && ctx.close(); if (closing && closing.catch) closing.catch(() => {}); }
+        catch (e) {}
+      }, 800);
     } catch (e) {}
   },
 

@@ -80,7 +80,7 @@
           <div class="speaker" id="speaker" style="display:none"></div>
           <div class="dialogue" id="dialogue">
             <div class="dialogue-text" id="dialogue-text"></div>
-            <div class="dialogue-next" id="dialogue-next">▾</div>
+            <div class="dialogue-next" id="dialogue-next" aria-hidden="true">▾</div>
           </div>
         </div>
       </div>
@@ -188,7 +188,7 @@
         <div class="row-title">Тебя пригласили?</div>
         <p class="muted" style="margin:6px 0 11px">Введи код друга и получи бонус новичка. Код можно активировать один раз.</p>
         <div class="row-flex">
-          <input class="field" id="claim-input" placeholder="NV-XXXXXX" maxlength="10" style="flex:1;text-transform:uppercase">
+          <input class="field" id="claim-input" placeholder="NV-XXXXXX" maxlength="10" style="flex:1;text-transform:uppercase" aria-label="Код друга" autocomplete="off" autocapitalize="characters" spellcheck="false">
           <button class="mini-btn accent" id="claim-btn">Активировать</button>
         </div>
         <p class="muted small" id="claim-note" style="margin-top:9px"></p>
@@ -257,7 +257,7 @@
 
   <!-- нижняя навигация -->
   <nav class="tabbar" id="tabbar">
-    <button data-go="library" class="active"><span class="ic">❦</span>Библиотека</button>
+    <button data-go="library" class="active" aria-current="page"><span class="ic">❦</span>Библиотека</button>
     <button data-go="shelf"><span class="ic">✦</span>Полка</button>
     <button data-go="shop"><span class="ic">◆</span>Кристаллы</button>
     <button data-go="profile"><span class="ic">♡</span>Профиль</button>
@@ -336,7 +336,7 @@
   </div>
 </div>
 
-<div id="toasts"></div>
+<div id="toasts" aria-live="polite" aria-atomic="false"></div>
 
 <script src="js/config.js"></script>
 <script src="js/store.js"></script>

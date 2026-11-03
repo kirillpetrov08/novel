@@ -40,6 +40,7 @@ body{
 }
 button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit;
   touch-action:manipulation;-webkit-touch-callout:none;user-select:none;-webkit-user-select:none}
+button:focus-visible,input:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 input,textarea{font-family:inherit;color:inherit}
 img{max-width:100%;display:block}
 
@@ -144,7 +145,7 @@ img{max-width:100%;display:block}
 .detail-cover{height:250px;position:relative;display:flex;align-items:flex-end;overflow:hidden;flex:0 0 auto}
 .detail-cover img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .detail-cover .shade{position:absolute;inset:0;background:linear-gradient(to top,rgba(43,38,32,.88) 0%,rgba(43,38,32,.25) 55%,rgba(43,38,32,.15) 100%)}
-.detail-cover .inner{position:relative;padding:18px;color:#FFFDF8;width:100%}
+.detail-cover .inner{position:relative;padding:18px calc(18px + var(--sar)) 18px calc(18px + var(--sal));color:#FFFDF8;width:100%}
 .detail-cover .genre{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:#E7DCC4;font-weight:700}
 .detail-cover h1{font-family:var(--serif);font-size:27px;line-height:1.15;margin-top:5px;
   display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
@@ -193,10 +194,10 @@ img{max-width:100%;display:block}
   gap:8px;padding:calc(60px + var(--sat)) calc(16px + var(--sar)) 0 calc(16px + var(--sal));margin-bottom:-22px;pointer-events:none}
 .char{position:relative;flex:1 1 0;min-width:0;max-width:302px;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;
   transition:opacity .3s ease, transform .3s ease;opacity:.68;transform:translateY(4px) scale(.99)}
-.chars[data-count="2"]{gap:4px;padding-left:10px;padding-right:10px}
+.chars[data-count="2"]{gap:4px;padding-left:calc(10px + var(--sal));padding-right:calc(10px + var(--sar))}
 .chars[data-count="2"] .char{max-width:210px}
 .chars[data-count="2"] .char img{width:108%;max-width:none}
-.chars[data-count="3"]{gap:2px;padding-left:6px;padding-right:6px}
+.chars[data-count="3"]{gap:2px;padding-left:calc(6px + var(--sal));padding-right:calc(6px + var(--sar))}
 .chars[data-count="3"] .char{max-width:148px}
 .chars[data-count="3"] .char img{width:116%;max-width:none}
 .char.speaking{opacity:1;transform:translateY(0) scale(1);z-index:2}
@@ -392,7 +393,7 @@ textarea.field{min-height:130px;resize:vertical;font-size:13px;line-height:1.5}
 
 .loading-note{text-align:center;color:var(--muted);font-size:13px;padding:22px 10px}
 @media (max-height:620px){.chars{padding-top:52px}}
-@media (prefers-reduced-motion:reduce){*{animation-duration:.001s !important;transition-duration:.001s !important}}
+@media (prefers-reduced-motion:reduce){*{animation:none !important;transition:none !important;scroll-behavior:auto !important}}
 
 /* Заголовки секций библиотеки (короткие / длинные) */
 .lib-tabs{margin:2px 2px 14px}
@@ -417,7 +418,7 @@ textarea.field{min-height:130px;resize:vertical;font-size:13px;line-height:1.5}
 .end-chip.open{background:#EFE3C8;border-color:var(--accent);color:var(--accent-dark);font-weight:600}
 .end-chip.locked{color:var(--muted)}
 .stars{display:flex;justify-content:center;gap:6px;margin:14px 0 6px}
-.stars button{font-size:34px;line-height:1;color:var(--line);padding:4px}
+.stars button{font-size:34px;line-height:1;color:var(--line);padding:4px;min-width:44px;min-height:44px}
 .stars button.on{color:var(--accent)}
 .save-slot{display:flex;align-items:center;gap:10px;border:1px solid var(--line);border-radius:12px;padding:10px 12px;margin-bottom:8px;background:var(--surface-2)}
 .save-slot .grow{flex:1;min-width:0}
@@ -428,3 +429,16 @@ body[data-font="s"] .dialogue-text{font-size:14px}
 body[data-font="l"] .dialogue-text{font-size:19px;line-height:1.55}
 /* живые эффекты погоды поверх фона сцены */
 #weather-fx{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:3}
+
+
+/* Очень узкие экраны (например, внешний дисплей складного телефона):
+   кнопки плеера важнее подписи названия и не должны уезжать за край. */
+@media (max-width:340px){
+  .player-title{display:none}
+  .player-top{gap:6px}
+  .player-gems{margin-left:auto}
+}
+@media (max-width:360px){
+  .save-slot{flex-wrap:wrap}
+  .save-slot .grow{flex-basis:100%}
+}

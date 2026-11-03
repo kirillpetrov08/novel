@@ -50,12 +50,12 @@ def _face_box(img: Image.Image):
     try:
         import mediapipe as mp
         import numpy as np
+        if _FACE_DETECTOR is None:
+            _FACE_DETECTOR = mp.solutions.face_detection.FaceDetection(
+                model_selection=1, min_detection_confidence=0.4
+            )
     except Exception:
         return None
-    if _FACE_DETECTOR is None:
-        _FACE_DETECTOR = mp.solutions.face_detection.FaceDetection(
-            model_selection=1, min_detection_confidence=0.4
-        )
     bg = Image.new("RGBA", img.size, (234, 223, 203, 255))
     bg.alpha_composite(img.convert("RGBA"))
     try:
@@ -89,7 +89,7 @@ def normalize_canvas(img: Image.Image, closeup: bool = False) -> Image.Image:
     mask = img.getchannel("A").point(lambda v: 255 if v > 16 else 0)
     bbox = mask.getbbox()
     if not bbox:
-        return img
+        return Image.new("RGBA", (CANVAS_W, CANVAS_H), (0, 0, 0, 0))
     fig = img.crop(bbox)
     fw, fh = fig.size
     face = _face_box(fig)
@@ -145,7 +145,9 @@ def normalize_story(folder: str) -> None:
                 skipped += 1
                 continue
         out = normalize_canvas(img, closeup=stem.endswith("_close"))
-        out.save(path, "WEBP", quality=WEBP_QUALITY, alpha_quality=100, method=6)
+        tmp = path + ".tmp.webp"
+        out.save(tmp, "WEBP", quality=WEBP_QUALITY, alpha_quality=100, method=6)
+        os.replace(tmp, path)
         done += 1
     print(f"✓ {folder}: нормализовано {done}, пропущено {skipped}")
 

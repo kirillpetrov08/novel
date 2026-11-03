@@ -40,10 +40,19 @@ const Ads = {
   /* Страховка от «молчащего» плагина: ни один вызов рекламы не должен вечно
      держать интерфейс (иначе, например, история вообще не откроется). */
   _withTimeout(promise, ms, fallback) {
-    return Promise.race([
-      promise,
-      new Promise(res => setTimeout(() => res(fallback), ms)),
-    ]);
+    let timer = null;
+    const timeout = new Promise(res => { timer = setTimeout(() => res(fallback), ms); });
+    return Promise.race([Promise.resolve(promise), timeout])
+      .finally(() => { if (timer) clearTimeout(timer); });
+  },
+
+  _fire(promise) {
+    try { Promise.resolve(promise).catch(() => {}); } catch (e) {}
+  },
+
+  _height(value) {
+    const h = Number(value);
+    return Number.isFinite(h) && h > 0 ? Math.min(Math.round(h), 1000) : 0;
   },
 
   async init() {
@@ -52,27 +61,37 @@ const Ads = {
     try {
       await p.initialize();
       this._inited = true;
+      // После перезагрузки WebView нативные Android-вью прошлого JS-сеанса могли
+      // остаться поверх нового интерфейса. Начинаем каждый сеанс с чистого листа.
+      this._nativeVisible = false;
+      this._nativeHeight = 0;
+      this._feed = {};
+      this._fire(p.hideNative());
+      this._fire(p.hideAllFeedAds());
       // Предзагрузка полноэкранных форматов: показ потом мгновенный.
-      p.preloadInterstitial({ adUnitId: CONFIG.ads.interstitial });
-      p.preloadRewarded({ adUnitId: CONFIG.ads.rewarded });
+      this._fire(p.preloadInterstitial({ adUnitId: CONFIG.ads.interstitial }));
+      this._fire(p.preloadRewarded({ adUnitId: CONFIG.ads.rewarded }));
       if (p.addListener) {
-        p.addListener('nativeClosed', () => { this._nativeVisible = false; });
-        p.addListener('nativeResized', e => {
-          if (e && e.height) {
-            this._nativeHeight = e.height;
-            if (this.onNativeResized) this.onNativeResized(e.height);
+        this._fire(p.addListener('nativeClosed', () => { this._nativeVisible = false; }));
+        this._fire(p.addListener('nativeResized', e => {
+          const height = this._height(e && e.height);
+          if (height) {
+            this._nativeHeight = height;
+            if (this.onNativeResized) this.onNativeResized(height);
           }
-        });
-        p.addListener('feedClosed', e => {
+        }));
+        this._fire(p.addListener('feedClosed', e => {
           const id = e && e.id; if (!id) return;
           if (this._feed[id]) this._feed[id].shown = false;
           if (this.onFeedClosed) this.onFeedClosed(id);
-        });
-        p.addListener('feedResized', e => {
-          const id = e && e.id; if (!id || !e.height) return;
-          if (this._feed[id]) this._feed[id].height = e.height;
-          if (this.onFeedResized) this.onFeedResized(id, e.height);
-        });
+        }));
+        this._fire(p.addListener('feedResized', e => {
+          const id = e && e.id;
+          const height = this._height(e && e.height);
+          if (!id || !height) return;
+          if (this._feed[id]) this._feed[id].height = height;
+          if (this.onFeedResized) this.onFeedResized(id, height);
+        }));
       }
     } catch (e) { /* без рекламы приложение продолжает работать */ }
   },
@@ -82,8 +101,11 @@ const Ads = {
     const p = this.plugin();
     if (!p) return false;
     try {
-      const r = await this._withTimeout(p.showRewarded({ adUnitId: CONFIG.ads.rewarded }), 75000, null);
-      p.preloadRewarded({ adUnitId: CONFIG.ads.rewarded });
+      // Долгий предохранитель: уже показанная полноэкранная реклама может
+      // оставаться открытой по действиям пользователя дольше минуты. Случай
+      // «не загрузилась/не показалась» быстро завершает сам нативный плагин.
+      const r = await this._withTimeout(p.showRewarded({ adUnitId: CONFIG.ads.rewarded }), 300000, null);
+      this._fire(p.preloadRewarded({ adUnitId: CONFIG.ads.rewarded }));
       return !!(r && r.rewarded);
     } catch (e) { return false; }
   },
@@ -111,7 +133,7 @@ const Ads = {
       const p = this.plugin();
       if (!p) return false; // в веб-разработке просто пропускаем
       try {
-        const r = await this._withTimeout(p.showInterstitial({ adUnitId: CONFIG.ads.interstitial }), 60000, null);
+        const r = await this._withTimeout(p.showInterstitial({ adUnitId: CONFIG.ads.interstitial }), 180000, null);
         const shown = !!(r && r.shown);
         if (shown) { Store.data.ads.lastInterstitialAt = Date.now(); Store.save(); }
         return shown;
@@ -139,7 +161,7 @@ const Ads = {
         const r = await this._withTimeout(p.showNative({ adUnitId: CONFIG.ads.native, ...this._rectArgs(rect) }), 15000, null);
         if (r === null) { this.hideNative(); return { shown: false, height: 0 }; }
         this._nativeVisible = !!(r && r.shown);
-        this._nativeHeight = (r && r.height) || 0;
+        this._nativeHeight = this._height(r && r.height);
         return { shown: this._nativeVisible, height: this._nativeHeight };
       } catch (e) { return { shown: false, height: 0 }; }
       finally { this._nativePromise = null; }
@@ -150,12 +172,12 @@ const Ads = {
   positionNative(rect, visible) {
     const p = this.plugin();
     if (!p || !this._nativeVisible || !rect) return;
-    try { p.positionNative({ ...this._rectArgs(rect), visible: !!visible }); } catch (e) {}
+    this._fire(p.positionNative({ ...this._rectArgs(rect), visible: !!visible }));
   },
   hideNative() {
     const p = this.plugin();
     this._nativeVisible = false;
-    if (p) { try { p.hideNative(); } catch (e) {} }
+    if (p) this._fire(p.hideNative());
   },
 
   /* --- Feed: несколько рекламных слотов в ленте библиотеки (native + баннеры «Лента»).
@@ -179,7 +201,7 @@ const Ads = {
           return { shown: false, height: 0 };
         }
         cur.shown = !!(r && r.shown);
-        cur.height = (r && r.height) || 0;
+        cur.height = this._height(r && r.height);
         return { shown: cur.shown, height: cur.height };
       } catch (e) { return { shown: false, height: 0 }; }
       finally { cur.promise = null; }
@@ -189,17 +211,17 @@ const Ads = {
   positionFeedAd(id, rect, visible) {
     const p = this.plugin();
     if (!p || !rect || !this.isFeedShown(id)) return;
-    try { p.positionFeedAd({ id, ...this._rectArgs(rect), visible: !!visible }); } catch (e) {}
+    this._fire(p.positionFeedAd({ id, ...this._rectArgs(rect), visible: !!visible }));
   },
   hideFeedAd(id) {
     const p = this.plugin();
     if (this._feed[id]) { this._feed[id].shown = false; this._feed[id].height = 0; }
-    if (p) { try { p.hideFeedAd({ id }); } catch (e) {} }
+    if (p) this._fire(p.hideFeedAd({ id }));
   },
   hideAllFeedAds() {
     Object.keys(this._feed).forEach(id => { this._feed[id].shown = false; this._feed[id].height = 0; });
     const p = this.plugin();
-    if (p) { try { p.hideAllFeedAds(); } catch (e) {} }
+    if (p) this._fire(p.hideAllFeedAds());
   },
 
   /* --- Лимиты именно для кнопки в магазине (фарм кристаллов) --- */

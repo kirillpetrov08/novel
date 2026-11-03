@@ -11,6 +11,8 @@ export function validateStory(story) {
   const errors = [], warnings = [];
   const err = m => errors.push(m), warn = m => warnings.push(m);
   const isObj = v => !!v && typeof v === 'object' && !Array.isArray(v);
+  const isHexColor = v => typeof v === 'string' && /^#(?:[0-9a-fA-F]{3}|[0-9a-fA-F]{4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$/.test(v.trim());
+  const isGradient = v => Array.isArray(v) && v.length === 2 && v.every(isHexColor);
   if (!isObj(story)) return { errors: ['Не объект истории'], warnings, info: {} };
   for (const f of ['id', 'title', 'description', 'start', 'scenes'])
     if (!story[f]) err(`Нет обязательного поля "${f}"`);
@@ -19,11 +21,17 @@ export function validateStory(story) {
   if (story.id && !/^[a-z0-9-]+$/.test(story.id)) err(`id "${story.id}" — только латиница, цифры и дефис`);
   if (story.format !== undefined && !['short', 'long'].includes(story.format))
     err(`format "${story.format}" — допустимы только "short" или "long"`);
-  if (story.estimatedMinutes !== undefined && (!Number.isFinite(story.estimatedMinutes) || story.estimatedMinutes < 0))
-    err('estimatedMinutes должно быть неотрицательным числом');
+  if (story.estimatedMinutes !== undefined && (!Number.isFinite(story.estimatedMinutes) || story.estimatedMinutes <= 0))
+    err('estimatedMinutes должно быть положительным числом');
   if (story.format === 'long' && (story.estimatedMinutes || 0) < 45)
     warn('format "long", а estimatedMinutes < 45 — проверь длительность');
   if (story.cover !== undefined && typeof story.cover !== 'string') err('cover должно быть строкой-путем');
+  if (story.genre !== undefined && typeof story.genre !== 'string') err('genre должно быть строкой');
+  if (story.coverSymbol !== undefined && typeof story.coverSymbol !== 'string') err('coverSymbol должно быть строкой');
+  if (story.tags !== undefined && (!Array.isArray(story.tags) || story.tags.some(t => typeof t !== 'string' || !t.trim())))
+    err('tags должно быть массивом непустых строк');
+  if (story.coverGradient !== undefined && !isGradient(story.coverGradient))
+    err('coverGradient должно быть парой hex-цветов, например ["#E9DCC3", "#B49B72"]');
 
   if (story.scenes !== undefined && !isObj(story.scenes)) err('scenes должно быть объектом сцен');
   if (story.stats !== undefined && !isObj(story.stats)) err('stats должно быть объектом характеристик');
@@ -33,10 +41,12 @@ export function validateStory(story) {
   const chars = isObj(story.characters) ? story.characters : {};
   Object.entries(stats).forEach(([id, meta]) => {
     if (!isObj(meta) || typeof meta.label !== 'string') warn(`Характеристика "${id}": нет объекта {label, icon}`);
+    if (isObj(meta) && meta.icon !== undefined && typeof meta.icon !== 'string') err(`Характеристика "${id}": icon должно быть строкой`);
   });
   Object.entries(chars).forEach(([id, ch]) => {
     if (!isObj(ch)) { err(`Персонаж "${id}": не объект`); return; }
-    if (!ch.name || typeof ch.name !== 'string') warn(`Персонаж "${id}": нет строкового name`);
+    if (!ch.name || typeof ch.name !== 'string') err(`Персонаж "${id}": нет строкового name`);
+    if (ch.color !== undefined && !isHexColor(ch.color)) err(`Персонаж "${id}": color должно быть hex-цветом`);
     if (ch.image !== undefined && typeof ch.image !== 'string') err(`Персонаж "${id}": image должно быть строкой-путем`);
   });
   if (story.start && !scenes[story.start]) err(`Стартовой сцены "${story.start}" нет в scenes`);
@@ -56,6 +66,7 @@ export function validateStory(story) {
     if (sc.bg !== undefined && typeof sc.bg !== 'string') err(`Сцена "${id}": bg должно быть строкой-путем`);
     if (sc.cg !== undefined && typeof sc.cg !== 'string') err(`Сцена "${id}": cg должно быть строкой-путем`);
     if (sc.fx !== undefined && !['snow', 'rain'].includes(sc.fx)) err(`Сцена "${id}": fx допустим только "snow" или "rain"`);
+    if (sc.bgGradient !== undefined && !isGradient(sc.bgGradient)) err(`Сцена "${id}": bgGradient должно быть парой hex-цветов`);
 
     const lines = Array.isArray(sc.lines) ? sc.lines : [];
     if (!lines.length) err(`Сцена "${id}": нет lines`);
@@ -67,10 +78,14 @@ export function validateStory(story) {
         err(`Сцена "${id}", строка ${i + 1}: неизвестный type "${ln.type}"`);
       if (ln.who !== undefined && !chars[ln.who]) err(`Сцена "${id}", строка ${i + 1}: персонаж "${ln.who}" не объявлен в characters`);
       if (ln.type === 'dialogue' && !ln.who) err(`Сцена "${id}", строка ${i + 1}: dialogue без who`);
+      if ((ln.type === 'narration' || ln.type === 'system') && ln.who)
+        warn(`Сцена "${id}", строка ${i + 1}: у ${ln.type} задан who — имя говорящего не покажется`);
     });
 
     if (sc.show !== undefined && !Array.isArray(sc.show)) err(`Сцена "${id}": show должно быть массивом`);
-    (Array.isArray(sc.show) ? sc.show : []).forEach(c => {
+    const showList = Array.isArray(sc.show) ? sc.show : [];
+    if (new Set(showList).size !== showList.length) err(`Сцена "${id}": в show есть повторяющийся персонаж`);
+    showList.forEach(c => {
       if (typeof c !== 'string' || !chars[c]) err(`Сцена "${id}": в show неизвестный персонаж "${c}"`);
     });
     if (!sc.cg) {
@@ -85,12 +100,17 @@ export function validateStory(story) {
 
     const targets = [];
     const sceneChoices = Array.isArray(sc.choices) ? sc.choices : [];
+    const choiceTexts = new Set();
     if (sc.choices !== undefined && !Array.isArray(sc.choices)) err(`Сцена "${id}": choices должно быть массивом`);
     sceneChoices.forEach((ch, i) => {
       choices++;
       if (!isObj(ch)) { err(`Сцена "${id}", выбор ${i + 1}: не объект`); return; }
       if (!ch.text || typeof ch.text !== 'string') err(`Сцена "${id}", выбор ${i + 1}: нет строкового text`);
       else if (ch.text.length > 70) warn(`Сцена "${id}", выбор ${i + 1}: текст ${ch.text.length} симв. (>70 — длинноват для кнопки)`);
+      if (typeof ch.text === 'string') {
+        if (choiceTexts.has(ch.text)) warn(`Сцена "${id}", выбор ${i + 1}: текст повторяет другой выбор в этой сцене`);
+        choiceTexts.add(ch.text);
+      }
       if (!ch.next || typeof ch.next !== 'string') err(`Сцена "${id}", выбор ${i + 1}: нет строкового next`);
       else if (!scenes[ch.next]) err(`Сцена "${id}", выбор ${i + 1}: ведёт в несуществующую "${ch.next}"`);
       else targets.push(ch.next);
@@ -159,12 +179,20 @@ export function normalizeBundle(data) {
 }
 
 /* Все картинки, на которые ссылается история (относительные пути). */
+export function isSafeLocalImagePath(p) {
+  return typeof p === 'string' && !p.startsWith('/') && !p.includes('\\')
+    && !p.split('/').includes('..');
+}
+
 export function storyImagePaths(story) {
   const out = new Set();
   const add = p => { if (p && typeof p === 'string') out.add(p); };
+  if (!story || typeof story !== 'object') return [];
   add(story.cover);
-  Object.values(story.characters || {}).forEach(c => add(c.image));
-  Object.values(story.scenes || {}).forEach(sc => { add(sc.bg); add(sc.cg); });
+  Object.values(story.characters || {}).forEach(c => { if (c && typeof c === 'object') add(c.image); });
+  Object.values(story.scenes || {}).forEach(sc => {
+    if (sc && typeof sc === 'object') { add(sc.bg); add(sc.cg); }
+  });
   return [...out];
 }
 
@@ -183,6 +211,7 @@ function checkFile(path, seenIds) {
     const isTemplate = path.split(/[\\/]/).includes('_template');
     storyImagePaths(story).forEach(p => {
       if (/^(https?:|data:)/.test(p)) return;
+      if (!isSafeLocalImagePath(p)) { errors.push(`Небезопасный путь картинки (нужен относительный внутри папки истории): ${p}`); return; }
       if (!existsSync(join(imgBase, p))) {
         // В _template пути — примеры-заглушки; в настоящей истории отсутствующий файл — ошибка сборки.
         (isTemplate ? warnings : errors).push(`Картинка не найдена: ${p}`);

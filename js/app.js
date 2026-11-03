@@ -7,7 +7,7 @@
 const $ = s => document.querySelector(s);
 const $$ = s => [...document.querySelectorAll(s)];
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
-const safeColor = c => (typeof c === 'string' && /^#[0-9a-fA-F]{3,8}$/.test(c.trim())) ? c.trim() : null;
+const safeColor = c => (typeof c === 'string' && /^#(?:[0-9a-fA-F]{3}|[0-9a-fA-F]{4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$/.test(c.trim())) ? c.trim() : null;
 const gradient = (pair, fallback = ['#E9DCC3', '#B49B72']) => {
   const a = safeColor(pair && pair[0]) || fallback[0];
   const b = safeColor(pair && pair[1]) || fallback[1];
@@ -28,6 +28,7 @@ const WeatherFX = {
     return null;
   },
   apply(mode) {
+    if (mode && window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) mode = null;
     if (mode && Store.data && Store.data.settings && !Store.data.settings.weatherFx) mode = null;
     if (mode === this.mode) { if (mode) this._resize(); return; }
     this.mode = mode;
@@ -91,6 +92,8 @@ const UI = {
   endingReward: 0,       // награда текущего финала — база для удвоения ×2
   endingDoubled: false,
   _startingStory: false,
+  _playSeq: 0,
+  _preloadedAssets: new Set(),
   libFormat: 'short',      // вкладка библиотеки: 'short' | 'long'
   feedSeed: '',            // сид раскладки рекламы в ленте на эту сессию
   feedDismissed: {},       // slotId -> true: слоты, закрытые крестиком до конца сессии
@@ -106,7 +109,11 @@ const UI = {
     this.screen = name;
     $$('.screen').forEach(el => el.classList.toggle('active', el.id === 'screen-' + name));
     $('#tabbar').style.display = (name === 'player' || name === 'detail') ? 'none' : 'flex';
-    $$('#tabbar button').forEach(b => b.classList.toggle('active', b.dataset.go === name));
+    $$('#tabbar button').forEach(b => {
+      const active = b.dataset.go === name;
+      b.classList.toggle('active', active);
+      if (active) b.setAttribute('aria-current', 'page'); else b.removeAttribute('aria-current');
+    });
     if (name !== 'library') Ads.hideAllFeedAds(); // рекламные вью живут только на экране библиотеки
     if (name === 'library') this.renderLibrary();
     if (name === 'shop') this.renderShop();
@@ -119,9 +126,11 @@ const UI = {
   },
 
   toast(text, ms = 2600) {
+    const box = $('#toasts');
+    while (box.children.length >= 3) box.firstElementChild.remove();
     const t = document.createElement('div');
     t.className = 'toast'; t.textContent = text;
-    $('#toasts').appendChild(t);
+    box.appendChild(t);
     setTimeout(() => { t.classList.add('out'); setTimeout(() => t.remove(), 320); }, ms);
   },
 
@@ -227,10 +236,16 @@ const UI = {
 
   fmtDuration(min) {
     if (!min) return '';
-    if (min < 60) return '~' + min + ' минут';
+    const plural = (n, forms) => {
+      const mod10 = n % 10, mod100 = n % 100;
+      if (mod10 === 1 && mod100 !== 11) return forms[0];
+      if (mod10 >= 2 && mod10 <= 4 && (mod100 < 12 || mod100 > 14)) return forms[1];
+      return forms[2];
+    };
+    if (min < 60) return '~' + min + ' ' + plural(min, ['минута', 'минуты', 'минут']);
     const h = Math.round(min / 30) / 2;
     const hs = Number.isInteger(h) ? String(h) : String(h).replace('.', ',');
-    return '~' + hs + (h === 1 ? ' час' : ' часа');
+    return '~' + hs + ' ' + (Number.isInteger(h) ? plural(h, ['час', 'часа', 'часов']) : 'часа');
   },
 
   storyCard({ story, source }) {
@@ -267,7 +282,7 @@ const UI = {
     if (!tabs) return;
     if (!hasShort || !hasLong) { tabs.innerHTML = ''; tabs.style.display = 'none'; return; }
     tabs.style.display = '';
-    const mk = (val, label) => `<button data-fmt="${val}" class="${this.libFormat === val ? 'active' : ''}">${label}</button>`;
+    const mk = (val, label) => `<button data-fmt="${val}" class="${this.libFormat === val ? 'active' : ''}" aria-pressed="${this.libFormat === val}">${label}</button>`;
     tabs.innerHTML = mk('short', 'Короткие · 15–20 мин') + mk('long', 'Длинные · 1–2 часа');
     tabs.querySelectorAll('button').forEach(b => b.addEventListener('click', () => {
       if (this.libFormat === b.dataset.fmt) return;
@@ -292,6 +307,7 @@ const UI = {
     }
 
     if (!list.length) {
+      this.renderLibTabs(false, false);
       const empty = document.createElement('div');
       empty.className = 'empty';
       if (window.BUNDLED_BUILD) {
@@ -412,9 +428,15 @@ const UI = {
   },
   async play(id, mode) {
     if (this._startingStory) return;
+    const seq = ++this._playSeq;
+    const fromDetail = this.screen === 'detail' && this.detailId === id;
     this._startingStory = true;
-    await Ads.showInterstitial(); // между новеллами; кулдаун и готовность — внутри Ads
-    this._startingStory = false;
+    try { await Ads.showInterstitial(); } // между новеллами; кулдаун и готовность — внутри Ads
+    catch (e) { /* реклама никогда не должна запирать вход в историю */ }
+    finally { if (seq === this._playSeq) this._startingStory = false; }
+    // Пока ждали рекламу, игрок мог уйти назад с экрана истории. Не открываем
+    // новеллу «вдогонку» поверх уже другого экрана.
+    if (seq !== this._playSeq || (fromDetail && (this.screen !== 'detail' || this.detailId !== id))) return;
     const story = Loader.get(id);
     if (!story) return;
     $('#ending-ov').classList.remove('open');
@@ -431,15 +453,17 @@ const UI = {
     (scene.choices || []).forEach(c => targets.add(c.next));
     (scene.branch || []).forEach(b => targets.add(b.to));
     if (scene.next) targets.add(scene.next);
+    const preload = src => {
+      if (!src || this._preloadedAssets.has(src)) return;
+      this._preloadedAssets.add(src);
+      const i = new Image(); i.src = src;
+    };
     targets.forEach(t => {
       const sc = story.scenes[t];
       if (!sc) return;
-      if (sc.bg) { const i = new Image(); i.src = sc.bg; }
-      if (sc.cg) { const i = new Image(); i.src = sc.cg; }
-      (sc.show || []).forEach(cid => {
-        const img = ((story.characters || {})[cid] || {}).image;
-        if (img) { const i = new Image(); i.src = img; }
-      });
+      preload(sc.bg);
+      preload(sc.cg);
+      (sc.show || []).forEach(cid => preload(((story.characters || {})[cid] || {}).image));
     });
   },
 
@@ -539,7 +563,7 @@ const UI = {
       const lockReason = Engine.checkRequires(ch);
       const paid = Engine.isPaid(ch, idx);
       const cost = ch.crystals || 0;
-      if (lockReason) b.classList.add('locked');
+      if (lockReason) { b.classList.add('locked'); b.setAttribute('aria-disabled', 'true'); }
       if (cost > 0 && !paid) b.classList.add('paid-choice');
       let right = '';
       if (cost > 0) right = paid
@@ -712,11 +736,20 @@ const UI = {
     // настройки чтения
     const cfg = Store.data.settings;
     const speedKey = !cfg.typewriter ? 'instant' : (cfg.typeMs >= 24 ? 'slow' : (cfg.typeMs && cfg.typeMs <= 8 ? 'fast' : 'normal'));
-    $$('#seg-speed button').forEach(b => b.classList.toggle('active', b.dataset.speed === speedKey));
-    $$('#seg-font button').forEach(b => b.classList.toggle('active', b.dataset.font === (cfg.fontSize || 'm')));
+    $$('#seg-speed button').forEach(b => {
+      const active = b.dataset.speed === speedKey;
+      b.classList.toggle('active', active); b.setAttribute('aria-pressed', String(active));
+    });
+    $$('#seg-font button').forEach(b => {
+      const active = b.dataset.font === (cfg.fontSize || 'm');
+      b.classList.toggle('active', active); b.setAttribute('aria-pressed', String(active));
+    });
     $('#music-toggle').textContent = cfg.music ? 'Вкл' : 'Выкл';
+    $('#music-toggle').setAttribute('aria-pressed', String(!!cfg.music));
     $('#weather-toggle').textContent = cfg.weatherFx ? 'Вкл' : 'Выкл';
+    $('#weather-toggle').setAttribute('aria-pressed', String(!!cfg.weatherFx));
     $('#notify-toggle').textContent = cfg.notify ? 'Вкл' : 'Выкл';
+    $('#notify-toggle').setAttribute('aria-pressed', String(!!cfg.notify));
     if (!Notify.available()) $('#notify-sub').textContent = 'Напоминание вечером: ежедневные кристаллы и задания. Работает в Android-приложении.';
   },
 
@@ -798,7 +831,7 @@ const UI = {
       const sv = saves[i];
       html += `<div class="save-slot"><div class="grow">
         <div class="lbl">${sv ? esc(sv.label) : 'Пустой слот'}</div>
-        <div class="muted small">${sv ? new Date(sv.ts).toLocaleString('ru-RU') : 'Сюда можно поставить закладку'}</div></div>
+        <div class="muted small">${sv ? (sv.ts ? new Date(sv.ts).toLocaleString('ru-RU') : 'Дата не сохранена') : 'Сюда можно поставить закладку'}</div></div>
         ${sv ? `<button class="mini-btn accent" data-save-load="${i}">Открыть</button>` : ''}
         <button class="mini-btn" data-save-put="${i}">${sv ? 'Перезаписать' : 'Сохранить'}</button>
         ${sv ? `<button class="mini-btn" data-save-del="${i}" aria-label="Удалить">✕</button>` : ''}</div>`;
@@ -812,7 +845,10 @@ const UI = {
     const story = Engine.story, state = Engine.state; if (!story || !state) return;
     const snap = JSON.parse(JSON.stringify(state));
     snap.log = (snap.log || []).slice(-200);
-    Meta.putSave(story.id, idx, `${story.title} · ${Engine.progressPct()}%`, snap);
+    if (!Meta.putSave(story.id, idx, `${story.title} · ${Engine.progressPct()}%`, snap)) {
+      this.toast('Не удалось сохранить закладку');
+      return;
+    }
     this.toast('Закладка сохранена ⚑');
     this.renderSaves();
   },
@@ -839,12 +875,13 @@ const UI = {
     // повторное прохождение после загрузки снова платит награду первого раза.
     const union = lists => [...new Set(lists.reduce((all, list) => all.concat(Array.isArray(list) ? list : []), []))];
     const collect = (obj, key) => obj && obj[key];
-    next.endingsFound = union([collect(next, 'endingsFound'), collect(current, 'endingsFound'), collect(persisted, 'endingsFound')]);
+    next.endingsFound = Engine.validEndingIds(story, union([collect(next, 'endingsFound'), collect(current, 'endingsFound'), collect(persisted, 'endingsFound')]));
     next.seen = union([
       collect(next, 'seen'), collect(next, 'visited'),
       collect(current, 'seen'), collect(current, 'visited'),
       collect(persisted, 'seen'), collect(persisted, 'visited'),
     ]);
+    next.seen = next.seen.filter(id => !!story.scenes[id]);
     next.completedBefore = !!(next.completedBefore || next.completed || next.endingsFound.length
       || (current && (current.completed || current.completedBefore))
       || (persisted && (persisted.completed || persisted.completedBefore)));
@@ -865,6 +902,7 @@ const UI = {
 
   /* ---------------- ЗАПРОС ОЦЕНКИ ---------------- */
   showRatePrompt() {
+    Meta.rateShown();
     this._rateStars = 0;
     $$('#rate-stars button').forEach(b => b.classList.remove('on'));
     $('#rate-actions').innerHTML = '';
@@ -912,7 +950,10 @@ const UI = {
     catch (e) {
       const ta = document.createElement('textarea');
       ta.value = text; document.body.appendChild(ta); ta.select();
-      try { document.execCommand('copy'); this.toast(okMsg); } catch (_) { this.toast('Не удалось скопировать — скопируй вручную'); }
+      try {
+        if (document.execCommand('copy')) this.toast(okMsg);
+        else this.toast('Не удалось скопировать — скопируй вручную');
+      } catch (_) { this.toast('Не удалось скопировать — скопируй вручную'); }
       ta.remove();
     }
   },
@@ -939,7 +980,7 @@ const UI = {
       const saveLoad = e.target.closest('[data-save-load]');
       if (saveLoad) { this.loadSave(+saveLoad.dataset.saveLoad); return; }
       const saveDel = e.target.closest('[data-save-del]');
-      if (saveDel) { Meta.deleteSave(Engine.story.id, +saveDel.dataset.saveDel); this.renderSaves(); return; }
+      if (saveDel) { if (Engine.story) { Meta.deleteSave(Engine.story.id, +saveDel.dataset.saveDel); this.renderSaves(); } return; }
       const saveBuy = e.target.closest('[data-save-buy]');
       if (saveBuy) {
         if (Meta.buySlot()) { this.toast('Новый слот сохранения открыт ⚑'); this.renderGems(true); }
@@ -983,11 +1024,17 @@ const UI = {
     $('#player-saves').addEventListener('click', () => { this.renderSaves(); this.openModal('modal-saves'); });
     $('#player-exit').addEventListener('click', () => this.go('library'));
     $('#player-log').addEventListener('click', () => { this.renderLog(); this.openModal('modal-log'); });
-    $('#ending-again').addEventListener('click', () => { $('#ending-ov').classList.remove('open'); Engine.open(Engine.story, 'restart'); });
+    $('#ending-again').addEventListener('click', () => {
+      $('#ending-ov').classList.remove('open');
+      Engine.open(Engine.story, 'restart');
+      Meta.bump('opened');
+    });
     $('#ending-library').addEventListener('click', async () => {
+      const storyId = Engine.story && Engine.story.id;
       $('#ending-ov').classList.remove('open');
       await Ads.showInterstitial(); // при окончании истории — естественная пауза
-      this.go('library');
+      // За время ожидания игрок мог сам выйти или открыть модалку — не дёргаем экран вдогонку.
+      if (this.screen === 'player' && Engine.story && Engine.story.id === storyId && !$('.modal-ov.open')) this.go('library');
     });
     $('#ending-double').addEventListener('click', () => {
       if (this.endingDoubled || !this.endingReward) return;
@@ -1049,7 +1096,7 @@ const UI = {
       const st = Store.data.settings;
       st.notify = !st.notify; Store.save();
       if (st.notify) {
-        if (!Notify.available()) this.toast('Уведомления работают в Android-приложении');
+        if (!Notify.available()) { st.notify = false; Store.save(); this.toast('Уведомления работают в Android-приложении'); }
         else if (!await Notify.sync(true)) { st.notify = false; Store.save(); this.toast('Разреши уведомления в настройках телефона'); }
         else this.toast('Уведомления включены: напоминание в 19:00 ◆');
       } else {
@@ -1132,7 +1179,7 @@ const UI = {
       Meta.touchDaily();      // день мог смениться, пока приложение было открыто
       Ads.syncAdsDay();       // и дневной лимит рекламы должен обновиться без перезапуска
       if (this.screen === 'shop') this.renderShop();
-      if (Ambient.started && Ambient.ctx && Ambient.ctx.state === 'suspended') Ambient.ctx.resume();
+      if (Ambient.started) Ambient.resume();
     });
     // Приложение может оставаться открытым через полночь или дольше кулдауна
     // рекламы: раз в секунду освежаем только зависящие от времени состояния.
@@ -1152,15 +1199,15 @@ const UI = {
     this.renderGems(false);
 
     // стартовый бонус в историю операций + приветствие (один раз)
-    if (!Store.data.ledger.length) {
+    if (!Store.data.welcomeShown && !Store.data.ledger.length) {
       Store.data.ledger.push({ t: Date.now(), delta: CONFIG.crystals.startBonus, reason: 'Стартовый бонус' });
       Store.save();
     }
 
     // реферальная ссылка ?ref=NV-XXXXXX
-    const ref = new URLSearchParams(location.search).get('ref');
-    if (ref && ref.trim().toUpperCase() !== Store.data.user.refCode && !Store.data.user.refClaimed) {
-      this.pendingRef = ref.trim().toUpperCase();
+    const ref = (new URLSearchParams(location.search).get('ref') || '').trim().toUpperCase();
+    if (/^NV-[A-Z0-9]{6}$/.test(ref) && ref !== Store.data.user.refCode && !Store.data.user.refClaimed) {
+      this.pendingRef = ref;
     }
 
     Ads.init(); // Яндекс: инициализация + предзагрузка interstitial/rewarded (Android)

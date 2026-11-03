@@ -7,7 +7,7 @@
 //   4. Копирует index/css/js/stores(картинки)/assets в www/.
 import { rmSync, mkdirSync, cpSync, writeFileSync, readFileSync, existsSync, statSync, readdirSync } from 'node:fs';
 import { join, dirname } from 'node:path';
-import { validateStory, normalizeBundle, scanStoresDir, storyImagePaths } from './validate.mjs';
+import { validateStory, normalizeBundle, scanStoresDir, storyImagePaths, isSafeLocalImagePath } from './validate.mjs';
 
 const ROOT = process.cwd();
 const WWW = join(ROOT, 'www');
@@ -37,6 +37,7 @@ for (const it of items) {
     const imageBase = it.kind === 'folder' ? dirname(it.jsonPath) : '.';
     if (story && typeof story === 'object' && !Array.isArray(story)) storyImagePaths(story).forEach(p => {
       if (/^(https?:|data:)/.test(p)) return;
+      if (!isSafeLocalImagePath(p)) { errors.push(`Небезопасный путь картинки: ${p}`); return; }
       if (!existsSync(join(imageBase, p))) errors.push(`Картинка не найдена: ${p}`);
     });
     if (errors.length) { errors.forEach(e => problems.push(`${it.jsonPath} «${storyLabel}»: ${e}`)); continue; }
@@ -70,7 +71,7 @@ if (existsSync(join(ROOT, 'stores'))) {
   cpSync(join(ROOT, 'stores'), join(WWW, 'stores'), {
     recursive: true,
     // art-prompts.json — внутренний манифест генерации; приложению он не нужен.
-    filter: src => !src.includes('_template') && !src.endsWith('.md') && !src.endsWith('art-prompts.json'),
+    filter: src => !src.split(/[\\/]/).includes('_template') && !src.endsWith('.md') && !src.endsWith('art-prompts.json'),
   });
 }
 if (existsSync(join(ROOT, 'assets'))) cpSync(join(ROOT, 'assets'), join(WWW, 'assets'), { recursive: true });

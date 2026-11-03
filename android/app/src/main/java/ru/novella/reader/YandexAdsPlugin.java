@@ -54,9 +54,9 @@ import com.yandex.mobile.ads.banner.BannerAdView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Локальный Capacitor-плагин Yandex Mobile Ads SDK (com.yandex.android:mobileads).
@@ -89,6 +89,8 @@ public class YandexAdsPlugin extends Plugin {
     private InterstitialAd interstitialAd;
     private boolean interstitialLoading = false;
     private PluginCall pendingInterstitialShow;
+    private Runnable interstitialTimeout;
+    private boolean interstitialShown = false;
 
     private RewardedAdLoader rewardedLoader;
     private RewardedAd rewardedAd;
@@ -106,8 +108,8 @@ public class YandexAdsPlugin extends Plugin {
     // Лента библиотеки: несколько рекламных слотов одновременно (native + баннеры).
     private final Map<String, View> feedViews = new HashMap<>();        // slotId -> обёртка поверх WebView
     private final Map<String, Integer> feedHeights = new HashMap<>();   // slotId -> высота (dp)
-    private final Set<String> feedLoading = new HashSet<>();            // слоты в процессе загрузки
-    private final Set<String> feedCancelled = new HashSet<>();          // скрытые во время загрузки — не показывать
+    private final Set<String> feedLoading = ConcurrentHashMap.newKeySet();   // слоты в процессе загрузки
+    private final Set<String> feedCancelled = ConcurrentHashMap.newKeySet(); // скрытые во время загрузки — не показывать
 
     // ---------------------------------------------------------------
     @PluginMethod
@@ -121,6 +123,7 @@ public class YandexAdsPlugin extends Plugin {
     private void ui(Runnable r) {
         Activity a = getActivity();
         if (a != null) a.runOnUiThread(r);
+        else mainHandler.post(r); // вызов всё равно должен завершиться, а не потеряться
     }
 
     // =========================== INTERSTITIAL ===========================
@@ -170,8 +173,15 @@ public class YandexAdsPlugin extends Plugin {
                 return;
             }
             pendingInterstitialShow = call;
+            interstitialShown = false;
+            cancelInterstitialTimeout();
+            interstitialTimeout = () -> finishInterstitial(adUnitId, interstitialShown);
+            mainHandler.postDelayed(interstitialTimeout, 15_000);
             interstitialAd.setAdEventListener(new InterstitialAdEventListener() {
-                @Override public void onAdShown() {}
+                @Override public void onAdShown() {
+                    interstitialShown = true;
+                    cancelInterstitialTimeout(); // дальше ждём именно закрытие, без ложного таймаута
+                }
                 @Override
                 public void onAdFailedToShow(@NonNull AdError adError) { finishInterstitial(adUnitId, false); }
                 @Override
@@ -183,7 +193,14 @@ public class YandexAdsPlugin extends Plugin {
         });
     }
 
+    private void cancelInterstitialTimeout() {
+        if (interstitialTimeout != null) mainHandler.removeCallbacks(interstitialTimeout);
+        interstitialTimeout = null;
+    }
+
     private void finishInterstitial(String adUnitId, boolean shown) {
+        cancelInterstitialTimeout();
+        interstitialShown = false;
         if (interstitialAd != null) {
             interstitialAd.setAdEventListener(null);
             interstitialAd = null;
@@ -249,7 +266,9 @@ public class YandexAdsPlugin extends Plugin {
         Activity activity = getActivity();
         if (activity == null || rewardedAd == null) { finishRewarded(false); return; }
         rewardedAd.setAdEventListener(new RewardedAdEventListener() {
-            @Override public void onAdShown() {}
+            @Override public void onAdShown() {
+                cancelRewardedTimeout(); // реклама уже на экране: награду нельзя терять по таймеру загрузки
+            }
             @Override
             public void onAdFailedToShow(@NonNull AdError adError) { finishRewarded(false); }
             @Override
@@ -283,7 +302,9 @@ public class YandexAdsPlugin extends Plugin {
 
     // =========================== NATIVE ===========================
     private int dp(float v) {
-        return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, v, getContext().getResources().getDisplayMetrics()));
+        Context ctx = getContext();
+        if (ctx == null) return Math.round(v);
+        return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, v, ctx.getResources().getDisplayMetrics()));
     }
 
     @PluginMethod
@@ -396,9 +417,10 @@ public class YandexAdsPlugin extends Plugin {
         if (visible && onHeight != null) {
             // Высота могла поменяться (новая ширина) — сообщить JS, чтобы слот совпал с вью.
             view.post(() -> {
+                Context ctx = getContext();
                 int hPx = view.getHeight();
-                if (hPx <= 0) return;
-                int hDp = Math.round(hPx / getContext().getResources().getDisplayMetrics().density);
+                if (ctx == null || hPx <= 0) return;
+                int hDp = Math.round(hPx / ctx.getResources().getDisplayMetrics().density);
                 onHeight.accept(hDp);
             });
         }
@@ -463,7 +485,8 @@ public class YandexAdsPlugin extends Plugin {
             ? View.MeasureSpec.makeMeasureSpec(dp(widthDp), View.MeasureSpec.EXACTLY)
             : View.MeasureSpec.makeMeasureSpec(Math.max(root != null ? root.getWidth() : 1, 1), View.MeasureSpec.AT_MOST);
         view.measure(specW, View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
-        return Math.round(view.getMeasuredHeight() / getContext().getResources().getDisplayMetrics().density);
+        Context ctx = getContext();
+        return ctx == null ? 0 : Math.round(view.getMeasuredHeight() / ctx.getResources().getDisplayMetrics().density);
     }
 
     /** Шаблон нативной карточки в фирменной бежевой палитре, строится программно.
@@ -486,7 +509,8 @@ public class YandexAdsPlugin extends Plugin {
 
         LinearLayout column = new LinearLayout(ctx);
         column.setOrientation(LinearLayout.VERTICAL);
-        column.setPadding(dp(12), dp(10), dp(12), dp(10));
+        // Справа оставляем место под крестик, чтобы он не перекрывал служебную кнопку SDK.
+        column.setPadding(dp(12), dp(10), dp(46), dp(10));
 
         // Шапка: иконка + заголовок/домен, справа возраст и кнопка фидбэка SDK
         LinearLayout header = new LinearLayout(ctx);
@@ -554,7 +578,7 @@ public class YandexAdsPlugin extends Plugin {
         ctaBg.setCornerRadius(dp(10));
         cta.setBackground(ctaBg);
         cta.setPadding(dp(14), 0, dp(14), 0);
-        LinearLayout.LayoutParams ctaLp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, dp(38));
+        LinearLayout.LayoutParams ctaLp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, dp(44));
         ctaLp.leftMargin = dp(10);
         footer.addView(cta, ctaLp);
         column.addView(footer);
@@ -576,7 +600,7 @@ public class YandexAdsPlugin extends Plugin {
         closeBg.setColor(Color.rgb(241, 234, 219));
         closeBg.setStroke(dp(1), Color.rgb(223, 211, 188));
         close.setBackground(closeBg);
-        FrameLayout.LayoutParams closeLp = new FrameLayout.LayoutParams(dp(26), dp(26), Gravity.TOP | Gravity.END);
+        FrameLayout.LayoutParams closeLp = new FrameLayout.LayoutParams(dp(32), dp(32), Gravity.TOP | Gravity.END);
         closeLp.topMargin = dp(6);
         closeLp.rightMargin = dp(6);
         close.setOnClickListener(v -> { if (onClose != null) onClose.run(); });
@@ -667,10 +691,28 @@ public class YandexAdsPlugin extends Plugin {
 
     private void loadFeedNative(PluginCall call, String id, String adUnitId, int xDp, int yDp, int widthDp) {
         Context ctx = getContext();
+        if (ctx == null) {
+            feedLoading.remove(id);
+            feedResolve(call, false, 0);
+            return;
+        }
         if (nativeLoader == null) nativeLoader = new NativeAdLoader(ctx);
+        final boolean[] done = {false};
+        final Runnable[] timeout = new Runnable[1];
+        timeout[0] = () -> {
+            if (done[0]) return;
+            done[0] = true;
+            feedLoading.remove(id);
+            feedCancelled.add(id);
+            feedResolve(call, false, 0);
+        };
+        mainHandler.postDelayed(timeout[0], 15_000);
         nativeLoader.loadAd(new AdRequest.Builder(adUnitId).build(), new NativeAdLoadListener() {
             @Override
             public void onAdLoaded(@NonNull NativeAd nativeAd) {
+                if (done[0]) return; // запоздалый ответ не должен трогать уже новую загрузку слота
+                done[0] = true;
+                mainHandler.removeCallbacks(timeout[0]);
                 feedLoading.remove(id);
                 if (feedCancelled.contains(id)) { feedResolve(call, false, 0); return; }
                 FrameLayout wrapper = buildNativeCard(nativeAd, () -> {
@@ -689,6 +731,9 @@ public class YandexAdsPlugin extends Plugin {
             }
             @Override
             public void onAdFailedToLoad(@NonNull AdRequestError error) {
+                if (done[0]) return;
+                done[0] = true;
+                mainHandler.removeCallbacks(timeout[0]);
                 feedLoading.remove(id);
                 feedResolve(call, false, 0);
             }
@@ -698,15 +743,30 @@ public class YandexAdsPlugin extends Plugin {
     private void loadFeedBanner(PluginCall call, String id, String adUnitId, int xDp, int yDp, int widthDp) {
         Activity activity = getActivity();
         Context ctx = activity != null ? activity : getContext();
+        if (ctx == null) {
+            feedLoading.remove(id);
+            feedResolve(call, false, 0);
+            return;
+        }
         BannerAdView banner = new BannerAdView(ctx);
         // Адаптивный inline-баннер: ширина слота, высота — не больше 260dp (SDK подберёт размер).
         banner.setAdSize(BannerAdSize.inline(ctx, widthDp > 0 ? widthDp : 320, 260));
         final boolean[] done = {false};
+        final Runnable[] timeout = new Runnable[1];
+        timeout[0] = () -> {
+            if (done[0]) return;
+            done[0] = true;
+            feedLoading.remove(id);
+            banner.destroy();
+            feedResolve(call, false, 0);
+        };
+        mainHandler.postDelayed(timeout[0], 15_000);
         banner.setBannerAdEventListener(new BannerAdEventListener() {
             @Override
             public void onAdLoaded() {
                 if (done[0]) return;
                 done[0] = true;
+                mainHandler.removeCallbacks(timeout[0]);
                 feedLoading.remove(id);
                 if (feedCancelled.contains(id)) { banner.destroy(); feedResolve(call, false, 0); return; }
                 feedViews.put(id, banner);
@@ -720,6 +780,7 @@ public class YandexAdsPlugin extends Plugin {
             public void onAdFailedToLoad(@NonNull AdRequestError error) {
                 if (done[0]) return;
                 done[0] = true;
+                mainHandler.removeCallbacks(timeout[0]);
                 feedLoading.remove(id);
                 banner.destroy();
                 feedResolve(call, false, 0);
@@ -789,6 +850,7 @@ public class YandexAdsPlugin extends Plugin {
 
     @Override
     protected void handleOnDestroy() {
+        cancelInterstitialTimeout();
         cancelRewardedTimeout();
         if (interstitialAd != null) interstitialAd.setAdEventListener(null);
         if (rewardedAd != null) rewardedAd.setAdEventListener(null);

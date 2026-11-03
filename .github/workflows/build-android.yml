@@ -121,11 +121,40 @@ jobs:
 
       - name: Проверка содержимого APK
         run: |
+          set -o pipefail
           unzip -l android/app/build/outputs/apk/debug/app-debug.apk > apk-list.txt
           grep -q 'assets/public/index.html' apk-list.txt
           grep -q 'assets/public/js/engine.js' apk-list.txt
+          if grep -q 'art-prompts.json' apk-list.txt; then
+            echo '::error::В APK попал внутренний art-prompts.json'
+            exit 1
+          fi
           unzip -p android/app/build/outputs/apk/debug/app-debug.apk assets/public/js/stories-bundle.js | grep -q 'BUNDLED_BUILD = true'
+          RELEASE_APK=$(ls android/app/build/outputs/apk/release/*.apk | head -n 1)
+          test -n "$RELEASE_APK"
+          unzip -l "$RELEASE_APK" > release-apk-list.txt
+          grep -q 'assets/public/index.html' release-apk-list.txt
+          grep -q 'assets/public/js/engine.js' release-apk-list.txt
+          if grep -q 'art-prompts.json' release-apk-list.txt; then
+            echo '::error::В релизный APK попал внутренний art-prompts.json'
+            exit 1
+          fi
           echo '✓ APK содержит приложение и вшитые истории' >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Проверка подписи релизных APK и AAB
+        if: steps.ks.outputs.has == 'true'
+        run: |
+          set -o pipefail
+          test -f android/app/build/outputs/apk/release/app-release.apk
+          SDK_ROOT="${ANDROID_HOME:-${ANDROID_SDK_ROOT:-$HOME/Android/Sdk}}"
+          APKSIGNER=$(find "$SDK_ROOT/build-tools" -name apksigner -type f | sort -V | tail -n 1)
+          test -n "$APKSIGNER"
+          "$APKSIGNER" verify --print-certs android/app/build/outputs/apk/release/app-release.apk | tee release-cert.txt
+          grep -q 'Signer #1 certificate SHA-256 digest:' release-cert.txt
+          test -f android/app/build/outputs/bundle/release/app-release.aab
+          jarsigner -verify android/app/build/outputs/bundle/release/app-release.aab | tee aab-verify.txt
+          grep -qi 'jar verified' aab-verify.txt
+          echo '✓ Релизные APK и AAB подписаны; подпись проверена в CI' >> "$GITHUB_STEP_SUMMARY"
 
       - name: Артефакт — тестовый APK
         uses: actions/upload-artifact@v4
@@ -152,9 +181,16 @@ jobs:
         if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/arena/')
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          HAS_KEY: ${{ steps.ks.outputs.has }}
         run: |
           cp android/app/build/outputs/apk/debug/app-debug.apk novella.apk
-          cp android/app/build/outputs/apk/release/app-release.apk novella-release.apk 2>/dev/null || cp android/app/build/outputs/apk/release/app-release-unsigned.apk novella-release.apk
+          if [ "$HAS_KEY" = "true" ]; then
+            cp android/app/build/outputs/apk/release/app-release.apk novella-release.apk
+            SIGN_NOTE='Релизные APK и AAB подписаны ключом приложения и готовы к загрузке в RuStore.'
+          else
+            cp android/app/build/outputs/apk/release/app-release-unsigned.apk novella-release.apk
+            SIGN_NOTE='ВНИМАНИЕ: секреты подписи не настроены, релизные APK и AAB неподписанные — RuStore их не примет.'
+          fi
           cp android/app/build/outputs/bundle/release/app-release.aab novella.aab
           # Скользящий релиз: пересоздаём, чтобы тег указывал на собранный коммит
           gh release delete app-latest --yes --cleanup-tag 2>/dev/null || true
@@ -162,8 +198,10 @@ jobs:
             "## Что скачивать" \
             "" \
             "- **novella.apk** — тестовая сборка: скачать на телефон и установить (разрешить установку из браузера/файлов)." \
-            "- **novella-release.apk** — релизный APK для RuStore (примет магазин только после настройки ключа подписи, см. RUSTORE.md)." \
-            "- **novella.aab** — то же приложение в формате AAB для RuStore (тоже требует настроенного ключа подписи)." \
+            "- **novella-release.apk** — релизный APK для RuStore." \
+            "- **novella.aab** — то же приложение в формате AAB для RuStore." \
+            "" \
+            "$SIGN_NOTE" \
             "" \
             "Собрано автоматически из коммита ${{ github.sha }} (${{ github.ref_name }}), запуск №${{ github.run_number }}." \
             > release-notes.md
