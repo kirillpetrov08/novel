@@ -144,17 +144,57 @@ jobs:
       - name: Проверка подписи релизных APK и AAB
         if: steps.ks.outputs.has == 'true'
         run: |
-          set -o pipefail
-          test -f android/app/build/outputs/apk/release/app-release.apk
-          SDK_ROOT="${ANDROID_HOME:-${ANDROID_SDK_ROOT:-$HOME/Android/Sdk}}"
-          APKSIGNER=$(find "$SDK_ROOT/build-tools" -name apksigner -type f | sort -V | tail -n 1)
-          test -n "$APKSIGNER"
-          "$APKSIGNER" verify --print-certs android/app/build/outputs/apk/release/app-release.apk | tee release-cert.txt
-          grep -q 'Signer #1 certificate SHA-256 digest:' release-cert.txt
-          test -f android/app/build/outputs/bundle/release/app-release.aab
-          jarsigner -verify android/app/build/outputs/bundle/release/app-release.aab | tee aab-verify.txt
-          grep -qi 'jar verified' aab-verify.txt
-          echo '✓ Релизные APK и AAB подписаны; подпись проверена в CI' >> "$GITHUB_STEP_SUMMARY"
+          fail() { echo "::error title=Проверка подписи::$*"; exit 1; }
+          APK=android/app/build/outputs/apk/release/app-release.apk
+          AAB=android/app/build/outputs/bundle/release/app-release.aab
+          [ -f "$APK" ] || fail "Нет релизного APK: $APK"
+          [ -f "$AAB" ] || fail "Нет релизного AAB: $AAB"
+
+          APKSIGNER=''
+          for root in "${ANDROID_HOME:-}" "${ANDROID_SDK_ROOT:-}" \
+              "$(sed -n 's/^sdk\.dir=//p' android/local.properties 2>/dev/null | head -n 1)" \
+              "$HOME/Android/Sdk" "/usr/local/lib/android/sdk"; do
+            [ -n "$root" ] && [ -d "$root/build-tools" ] || continue
+            APKSIGNER=$(find "$root/build-tools" -name apksigner \( -type f -o -type l \) | sort -V | tail -n 1)
+            [ -n "$APKSIGNER" ] && break
+          done
+          [ -n "$APKSIGNER" ] || fail 'Не найден apksigner в Android SDK'
+
+          set +e
+          "$APKSIGNER" verify --print-certs "$APK" > release-cert.txt 2>&1
+          APK_SIGN_STATUS=$?
+          set -e
+          cat release-cert.txt
+          [ $APK_SIGN_STATUS -eq 0 ] || fail "apksigner завершился с кодом $APK_SIGN_STATUS"
+          APK_SHA256=$(sed -n 's/.*certificate SHA-256 digest:[[:space:]]*//p' release-cert.txt | head -n 1 | tr -d '[:space:]:' | tr 'A-F' 'a-f')
+          [ ${#APK_SHA256} -eq 64 ] || fail 'apksigner не вернул SHA-256 сертификата APK'
+
+          set +e
+          jarsigner -verify "$AAB" > aab-verify.txt 2>&1
+          JAR_SIGN_STATUS=$?
+          set -e
+          cat aab-verify.txt
+          grep -qi 'jar verified' aab-verify.txt || fail 'jarsigner не подтвердил подпись AAB'
+          if grep -qiE 'jar is unsigned|verification failed|unsigned entr|invalid signature' aab-verify.txt; then
+            fail 'В AAB есть неподписанные или повреждённые элементы'
+          fi
+          # jarsigner может вернуть 4 только из-за ожидаемого предупреждения о
+          # самоподписанной цепочке Android-ключа. Криптографическая целостность
+          # при этом уже подтверждена строкой «jar verified», а ниже мы отдельно
+          # сверяем, что AAB подписан в точности тем же сертификатом, что APK.
+          if [ $JAR_SIGN_STATUS -ne 0 ] && [ $JAR_SIGN_STATUS -ne 4 ]; then
+            fail "jarsigner завершился с кодом $JAR_SIGN_STATUS"
+          fi
+
+          set +e
+          keytool -printcert -jarfile "$AAB" > aab-cert.txt 2>&1
+          AAB_CERT_STATUS=$?
+          set -e
+          cat aab-cert.txt
+          [ $AAB_CERT_STATUS -eq 0 ] || fail "keytool не смог прочитать сертификат AAB (код $AAB_CERT_STATUS)"
+          AAB_SHA256=$(grep -i 'SHA256:' aab-cert.txt | head -n 1 | sed 's/.*SHA256:[[:space:]]*//' | tr -d '[:space:]:' | tr 'A-F' 'a-f')
+          [ "$AAB_SHA256" = "$APK_SHA256" ] || fail 'SHA-256 сертификатов APK и AAB не совпадают'
+          echo '✓ Релизные APK и AAB подписаны одним ключом; подпись проверена в CI' >> "$GITHUB_STEP_SUMMARY"
 
       - name: Артефакт — тестовый APK
         uses: actions/upload-artifact@v4
