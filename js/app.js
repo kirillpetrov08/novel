@@ -85,8 +85,9 @@ const WeatherFX = {
 const UI = {
   screen: 'library',
   detailId: null,
-  pendingChoice: null,   // {idx, cost} — выбор, на который не хватило кристаллов
+  pendingChoice: null,   // {idx, cost, storyId, sceneId, text} — точный выбор, ожидающий кристаллы
   pendingRewardGrant: null, // колбэк начисления для демо-рекламы в веб-режиме
+  _rewardedBusy: false,  // один rewarded-поток за раз: награда не должна начисляться дважды
   endingReward: 0,       // награда текущего финала — база для удвоения ×2
   endingDoubled: false,
   _startingStory: false,
@@ -101,6 +102,7 @@ const UI = {
 
   /* ---------------- навигация ---------------- */
   go(name) {
+    if (name !== 'player') this.pendingChoice = null; // отложенный выбор живёт только в текущей сцене плеера
     this.screen = name;
     $$('.screen').forEach(el => el.classList.toggle('active', el.id === 'screen-' + name));
     $('#tabbar').style.display = (name === 'player' || name === 'detail') ? 'none' : 'flex';
@@ -128,12 +130,13 @@ const UI = {
     $$('.ad-slot').forEach(slot => Ads.positionFeedAd(slot.dataset.slot, slot.getBoundingClientRect(), false));
     $('#' + id).classList.add('open');
   },
-  closeModal(id) {
+  closeModal(id, opts = {}) {
     $('#' + id).classList.remove('open');
     // Закрытие ЛЮБЫМ способом (кнопка, аппаратная «Назад», фон) обязано завершать
-    // висящие состояния: confirm-промис и недосмотренную демо-рекламу.
+    // висящие состояния: confirm-промис, недосмотренную демо-рекламу и отложенный выбор.
     if (id === 'modal-confirm' && this.confirmResolve) { this.confirmResolve(false); this.confirmResolve = null; }
     if (id === 'modal-ad') this.pendingRewardGrant = null;
+    if (id === 'modal-need' && !opts.keepPendingChoice) this.pendingChoice = null;
     if (this.screen === 'library' && !$('.modal-ov.open')) this.syncFeedAds();
   },
 
@@ -408,6 +411,7 @@ const UI = {
     if (!story) return;
     $('#ending-ov').classList.remove('open');
     this.setChoicesOpen(false);
+    this.pendingChoice = null;
     this.go('player');
     Engine.open(story, mode);
     Meta.bump('opened'); // задание дня «открой историю»
@@ -546,8 +550,14 @@ const UI = {
     } else db.style.display = 'none';
     this.setChoicesOpen(false);
     $('#ending-title').textContent = ending.title || 'Финал';
-    $('#ending-badge').textContent = ending.badge || '';
-    $('#ending-text').textContent = ending.text || '';
+    const badge = $('#ending-badge');
+    badge.textContent = ending.badge || '';
+    badge.style.display = badge.textContent.trim() ? '' : 'none';
+    const endingText = $('#ending-text');
+    endingText.textContent = ending.text || '';
+    // У части историй финальная проза уже находится в репликах сцены, а text пуст:
+    // не показываем пустой абзац с отступами на экране финала.
+    endingText.style.display = endingText.textContent.trim() ? '' : 'none';
     $('#ending-rewards').innerHTML = (notes || []).map(n => `<div class="reward-line">◆ ${esc(n)}</div>`).join('')
       || '<div class="reward-line">Этот финал уже был открыт раньше</div>';
     $('#ending-ov').classList.add('open');
@@ -609,26 +619,32 @@ const UI = {
      Android: настоящий ролик Яндекса (награда только за полный просмотр).
      Веб-разработка: демо-модалка с таймером. onReward вызывается максимум один раз. */
   async rewardedFlow(onReward) {
-    this.closeModal('modal-need');
-    if (Ads.isNative()) {
-      this.toast('Загружаем рекламу…', 1500);
-      const ok = await Ads.showRewardedNative();
-      if (ok) { Meta.bump('ads'); onReward(); }
-      else this.toast('Чтобы получить награду, досмотри рекламу до конца');
-      return;
+    if (this._rewardedBusy) return;
+    this._rewardedBusy = true;
+    try {
+      this.closeModal('modal-need', { keepPendingChoice: true });
+      if (Ads.isNative()) {
+        this.toast('Загружаем рекламу…', 1500);
+        const ok = await Ads.showRewardedNative();
+        if (ok) { Meta.bump('ads'); onReward(); }
+        else this.toast('Чтобы получить награду, досмотри рекламу до конца');
+        return;
+      }
+      this.pendingRewardGrant = onReward;
+      this.openModal('modal-ad');
+      const claim = $('#ad-claim-btn');
+      claim.disabled = true;
+      claim.textContent = 'Подожди…';
+      const total = CONFIG.crystals.adDurationSec;
+      $('#ad-bar').style.width = '0%';
+      const done = await Ads.showRewardedDemo(left => {
+        $('#ad-countdown').textContent = left > 0 ? `Награда через ${left} сек` : 'Готово!';
+        $('#ad-bar').style.width = Math.round(((total - left) / total) * 100) + '%';
+      });
+      if (done) { claim.disabled = false; claim.textContent = 'Забрать награду ◆'; }
+    } finally {
+      this._rewardedBusy = false;
     }
-    this.pendingRewardGrant = onReward;
-    this.openModal('modal-ad');
-    const claim = $('#ad-claim-btn');
-    claim.disabled = true;
-    claim.textContent = 'Подожди…';
-    const total = CONFIG.crystals.adDurationSec;
-    $('#ad-bar').style.width = '0%';
-    const done = await Ads.showRewardedDemo(left => {
-      $('#ad-countdown').textContent = left > 0 ? `Награда через ${left} сек` : 'Готово!';
-      $('#ad-bar').style.width = Math.round(((total - left) / total) * 100) + '%';
-    });
-    if (done) { claim.disabled = false; claim.textContent = 'Забрать награду ◆'; }
   },
 
   grantShopAd() {
@@ -637,10 +653,16 @@ const UI = {
     this.renderGems(true);
     this.toast(`+${CONFIG.crystals.adReward} ◆ за рекламу`);
     if (this.screen === 'shop') this.renderShop();
-    if (this.pendingChoice && Store.data.crystals >= this.pendingChoice.cost) {
-      const { idx } = this.pendingChoice;
-      this.pendingChoice = null;
-      Engine.choose(idx);
+    const pending = this.pendingChoice;
+    this.pendingChoice = null;
+    if (pending && this.screen === 'player' && Engine.story && Engine.state
+        && pending.storyId === Engine.story.id
+        && pending.sceneId === Engine.state.sceneId
+        && Store.data.crystals >= pending.cost) {
+      const choice = (Engine.scene().choices || [])[pending.idx];
+      if (choice && (choice.crystals || 0) === pending.cost && choice.text === pending.text) {
+        Engine.choose(pending.idx);
+      }
     }
   },
 
@@ -786,13 +808,36 @@ const UI = {
     const story = Engine.story; if (!story) return;
     const sv = Meta.listSaves(story.id)[idx]; if (!sv) return;
     Engine.stopTyping();
-    Engine.state = JSON.parse(JSON.stringify(sv.snap));
+    this.pendingChoice = null;
+
+    const current = Engine.state;
+    const persisted = Store.getProgress(story.id);
+    let next = JSON.parse(JSON.stringify(sv.snap));
     // Закладка могла быть сделана в прошлой версии истории: проверяем границы.
-    if (!story.scenes[Engine.state.sceneId]) { this.toast('Это сохранение больше не подходит к истории'); Engine.state = Engine.freshState(story); }
-    const scL = story.scenes[Engine.state.sceneId];
-    Engine.state.lineIndex = Math.max(0, Math.min(Engine.state.lineIndex || 0, scL.lines.length - 1));
+    if (!story.scenes[next.sceneId]) {
+      this.toast('Это сохранение больше не подходит к истории');
+      next = Engine.freshState(story);
+    } else {
+      next = Engine.normalizeState(story, next);
+    }
+
+    // Закладка откатывает только текущую ветку. Коллекционные данные истории —
+    // уже открытые финалы и когда-либо виденные сцены — нельзя терять, иначе
+    // повторное прохождение после загрузки снова платит награду первого раза.
+    const union = lists => [...new Set(lists.reduce((all, list) => all.concat(Array.isArray(list) ? list : []), []))];
+    const collect = (obj, key) => obj && obj[key];
+    next.endingsFound = union([collect(next, 'endingsFound'), collect(current, 'endingsFound'), collect(persisted, 'endingsFound')]);
+    next.seen = union([
+      collect(next, 'seen'), collect(next, 'visited'),
+      collect(current, 'seen'), collect(current, 'visited'),
+      collect(persisted, 'seen'), collect(persisted, 'visited'),
+    ]);
+    next.completedBefore = !!(next.completedBefore || next.completed || next.endingsFound.length
+      || (current && (current.completed || current.completedBefore))
+      || (persisted && (persisted.completed || persisted.completedBefore)));
+
+    Engine.state = next;
     Engine._finishedSceneId = null;
-    if (!Engine.state.seen) Engine.state.seen = (Engine.state.visited || []).slice();
     Engine.seenBefore = new Set([...(Engine.state.seen || []), ...(Engine.state.visited || [])]);
     Engine.persist();
     Engine.render();
@@ -1028,6 +1073,7 @@ const UI = {
         if (Store.data.meta.lifetime.lines % 25 === 0) this.notifyAchievements(Meta.checkAchievements());
       }
       if (type === 'choice-made') {
+        this.pendingChoice = null;
         Meta.bump('choices');
         if (payload && payload.paid) Meta.bump('paidChoices');
         this.notifyAchievements(Meta.checkAchievements());
@@ -1035,13 +1081,16 @@ const UI = {
       if (type === 'typing-done') $('#dialogue-next').style.visibility = 'visible';
       if (type === 'show-choices') this.renderChoices();
       if (type === 'ending') {
+        this.pendingChoice = null;
         Meta.bump('endings');
         this.renderEnding(payload);
         const fresh = Meta.checkAchievements();
         setTimeout(() => this.notifyAchievements(fresh), 700);
         // момент восторга после финала — лучшее время попросить оценку
         if (payload.reward > 0 && Meta.shouldAskRate()) {
-          setTimeout(() => { if (!$('.modal-ov.open')) this.showRatePrompt(); }, 1800);
+          setTimeout(() => {
+            if (!$('.modal-ov.open') && $('#ending-ov').classList.contains('open')) this.showRatePrompt();
+          }, 1800);
         }
       }
       if (type === 'stat-change') payload.forEach((c, i) => setTimeout(() => this.toast(c, 1800), i * 350));
@@ -1063,8 +1112,13 @@ const UI = {
     this.applyReadSettings();
     Notify.init();            // освежить расписание уведомлений, если включены
     document.addEventListener('visibilitychange', () => {
-      if (document.hidden) return;
+      if (document.hidden) {
+        if (Ambient.started && Ambient.ctx && Ambient.ctx.state === 'running') Ambient.ctx.suspend();
+        return;
+      }
       Meta.touchDaily();      // день мог смениться, пока приложение было открыто
+      Ads.syncAdsDay();       // и дневной лимит рекламы должен обновиться без перезапуска
+      if (this.screen === 'shop') this.renderShop();
       if (Ambient.started && Ambient.ctx && Ambient.ctx.state === 'suspended') Ambient.ctx.resume();
     });
     this.renderGems(false);

@@ -154,6 +154,13 @@ public class YandexAdsPlugin extends Plugin {
     public void showInterstitial(PluginCall call) {
         String adUnitId = call.getString("adUnitId");
         ui(() -> {
+            if (pendingInterstitialShow != null) {
+                // Не затираем первый вызов: его PluginCall иначе уже никто не разрешит.
+                JSObject busy = new JSObject();
+                busy.put("shown", false);
+                call.resolve(busy);
+                return;
+            }
             Activity activity = getActivity();
             if (activity == null || interstitialAd == null) {
                 loadInterstitial(adUnitId); // подгрузим к следующему разу, пользователя не ждём
@@ -209,7 +216,10 @@ public class YandexAdsPlugin extends Plugin {
             public void onAdLoaded(@NonNull RewardedAd ad) {
                 rewardedLoading = false;
                 rewardedAd = ad;
-                if (showWhenLoaded && pendingRewardedShow != null) showLoadedRewarded();
+                // showRewarded мог прийти, пока уже шёл обычный preload: вторая
+                // загрузка в loadRewarded тогда не стартует, поэтому смотрим pending,
+                // а не только флаг первоначального вызова.
+                if (pendingRewardedShow != null) showLoadedRewarded();
             }
             @Override
             public void onAdFailedToLoad(@NonNull AdRequestError error) {

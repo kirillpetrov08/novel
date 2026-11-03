@@ -6,22 +6,44 @@
     python3 tools/wire-art.py --check   # только отчёт, ничего не менять
 
 Логика:
-  * обложка   -> story.cover            (если файл cover.jpg существует)
+  * обложка   -> story.cover            (cover с расширением webp/jpg/png)
   * фон сцены -> scene.bg               (из art-prompts.json -> sceneBackgrounds)
-  * персонаж  -> character.image        (если images/<ключ>.png существует)
+  * персонаж  -> character.image        (images/<ключ> с расширением webp/png/jpg)
+  * карточка  -> scene.cg               (images[] с type="card" и scene)
 
-Отсутствующие файлы остаются пустыми: приложение нарисует градиент и монограмму.
-Скрипт идемпотентен, его можно гонять сколько угодно раз.
-
-ВНИМАНИЕ: порядок конвейера — сначала wire-art (прописывает .png), ПОТОМ
-tools/make-character-sprites.py (переводит персонажей в прозрачные .webp и
-удаляет .png). После спрайтов wire-art для этой истории больше не запускать.
+Скрипт недеструктивен: уже прописанный существующий путь никогда не очищает
+и не заменяет другим файлом. Если ожидаемой картинки пока нет, поле остаётся
+как было, а файл просто попадает в отчёт недостающих. Поэтому скрипт можно
+запускать и до, и после изготовления прозрачных .webp-спрайтов.
 """
 import json
 import os
 import sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+IMAGE_EXTENSIONS = (".webp", ".jpg", ".jpeg", ".png")
+
+
+def existing_variant(store, rel):
+    """Найти существующий файл: exact path или тот же stem с другим расширением."""
+    if not rel:
+        return None
+    if os.path.isfile(os.path.join(store, rel)):
+        return rel
+    stem, _ext = os.path.splitext(rel)
+    for ext in IMAGE_EXTENSIONS:
+        candidate = stem + ext
+        if os.path.isfile(os.path.join(store, candidate)):
+            return candidate
+    return None
+
+
+def first_existing(store, candidates):
+    for rel in candidates:
+        found = existing_variant(store, rel)
+        if found:
+            return found
+    return None
 
 
 def load(path):
@@ -56,55 +78,76 @@ def main():
             continue
         prompts = load(prompts_path)
         scene_bgs = prompts.get("sceneBackgrounds", {})
+        scene_cards = {}
+        for item in prompts.get("images", []):
+            if (isinstance(item, dict) and item.get("type") == "card"
+                    and item.get("scene") and item.get("file")):
+                scene_cards[item["scene"]] = item["file"]
 
         changed = 0
         missing = []
         expected = set()
 
-        def exists(rel):
-            return bool(rel) and os.path.isfile(os.path.join(store, rel))
-
-        # обложка
-        expected.add("cover.jpg")
-        if exists("cover.jpg"):
-            if story.get("cover") != "cover.jpg":
-                story["cover"] = "cover.jpg"
+        # Обложка: текущий существующий файл важнее предположений инструмента.
+        cover = existing_variant(store, story.get("cover")) or first_existing(
+            store, ("cover.jpg", "cover.webp", "cover.png", "cover.jpeg"))
+        if cover:
+            expected.add(cover)
+            if story.get("cover") != cover:
+                story["cover"] = cover
                 changed += 1
         else:
-            if story.get("cover"):
-                story["cover"] = ""
-                changed += 1
-            missing.append("cover.jpg")
+            expected.add(story.get("cover") or "cover.jpg")
+            missing.append(story.get("cover") or "cover.jpg")
 
-        # персонажи
+        # Персонажи: после конвейера спрайтов обычно лежит .webp, до него — .png.
         for key, char in story.get("characters", {}).items():
-            rel = f"images/{key}.png"
-            expected.add(rel)
-            if exists(rel):
+            if not isinstance(char, dict):
+                continue
+            rel = existing_variant(store, char.get("image")) or first_existing(
+                store,
+                (f"images/{key}.webp", f"images/{key}.png",
+                 f"images/{key}.jpg", f"images/{key}.jpeg"),
+            )
+            if rel:
+                expected.add(rel)
                 if char.get("image") != rel:
                     char["image"] = rel
                     changed += 1
             else:
-                if char.get("image"):
-                    char["image"] = ""
-                    changed += 1
-                missing.append(rel)
+                absent = char.get("image") or f"images/{key}.webp"
+                expected.add(absent)
+                missing.append(absent)
 
-        # фоны: трогаем только сцены, для которых известен ожидаемый файл
+        # Фоны и особые карточки: трогаем только сцены с манифестами и никогда
+        # не очищаем уже прописанное значение при временно отсутствующем файле.
         for sid, scene in story.get("scenes", {}).items():
-            rel = scene_bgs.get(sid)
-            if not rel:
+            if not isinstance(scene, dict):
                 continue
-            expected.add(rel)
-            if exists(rel):
-                if scene.get("bg") != rel:
-                    scene["bg"] = rel
-                    changed += 1
-            else:
-                if scene.get("bg"):
-                    scene["bg"] = ""
-                    changed += 1
-                missing.append(rel)
+
+            expected_bg = scene_bgs.get(sid)
+            if expected_bg:
+                rel = existing_variant(store, scene.get("bg")) or existing_variant(store, expected_bg)
+                if rel:
+                    expected.add(rel)
+                    if scene.get("bg") != rel:
+                        scene["bg"] = rel
+                        changed += 1
+                else:
+                    expected.add(expected_bg)
+                    missing.append(expected_bg)
+
+            expected_cg = scene_cards.get(sid)
+            if expected_cg:
+                rel = existing_variant(store, scene.get("cg")) or existing_variant(store, expected_cg)
+                if rel:
+                    expected.add(rel)
+                    if scene.get("cg") != rel:
+                        scene["cg"] = rel
+                        changed += 1
+                else:
+                    expected.add(expected_cg)
+                    missing.append(expected_cg)
 
         missing = sorted(set(missing))
         total_missing += len(missing)

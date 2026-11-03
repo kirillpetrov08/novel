@@ -58,6 +58,9 @@ jobs:
       - name: Проверить истории
         run: npm run validate
 
+      - name: Проверить синтаксис JS/MJS
+        run: npm run check:syntax
+
       - name: Собрать веб-часть и синхронизировать Android
         run: npm run build:android
 

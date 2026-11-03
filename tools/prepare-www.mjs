@@ -6,7 +6,7 @@
 //   3. Вшивает сюжеты в www/js/stories-bundle.js — в приложении они работают офлайн.
 //   4. Копирует index/css/js/stores(картинки)/assets в www/.
 import { rmSync, mkdirSync, cpSync, writeFileSync, readFileSync, existsSync, statSync, readdirSync } from 'node:fs';
-import { join } from 'node:path';
+import { join, dirname } from 'node:path';
 import { validateStory, normalizeBundle, scanStoresDir, storyImagePaths } from './validate.mjs';
 
 const ROOT = process.cwd();
@@ -17,6 +17,10 @@ const items = scanStoresDir('stores');
 const bundle = [];
 const problems = [];
 const ids = new Set();
+const numbers = [...new Set(items.map(i => i.n))];
+if (numbers.some((n, idx) => n !== idx + 1)) {
+  problems.push(`stores/: пропуск в нумерации (${numbers.join(', ')}) — папки должны идти подряд 1, 2, 3…`);
+}
 for (const it of items) {
   if (!it.exists) { problems.push(`stores/${it.n}/: нет story.json`); continue; }
   let data;
@@ -27,6 +31,11 @@ for (const it of items) {
     warnings.forEach(w => console.log(`⚠ ${it.jsonPath} «${story.title || story.id}»: ${w}`));
     if (story.id && ids.has(story.id)) errors.push(`Дублирующийся id "${story.id}"`);
     if (story.id) ids.add(story.id);
+    const imageBase = it.kind === 'folder' ? dirname(it.jsonPath) : '.';
+    storyImagePaths(story).forEach(p => {
+      if (/^(https?:|data:)/.test(p)) return;
+      if (!existsSync(join(imageBase, p))) errors.push(`Картинка не найдена: ${p}`);
+    });
     if (errors.length) { errors.forEach(e => problems.push(`${it.jsonPath} «${story.title || story.id}»: ${e}`)); continue; }
     bundle.push({ base: it.base, story });
   }

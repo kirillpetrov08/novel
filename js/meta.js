@@ -11,7 +11,7 @@ const Meta = {
   yesterdayKey() { const d = new Date(); d.setDate(d.getDate() - 1); return todayKey(d); },
 
   /* Вызывать при старте приложения (и при возврате в него):
-     обновляет серию дней и сбр��сывает счётчики заданий на новый день. */
+     обновляет серию дней и сбрасывает счётчики заданий на новый день. */
   touchDaily() {
     const meta = this.m(); if (!meta) return;
     const today = todayKey();

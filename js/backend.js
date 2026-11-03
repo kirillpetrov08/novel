@@ -30,6 +30,7 @@ const Ads = {
   _feed: {},             // лента библиотеки: slotId -> {shown, height, promise}
   onFeedResized: null,   // выставляет UI: (slotId, heightDp) => подправить высоту слота
   onFeedClosed: null,    // выставляет UI: (slotId) => пользователь закрыл карточку крестиком
+  _interstitialPromise: null, // один показ interstitial на все параллельные вызовы
 
   plugin() {
     return (window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.YandexAds) || null;
@@ -103,16 +104,22 @@ const Ads = {
   /* --- Interstitial: между новеллами и после финала. С кулдауном,
          никогда не блокирует пользователя, если реклама не готова. --- */
   async showInterstitial() {
-    const last = Store.data.ads.lastInterstitialAt || 0;
-    if (Date.now() - last < CONFIG.ads.interstitialCooldownSec * 1000) return false;
-    const p = this.plugin();
-    if (!p) return false; // в веб-разработке просто пропускаем
-    try {
-      const r = await this._withTimeout(p.showInterstitial({ adUnitId: CONFIG.ads.interstitial }), 60000, null);
-      const shown = !!(r && r.shown);
-      if (shown) { Store.data.ads.lastInterstitialAt = Date.now(); Store.save(); }
-      return shown;
-    } catch (e) { return false; }
+    if (this._interstitialPromise) return this._interstitialPromise;
+    const run = (async () => {
+      const last = Store.data.ads.lastInterstitialAt || 0;
+      if (Date.now() - last < CONFIG.ads.interstitialCooldownSec * 1000) return false;
+      const p = this.plugin();
+      if (!p) return false; // в веб-разработке просто пропускаем
+      try {
+        const r = await this._withTimeout(p.showInterstitial({ adUnitId: CONFIG.ads.interstitial }), 60000, null);
+        const shown = !!(r && r.shown);
+        if (shown) { Store.data.ads.lastInterstitialAt = Date.now(); Store.save(); }
+        return shown;
+      } catch (e) { return false; }
+    })();
+    this._interstitialPromise = run;
+    try { return await run; }
+    finally { if (this._interstitialPromise === run) this._interstitialPromise = null; }
   },
 
   /* --- Native: карточка лежит точно поверх слота между историями в библиотеке.
@@ -164,6 +171,12 @@ const Ads = {
     cur.promise = (async () => {
       try {
         const r = await this._withTimeout(p.showFeedAd({ id, adUnitId, kind, ...this._rectArgs(rect) }), 15000, null);
+        if (r === null) {
+          // Плагин мог всё же показать вью после таймаута JS: явно убираем слот,
+          // чтобы запоздавшая карточка не осталась висеть поверх интерфейса.
+          this.hideFeedAd(id);
+          return { shown: false, height: 0 };
+        }
         cur.shown = !!(r && r.shown);
         cur.height = (r && r.height) || 0;
         return { shown: cur.shown, height: cur.height };
@@ -189,7 +202,20 @@ const Ads = {
   },
 
   /* --- Лимиты именно для кнопки в магазине (фарм кристаллов) --- */
+  syncAdsDay() {
+    const a = Store.data && Store.data.ads;
+    if (!a) return;
+    const today = todayKey();
+    a.count = Math.max(0, Math.floor(Number(a.count) || 0));
+    a.lastAt = Math.max(0, Number(a.lastAt) || 0);
+    if (a.day !== today) {
+      // Приложение может пережить полночь в фоне: Store.load() при этом не вызовется.
+      a.day = today; a.count = 0; a.lastAt = 0;
+      Store.save();
+    }
+  },
   canWatch() {
+    this.syncAdsDay();
     const a = Store.data.ads;
     if (a.count >= CONFIG.crystals.adDailyLimit) return { ok: false, reason: `Лимит на сегодня: ${CONFIG.crystals.adDailyLimit} реклам` };
     const wait = CONFIG.crystals.adCooldownSec - Math.floor((Date.now() - a.lastAt) / 1000);
@@ -197,6 +223,7 @@ const Ads = {
     return { ok: true };
   },
   registerWatch() {
+    this.syncAdsDay();
     Store.data.ads.count++;
     Store.data.ads.lastAt = Date.now();
     Store.save();

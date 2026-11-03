@@ -17,30 +17,47 @@ const Engine = {
     const stats = {};
     Object.keys(story.stats || {}).forEach(k => stats[k] = 0);
     const prev = Store.getProgress(story.id) || {};
+    const endingsFound = Array.isArray(prev.endingsFound) ? prev.endingsFound.slice() : [];
     return {
       sceneId: story.start, lineIndex: 0, stats,
       paid: [], visited: [story.start], log: [],
       // seen: сцены, виденные в ЛЮБОМ прохождении (для «пропуска прочитанного»)
-      seen: prev.seen || prev.visited || [story.start],
+      seen: Array.isArray(prev.seen) ? prev.seen.slice()
+        : (Array.isArray(prev.visited) ? prev.visited.slice() : [story.start]),
       completed: false,
-      endingsFound: prev.endingsFound || [],
-      completedBefore: prev.completed || false,
+      endingsFound,
+      // Признак первого прохождения нельзя терять при повторном рестарте уже
+      // начатого перепрохождения: completed в нём false, а история пройдена раньше.
+      completedBefore: !!(prev.completed || prev.completedBefore || endingsFound.length),
     };
+  },
+
+  normalizeState(story, state) {
+    const s = normalizePlayState(state) || this.freshState(story);
+    if (!story.scenes[s.sceneId]) { s.sceneId = story.start; s.lineIndex = 0; }
+    Object.keys(story.stats || {}).forEach(k => {
+      if (!Number.isFinite(s.stats[k])) s.stats[k] = 0;
+    });
+    if (!s.visited.includes(s.sceneId)) s.visited.push(s.sceneId);
+    if (!s.seen.length) s.seen = s.visited.slice();
+    if (!s.seen.includes(s.sceneId)) s.seen.push(s.sceneId);
+    if (s.endingsFound.length) s.completedBefore = true;
+    const sc = story.scenes[s.sceneId];
+    const lines = sc && Array.isArray(sc.lines) ? sc.lines : [];
+    s.lineIndex = Math.max(0, Math.min(s.lineIndex, Math.max(0, lines.length - 1)));
+    return s;
   },
 
   open(story, mode) { // mode: 'continue' | 'restart'
     this.stopTyping();
     this.story = story;
     const saved = Store.getProgress(story.id);
-    if (mode === 'continue' && saved && story.scenes[saved.sceneId] && !saved.completed) {
-      this.state = saved;
-    } else {
-      this.state = this.freshState(story);
-    }
-    if (!this.state.seen) this.state.seen = (this.state.visited || []).slice();
-    // Защита от сохранений прошлой версии истории: сцена могла укоротиться.
-    const sc0 = this.scene();
-    if (sc0) this.state.lineIndex = Math.max(0, Math.min(this.state.lineIndex || 0, sc0.lines.length - 1));
+    const candidate = (mode === 'continue' && saved && story.scenes[saved.sceneId] && !saved.completed)
+      ? saved
+      : this.freshState(story);
+    // Защита от сохранений прошлой версии истории и частично битых состояний:
+    // типы полей, характеристики и граница реплики приводятся к текущей истории.
+    this.state = this.normalizeState(story, candidate);
     this._finishedSceneId = null;
     // снимок «уже читано до этого захода» — граница для пропуска прочитанного
     this.seenBefore = new Set([...(this.state.seen || []), ...(this.state.visited || [])]);
@@ -87,7 +104,12 @@ const Engine = {
     const cost = choice.crystals || 0;
     if (cost > 0 && !this.isPaid(choice, idx)) {
       if (!Store.spendCrystals(cost, `Выбор в «${this.story.title}»`)) {
-        this.emit('need-crystals', { cost, idx });
+        this.emit('need-crystals', {
+          cost, idx,
+          storyId: this.story.id,
+          sceneId: this.state.sceneId,
+          text: choice.text,
+        });
         return;
       }
       this.state.paid.push(this.choiceKey(choice, idx)); // повторно в этом прохождении не платим
@@ -186,6 +208,8 @@ const Engine = {
     if (this._finishedSceneId === endingId) return;
     this._finishedSceneId = endingId;
     const isNewEnding = !this.state.endingsFound.includes(endingId);
+    // Любой уже открытый финал сам по себе доказывает, что первое прохождение было.
+    if (this.state.endingsFound.length) this.state.completedBefore = true;
     const firstComplete = !this.state.completedBefore && !this.state.completed;
     if (isNewEnding) this.state.endingsFound.push(endingId);
     this.state.completed = true;
@@ -208,6 +232,8 @@ const Engine = {
   },
 
   progressPct() {
+    const sc = this.scene();
+    if (this.state.completed || (sc && sc.ending)) return 100;
     const total = Object.keys(this.story.scenes).length || 1;
     return Math.min(100, Math.round((this.state.visited.length / total) * 100));
   },
