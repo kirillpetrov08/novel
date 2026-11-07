@@ -1,0 +1,204 @@
+{
+  "story": "vtoraya-podacha",
+  "productionStatus": "draft",
+  "style": "Match the established stores/1/cover.jpg illustration style and the current story cover for character identity: fine dark contours, softly brushed semi-realistic painted faces, tactile fabric, restrained warm cream sand bronze sage and slate palette, gentle diffused lighting. Not photorealistic, not anime, not 3D. No text, lettering, readable documents, words, numbers, logos or watermark. One standalone full-bleed illustration, not a collage or grid.",
+  "images": [
+    {
+      "file": "cover.jpg",
+      "type": "cover",
+      "prompt": "Vertical 2:3 composition, adults shown from thighs up. VERA, 31-year-old woman, light skin with faint freckles, oval face, green eyes, auburn hair in a high practical ponytail, athletic natural build, plain cream tennis polo, muted clay-red full-length sports trousers. DENIS, 33-year-old man, warm fair skin, broad cheekbones, grey eyes, short dark blond hair, clean-shaven, natural athletic build, plain deep sage sports T-shirt, charcoal track pants. Clay tennis court at late-summer sunset; Vera and Denis stand on opposite sides of a low correctly drawn net with rackets lowered, subtle competitive smiles. Match the established stores/1/cover.jpg illustration style and the current story cover for character identity: fine dark contours, softly brushed semi-realistic painted faces, tactile fabric, restrained warm cream sand bronze sage and slate palette, gentle diffused lighting. Not photorealistic, not anime, not 3D. No text, lettering, readable documents, words, numbers, logos or watermark. One standalone full-bleed illustration, not a collage or grid."
+    },
+    {
+      "file": "images/bg-court.jpg",
+      "type": "background",
+      "prompt": "Vertical 2:3 empty environment, eye-level view, uncluttered lower third for dialogue UI. NO people, faces, portraits or silhouettes. Outdoor clay tennis court at sunset, correctly drawn net and lines, ordinary bench, chain-link fence and trees, no scoreboards. Match the established stores/1/cover.jpg illustration style and the current story cover for character identity: fine dark contours, softly brushed semi-realistic painted faces, tactile fabric, restrained warm cream sand bronze sage and slate palette, gentle diffused lighting. Not photorealistic, not anime, not 3D. No text, lettering, readable documents, words, numbers, logos or watermark. One standalone full-bleed illustration, not a collage or grid."
+    },
+    {
+      "file": "images/bg-hall.jpg",
+      "type": "background",
+      "prompt": "Vertical 2:3 empty environment, eye-level view, uncluttered lower third for dialogue UI. NO people, faces, portraits or silhouettes. Empty modest indoor tennis court, correct net and court perspective, diffuse skylight, restrained cream green palette. Match the established stores/1/cover.jpg illustration style and the current story cover for character identity: fine dark contours, softly brushed semi-realistic painted faces, tactile fabric, restrained warm cream sand bronze sage and slate palette, gentle diffused lighting. Not photorealistic, not anime, not 3D. No text, lettering, readable documents, words, numbers, logos or watermark. One standalone full-bleed illustration, not a collage or grid."
+    },
+    {
+      "file": "images/bg-bench.jpg",
+      "type": "background",
+      "prompt": "Vertical 2:3 empty environment, eye-level view, uncluttered lower third for dialogue UI. NO people, faces, portraits or silhouettes. Covered rest bench beside club court after practice, two plain water bottles, unbranded racket bag, late afternoon light. Match the established stores/1/cover.jpg illustration style and the current story cover for character identity: fine dark contours, softly brushed semi-realistic painted faces, tactile fabric, restrained warm cream sand bronze sage and slate palette, gentle diffused lighting. Not photorealistic, not anime, not 3D. No text, lettering, readable documents, words, numbers, logos or watermark. One standalone full-bleed illustration, not a collage or grid."
+    },
+    {
+      "file": "images/bg-cafe.jpg",
+      "type": "background",
+      "prompt": "Vertical 2:3 empty environment, eye-level view, uncluttered lower third for dialogue UI. NO people, faces, portraits or silhouettes. Small unpretentious neighbourhood cafe with two empty chairs by a rainy window, clean table, no menus or signs. Match the established stores/1/cover.jpg illustration style and the current story cover for character identity: fine dark contours, softly brushed semi-realistic painted faces, tactile fabric, restrained warm cream sand bronze sage and slate palette, gentle diffused lighting. Not photorealistic, not anime, not 3D. No text, lettering, readable documents, words, numbers, logos or watermark. One standalone full-bleed illustration, not a collage or grid."
+    },
+    {
+      "file": "images/bg-workroom.jpg",
+      "type": "background",
+      "prompt": "Vertical 2:3 empty environment, eye-level view, uncluttered lower third for dialogue UI. NO people, faces, portraits or silhouettes. Tennis club equipment room: shelves of unbranded rackets, simple stringing machine and wooden bench, warm light. Match the established stores/1/cover.jpg illustration style and the current story cover for character identity: fine dark contours, softly brushed semi-realistic painted faces, tactile fabric, restrained warm cream sand bronze sage and slate palette, gentle diffused lighting. Not photorealistic, not anime, not 3D. No text, lettering, readable documents, words, numbers, logos or watermark. One standalone full-bleed illustration, not a collage or grid."
+    },
+    {
+      "file": "images/bg-park.jpg",
+      "type": "background",
+      "prompt": "Vertical 2:3 empty environment, eye-level view, uncluttered lower third for dialogue UI. NO people, faces, portraits or silhouettes. Quiet city park path after summer rain, leafy trees and wooden bench, warm sunset, no monuments or signage. Match the established stores/1/cover.jpg illustration style and the current story cover for character identity: fine dark contours, softly brushed semi-realistic painted faces, tactile fabric, restrained warm cream sand bronze sage and slate palette, gentle diffused lighting. Not photorealistic, not anime, not 3D. No text, lettering, readable documents, words, numbers, logos or watermark. One standalone full-bleed illustration, not a collage or grid."
+    },
+    {
+      "file": "images/bg-event.jpg",
+      "type": "background",
+      "prompt": "Vertical 2:3 empty environment, eye-level view, uncluttered lower third for dialogue UI. NO people, faces, portraits or silhouettes. Community tennis tournament venue after play, modest clay court and empty small spectator seats, blank unmarked banner, no readable scoreboard. Match the established stores/1/cover.jpg illustration style and the current story cover for character identity: fine dark contours, softly brushed semi-realistic painted faces, tactile fabric, restrained warm cream sand bronze sage and slate palette, gentle diffused lighting. Not photorealistic, not anime, not 3D. No text, lettering, readable documents, words, numbers, logos or watermark. One standalone full-bleed illustration, not a collage or grid."
+    },
+    {
+      "file": "images/heroine.png",
+      "type": "character",
+      "prompt": "Single waist-up portrait, consistent upright frontal posture, full top of head and both arms within frame, hands relaxed low, solid plain light beige #EADFCB background for later removal. VERA, 31-year-old woman, light skin with faint freckles, oval face, green eyes, auburn hair in a high practical ponytail, athletic natural build, plain cream tennis polo, muted clay-red full-length sports trousers. calm attentive expression. Do not add props or other people. Same proportions as all other states of this person. Match the established stores/1/cover.jpg illustration style and the current story cover for character identity: fine dark contours, softly brushed semi-realistic painted faces, tactile fabric, restrained warm cream sand bronze sage and slate palette, gentle diffused lighting. Not photorealistic, not anime, not 3D. No text, lettering, readable documents, words, numbers, logos or watermark. One standalone full-bleed illustration, not a collage or grid."
+    },
+    {
+      "file": "images/heroine_smile.png",
+      "type": "character",
+      "prompt": "Single waist-up portrait, consistent upright frontal posture, full top of head and both arms within frame, hands relaxed low, solid plain light beige #EADFCB background for later removal. VERA, 31-year-old woman, light skin with faint freckles, oval face, green eyes, auburn hair in a high practical ponytail, athletic natural build, plain cream tennis polo, muted clay-red full-length sports trousers. small genuine warm smile. Do not add props or other people. Same proportions as all other states of this person. Match the established stores/1/cover.jpg illustration style and the current story cover for character identity: fine dark contours, softly brushed semi-realistic painted faces, tactile fabric, restrained warm cream sand bronze sage and slate palette, gentle diffused lighting. Not photorealistic, not anime, not 3D. No text, lettering, readable documents, words, numbers, logos or watermark. One standalone full-bleed illustration, not a collage or grid."
+    },
+    {
+      "file": "images/heroine_doubt.png",
+      "type": "character",
+      "prompt": "Single waist-up portrait, consistent upright frontal posture, full top of head and both arms within frame, hands relaxed low, solid plain light beige #EADFCB background for later removal. VERA, 31-year-old woman, light skin with faint freckles, oval face, green eyes, auburn hair in a high practical ponytail, athletic natural build, plain cream tennis polo, muted clay-red full-length sports trousers. thoughtful worried expression, no caricature. Do not add props or other people. Same proportions as all other states of this person. Match the established stores/1/cover.jpg illustration style and the current story cover for character identity: fine dark contours, softly brushed semi-realistic painted faces, tactile fabric, restrained warm cream sand bronze sage and slate palette, gentle diffused lighting. Not photorealistic, not anime, not 3D. No text, lettering, readable documents, words, numbers, logos or watermark. One standalone full-bleed illustration, not a collage or grid."
+    },
+    {
+      "file": "images/heroine_brave.png",
+      "type": "character",
+      "prompt": "Single waist-up portrait, consistent upright frontal posture, full top of head and both arms within frame, hands relaxed low, solid plain light beige #EADFCB background for later removal. VERA, 31-year-old woman, light skin with faint freckles, oval face, green eyes, auburn hair in a high practical ponytail, athletic natural build, plain cream tennis polo, muted clay-red full-length sports trousers. quiet firm composed expression. Do not add props or other people. Same proportions as all other states of this person. Match the established stores/1/cover.jpg illustration style and the current story cover for character identity: fine dark contours, softly brushed semi-realistic painted faces, tactile fabric, restrained warm cream sand bronze sage and slate palette, gentle diffused lighting. Not photorealistic, not anime, not 3D. No text, lettering, readable documents, words, numbers, logos or watermark. One standalone full-bleed illustration, not a collage or grid."
+    },
+    {
+      "file": "images/hero.png",
+      "type": "character",
+      "prompt": "Single waist-up portrait, consistent upright frontal posture, full top of head and both arms within frame, hands relaxed low, solid plain light beige #EADFCB background for later removal. DENIS, 33-year-old man, warm fair skin, broad cheekbones, grey eyes, short dark blond hair, clean-shaven, natural athletic build, plain deep sage sports T-shirt, charcoal track pants. calm attentive expression. Do not add props or other people. Same proportions as all other states of this person. Match the established stores/1/cover.jpg illustration style and the current story cover for character identity: fine dark contours, softly brushed semi-realistic painted faces, tactile fabric, restrained warm cream sand bronze sage and slate palette, gentle diffused lighting. Not photorealistic, not anime, not 3D. No text, lettering, readable documents, words, numbers, logos or watermark. One standalone full-bleed illustration, not a collage or grid."
+    },
+    {
+      "file": "images/hero_smile.png",
+      "type": "character",
+      "prompt": "Single waist-up portrait, consistent upright frontal posture, full top of head and both arms within frame, hands relaxed low, solid plain light beige #EADFCB background for later removal. DENIS, 33-year-old man, warm fair skin, broad cheekbones, grey eyes, short dark blond hair, clean-shaven, natural athletic build, plain deep sage sports T-shirt, charcoal track pants. small genuine warm smile. Do not add props or other people. Same proportions as all other states of this person. Match the established stores/1/cover.jpg illustration style and the current story cover for character identity: fine dark contours, softly brushed semi-realistic painted faces, tactile fabric, restrained warm cream sand bronze sage and slate palette, gentle diffused lighting. Not photorealistic, not anime, not 3D. No text, lettering, readable documents, words, numbers, logos or watermark. One standalone full-bleed illustration, not a collage or grid."
+    },
+    {
+      "file": "images/hero_doubt.png",
+      "type": "character",
+      "prompt": "Single waist-up portrait, consistent upright frontal posture, full top of head and both arms within frame, hands relaxed low, solid plain light beige #EADFCB background for later removal. DENIS, 33-year-old man, warm fair skin, broad cheekbones, grey eyes, short dark blond hair, clean-shaven, natural athletic build, plain deep sage sports T-shirt, charcoal track pants. thoughtful uncertain expression. Do not add props or other people. Same proportions as all other states of this person. Match the established stores/1/cover.jpg illustration style and the current story cover for character identity: fine dark contours, softly brushed semi-realistic painted faces, tactile fabric, restrained warm cream sand bronze sage and slate palette, gentle diffused lighting. Not photorealistic, not anime, not 3D. No text, lettering, readable documents, words, numbers, logos or watermark. One standalone full-bleed illustration, not a collage or grid."
+    },
+    {
+      "file": "images/hero_tender.png",
+      "type": "character",
+      "prompt": "Single waist-up portrait, consistent upright frontal posture, full top of head and both arms within frame, hands relaxed low, solid plain light beige #EADFCB background for later removal. DENIS, 33-year-old man, warm fair skin, broad cheekbones, grey eyes, short dark blond hair, clean-shaven, natural athletic build, plain deep sage sports T-shirt, charcoal track pants. quiet tender look, no exaggerated grin. Do not add props or other people. Same proportions as all other states of this person. Match the established stores/1/cover.jpg illustration style and the current story cover for character identity: fine dark contours, softly brushed semi-realistic painted faces, tactile fabric, restrained warm cream sand bronze sage and slate palette, gentle diffused lighting. Not photorealistic, not anime, not 3D. No text, lettering, readable documents, words, numbers, logos or watermark. One standalone full-bleed illustration, not a collage or grid."
+    },
+    {
+      "file": "images/friend.png",
+      "type": "character",
+      "prompt": "Single waist-up portrait, consistent upright frontal posture, full top of head and both arms within frame, hands relaxed low, solid plain light beige #EADFCB background for later removal. LENA, 34-year-old woman, olive skin, brown eyes, long dark braid, sand-coloured windbreaker, navy trousers. attentive relaxed expression. Do not add props or other people. Same proportions as all other states of this person. Match the established stores/1/cover.jpg illustration style and the current story cover for character identity: fine dark contours, softly brushed semi-realistic painted faces, tactile fabric, restrained warm cream sand bronze sage and slate palette, gentle diffused lighting. Not photorealistic, not anime, not 3D. No text, lettering, readable documents, words, numbers, logos or watermark. One standalone full-bleed illustration, not a collage or grid."
+    },
+    {
+      "file": "images/friend_smile.png",
+      "type": "character",
+      "prompt": "Single waist-up portrait, consistent upright frontal posture, full top of head and both arms within frame, hands relaxed low, solid plain light beige #EADFCB background for later removal. LENA, 34-year-old woman, olive skin, brown eyes, long dark braid, sand-coloured windbreaker, navy trousers. gentle friendly smile. Do not add props or other people. Same proportions as all other states of this person. Match the established stores/1/cover.jpg illustration style and the current story cover for character identity: fine dark contours, softly brushed semi-realistic painted faces, tactile fabric, restrained warm cream sand bronze sage and slate palette, gentle diffused lighting. Not photorealistic, not anime, not 3D. No text, lettering, readable documents, words, numbers, logos or watermark. One standalone full-bleed illustration, not a collage or grid."
+    },
+    {
+      "file": "images/director.png",
+      "type": "character",
+      "prompt": "Single waist-up portrait, consistent upright frontal posture, full top of head and both arms within frame, hands relaxed low, solid plain light beige #EADFCB background for later removal. BORIS, 58-year-old man, tanned face, short grey hair, light brown eyes, clean-shaven, navy sports jacket and grey trousers. calm considered expression. Do not add props or other people. Same proportions as all other states of this person. Match the established stores/1/cover.jpg illustration style and the current story cover for character identity: fine dark contours, softly brushed semi-realistic painted faces, tactile fabric, restrained warm cream sand bronze sage and slate palette, gentle diffused lighting. Not photorealistic, not anime, not 3D. No text, lettering, readable documents, words, numbers, logos or watermark. One standalone full-bleed illustration, not a collage or grid."
+    },
+    {
+      "file": "images/director_warm.png",
+      "type": "character",
+      "prompt": "Single waist-up portrait, consistent upright frontal posture, full top of head and both arms within frame, hands relaxed low, solid plain light beige #EADFCB background for later removal. BORIS, 58-year-old man, tanned face, short grey hair, light brown eyes, clean-shaven, navy sports jacket and grey trousers. subtle understanding smile. Do not add props or other people. Same proportions as all other states of this person. Match the established stores/1/cover.jpg illustration style and the current story cover for character identity: fine dark contours, softly brushed semi-realistic painted faces, tactile fabric, restrained warm cream sand bronze sage and slate palette, gentle diffused lighting. Not photorealistic, not anime, not 3D. No text, lettering, readable documents, words, numbers, logos or watermark. One standalone full-bleed illustration, not a collage or grid."
+    },
+    {
+      "file": "images/cg-empty-court.jpg",
+      "type": "card",
+      "prompt": "4:3 landscape composition, characters large waist-up, important faces and hands inside central safe area. VERA, 31-year-old woman, light skin with faint freckles, oval face, green eyes, auburn hair in a high practical ponytail, athletic natural build, plain cream tennis polo, muted clay-red full-length sports trousers. Scene: Vera alone on clay court after work, racket lowered, taking a quiet breath in sunset, not injured or defeated. Match the established stores/1/cover.jpg illustration style and the current story cover for character identity: fine dark contours, softly brushed semi-realistic painted faces, tactile fabric, restrained warm cream sand bronze sage and slate palette, gentle diffused lighting. Not photorealistic, not anime, not 3D. No text, lettering, readable documents, words, numbers, logos or watermark. One standalone full-bleed illustration, not a collage or grid.",
+      "chapter": 1
+    },
+    {
+      "file": "images/cg-first-rally.jpg",
+      "type": "card",
+      "prompt": "4:3 landscape composition, characters large waist-up, important faces and hands inside central safe area. VERA, 31-year-old woman, light skin with faint freckles, oval face, green eyes, auburn hair in a high practical ponytail, athletic natural build, plain cream tennis polo, muted clay-red full-length sports trousers. DENIS, 33-year-old man, warm fair skin, broad cheekbones, grey eyes, short dark blond hair, clean-shaven, natural athletic build, plain deep sage sports T-shirt, charcoal track pants. Scene: Vera and Denis pause on same side of doubles court after reaching for same ball, both standing safely, rueful equal smiles, no tangled limbs. Match the established stores/1/cover.jpg illustration style and the current story cover for character identity: fine dark contours, softly brushed semi-realistic painted faces, tactile fabric, restrained warm cream sand bronze sage and slate palette, gentle diffused lighting. Not photorealistic, not anime, not 3D. No text, lettering, readable documents, words, numbers, logos or watermark. One standalone full-bleed illustration, not a collage or grid.",
+      "chapter": 1
+    },
+    {
+      "file": "images/cg-signals.jpg",
+      "type": "card",
+      "prompt": "4:3 landscape composition, characters large waist-up, important faces and hands inside central safe area. VERA, 31-year-old woman, light skin with faint freckles, oval face, green eyes, auburn hair in a high practical ponytail, athletic natural build, plain cream tennis polo, muted clay-red full-length sports trousers. DENIS, 33-year-old man, warm fair skin, broad cheekbones, grey eyes, short dark blond hair, clean-shaven, natural athletic build, plain deep sage sports T-shirt, charcoal track pants. Scene: Partners discuss a simple open-hand signal near net, racket heads lowered, natural hands, no unreadable diagrams. Match the established stores/1/cover.jpg illustration style and the current story cover for character identity: fine dark contours, softly brushed semi-realistic painted faces, tactile fabric, restrained warm cream sand bronze sage and slate palette, gentle diffused lighting. Not photorealistic, not anime, not 3D. No text, lettering, readable documents, words, numbers, logos or watermark. One standalone full-bleed illustration, not a collage or grid.",
+      "chapter": 1
+    },
+    {
+      "file": "images/cg-rain.jpg",
+      "type": "card",
+      "prompt": "4:3 landscape composition, characters large waist-up, important faces and hands inside central safe area. VERA, 31-year-old woman, light skin with faint freckles, oval face, green eyes, auburn hair in a high practical ponytail, athletic natural build, plain cream tennis polo, muted clay-red full-length sports trousers. DENIS, 33-year-old man, warm fair skin, broad cheekbones, grey eyes, short dark blond hair, clean-shaven, natural athletic build, plain deep sage sports T-shirt, charcoal track pants. Scene: Both wait under court shelter after rain, separate towels, shared mild amusement, fully clothed, no wet transparent clothes. Match the established stores/1/cover.jpg illustration style and the current story cover for character identity: fine dark contours, softly brushed semi-realistic painted faces, tactile fabric, restrained warm cream sand bronze sage and slate palette, gentle diffused lighting. Not photorealistic, not anime, not 3D. No text, lettering, readable documents, words, numbers, logos or watermark. One standalone full-bleed illustration, not a collage or grid.",
+      "chapter": 2
+    },
+    {
+      "file": "images/cg-dinner.jpg",
+      "type": "card",
+      "prompt": "4:3 landscape composition, characters large waist-up, important faces and hands inside central safe area. VERA, 31-year-old woman, light skin with faint freckles, oval face, green eyes, auburn hair in a high practical ponytail, athletic natural build, plain cream tennis polo, muted clay-red full-length sports trousers. DENIS, 33-year-old man, warm fair skin, broad cheekbones, grey eyes, short dark blond hair, clean-shaven, natural athletic build, plain deep sage sports T-shirt, charcoal track pants. Scene: Quiet ordinary cafe dinner after practice, Vera and Denis in their established clean sports clothes, no visible menus, equal mutual interest. Match the established stores/1/cover.jpg illustration style and the current story cover for character identity: fine dark contours, softly brushed semi-realistic painted faces, tactile fabric, restrained warm cream sand bronze sage and slate palette, gentle diffused lighting. Not photorealistic, not anime, not 3D. No text, lettering, readable documents, words, numbers, logos or watermark. One standalone full-bleed illustration, not a collage or grid.",
+      "chapter": 2
+    },
+    {
+      "file": "images/cg-serve.jpg",
+      "type": "card",
+      "prompt": "4:3 landscape composition, characters large waist-up, important faces and hands inside central safe area. VERA, 31-year-old woman, light skin with faint freckles, oval face, green eyes, auburn hair in a high practical ponytail, athletic natural build, plain cream tennis polo, muted clay-red full-length sports trousers. Scene: Vera focused before serving, stable natural tennis stance, racket held ready not impossible midair acrobatics, correct clay court perspective. Match the established stores/1/cover.jpg illustration style and the current story cover for character identity: fine dark contours, softly brushed semi-realistic painted faces, tactile fabric, restrained warm cream sand bronze sage and slate palette, gentle diffused lighting. Not photorealistic, not anime, not 3D. No text, lettering, readable documents, words, numbers, logos or watermark. One standalone full-bleed illustration, not a collage or grid.",
+      "chapter": 3
+    },
+    {
+      "file": "images/cg-first-win.jpg",
+      "type": "card",
+      "prompt": "4:3 landscape composition, characters large waist-up, important faces and hands inside central safe area. VERA, 31-year-old woman, light skin with faint freckles, oval face, green eyes, auburn hair in a high practical ponytail, athletic natural build, plain cream tennis polo, muted clay-red full-length sports trousers. DENIS, 33-year-old man, warm fair skin, broad cheekbones, grey eyes, short dark blond hair, clean-shaven, natural athletic build, plain deep sage sports T-shirt, charcoal track pants. Scene: Modest celebration after an early match, relaxed high-five with anatomically separate hands, no trophies or scoreboard text, not grand tournament victory. Match the established stores/1/cover.jpg illustration style and the current story cover for character identity: fine dark contours, softly brushed semi-realistic painted faces, tactile fabric, restrained warm cream sand bronze sage and slate palette, gentle diffused lighting. Not photorealistic, not anime, not 3D. No text, lettering, readable documents, words, numbers, logos or watermark. One standalone full-bleed illustration, not a collage or grid.",
+      "chapter": 3
+    },
+    {
+      "file": "images/cg-kiss.jpg",
+      "type": "card",
+      "prompt": "4:3 landscape composition, characters large waist-up, important faces and hands inside central safe area. VERA, 31-year-old woman, light skin with faint freckles, oval face, green eyes, auburn hair in a high practical ponytail, athletic natural build, plain cream tennis polo, muted clay-red full-length sports trousers. DENIS, 33-year-old man, warm fair skin, broad cheekbones, grey eyes, short dark blond hair, clean-shaven, natural athletic build, plain deep sage sports T-shirt, charcoal track pants. Scene: First mutually welcomed closed-mouth kiss on quiet park path, both fully clothed, racket bag set aside, tender equal posture. Match the established stores/1/cover.jpg illustration style and the current story cover for character identity: fine dark contours, softly brushed semi-realistic painted faces, tactile fabric, restrained warm cream sand bronze sage and slate palette, gentle diffused lighting. Not photorealistic, not anime, not 3D. No text, lettering, readable documents, words, numbers, logos or watermark. One standalone full-bleed illustration, not a collage or grid.",
+      "chapter": 3
+    },
+    {
+      "file": "images/cg-line.jpg",
+      "type": "card",
+      "prompt": "4:3 landscape composition, characters large waist-up, important faces and hands inside central safe area. VERA, 31-year-old woman, light skin with faint freckles, oval face, green eyes, auburn hair in a high practical ponytail, athletic natural build, plain cream tennis polo, muted clay-red full-length sports trousers. DENIS, 33-year-old man, warm fair skin, broad cheekbones, grey eyes, short dark blond hair, clean-shaven, natural athletic build, plain deep sage sports T-shirt, charcoal track pants. Scene: Partners after disputed point, Vera firm and quiet, Denis tense but not aggressive, rackets lowered, no umpire or visible score needed. Match the established stores/1/cover.jpg illustration style and the current story cover for character identity: fine dark contours, softly brushed semi-realistic painted faces, tactile fabric, restrained warm cream sand bronze sage and slate palette, gentle diffused lighting. Not photorealistic, not anime, not 3D. No text, lettering, readable documents, words, numbers, logos or watermark. One standalone full-bleed illustration, not a collage or grid.",
+      "chapter": 4
+    },
+    {
+      "file": "images/cg-pause.jpg",
+      "type": "card",
+      "prompt": "4:3 landscape composition, characters large waist-up, important faces and hands inside central safe area. VERA, 31-year-old woman, light skin with faint freckles, oval face, green eyes, auburn hair in a high practical ponytail, athletic natural build, plain cream tennis polo, muted clay-red full-length sports trousers. LENA, 34-year-old woman, olive skin, brown eyes, long dark braid, sand-coloured windbreaker, navy trousers. Scene: Vera and Lena seated on club bench, difficult honest planning conversation, bottle caps closed, no tears as spectacle. Match the established stores/1/cover.jpg illustration style and the current story cover for character identity: fine dark contours, softly brushed semi-realistic painted faces, tactile fabric, restrained warm cream sand bronze sage and slate palette, gentle diffused lighting. Not photorealistic, not anime, not 3D. No text, lettering, readable documents, words, numbers, logos or watermark. One standalone full-bleed illustration, not a collage or grid.",
+      "chapter": 4
+    },
+    {
+      "file": "images/cg-apology.jpg",
+      "type": "card",
+      "prompt": "4:3 landscape composition, characters large waist-up, important faces and hands inside central safe area. VERA, 31-year-old woman, light skin with faint freckles, oval face, green eyes, auburn hair in a high practical ponytail, athletic natural build, plain cream tennis polo, muted clay-red full-length sports trousers. DENIS, 33-year-old man, warm fair skin, broad cheekbones, grey eyes, short dark blond hair, clean-shaven, natural athletic build, plain deep sage sports T-shirt, charcoal track pants. Scene: Denis offers a concrete calm apology at cafe table, Vera listens without automatic smile, comfortable physical distance, no grand gift. Match the established stores/1/cover.jpg illustration style and the current story cover for character identity: fine dark contours, softly brushed semi-realistic painted faces, tactile fabric, restrained warm cream sand bronze sage and slate palette, gentle diffused lighting. Not photorealistic, not anime, not 3D. No text, lettering, readable documents, words, numbers, logos or watermark. One standalone full-bleed illustration, not a collage or grid.",
+      "chapter": 5
+    },
+    {
+      "file": "images/cg-new-plan.jpg",
+      "type": "card",
+      "prompt": "4:3 landscape composition, characters large waist-up, important faces and hands inside central safe area. VERA, 31-year-old woman, light skin with faint freckles, oval face, green eyes, auburn hair in a high practical ponytail, athletic natural build, plain cream tennis polo, muted clay-red full-length sports trousers. DENIS, 33-year-old man, warm fair skin, broad cheekbones, grey eyes, short dark blond hair, clean-shaven, natural athletic build, plain deep sage sports T-shirt, charcoal track pants. BORIS, 58-year-old man, tanned face, short grey hair, light brown eyes, clean-shaven, navy sports jacket and grey trousers. Scene: Vera Denis and Boris discuss equal roles beside court, no chalkboard or notes visible, coach supportive not commanding. Match the established stores/1/cover.jpg illustration style and the current story cover for character identity: fine dark contours, softly brushed semi-realistic painted faces, tactile fabric, restrained warm cream sand bronze sage and slate palette, gentle diffused lighting. Not photorealistic, not anime, not 3D. No text, lettering, readable documents, words, numbers, logos or watermark. One standalone full-bleed illustration, not a collage or grid.",
+      "chapter": 5
+    },
+    {
+      "file": "images/cg-matchpoint.jpg",
+      "type": "card",
+      "prompt": "4:3 landscape composition, characters large waist-up, important faces and hands inside central safe area. VERA, 31-year-old woman, light skin with faint freckles, oval face, green eyes, auburn hair in a high practical ponytail, athletic natural build, plain cream tennis polo, muted clay-red full-length sports trousers. DENIS, 33-year-old man, warm fair skin, broad cheekbones, grey eyes, short dark blond hair, clean-shaven, natural athletic build, plain deep sage sports T-shirt, charcoal track pants. Scene: After last point of a match, both stand side by side breathing calmly, exchange a look independent of score, rackets lowered, no winner trophy. Match the established stores/1/cover.jpg illustration style and the current story cover for character identity: fine dark contours, softly brushed semi-realistic painted faces, tactile fabric, restrained warm cream sand bronze sage and slate palette, gentle diffused lighting. Not photorealistic, not anime, not 3D. No text, lettering, readable documents, words, numbers, logos or watermark. One standalone full-bleed illustration, not a collage or grid.",
+      "chapter": 6
+    },
+    {
+      "file": "images/cg-ending-trust.jpg",
+      "type": "card",
+      "prompt": "4:3 landscape composition, characters large waist-up, important faces and hands inside central safe area. VERA, 31-year-old woman, light skin with faint freckles, oval face, green eyes, auburn hair in a high practical ponytail, athletic natural build, plain cream tennis polo, muted clay-red full-length sports trousers. DENIS, 33-year-old man, warm fair skin, broad cheekbones, grey eyes, short dark blond hair, clean-shaven, natural athletic build, plain deep sage sports T-shirt, charcoal track pants. Scene: Months later equal couple preparing for a casual evening game, calm mutual smile beside net, no coach-student hierarchy, warm sunset. Match the established stores/1/cover.jpg illustration style and the current story cover for character identity: fine dark contours, softly brushed semi-realistic painted faces, tactile fabric, restrained warm cream sand bronze sage and slate palette, gentle diffused lighting. Not photorealistic, not anime, not 3D. No text, lettering, readable documents, words, numbers, logos or watermark. One standalone full-bleed illustration, not a collage or grid.",
+      "chapter": 6
+    },
+    {
+      "file": "images/cg-ending-desire.jpg",
+      "type": "card",
+      "prompt": "4:3 landscape composition, characters large waist-up, important faces and hands inside central safe area. VERA, 31-year-old woman, light skin with faint freckles, oval face, green eyes, auburn hair in a high practical ponytail, athletic natural build, plain cream tennis polo, muted clay-red full-length sports trousers. DENIS, 33-year-old man, warm fair skin, broad cheekbones, grey eyes, short dark blond hair, clean-shaven, natural athletic build, plain deep sage sports T-shirt, charcoal track pants. Scene: Couple with racket bags on a quiet weekend park trip, affectionate embrace, fully clothed, ordinary warm light, no exotic luxury. Match the established stores/1/cover.jpg illustration style and the current story cover for character identity: fine dark contours, softly brushed semi-realistic painted faces, tactile fabric, restrained warm cream sand bronze sage and slate palette, gentle diffused lighting. Not photorealistic, not anime, not 3D. No text, lettering, readable documents, words, numbers, logos or watermark. One standalone full-bleed illustration, not a collage or grid.",
+      "chapter": 6
+    },
+    {
+      "file": "images/cg-ending-resolve.jpg",
+      "type": "card",
+      "prompt": "4:3 landscape composition, characters large waist-up, important faces and hands inside central safe area. VERA, 31-year-old woman, light skin with faint freckles, oval face, green eyes, auburn hair in a high practical ponytail, athletic natural build, plain cream tennis polo, muted clay-red full-length sports trousers. LENA, 34-year-old woman, olive skin, brown eyes, long dark braid, sand-coloured windbreaker, navy trousers. Scene: Vera and Lena prepare ordinary courts for welcoming no-ranking game sessions, unmarked baskets of balls, Vera confidently holding keys, joyful independent future. Match the established stores/1/cover.jpg illustration style and the current story cover for character identity: fine dark contours, softly brushed semi-realistic painted faces, tactile fabric, restrained warm cream sand bronze sage and slate palette, gentle diffused lighting. Not photorealistic, not anime, not 3D. No text, lettering, readable documents, words, numbers, logos or watermark. One standalone full-bleed illustration, not a collage or grid.",
+      "chapter": 6
+    }
+  ],
+  "sceneBackgrounds": {}
+}

@@ -1,0 +1,236 @@
+{
+  "story": "pereplyot",
+  "productionStatus": "draft",
+  "style": "Match the established stores/1/cover.jpg illustration style and the current story cover for character identity: fine dark contours, softly brushed semi-realistic painted faces, tactile fabric, restrained warm cream sand bronze sage and slate palette, gentle diffused lighting. Not photorealistic, not anime, not 3D. No text, lettering, readable documents, words, numbers, logos or watermark. One standalone full-bleed illustration, not a collage or grid.",
+  "images": [
+    {
+      "file": "cover.jpg",
+      "type": "cover",
+      "prompt": "Vertical 2:3 composition, adults shown from thighs up. ASYA, 30-year-old woman, warm fair skin, oval face, brown eyes, straight dark chestnut chin-length bob tucked behind one ear, small silver studs, ivory rolled-sleeve cotton shirt, muted terracotta linen apron, charcoal trousers. LEV, 34-year-old man, light olive skin, lean long face, hazel eyes, slightly long wavy dark brown hair above ears, clean-shaven, muted sage overshirt over oatmeal crew-neck shirt, dark trousers. Book conservation studio with brass press and rainy window; Asya holds a closed plain dark teal album, Lev looks at her attentively, both stand on equal level. Match the established stores/1/cover.jpg illustration style and the current story cover for character identity: fine dark contours, softly brushed semi-realistic painted faces, tactile fabric, restrained warm cream sand bronze sage and slate palette, gentle diffused lighting. Not photorealistic, not anime, not 3D. No text, lettering, readable documents, words, numbers, logos or watermark. One standalone full-bleed illustration, not a collage or grid."
+    },
+    {
+      "file": "images/bg-workshop.jpg",
+      "type": "background",
+      "prompt": "Vertical 2:3 empty environment, eye-level view, uncluttered lower third for dialogue UI. NO people, faces, portraits or silhouettes. Book conservation studio: brass screw press, plain book spines on shelves, wooden workbench, amber desk lamp, tall rain-streaked window on right. Match the established stores/1/cover.jpg illustration style and the current story cover for character identity: fine dark contours, softly brushed semi-realistic painted faces, tactile fabric, restrained warm cream sand bronze sage and slate palette, gentle diffused lighting. Not photorealistic, not anime, not 3D. No text, lettering, readable documents, words, numbers, logos or watermark. One standalone full-bleed illustration, not a collage or grid."
+    },
+    {
+      "file": "images/bg-reading-room.jpg",
+      "type": "background",
+      "prompt": "Vertical 2:3 empty environment, eye-level view, uncluttered lower third for dialogue UI. NO people, faces, portraits or silhouettes. Ordinary small city archive reading room: oak desks, green-shaded lamps, cream closed document boxes, tall windows, warm plaster walls. Match the established stores/1/cover.jpg illustration style and the current story cover for character identity: fine dark contours, softly brushed semi-realistic painted faces, tactile fabric, restrained warm cream sand bronze sage and slate palette, gentle diffused lighting. Not photorealistic, not anime, not 3D. No text, lettering, readable documents, words, numbers, logos or watermark. One standalone full-bleed illustration, not a collage or grid."
+    },
+    {
+      "file": "images/bg-courtyard.jpg",
+      "type": "background",
+      "prompt": "Vertical 2:3 empty environment, eye-level view, uncluttered lower third for dialogue UI. NO people, faces, portraits or silhouettes. Small old residential courtyard in autumn rain, ochre plaster, slate wet paving, stone arch and sheltered doorway, amber fallen leaves. Match the established stores/1/cover.jpg illustration style and the current story cover for character identity: fine dark contours, softly brushed semi-realistic painted faces, tactile fabric, restrained warm cream sand bronze sage and slate palette, gentle diffused lighting. Not photorealistic, not anime, not 3D. No text, lettering, readable documents, words, numbers, logos or watermark. One standalone full-bleed illustration, not a collage or grid."
+    },
+    {
+      "file": "images/bg-apartment.jpg",
+      "type": "background",
+      "prompt": "Vertical 2:3 empty environment, eye-level view, uncluttered lower third for dialogue UI. NO people, faces, portraits or silhouettes. Valentina's modest lived-in apartment: faded blue armchair, linen curtains, walnut table, closed dark teal album, warm lamp and plain shelves. Match the established stores/1/cover.jpg illustration style and the current story cover for character identity: fine dark contours, softly brushed semi-realistic painted faces, tactile fabric, restrained warm cream sand bronze sage and slate palette, gentle diffused lighting. Not photorealistic, not anime, not 3D. No text, lettering, readable documents, words, numbers, logos or watermark. One standalone full-bleed illustration, not a collage or grid."
+    },
+    {
+      "file": "images/bg-riverside.jpg",
+      "type": "background",
+      "prompt": "Vertical 2:3 empty environment, eye-level view, uncluttered lower third for dialogue UI. NO people, faces, portraits or silhouettes. Quiet urban riverside footpath in autumn, stone parapet, low bridge at a distance, bronze leaves, no vessels or lighthouse, gentle late sunlight. Match the established stores/1/cover.jpg illustration style and the current story cover for character identity: fine dark contours, softly brushed semi-realistic painted faces, tactile fabric, restrained warm cream sand bronze sage and slate palette, gentle diffused lighting. Not photorealistic, not anime, not 3D. No text, lettering, readable documents, words, numbers, logos or watermark. One standalone full-bleed illustration, not a collage or grid."
+    },
+    {
+      "file": "images/bg-lecture.jpg",
+      "type": "background",
+      "prompt": "Vertical 2:3 empty environment, eye-level view, uncluttered lower third for dialogue UI. NO people, faces, portraits or silhouettes. Small public meeting room, rows of simple empty chairs, plain lectern, blank projection wall, muted sand plaster, warm evening light. Match the established stores/1/cover.jpg illustration style and the current story cover for character identity: fine dark contours, softly brushed semi-realistic painted faces, tactile fabric, restrained warm cream sand bronze sage and slate palette, gentle diffused lighting. Not photorealistic, not anime, not 3D. No text, lettering, readable documents, words, numbers, logos or watermark. One standalone full-bleed illustration, not a collage or grid."
+    },
+    {
+      "file": "images/bg-home.jpg",
+      "type": "background",
+      "prompt": "Vertical 2:3 empty environment, eye-level view, uncluttered lower third for dialogue UI. NO people, faces, portraits or silhouettes. Asya's small private home at night: single kitchen table, simple chair, unmarked worn children's book closed beside a cup, folded terracotta apron, warm lamp, no workshop press. Match the established stores/1/cover.jpg illustration style and the current story cover for character identity: fine dark contours, softly brushed semi-realistic painted faces, tactile fabric, restrained warm cream sand bronze sage and slate palette, gentle diffused lighting. Not photorealistic, not anime, not 3D. No text, lettering, readable documents, words, numbers, logos or watermark. One standalone full-bleed illustration, not a collage or grid."
+    },
+    {
+      "file": "images/heroine.png",
+      "type": "character",
+      "prompt": "Single waist-up portrait, consistent upright frontal posture, full top of head and both arms within frame, hands relaxed low, solid plain light beige #EADFCB background for later removal. ASYA, 30-year-old woman, warm fair skin, oval face, brown eyes, straight dark chestnut chin-length bob tucked behind one ear, small silver studs, ivory rolled-sleeve cotton shirt, muted terracotta linen apron, charcoal trousers. calm attentive expression. Do not add props or other people. Same proportions as all other states of this person. Match the established stores/1/cover.jpg illustration style and the current story cover for character identity: fine dark contours, softly brushed semi-realistic painted faces, tactile fabric, restrained warm cream sand bronze sage and slate palette, gentle diffused lighting. Not photorealistic, not anime, not 3D. No text, lettering, readable documents, words, numbers, logos or watermark. One standalone full-bleed illustration, not a collage or grid."
+    },
+    {
+      "file": "images/heroine_smile.png",
+      "type": "character",
+      "prompt": "Single waist-up portrait, consistent upright frontal posture, full top of head and both arms within frame, hands relaxed low, solid plain light beige #EADFCB background for later removal. ASYA, 30-year-old woman, warm fair skin, oval face, brown eyes, straight dark chestnut chin-length bob tucked behind one ear, small silver studs, ivory rolled-sleeve cotton shirt, muted terracotta linen apron, charcoal trousers. small genuine warm smile. Do not add props or other people. Same proportions as all other states of this person. Match the established stores/1/cover.jpg illustration style and the current story cover for character identity: fine dark contours, softly brushed semi-realistic painted faces, tactile fabric, restrained warm cream sand bronze sage and slate palette, gentle diffused lighting. Not photorealistic, not anime, not 3D. No text, lettering, readable documents, words, numbers, logos or watermark. One standalone full-bleed illustration, not a collage or grid."
+    },
+    {
+      "file": "images/heroine_doubt.png",
+      "type": "character",
+      "prompt": "Single waist-up portrait, consistent upright frontal posture, full top of head and both arms within frame, hands relaxed low, solid plain light beige #EADFCB background for later removal. ASYA, 30-year-old woman, warm fair skin, oval face, brown eyes, straight dark chestnut chin-length bob tucked behind one ear, small silver studs, ivory rolled-sleeve cotton shirt, muted terracotta linen apron, charcoal trousers. thoughtful worried expression, no caricature. Do not add props or other people. Same proportions as all other states of this person. Match the established stores/1/cover.jpg illustration style and the current story cover for character identity: fine dark contours, softly brushed semi-realistic painted faces, tactile fabric, restrained warm cream sand bronze sage and slate palette, gentle diffused lighting. Not photorealistic, not anime, not 3D. No text, lettering, readable documents, words, numbers, logos or watermark. One standalone full-bleed illustration, not a collage or grid."
+    },
+    {
+      "file": "images/heroine_brave.png",
+      "type": "character",
+      "prompt": "Single waist-up portrait, consistent upright frontal posture, full top of head and both arms within frame, hands relaxed low, solid plain light beige #EADFCB background for later removal. ASYA, 30-year-old woman, warm fair skin, oval face, brown eyes, straight dark chestnut chin-length bob tucked behind one ear, small silver studs, ivory rolled-sleeve cotton shirt, muted terracotta linen apron, charcoal trousers. quiet firm composed expression. Do not add props or other people. Same proportions as all other states of this person. Match the established stores/1/cover.jpg illustration style and the current story cover for character identity: fine dark contours, softly brushed semi-realistic painted faces, tactile fabric, restrained warm cream sand bronze sage and slate palette, gentle diffused lighting. Not photorealistic, not anime, not 3D. No text, lettering, readable documents, words, numbers, logos or watermark. One standalone full-bleed illustration, not a collage or grid."
+    },
+    {
+      "file": "images/hero.png",
+      "type": "character",
+      "prompt": "Single waist-up portrait, consistent upright frontal posture, full top of head and both arms within frame, hands relaxed low, solid plain light beige #EADFCB background for later removal. LEV, 34-year-old man, light olive skin, lean long face, hazel eyes, slightly long wavy dark brown hair above ears, clean-shaven, muted sage overshirt over oatmeal crew-neck shirt, dark trousers. calm attentive expression. Do not add props or other people. Same proportions as all other states of this person. Match the established stores/1/cover.jpg illustration style and the current story cover for character identity: fine dark contours, softly brushed semi-realistic painted faces, tactile fabric, restrained warm cream sand bronze sage and slate palette, gentle diffused lighting. Not photorealistic, not anime, not 3D. No text, lettering, readable documents, words, numbers, logos or watermark. One standalone full-bleed illustration, not a collage or grid."
+    },
+    {
+      "file": "images/hero_smile.png",
+      "type": "character",
+      "prompt": "Single waist-up portrait, consistent upright frontal posture, full top of head and both arms within frame, hands relaxed low, solid plain light beige #EADFCB background for later removal. LEV, 34-year-old man, light olive skin, lean long face, hazel eyes, slightly long wavy dark brown hair above ears, clean-shaven, muted sage overshirt over oatmeal crew-neck shirt, dark trousers. small genuine warm smile. Do not add props or other people. Same proportions as all other states of this person. Match the established stores/1/cover.jpg illustration style and the current story cover for character identity: fine dark contours, softly brushed semi-realistic painted faces, tactile fabric, restrained warm cream sand bronze sage and slate palette, gentle diffused lighting. Not photorealistic, not anime, not 3D. No text, lettering, readable documents, words, numbers, logos or watermark. One standalone full-bleed illustration, not a collage or grid."
+    },
+    {
+      "file": "images/hero_doubt.png",
+      "type": "character",
+      "prompt": "Single waist-up portrait, consistent upright frontal posture, full top of head and both arms within frame, hands relaxed low, solid plain light beige #EADFCB background for later removal. LEV, 34-year-old man, light olive skin, lean long face, hazel eyes, slightly long wavy dark brown hair above ears, clean-shaven, muted sage overshirt over oatmeal crew-neck shirt, dark trousers. thoughtful uncertain expression. Do not add props or other people. Same proportions as all other states of this person. Match the established stores/1/cover.jpg illustration style and the current story cover for character identity: fine dark contours, softly brushed semi-realistic painted faces, tactile fabric, restrained warm cream sand bronze sage and slate palette, gentle diffused lighting. Not photorealistic, not anime, not 3D. No text, lettering, readable documents, words, numbers, logos or watermark. One standalone full-bleed illustration, not a collage or grid."
+    },
+    {
+      "file": "images/hero_tender.png",
+      "type": "character",
+      "prompt": "Single waist-up portrait, consistent upright frontal posture, full top of head and both arms within frame, hands relaxed low, solid plain light beige #EADFCB background for later removal. LEV, 34-year-old man, light olive skin, lean long face, hazel eyes, slightly long wavy dark brown hair above ears, clean-shaven, muted sage overshirt over oatmeal crew-neck shirt, dark trousers. quiet tender look, no exaggerated grin. Do not add props or other people. Same proportions as all other states of this person. Match the established stores/1/cover.jpg illustration style and the current story cover for character identity: fine dark contours, softly brushed semi-realistic painted faces, tactile fabric, restrained warm cream sand bronze sage and slate palette, gentle diffused lighting. Not photorealistic, not anime, not 3D. No text, lettering, readable documents, words, numbers, logos or watermark. One standalone full-bleed illustration, not a collage or grid."
+    },
+    {
+      "file": "images/friend.png",
+      "type": "character",
+      "prompt": "Single waist-up portrait, consistent upright frontal posture, full top of head and both arms within frame, hands relaxed low, solid plain light beige #EADFCB background for later removal. RITA, 38-year-old woman, warm medium skin, short black curls, brown eyes, burgundy cardigan over cream blouse, charcoal trousers. attentive relaxed expression. Do not add props or other people. Same proportions as all other states of this person. Match the established stores/1/cover.jpg illustration style and the current story cover for character identity: fine dark contours, softly brushed semi-realistic painted faces, tactile fabric, restrained warm cream sand bronze sage and slate palette, gentle diffused lighting. Not photorealistic, not anime, not 3D. No text, lettering, readable documents, words, numbers, logos or watermark. One standalone full-bleed illustration, not a collage or grid."
+    },
+    {
+      "file": "images/friend_smile.png",
+      "type": "character",
+      "prompt": "Single waist-up portrait, consistent upright frontal posture, full top of head and both arms within frame, hands relaxed low, solid plain light beige #EADFCB background for later removal. RITA, 38-year-old woman, warm medium skin, short black curls, brown eyes, burgundy cardigan over cream blouse, charcoal trousers. gentle friendly smile. Do not add props or other people. Same proportions as all other states of this person. Match the established stores/1/cover.jpg illustration style and the current story cover for character identity: fine dark contours, softly brushed semi-realistic painted faces, tactile fabric, restrained warm cream sand bronze sage and slate palette, gentle diffused lighting. Not photorealistic, not anime, not 3D. No text, lettering, readable documents, words, numbers, logos or watermark. One standalone full-bleed illustration, not a collage or grid."
+    },
+    {
+      "file": "images/director.png",
+      "type": "character",
+      "prompt": "Single waist-up portrait, consistent upright frontal posture, full top of head and both arms within frame, hands relaxed low, solid plain light beige #EADFCB background for later removal. VALENTINA, 67-year-old woman, fair skin, silver bob, grey eyes, navy jacket, cream scarf, dark trousers. calm considered expression. Do not add props or other people. Same proportions as all other states of this person. Match the established stores/1/cover.jpg illustration style and the current story cover for character identity: fine dark contours, softly brushed semi-realistic painted faces, tactile fabric, restrained warm cream sand bronze sage and slate palette, gentle diffused lighting. Not photorealistic, not anime, not 3D. No text, lettering, readable documents, words, numbers, logos or watermark. One standalone full-bleed illustration, not a collage or grid."
+    },
+    {
+      "file": "images/director_warm.png",
+      "type": "character",
+      "prompt": "Single waist-up portrait, consistent upright frontal posture, full top of head and both arms within frame, hands relaxed low, solid plain light beige #EADFCB background for later removal. VALENTINA, 67-year-old woman, fair skin, silver bob, grey eyes, navy jacket, cream scarf, dark trousers. subtle understanding smile. Do not add props or other people. Same proportions as all other states of this person. Match the established stores/1/cover.jpg illustration style and the current story cover for character identity: fine dark contours, softly brushed semi-realistic painted faces, tactile fabric, restrained warm cream sand bronze sage and slate palette, gentle diffused lighting. Not photorealistic, not anime, not 3D. No text, lettering, readable documents, words, numbers, logos or watermark. One standalone full-bleed illustration, not a collage or grid."
+    },
+    {
+      "file": "images/cg-book.jpg",
+      "type": "card",
+      "prompt": "4:3 landscape composition, characters large waist-up, important faces and hands inside central safe area. ASYA, 30-year-old woman, warm fair skin, oval face, brown eyes, straight dark chestnut chin-length bob tucked behind one ear, small silver studs, ivory rolled-sleeve cotton shirt, muted terracotta linen apron, charcoal trousers. LEV, 34-year-old man, light olive skin, lean long face, hazel eyes, slightly long wavy dark brown hair above ears, clean-shaven, muted sage overshirt over oatmeal crew-neck shirt, dark trousers. VALENTINA, 67-year-old woman, fair skin, silver bob, grey eyes, navy jacket, cream scarf, dark trousers. Scene: Valentina slides a CLOSED worn unmarked dark teal album across the workbench. Asya keeps her open hand beside it while waiting for permission. Lev observes respectfully a step back. Match the established stores/1/cover.jpg illustration style and the current story cover for character identity: fine dark contours, softly brushed semi-realistic painted faces, tactile fabric, restrained warm cream sand bronze sage and slate palette, gentle diffused lighting. Not photorealistic, not anime, not 3D. No text, lettering, readable documents, words, numbers, logos or watermark. One standalone full-bleed illustration, not a collage or grid.",
+      "chapter": 1,
+      "scene": "a04"
+    },
+    {
+      "file": "images/cg-repair.jpg",
+      "type": "card",
+      "prompt": "4:3 landscape composition, characters large waist-up, important faces and hands inside central safe area. ASYA, 30-year-old woman, warm fair skin, oval face, brown eyes, straight dark chestnut chin-length bob tucked behind one ear, small silver studs, ivory rolled-sleeve cotton shirt, muted terracotta linen apron, charcoal trousers. LEV, 34-year-old man, light olive skin, lean long face, hazel eyes, slightly long wavy dark brown hair above ears, clean-shaven, muted sage overshirt over oatmeal crew-neck shirt, dark trousers. Scene: Asya demonstrates one stitch on a clean BLANK practice booklet. Lev sits beside her watching with hands resting on his own knees. Historic material is not handled by the novice. Warm lamp. Match the established stores/1/cover.jpg illustration style and the current story cover for character identity: fine dark contours, softly brushed semi-realistic painted faces, tactile fabric, restrained warm cream sand bronze sage and slate palette, gentle diffused lighting. Not photorealistic, not anime, not 3D. No text, lettering, readable documents, words, numbers, logos or watermark. One standalone full-bleed illustration, not a collage or grid.",
+      "chapter": 1,
+      "scene": "a13"
+    },
+    {
+      "file": "images/cg-rain.jpg",
+      "type": "card",
+      "prompt": "4:3 landscape composition, characters large waist-up, important faces and hands inside central safe area. ASYA, 30-year-old woman, warm fair skin, oval face, brown eyes, straight dark chestnut chin-length bob tucked behind one ear, small silver studs, ivory rolled-sleeve cotton shirt, muted terracotta linen apron, charcoal trousers. LEV, 34-year-old man, light olive skin, lean long face, hazel eyes, slightly long wavy dark brown hair above ears, clean-shaven, muted sage overshirt over oatmeal crew-neck shirt, dark trousers. Scene: Sheltering under a courtyard canopy, both stand near but do not touch. Asya has REMOVED her apron and carries it folded over her forearm; she wears the same ivory shirt. Lev offers space with an open palm. Match the established stores/1/cover.jpg illustration style and the current story cover for character identity: fine dark contours, softly brushed semi-realistic painted faces, tactile fabric, restrained warm cream sand bronze sage and slate palette, gentle diffused lighting. Not photorealistic, not anime, not 3D. No text, lettering, readable documents, words, numbers, logos or watermark. One standalone full-bleed illustration, not a collage or grid.",
+      "chapter": 1,
+      "scene": "a16"
+    },
+    {
+      "file": "images/cg-margin.jpg",
+      "type": "card",
+      "prompt": "4:3 landscape composition, characters large waist-up, important faces and hands inside central safe area. ASYA, 30-year-old woman, warm fair skin, oval face, brown eyes, straight dark chestnut chin-length bob tucked behind one ear, small silver studs, ivory rolled-sleeve cotton shirt, muted terracotta linen apron, charcoal trousers. LEV, 34-year-old man, light olive skin, lean long face, hazel eyes, slightly long wavy dark brown hair above ears, clean-shaven, muted sage overshirt over oatmeal crew-neck shirt, dark trousers. Scene: Asya and Lev examine a closed plain folder beside a lamp in the reading room, each has a separate chair, she indicates an observation while he listens; no visible writing. Match the established stores/1/cover.jpg illustration style and the current story cover for character identity: fine dark contours, softly brushed semi-realistic painted faces, tactile fabric, restrained warm cream sand bronze sage and slate palette, gentle diffused lighting. Not photorealistic, not anime, not 3D. No text, lettering, readable documents, words, numbers, logos or watermark. One standalone full-bleed illustration, not a collage or grid.",
+      "chapter": 2
+    },
+    {
+      "file": "images/cg-visit.jpg",
+      "type": "card",
+      "prompt": "4:3 landscape composition, characters large waist-up, important faces and hands inside central safe area. ASYA, 30-year-old woman, warm fair skin, oval face, brown eyes, straight dark chestnut chin-length bob tucked behind one ear, small silver studs, ivory rolled-sleeve cotton shirt, muted terracotta linen apron, charcoal trousers. LEV, 34-year-old man, light olive skin, lean long face, hazel eyes, slightly long wavy dark brown hair above ears, clean-shaven, muted sage overshirt over oatmeal crew-neck shirt, dark trousers. VALENTINA, 67-year-old woman, fair skin, silver bob, grey eyes, navy jacket, cream scarf, dark trousers. Scene: In Valentina's modest apartment, three adults share tea away from the closed dark teal album. Valentina speaks, others listen, no letters open. Match the established stores/1/cover.jpg illustration style and the current story cover for character identity: fine dark contours, softly brushed semi-realistic painted faces, tactile fabric, restrained warm cream sand bronze sage and slate palette, gentle diffused lighting. Not photorealistic, not anime, not 3D. No text, lettering, readable documents, words, numbers, logos or watermark. One standalone full-bleed illustration, not a collage or grid.",
+      "chapter": 2
+    },
+    {
+      "file": "images/cg-riverside.jpg",
+      "type": "card",
+      "prompt": "4:3 landscape composition, characters large waist-up, important faces and hands inside central safe area. ASYA, 30-year-old woman, warm fair skin, oval face, brown eyes, straight dark chestnut chin-length bob tucked behind one ear, small silver studs, ivory rolled-sleeve cotton shirt, muted terracotta linen apron, charcoal trousers. LEV, 34-year-old man, light olive skin, lean long face, hazel eyes, slightly long wavy dark brown hair above ears, clean-shaven, muted sage overshirt over oatmeal crew-neck shirt, dark trousers. Scene: A slow autumn riverside walk, Asya without apron, Lev beside her; both freely join hands, warm hesitant smiles, ordinary city stone parapet, no dramatic danger. Match the established stores/1/cover.jpg illustration style and the current story cover for character identity: fine dark contours, softly brushed semi-realistic painted faces, tactile fabric, restrained warm cream sand bronze sage and slate palette, gentle diffused lighting. Not photorealistic, not anime, not 3D. No text, lettering, readable documents, words, numbers, logos or watermark. One standalone full-bleed illustration, not a collage or grid.",
+      "chapter": 3
+    },
+    {
+      "file": "images/cg-kiss.jpg",
+      "type": "card",
+      "prompt": "4:3 landscape composition, characters large waist-up, important faces and hands inside central safe area. ASYA, 30-year-old woman, warm fair skin, oval face, brown eyes, straight dark chestnut chin-length bob tucked behind one ear, small silver studs, ivory rolled-sleeve cotton shirt, muted terracotta linen apron, charcoal trousers. LEV, 34-year-old man, light olive skin, lean long face, hazel eyes, slightly long wavy dark brown hair above ears, clean-shaven, muted sage overshirt over oatmeal crew-neck shirt, dark trousers. Scene: First mutually welcomed gentle closed-mouth kiss beside a quiet riverside, both fully clothed, Asya without apron, eyes softly closed, hands visible and natural, non-explicit. Match the established stores/1/cover.jpg illustration style and the current story cover for character identity: fine dark contours, softly brushed semi-realistic painted faces, tactile fabric, restrained warm cream sand bronze sage and slate palette, gentle diffused lighting. Not photorealistic, not anime, not 3D. No text, lettering, readable documents, words, numbers, logos or watermark. One standalone full-bleed illustration, not a collage or grid.",
+      "chapter": 3
+    },
+    {
+      "file": "images/cg-invitation.jpg",
+      "type": "card",
+      "prompt": "4:3 landscape composition, characters large waist-up, important faces and hands inside central safe area. ASYA, 30-year-old woman, warm fair skin, oval face, brown eyes, straight dark chestnut chin-length bob tucked behind one ear, small silver studs, ivory rolled-sleeve cotton shirt, muted terracotta linen apron, charcoal trousers. RITA, 38-year-old woman, warm medium skin, short black curls, brown eyes, burgundy cardigan over cream blouse, charcoal trousers. Scene: Asya and Rita sit at archive table, Rita's phone face DOWN, Asya thoughtful and hurt, friend attentive without touching unexpectedly. No displayed text. Match the established stores/1/cover.jpg illustration style and the current story cover for character identity: fine dark contours, softly brushed semi-realistic painted faces, tactile fabric, restrained warm cream sand bronze sage and slate palette, gentle diffused lighting. Not photorealistic, not anime, not 3D. No text, lettering, readable documents, words, numbers, logos or watermark. One standalone full-bleed illustration, not a collage or grid.",
+      "chapter": 4
+    },
+    {
+      "file": "images/cg-distance.jpg",
+      "type": "card",
+      "prompt": "4:3 landscape composition, characters large waist-up, important faces and hands inside central safe area. ASYA, 30-year-old woman, warm fair skin, oval face, brown eyes, straight dark chestnut chin-length bob tucked behind one ear, small silver studs, ivory rolled-sleeve cotton shirt, muted terracotta linen apron, charcoal trousers. LEV, 34-year-old man, light olive skin, lean long face, hazel eyes, slightly long wavy dark brown hair above ears, clean-shaven, muted sage overshirt over oatmeal crew-neck shirt, dark trousers. Scene: Difficult honest conversation across workshop table, Asya composed and firm, Lev listening with hands relaxed, no yelling, no grabbing, distance meaningful. Match the established stores/1/cover.jpg illustration style and the current story cover for character identity: fine dark contours, softly brushed semi-realistic painted faces, tactile fabric, restrained warm cream sand bronze sage and slate palette, gentle diffused lighting. Not photorealistic, not anime, not 3D. No text, lettering, readable documents, words, numbers, logos or watermark. One standalone full-bleed illustration, not a collage or grid.",
+      "chapter": 4
+    },
+    {
+      "file": "images/cg-correction.jpg",
+      "type": "card",
+      "prompt": "4:3 landscape composition, characters large waist-up, important faces and hands inside central safe area. LEV, 34-year-old man, light olive skin, lean long face, hazel eyes, slightly long wavy dark brown hair above ears, clean-shaven, muted sage overshirt over oatmeal crew-neck shirt, dark trousers. Scene: Lev alone at a modest desk, closed plain notebook beside laptop angled away so screen invisible, pauses before sending a correction, sober accountability not heroic pose. Match the established stores/1/cover.jpg illustration style and the current story cover for character identity: fine dark contours, softly brushed semi-realistic painted faces, tactile fabric, restrained warm cream sand bronze sage and slate palette, gentle diffused lighting. Not photorealistic, not anime, not 3D. No text, lettering, readable documents, words, numbers, logos or watermark. One standalone full-bleed illustration, not a collage or grid.",
+      "chapter": 4
+    },
+    {
+      "file": "images/cg-sealed.jpg",
+      "type": "card",
+      "prompt": "4:3 landscape composition, characters large waist-up, important faces and hands inside central safe area. ASYA, 30-year-old woman, warm fair skin, oval face, brown eyes, straight dark chestnut chin-length bob tucked behind one ear, small silver studs, ivory rolled-sleeve cotton shirt, muted terracotta linen apron, charcoal trousers. VALENTINA, 67-year-old woman, fair skin, silver bob, grey eyes, navy jacket, cream scarf, dark trousers. Scene: Asya returns a plain closed sealed cream envelope to Valentina in her apartment, no writing or wax crest, respectful small gesture about privacy. Match the established stores/1/cover.jpg illustration style and the current story cover for character identity: fine dark contours, softly brushed semi-realistic painted faces, tactile fabric, restrained warm cream sand bronze sage and slate palette, gentle diffused lighting. Not photorealistic, not anime, not 3D. No text, lettering, readable documents, words, numbers, logos or watermark. One standalone full-bleed illustration, not a collage or grid.",
+      "chapter": 5
+    },
+    {
+      "file": "images/cg-discussion.jpg",
+      "type": "card",
+      "prompt": "4:3 landscape composition, characters large waist-up, important faces and hands inside central safe area. ASYA, 30-year-old woman, warm fair skin, oval face, brown eyes, straight dark chestnut chin-length bob tucked behind one ear, small silver studs, ivory rolled-sleeve cotton shirt, muted terracotta linen apron, charcoal trousers. LEV, 34-year-old man, light olive skin, lean long face, hazel eyes, slightly long wavy dark brown hair above ears, clean-shaven, muted sage overshirt over oatmeal crew-neck shirt, dark trousers. RITA, 38-year-old woman, warm medium skin, short black curls, brown eyes, burgundy cardigan over cream blouse, charcoal trousers. Scene: Small public discussion room, Asya speaks for herself standing beside plain lectern, Lev and Rita seated in foreground, no audience faces necessary, blank wall. Match the established stores/1/cover.jpg illustration style and the current story cover for character identity: fine dark contours, softly brushed semi-realistic painted faces, tactile fabric, restrained warm cream sand bronze sage and slate palette, gentle diffused lighting. Not photorealistic, not anime, not 3D. No text, lettering, readable documents, words, numbers, logos or watermark. One standalone full-bleed illustration, not a collage or grid.",
+      "chapter": 5
+    },
+    {
+      "file": "images/cg-returned.jpg",
+      "type": "card",
+      "prompt": "4:3 landscape composition, characters large waist-up, important faces and hands inside central safe area. ASYA, 30-year-old woman, warm fair skin, oval face, brown eyes, straight dark chestnut chin-length bob tucked behind one ear, small silver studs, ivory rolled-sleeve cotton shirt, muted terracotta linen apron, charcoal trousers. VALENTINA, 67-year-old woman, fair skin, silver bob, grey eyes, navy jacket, cream scarf, dark trousers. Scene: Asya presents repaired closed plain dark teal album on clean support to Valentina, visible restraint in restoration, warm satisfaction, same conservation studio. Match the established stores/1/cover.jpg illustration style and the current story cover for character identity: fine dark contours, softly brushed semi-realistic painted faces, tactile fabric, restrained warm cream sand bronze sage and slate palette, gentle diffused lighting. Not photorealistic, not anime, not 3D. No text, lettering, readable documents, words, numbers, logos or watermark. One standalone full-bleed illustration, not a collage or grid.",
+      "chapter": 6
+    },
+    {
+      "file": "images/cg-ending-trust.jpg",
+      "type": "card",
+      "prompt": "4:3 landscape composition, characters large waist-up, important faces and hands inside central safe area. ASYA, 30-year-old woman, warm fair skin, oval face, brown eyes, straight dark chestnut chin-length bob tucked behind one ear, small silver studs, ivory rolled-sleeve cotton shirt, muted terracotta linen apron, charcoal trousers. LEV, 34-year-old man, light olive skin, lean long face, hazel eyes, slightly long wavy dark brown hair above ears, clean-shaven, muted sage overshirt over oatmeal crew-neck shirt, dark trousers. Scene: Months later at Asya's kitchen table, couple calmly planning separate work trips, closed plain notebooks, two cups, soft morning, Asya without apron, tender equal partnership. Match the established stores/1/cover.jpg illustration style and the current story cover for character identity: fine dark contours, softly brushed semi-realistic painted faces, tactile fabric, restrained warm cream sand bronze sage and slate palette, gentle diffused lighting. Not photorealistic, not anime, not 3D. No text, lettering, readable documents, words, numbers, logos or watermark. One standalone full-bleed illustration, not a collage or grid.",
+      "chapter": 6
+    },
+    {
+      "file": "images/cg-ending-desire.jpg",
+      "type": "card",
+      "prompt": "4:3 landscape composition, characters large waist-up, important faces and hands inside central safe area. ASYA, 30-year-old woman, warm fair skin, oval face, brown eyes, straight dark chestnut chin-length bob tucked behind one ear, small silver studs, ivory rolled-sleeve cotton shirt, muted terracotta linen apron, charcoal trousers. LEV, 34-year-old man, light olive skin, lean long face, hazel eyes, slightly long wavy dark brown hair above ears, clean-shaven, muted sage overshirt over oatmeal crew-neck shirt, dark trousers. Scene: Months later quiet affectionate embrace in their shared home doorway, separate desks behind them, both fully clothed in established clothes but Asya without apron, warm private light. Match the established stores/1/cover.jpg illustration style and the current story cover for character identity: fine dark contours, softly brushed semi-realistic painted faces, tactile fabric, restrained warm cream sand bronze sage and slate palette, gentle diffused lighting. Not photorealistic, not anime, not 3D. No text, lettering, readable documents, words, numbers, logos or watermark. One standalone full-bleed illustration, not a collage or grid.",
+      "chapter": 6
+    },
+    {
+      "file": "images/cg-ending-resolve.jpg",
+      "type": "card",
+      "prompt": "4:3 landscape composition, characters large waist-up, important faces and hands inside central safe area. ASYA, 30-year-old woman, warm fair skin, oval face, brown eyes, straight dark chestnut chin-length bob tucked behind one ear, small silver studs, ivory rolled-sleeve cotton shirt, muted terracotta linen apron, charcoal trousers. RITA, 38-year-old woman, warm medium skin, short black curls, brown eyes, burgundy cardigan over cream blouse, charcoal trousers. Scene: Asya and Rita opening Asya's small teaching studio, blank practice books on tables, Asya independently holding keys, satisfied genuine smile, no absent-lover sadness. Match the established stores/1/cover.jpg illustration style and the current story cover for character identity: fine dark contours, softly brushed semi-realistic painted faces, tactile fabric, restrained warm cream sand bronze sage and slate palette, gentle diffused lighting. Not photorealistic, not anime, not 3D. No text, lettering, readable documents, words, numbers, logos or watermark. One standalone full-bleed illustration, not a collage or grid.",
+      "chapter": 6
+    }
+  ],
+  "sceneBackgrounds": {
+    "a01": "images/bg-workshop.jpg",
+    "a02": "images/bg-workshop.jpg",
+    "a03": "images/bg-workshop.jpg",
+    "a03r": "images/bg-workshop.jpg",
+    "a03t": "images/bg-workshop.jpg",
+    "a04": "images/bg-workshop.jpg",
+    "a05": "images/bg-workshop.jpg",
+    "a06": "images/bg-workshop.jpg",
+    "a06p": "images/bg-workshop.jpg",
+    "a06f": "images/bg-workshop.jpg",
+    "a07": "images/bg-workshop.jpg",
+    "a08": "images/bg-reading-room.jpg",
+    "a09": "images/bg-reading-room.jpg",
+    "a09r": "images/bg-reading-room.jpg",
+    "a09t": "images/bg-reading-room.jpg",
+    "a10": "images/bg-reading-room.jpg",
+    "a11": "images/bg-reading-room.jpg",
+    "a12": "images/bg-courtyard.jpg",
+    "a12r": "images/bg-courtyard.jpg",
+    "a12t": "images/bg-courtyard.jpg",
+    "a13": "images/bg-workshop.jpg",
+    "a14": "images/bg-workshop.jpg",
+    "a15": "images/bg-workshop.jpg",
+    "a15p": "images/bg-workshop.jpg",
+    "a15f": "images/bg-workshop.jpg",
+    "a16": "images/bg-courtyard.jpg",
+    "a17": "images/bg-courtyard.jpg",
+    "a18": "images/bg-home.jpg"
+  }
+}
