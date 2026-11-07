@@ -93,7 +93,7 @@ def check():
     for number in (14,15,16):
         base=story_base(number);manifest=load(base/'art-prompts.json');images=manifest['images']
         assert manifest['productionStatus'] in (('draft','ready') if number==14 else ('draft',))
-        assert Counter(i['type'] for i in images)=={'cover':1,'background':7,'character':13 if number==14 else 12,'card':16}
+        assert Counter(i['type'] for i in images)=={'cover':1,'background':7,'character':{14:13,15:14,16:12}[number],'card':16}
         files=[i['file'] for i in images];expected=set(files)
         assert len(files)==len(expected)
         actual={str(p.relative_to(base)) for p in (base/'images').glob('*') if p.suffix in ('.jpg','.png','.webp')}
@@ -209,7 +209,10 @@ def check():
 
 
 if __name__=='__main__':
-    import sys
+    import argparse
+    parser=argparse.ArgumentParser(description='Check all planned art and the full graph of №14 only.')
+    parser.add_argument('--report',action='store_true')
+    args=parser.parse_args()
     report=check()
-    if '--report' in sys.argv:
+    if args.report:
         (story_base(14)/'route-audit.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')

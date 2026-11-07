@@ -1,0 +1,97 @@
+{
+  "story": "tishe-snega",
+  "checkpoint": 5,
+  "method": "Visual inspection of cover, all ten raw portraits and all ten processed sprites, plus separate pixel checks; hashes freeze reviewed files, not facial recognition.",
+  "accepted": true,
+  "notes": [
+    "Nina matches her own cover: ash-blonde braid on anatomical right/viewer left, grey-green eyes, fair warm complexion; no Asya face/outfit reused.",
+    "Artyom matches his own cover: black curls, brown eyes, warm medium-brown skin, trimmed black beard/moustache.",
+    "Sonya: short straight dark crop, brown eyes, mustard fleece; Pavel: weathered face, short grey hair/stubble, grey-green work jacket. These are their first identity anchors.",
+    "All portraits use the same outlined softly painted style; no readable text, logos or extra limbs observed.",
+    "Indoor variants deliberately remove outerwear and gear; Nina keeps olive sweater, Artyom charcoal-olive jumper. Wardrobe transitions are in prose/config. Faces, age and hair remain recognisably the same.",
+    "Expression sprites reuse neutral silhouette/alpha, hair contour and lower-body pixels; source model redraws outside the face are not used.",
+    "Portraits are transparent, aligned to 792x1200, with complete hair/head margins; mobile scene rendering still pending."
+  ],
+  "files": [
+    {
+      "file": "images/director.webp",
+      "sha256": "8f46fd6e8fc8361d397fb706c63ecdeca226e059f0f0e7ff1d4a7367562e6aaa"
+    },
+    {
+      "file": "images/friend.webp",
+      "sha256": "bab3fbef107fada44224d99f3b80b829bd9d4e981f4092afb8f62b174406e0d0"
+    },
+    {
+      "file": "images/hero.webp",
+      "sha256": "3e5418cd7e4f3a62caccb9e83a78fe790e9bc40bd8b383fcaa0a2ea49e4eb4b7"
+    },
+    {
+      "file": "images/hero_doubt.webp",
+      "sha256": "e108ad37b6e5a830d393a30ddc174deb9664e50c313e2e9639bbac09482ffd45"
+    },
+    {
+      "file": "images/hero_indoor.webp",
+      "sha256": "ced5654a83b97dc017dd448637e6f57cf750db2f416f915111ceef43da161d4a"
+    },
+    {
+      "file": "images/hero_smile.webp",
+      "sha256": "963917e12d5110929bbbefdb8a6e4a312733678636c2b3c525f8aace9037e1b4"
+    },
+    {
+      "file": "images/heroine.webp",
+      "sha256": "9a79f5096f10a0e77f0c30bcdb587ff81cc9e0c262557ba54b674e51745bfb20"
+    },
+    {
+      "file": "images/heroine_doubt.webp",
+      "sha256": "db4ae330488dba2f9cd96e5ff784e93e7b12c61de643abc10bae4db289817d14"
+    },
+    {
+      "file": "images/heroine_indoor.webp",
+      "sha256": "ab08ca94da0e1f5d19b013b304dc08f3aa89cca3428e4ed9f6541b27c644cbac"
+    },
+    {
+      "file": "images/heroine_smile.webp",
+      "sha256": "b27b7f1c8707385ba56778c47c0e3277da353cfd9f9d0f96ecd0e08866245827"
+    },
+    {
+      "file": "references/director.png",
+      "sha256": "2bf21cbe0ba2f3ea920d90b9337180571ac4f58d28ca574f643df73937a7f635"
+    },
+    {
+      "file": "references/friend.png",
+      "sha256": "5a78d4c85e1575d3bd7ef2682daa3c65d6730c10fc307e735c11bfcf5eca8dcf"
+    },
+    {
+      "file": "references/hero.png",
+      "sha256": "08e21c11a98cb6ebaf9b5142bbb3483e528b8af7aaf8c660197ccf7d6b1970df"
+    },
+    {
+      "file": "references/hero_doubt.png",
+      "sha256": "d11022d2f2f83eeb9c94b641adda18a527b194258550688d37f162d1015ca8e7"
+    },
+    {
+      "file": "references/hero_indoor.png",
+      "sha256": "207601b88aa31e7072e2feda1426b66a077f1cd4c0ee3998e2466cb5365d7c1b"
+    },
+    {
+      "file": "references/hero_smile.png",
+      "sha256": "a3e30997e82c56180e884c58948055d6fc48ed3628fb79aa5866e92a6c10197a"
+    },
+    {
+      "file": "references/heroine.png",
+      "sha256": "951193a53aecd5fb25a03ccc2d0768bc8891b6bc49c7b000b192c80b9bdb249e"
+    },
+    {
+      "file": "references/heroine_doubt.png",
+      "sha256": "ab27aa4ddad45662f1eea25ae99fb4bee579a141b1c3fc87f578066699561d7d"
+    },
+    {
+      "file": "references/heroine_indoor.png",
+      "sha256": "5bcf55332538da237e516e93317029e2988cc7976dc8909b5f1b12d2942b65ce"
+    },
+    {
+      "file": "references/heroine_smile.png",
+      "sha256": "5e4d390ac0965b8be6ed707c8ef31d5b2222b8c7b9606c178724ce7573620291"
+    }
+  ]
+}

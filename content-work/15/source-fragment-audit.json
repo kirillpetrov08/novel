@@ -1,0 +1,60 @@
+{
+  "story": "tishe-snega",
+  "productionStatus": "incomplete-not-shippable",
+  "chapters": 2,
+  "scenes": 56,
+  "lines": 172,
+  "decisions": 11,
+  "paidOptions": 4,
+  "outcomes": {
+    "all": {
+      "routes": 2048,
+      "states": 815,
+      "minWords": 3618,
+      "maxWords": 3717,
+      "continuations": [
+        "c01"
+      ]
+    },
+    "free": {
+      "routes": 128,
+      "states": 232,
+      "minWords": 3618,
+      "maxWords": 3658,
+      "continuations": [
+        "c01"
+      ]
+    }
+  },
+  "externalExits": [
+    "c01"
+  ],
+  "missingUsedArt": [
+    "images/bg-equipment.jpg",
+    "images/bg-listening.jpg",
+    "images/bg-porch.jpg",
+    "images/bg-tundra.jpg",
+    "images/cg-arrival.jpg",
+    "images/cg-listening.jpg",
+    "images/cg-music.jpg",
+    "images/cg-rules.jpg",
+    "images/cg-sensor.jpg",
+    "images/cg-strap.jpg"
+  ],
+  "offscreenSpeakers": [
+    [
+      "a16d",
+      "hero"
+    ],
+    [
+      "a16r",
+      "hero"
+    ]
+  ],
+  "sceneDigest": "c8755c61e8831748dd440629b3af8c0b5ca40f7281d048b9008570d0ace2c695",
+  "limits": [
+    "No final endings or full-story balance yet",
+    "No timed reading or mobile visual approval",
+    "Missing artwork is reported, never replaced with art from another story"
+  ]
+}

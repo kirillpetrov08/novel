@@ -1,0 +1,333 @@
+[
+  {
+    "story": "tishe-snega",
+    "speakers": {
+      "Нина": "heroine",
+      "Артём": "hero",
+      "Соня": "friend",
+      "Павел": "director"
+    },
+    "chapter": 1,
+    "prefix": "a",
+    "title": "Вне кадра",
+    "entry": "a01",
+    "externalExits": [
+      "b01"
+    ],
+    "expectedScenes": 28,
+    "expectedChoices": 5,
+    "expectedPaid": 2,
+    "defaultBg": "images/bg-station.jpg",
+    "defaultShow": [
+      "heroine_indoor",
+      "hero_indoor"
+    ],
+    "overrides": {
+      "a01": {
+        "bg": "images/bg-porch.jpg",
+        "show": [
+          "heroine",
+          "hero"
+        ]
+      },
+      "a02": {
+        "bg": "images/bg-porch.jpg",
+        "show": [
+          "heroine",
+          "hero"
+        ]
+      },
+      "a02r": {
+        "bg": "images/bg-porch.jpg",
+        "show": [
+          "heroine",
+          "hero"
+        ]
+      },
+      "a02t": {
+        "bg": "images/bg-porch.jpg",
+        "show": [
+          "heroine",
+          "hero"
+        ]
+      },
+      "a03": {
+        "show": [
+          "director"
+        ]
+      },
+      "a04": {
+        "show": [
+          "heroine_indoor",
+          "hero_indoor",
+          "director"
+        ]
+      },
+      "a05": {
+        "show": [
+          "heroine_indoor",
+          "friend",
+          "hero_indoor"
+        ]
+      },
+      "a07": {
+        "show": [
+          "heroine_indoor",
+          "friend"
+        ]
+      },
+      "a10": {
+        "bg": "images/bg-listening.jpg",
+        "show": [
+          "heroine_indoor",
+          "friend"
+        ]
+      },
+      "a11": {
+        "bg": "images/bg-listening.jpg",
+        "show": [
+          "heroine_indoor",
+          "friend"
+        ]
+      },
+      "a12": {
+        "bg": "images/bg-listening.jpg",
+        "show": [
+          "heroine_indoor",
+          "friend"
+        ]
+      },
+      "a12r": {
+        "bg": "images/bg-listening.jpg",
+        "show": [
+          "heroine_indoor",
+          "friend"
+        ]
+      },
+      "a12t": {
+        "bg": "images/bg-listening.jpg",
+        "show": [
+          "heroine_indoor",
+          "friend"
+        ]
+      },
+      "a14": {
+        "bg": "images/bg-listening.jpg",
+        "show": [
+          "heroine_indoor",
+          "friend"
+        ]
+      },
+      "a13": {
+        "show": [
+          "heroine_indoor",
+          "director"
+        ]
+      },
+      "a16d": {
+        "bg": "images/bg-porch.jpg",
+        "show": [
+          "heroine_smile"
+        ]
+      },
+      "a16r": {
+        "show": [
+          "heroine_indoor"
+        ]
+      },
+      "a17": {
+        "show": [
+          "heroine_indoor"
+        ]
+      },
+      "a18": {
+        "show": []
+      }
+    }
+  },
+  {
+    "story": "tishe-snega",
+    "speakers": {
+      "Нина": "heroine",
+      "Артём": "hero",
+      "Соня": "friend",
+      "Павел": "director"
+    },
+    "chapter": 2,
+    "prefix": "b",
+    "title": "Пауза между звуками",
+    "entry": "b01",
+    "externalExits": [
+      "c01"
+    ],
+    "expectedScenes": 28,
+    "expectedChoices": 6,
+    "expectedPaid": 2,
+    "defaultBg": "images/bg-station.jpg",
+    "defaultShow": [
+      "heroine_indoor",
+      "hero_indoor"
+    ],
+    "overrides": {
+      "b01": {
+        "bg": "images/bg-porch.jpg",
+        "show": [
+          "heroine",
+          "hero_doubt",
+          "director"
+        ]
+      },
+      "b02": {
+        "bg": "images/bg-tundra.jpg",
+        "show": [
+          "heroine",
+          "hero"
+        ]
+      },
+      "b03": {
+        "bg": "images/bg-tundra.jpg",
+        "show": [
+          "heroine",
+          "hero"
+        ]
+      },
+      "b02r": {
+        "bg": "images/bg-tundra.jpg",
+        "show": [
+          "heroine_doubt",
+          "hero"
+        ]
+      },
+      "b02t": {
+        "bg": "images/bg-tundra.jpg",
+        "show": [
+          "heroine_smile",
+          "hero_smile"
+        ]
+      },
+      "b04": {
+        "bg": "images/bg-equipment.jpg",
+        "show": [
+          "heroine_indoor",
+          "friend"
+        ]
+      },
+      "b05": {
+        "bg": "images/bg-equipment.jpg",
+        "show": [
+          "heroine_indoor",
+          "friend"
+        ]
+      },
+      "b05r": {
+        "bg": "images/bg-equipment.jpg",
+        "show": [
+          "heroine_indoor",
+          "friend"
+        ]
+      },
+      "b05t": {
+        "bg": "images/bg-equipment.jpg",
+        "show": [
+          "heroine_indoor",
+          "friend"
+        ]
+      },
+      "b13": {
+        "bg": "images/bg-equipment.jpg",
+        "show": [
+          "heroine_indoor",
+          "friend"
+        ]
+      },
+      "b08": {
+        "show": [
+          "heroine_indoor",
+          "friend"
+        ]
+      },
+      "b09": {
+        "bg": "images/bg-listening.jpg",
+        "show": [
+          "heroine_indoor",
+          "hero_indoor"
+        ]
+      },
+      "b10": {
+        "bg": "images/bg-listening.jpg",
+        "show": [
+          "heroine_indoor",
+          "hero_indoor"
+        ]
+      },
+      "b10r": {
+        "bg": "images/bg-listening.jpg",
+        "show": [
+          "heroine_indoor",
+          "hero_indoor"
+        ]
+      },
+      "b10t": {
+        "bg": "images/bg-listening.jpg",
+        "show": [
+          "heroine_indoor",
+          "hero_indoor"
+        ]
+      },
+      "b11": {
+        "bg": "images/bg-listening.jpg",
+        "show": [
+          "heroine_indoor",
+          "hero_indoor"
+        ]
+      },
+      "b12": {
+        "bg": "images/bg-listening.jpg",
+        "show": [
+          "heroine_indoor",
+          "hero_indoor"
+        ]
+      },
+      "b12d": {
+        "bg": "images/bg-listening.jpg",
+        "show": [
+          "heroine_indoor",
+          "hero_indoor"
+        ]
+      },
+      "b12r": {
+        "bg": "images/bg-listening.jpg",
+        "show": [
+          "heroine_indoor",
+          "hero_indoor"
+        ]
+      },
+      "b14": {
+        "show": [
+          "heroine_indoor"
+        ]
+      },
+      "b15": {
+        "show": [
+          "heroine_indoor"
+        ]
+      },
+      "b15r": {
+        "show": [
+          "heroine_indoor"
+        ]
+      },
+      "b15t": {
+        "show": [
+          "heroine_indoor"
+        ]
+      },
+      "b16": {
+        "bg": "images/bg-listening.jpg",
+        "show": [
+          "heroine_indoor"
+        ]
+      }
+    }
+  }
+]

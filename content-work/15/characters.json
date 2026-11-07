@@ -1,0 +1,72 @@
+{
+  "heroine": {
+    "name": "Нина",
+    "color": "#806747",
+    "image": "images/heroine.webp"
+  },
+  "heroine_smile": {
+    "name": "Нина",
+    "color": "#806747",
+    "image": "images/heroine_smile.webp"
+  },
+  "heroine_doubt": {
+    "name": "Нина",
+    "color": "#806747",
+    "image": "images/heroine_doubt.webp"
+  },
+  "heroine_brave": {
+    "name": "Нина",
+    "color": "#806747",
+    "image": "images/heroine_brave.webp"
+  },
+  "heroine_indoor": {
+    "name": "Нина",
+    "color": "#806747",
+    "image": "images/heroine_indoor.webp"
+  },
+  "hero": {
+    "name": "Артём",
+    "color": "#536B78",
+    "image": "images/hero.webp"
+  },
+  "hero_smile": {
+    "name": "Артём",
+    "color": "#536B78",
+    "image": "images/hero_smile.webp"
+  },
+  "hero_doubt": {
+    "name": "Артём",
+    "color": "#536B78",
+    "image": "images/hero_doubt.webp"
+  },
+  "hero_tender": {
+    "name": "Артём",
+    "color": "#536B78",
+    "image": "images/hero_tender.webp"
+  },
+  "hero_indoor": {
+    "name": "Артём",
+    "color": "#536B78",
+    "image": "images/hero_indoor.webp"
+  },
+  "friend": {
+    "name": "Соня",
+    "color": "#8B7032",
+    "image": "images/friend.webp"
+  },
+  "friend_smile": {
+    "name": "Соня",
+    "color": "#8B7032",
+    "image": "images/friend_smile.webp"
+  },
+  "director": {
+    "name": "Павел",
+    "color": "#5B6C5D",
+    "image": "images/director.webp"
+  },
+  "director_warm": {
+    "name": "Павел",
+    "color": "#5B6C5D",
+    "image": "images/director_warm.webp"
+  }
+}

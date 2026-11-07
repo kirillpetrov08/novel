@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""Prepare story-14 sprites without allowing expression edits to redraw outfits.
+"""Prepare explicitly selected story sprites without allowing expression edits to redraw outfits.
 Dependencies: Pillow, numpy, opencv-python-headless, mediapipe==0.10.21.
-Five neutral/outfit sources are segmented. Expressions are face-interior edits
+Declared neutral/outfit sources are segmented. Expressions are face-interior edits
 composited onto their neutral source; silhouette, hair outline, body, clothes,
 alpha and the normalisation transform remain identical within each identity/outfit group.
 Original model outputs stay in references/ for audit and later art direction.
@@ -11,6 +11,8 @@ import importlib.util
 import json
 import tempfile
 from pathlib import Path
+
+from review_lock import load_frozen, replace_unfrozen
 
 import cv2
 import numpy as np
@@ -29,10 +31,13 @@ def sha(path):
 
 
 def prepare():
-    report = {'story': 'pereplyot', 'method': 'neutral silhouette + generated facial expression only',
+    frozen=load_frozen(BASE)  # fail before any writes if an accepted file changed
+    lock=json.loads((BASE/'design-lock.json').read_text())
+    groups=lock.get('portraitGroups')
+    report = {'story': lock['story'], 'method': 'neutral silhouette + generated facial expression only',
               'canvas': [792, 1200], 'targetFaceFraction': 0.21, 'characters': {}}
     original_detector = mod._face_box
-    for identity in ('heroine', 'hero', 'friend', 'director', 'heroine_casual'):
+    for identity in (groups or ('heroine', 'hero', 'friend', 'director', 'heroine_casual')):
         source = BASE / f'references/{identity}.png'
         with Image.open(source) as im:
             neutral = im.convert('RGB')
@@ -77,6 +82,9 @@ def prepare():
         # never paste a casual face onto the work apron by a filename glob.
         paths = [source] + sorted(p for p in (BASE/'references').glob(identity+'_*.png')
                                   if p.stem != 'heroine_casual')
+        if groups:
+            paths=[BASE/f'references/{name}.png' for name in groups[identity]['states'] if (BASE/f'references/{name}.png').exists()]
+            assert paths and paths[0]==source
         state_report = {}
         base_final = None
         for raw_path in paths:
@@ -109,19 +117,19 @@ def prepare():
             target = BASE / f'images/{raw_path.stem}.webp'
             tmp = target.with_suffix('.tmp.webp')
             final.save(tmp, 'WEBP', lossless=True, exact=True, method=6)
-            tmp.replace(target)
             face_out = original_detector(final)
             if face_out is None or not .18 <= face_out[3]/1200 <= .24:
                 raise RuntimeError(f'Unexpected face size: {raw_path}: {face_out}')
             alpha = pixels[:,:,3]
             assert (alpha==0).mean() > .15 and (alpha>200).mean() > .15
+            replace_unfrozen(tmp,target,frozen)
             state_report[raw_path.stem] = {
                 'source': str(raw_path.relative_to(BASE)), 'sourceSha256': sha(raw_path),
                 'file': str(target.relative_to(BASE)), 'sha256': sha(target),
                 'expressionDeltaBox': delta_box, 'faceHeightFraction': round(face_out[3]/1200,4),
                 'sameSilhouette': True, 'sameLowerBodyPixels': True}
             print(f'{raw_path.stem}: 792x1200; face={face_out[3]/1200:.3f}; changed={delta_box}', flush=True)
-        report['characters'][identity] = {'neutralReference': str(source.relative_to(BASE)), 'identity': identity.split('_')[0], 'wardrobe': 'casual' if identity=='heroine_casual' else 'work', 'states': state_report}
+        report['characters'][identity] = {'neutralReference': str(source.relative_to(BASE)), 'identity': identity.split('_')[0], 'wardrobe': groups[identity]['wardrobe'] if groups else ('casual' if identity=='heroine_casual' else 'work'), 'states': state_report}
     (BASE/'sprite-audit.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
     manifest_path = BASE/'art-prompts.json'
     manifest=json.loads(manifest_path.read_text(encoding='utf-8'))
@@ -135,4 +143,9 @@ def prepare():
 
 
 if __name__=='__main__':
+    import argparse
+    parser=argparse.ArgumentParser();parser.add_argument('--story',type=int,choices=[14,15],required=True)
+    args=parser.parse_args()
+    if args.story==15: BASE=ROOT/'content-work/15'
+    print(f'Preparing cast ONLY in {BASE}',flush=True)
     prepare()

@@ -14,44 +14,68 @@
       "age": 32,
       "immutableDesign": "Тёплая светлая кожа, широкие мягкие скулы, серо-зелёные глаза, пепельно-русая коса через правое плечо.",
       "wardrobes": {
-        "work": "Песочная полевая куртка, оливковый свитер, тёмные полевые брюки."
+        "work": "Песочная полевая куртка, оливковый свитер, тёмные полевые брюки.",
+        "indoor": "Тот же оливковый свитер, коса и тёмные брюки; куртка и рекордер оставлены у входа."
       },
       "identityReferences": [
         {
           "file": "cover.jpg",
           "role": "левая героиня",
           "sha256": "86e1d24c1cc90a81fb884364382fc0c0cb3686da8fbb7e046a58a82a07f964e8"
+        },
+        {
+          "file": "references/heroine.png",
+          "role": "утверждаемый нейтральный эталон; лицо сверяется визуально",
+          "sha256": "951193a53aecd5fb25a03ccc2d0768bc8891b6bc49c7b000b192c80b9bdb249e"
+        },
+        {
+          "file": "references/heroine_indoor.png",
+          "role": "тот же человек после снятия полевой куртки",
+          "sha256": "5bcf55332538da237e516e93317029e2988cc7976dc8909b5f1b12d2942b65ce"
         }
       ],
       "states": [
         "heroine",
         "heroine_smile",
         "heroine_doubt",
-        "heroine_brave"
+        "heroine_brave",
+        "heroine_indoor"
       ],
-      "identityStatus": "anchored"
+      "identityStatus": "neutral-portrait-visually-reviewed; expressions share neutral silhouette; future CG review required"
     },
     "hero": {
       "name": "Артём",
       "age": 35,
       "immutableDesign": "Тёплая смуглая кожа, короткие чёрные кудри, карие глаза, аккуратная короткая чёрная борода.",
       "wardrobes": {
-        "work": "Графитово-синяя полевая куртка, тёмно-коричневый ремень камеры, тёмные брюки."
+        "work": "Графитово-синяя полевая куртка, тёмно-коричневый ремень камеры, тёмные брюки.",
+        "indoor": "Тёмный угольно-оливковый джемпер и те же брюки; куртка, камера и ремень сняты."
       },
       "identityReferences": [
         {
           "file": "cover.jpg",
           "role": "правый герой",
           "sha256": "86e1d24c1cc90a81fb884364382fc0c0cb3686da8fbb7e046a58a82a07f964e8"
+        },
+        {
+          "file": "references/hero.png",
+          "role": "утверждаемый нейтральный эталон; лицо сверяется визуально",
+          "sha256": "08e21c11a98cb6ebaf9b5142bbb3483e528b8af7aaf8c660197ccf7d6b1970df"
+        },
+        {
+          "file": "references/hero_indoor.png",
+          "role": "тот же человек после снятия полевой куртки",
+          "sha256": "207601b88aa31e7072e2feda1426b66a077f1cd4c0ee3998e2466cb5365d7c1b"
         }
       ],
       "states": [
         "hero",
         "hero_smile",
         "hero_doubt",
-        "hero_tender"
+        "hero_tender",
+        "hero_indoor"
       ],
-      "identityStatus": "anchored"
+      "identityStatus": "neutral-portrait-visually-reviewed; expressions share neutral silhouette; future CG review required"
     },
     "friend": {
       "name": "Соня",
@@ -60,12 +84,18 @@
       "wardrobes": {
         "work": "Горчичный флис и графитовые полевые брюки."
       },
-      "identityReferences": [],
+      "identityReferences": [
+        {
+          "file": "references/friend.png",
+          "role": "утверждаемый нейтральный эталон; лицо сверяется визуально",
+          "sha256": "5a78d4c85e1575d3bd7ef2682daa3c65d6730c10fc307e735c11bfcf5eca8dcf"
+        }
+      ],
       "states": [
         "friend",
         "friend_smile"
       ],
-      "identityStatus": "planned-no-portrait-yet"
+      "identityStatus": "neutral-portrait-visually-reviewed; expressions share neutral silhouette; future CG review required"
     },
     "director": {
       "name": "Павел",
@@ -74,13 +104,71 @@
       "wardrobes": {
         "work": "Серо-зелёная рабочая полевая куртка, тёмные брюки."
       },
-      "identityReferences": [],
+      "identityReferences": [
+        {
+          "file": "references/director.png",
+          "role": "утверждаемый нейтральный эталон; лицо сверяется визуально",
+          "sha256": "2bf21cbe0ba2f3ea920d90b9337180571ac4f58d28ca574f643df73937a7f635"
+        }
+      ],
       "states": [
         "director",
         "director_warm"
       ],
-      "identityStatus": "planned-no-portrait-yet"
+      "identityStatus": "neutral-portrait-visually-reviewed; expressions share neutral silhouette; future CG review required"
     }
   },
-  "reviewNote": "SHA-256 защищает эталоны от незаметной подмены, но не доказывает сходство лиц. Новые изображения требуют визуальной проверки с эталонами. Для эмоциональных спрайтов №14 также проверяются неизменность alpha, тела и одежды."
+  "reviewNote": "SHA-256 защищает эталоны от незаметной подмены, но не доказывает сходство лиц. Новые изображения требуют визуальной проверки с эталонами. Для эмоциональных спрайтов №14 также проверяются неизменность alpha, тела и одежды.",
+  "portraitGroups": {
+    "heroine": {
+      "identity": "heroine",
+      "wardrobe": "work",
+      "states": [
+        "heroine",
+        "heroine_smile",
+        "heroine_doubt",
+        "heroine_brave"
+      ]
+    },
+    "heroine_indoor": {
+      "identity": "heroine",
+      "wardrobe": "indoor",
+      "states": [
+        "heroine_indoor"
+      ]
+    },
+    "hero": {
+      "identity": "hero",
+      "wardrobe": "work",
+      "states": [
+        "hero",
+        "hero_smile",
+        "hero_doubt",
+        "hero_tender"
+      ]
+    },
+    "hero_indoor": {
+      "identity": "hero",
+      "wardrobe": "indoor",
+      "states": [
+        "hero_indoor"
+      ]
+    },
+    "friend": {
+      "identity": "friend",
+      "wardrobe": "work",
+      "states": [
+        "friend",
+        "friend_smile"
+      ]
+    },
+    "director": {
+      "identity": "director",
+      "wardrobe": "work",
+      "states": [
+        "director",
+        "director_warm"
+      ]
+    }
+  }
 }

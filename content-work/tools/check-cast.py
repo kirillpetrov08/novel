@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Pixel-level outfit/silhouette checks for the prepared story-14 cast.
+"""Pixel-level outfit/silhouette checks for the explicitly selected prepared cast.
 Needs Pillow + numpy. Face identity itself still needs human visual review.
 This does NOT claim to recognise a character from a hash or from a face detector.
 """
@@ -41,15 +41,26 @@ def check():
             assert .18<=state['faceHeightFraction']<=.24
             count+=1
         print(f'{identity}: stable alpha, pose and lower-body pixels across {len(person["states"])} states')
-    assert count==13
+    lock=json.loads((BASE/'design-lock.json').read_text())
+    if lock['story']=='pereplyot':assert count==13
+    else:
+        available={name for g in lock['portraitGroups'].values() for name in g['states'] if (BASE/f'references/{name}.png').exists()}
+        prepared={name for g in report['characters'].values() for name in g['states']}
+        assert count==len(available) and prepared==available
+        planned={name for c in lock['characters'].values() for name in c['states']}
+        print('PENDING CAST STATES:',sorted(planned-prepared))
     review=json.loads((BASE/'visual-review.json').read_text(encoding='utf-8'))
     expected={s[k] for p in report['characters'].values() for s in p['states'].values() for k in ('source','file')}
     assert {r['file'] for r in review['files']}==expected, 'Visual review does not cover this batch'
     for item in review['files']:
         assert hashlib.sha256((BASE/item['file']).read_bytes()).hexdigest()==item['sha256'], 'Image changed since visual review: '+item['file']
-    print('CAST_PIXEL_CHECK_OK: 13 transparent 792x1200 sprites; head margins intact; expression edits confined to face')
+    print(f'CAST_PIXEL_CHECK_OK: {count} transparent 792x1200 sprites; head margins intact; expression edits confined to face')
     print('Visual review against cover/neutral references remains required for every new CG or portrait.')
 
 
 if __name__=='__main__':
+    import argparse
+    parser=argparse.ArgumentParser();parser.add_argument('--story',type=int,choices=[14,15],default=14)
+    args=parser.parse_args()
+    if args.story==15: BASE=Path(__file__).resolve().parents[1]/'15'
     check()

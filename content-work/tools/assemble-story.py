@@ -60,4 +60,8 @@ def assemble():
     print(f'COMPLETE TEXT ASSEMBLED: 168 scenes, 3 authored endings, estimated {minutes} min. source assembly; missing art: {len(audit["missingArt"])}')
 
 if __name__=='__main__':
+    import argparse
+    parser=argparse.ArgumentParser(description='Assemble only №14; №15 has no publication gate yet.')
+    parser.add_argument('--publish',action='store_true')
+    parser.parse_args()  # reject --story 15 BEFORE touching any canonical file
     assemble()

@@ -38,6 +38,7 @@ def chunks(text, limit=240):
 
 def compile_one(config):
     number = config['chapter']
+    speakers=config.get('speakers',SPEAKERS)
     source = (BASE / f'chapters/{number:02}.md').read_text(encoding='utf-8')
     sections = list(re.finditer(r'^## ([a-f]\d{2}[a-z]?) · (.+)$', source, re.M))
     scenes, titles = {}, {}
@@ -99,12 +100,12 @@ def compile_one(config):
             speaker = re.match(r'^\*\*([^*]+):\*\*\s*(.*)$', paragraph, re.S)
             if speaker:
                 name, text = speaker.groups()
-                if name not in SPEAKERS:
+                if name not in speakers:
                     raise ValueError(f'Unknown speaker: {name}')
                 if ', сообщение' in name:
                     text = 'Сообщение: ' + text
                 for part in chunks(text):
-                    scene['lines'].append({'type': 'dialogue', 'who': SPEAKERS[name], 'text': part})
+                    scene['lines'].append({'type': 'dialogue', 'who': speakers[name], 'text': part})
             else:
                 if any(token in paragraph for token in ('**', '`', '→')):
                     raise ValueError(f'Unparsed editorial markup: {sid}: {paragraph}')
@@ -126,7 +127,7 @@ def compile_one(config):
         raise ValueError(f'Chapter {number}: unexpected scene count {len(scenes)}')
     if set(config['overrides']) - scenes.keys():
         raise ValueError(f'Unused presentation declarations: {set(config["overrides"]) - scenes.keys()}')
-    return {'productionStatus': 'draft-fragment', 'story': 'pereplyot', 'chapter': number,
+    return {'productionStatus': 'draft-fragment', 'story': config.get('story','pereplyot'), 'chapter': number,
             'title': config['title'], 'entry': config['entry'], 'externalExits': config['externalExits'],
             'sceneTitles': titles, 'scenes': scenes}
 
@@ -152,4 +153,9 @@ def compile_chapter():
 
 
 if __name__=='__main__':
+    import argparse
+    parser=argparse.ArgumentParser();parser.add_argument('--story',type=int,choices=[14,15],default=14)
+    args=parser.parse_args()
+    if args.story==15: BASE=ROOT/'15'
+    print(f'Compiling ONLY in {BASE}')
     compile_chapter()
