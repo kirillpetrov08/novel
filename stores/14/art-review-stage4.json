@@ -1,0 +1,59 @@
+{
+  "reviewDate": "2026-11-07",
+  "reviewer": "assistant visual inspection",
+  "scope": "Nine final CGs compared with frozen neutral portraits and authored scene. Not physical-device QA.",
+  "notes": [
+    "Same faces, ages, hairstyles and clothing across all nine cards; Asya wears apron only at work/teaching.",
+    "Invitation phone face down; sealed cream envelope remains closed; no historic album at the apartment.",
+    "Returned album remains dark teal and worn, in a protective box; no novice repairs to historic documents.",
+    "Public talk shows Asya speaking, Lev listening; independence ending has Asya and Rita, no Lev.",
+    "All three ending cards use the same adult identities as earlier cards. No text/UI strips or style change observed."
+  ],
+  "files": [
+    {
+      "file": "images/cg-invitation.jpg",
+      "scene": "d01",
+      "sha256": "d72bbca400cb33f37596d6460ad0193349e6b5f6fa6c63ab194f8df1b9b6c6a8"
+    },
+    {
+      "file": "images/cg-distance.jpg",
+      "scene": "d06",
+      "sha256": "e4b2f78e0b009bf2e0d26c67b88fae6d67b7e34b184da9bdba65732e13e5d710"
+    },
+    {
+      "file": "images/cg-correction.jpg",
+      "scene": "d11",
+      "sha256": "a9a464f1d6a9d0ac5b6461914fbde8b2985b645d0832471e51038b2a87c070ca"
+    },
+    {
+      "file": "images/cg-sealed.jpg",
+      "scene": "e03",
+      "sha256": "95b6666daaa58c105a1d5c81354246c9cccc1d7791c98d036cbcf4a264a8e1a9"
+    },
+    {
+      "file": "images/cg-discussion.jpg",
+      "scene": "e10",
+      "sha256": "eeb8f6efab3a68b1729529b28c19b4d5755e6067be78ca72ef2a018b3b7a23e7"
+    },
+    {
+      "file": "images/cg-returned.jpg",
+      "scene": "f03",
+      "sha256": "8d7da0f4706a3863eb7770da8c6f73f0a34f0b49d598007a38f0f36494a6b3d3"
+    },
+    {
+      "file": "images/cg-ending-trust.jpg",
+      "scene": "f14t",
+      "sha256": "6498e2c1e52d477dde91065f1ad8ca3ce7807eabeb0b51afa2441fc8c5d1697a"
+    },
+    {
+      "file": "images/cg-ending-desire.jpg",
+      "scene": "f14d",
+      "sha256": "330371c2bcec33458e8088b6a7769df96788bafbefda8e032d232830c646f79f"
+    },
+    {
+      "file": "images/cg-ending-resolve.jpg",
+      "scene": "f14r",
+      "sha256": "136b136b4721af71181c6c83a7b9c295d3602557d0955adde4d18dc544ad4f64"
+    }
+  ]
+}

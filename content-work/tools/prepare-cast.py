@@ -3,7 +3,7 @@
 Dependencies: Pillow, numpy, opencv-python-headless, mediapipe==0.10.21.
 Five neutral/outfit sources are segmented. Expressions are face-interior edits
 composited onto their neutral source; silhouette, hair outline, body, clothes,
-alpha and the normalisation transform remain identical within each identity.
+alpha and the normalisation transform remain identical within each identity/outfit group.
 Original model outputs stay in references/ for audit and later art direction.
 """
 import hashlib
@@ -18,6 +18,7 @@ from PIL import Image, ImageDraw, ImageFilter
 
 ROOT = Path(__file__).resolve().parents[2]
 BASE = ROOT / 'content-work/14'
+if not BASE.exists(): BASE = ROOT / 'stores/14'
 spec = importlib.util.spec_from_file_location('sprite_tools', ROOT / 'tools/make-character-sprites.py')
 mod = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(mod)

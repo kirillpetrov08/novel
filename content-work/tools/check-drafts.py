@@ -12,6 +12,10 @@ from pathlib import Path, PurePosixPath
 ROOT=Path(__file__).resolve().parents[1]
 STATS=('desire','trust','resolve')
 
+def story_base(number):
+    staged=ROOT/str(number)
+    return staged if staged.exists() else ROOT.parent/'stores'/str(number)
+
 
 def load(path):
     return json.loads(path.read_text(encoding='utf-8'))
@@ -87,8 +91,8 @@ def check_graph(scenes, entry, exits, free=False):
 def check():
     total=planned=0;hashes={}
     for number in (14,15,16):
-        base=ROOT/str(number);manifest=load(base/'art-prompts.json');images=manifest['images']
-        assert manifest['productionStatus']=='draft'
+        base=story_base(number);manifest=load(base/'art-prompts.json');images=manifest['images']
+        assert manifest['productionStatus'] in (('draft','ready') if number==14 else ('draft',))
         assert Counter(i['type'] for i in images)=={'cover':1,'background':7,'character':13 if number==14 else 12,'card':16}
         files=[i['file'] for i in images];expected=set(files)
         assert len(files)==len(expected)
@@ -118,12 +122,13 @@ def check():
         total+=len(actual);planned+=len(files)
         print(f'#{number}: playable artwork files {len(actual)}/{len(files)}; raw reference files not counted twice')
 
-    base=ROOT/'14';configs=load(base/'chapters/config.json');characters=load(base/'characters.json')
+    base=story_base(14);configs=load(base/'chapters/config.json');characters=load(base/'characters.json')
     manifest=load(base/'art-prompts.json');expected={i['file'] for i in manifest['images']}
-    review=load(base/'art-review-stage3.json')
-    assert len(review['files'])==7
-    for item in review['files']:
-        assert hashlib.sha256((base/safe(item['file'])).read_bytes()).hexdigest()==item['sha256'], f'Artwork changed since visual review: {item["file"]}'
+    for stage,count in [(3,7),(4,9)]:
+        review=load(base/f'art-review-stage{stage}.json')
+        assert len(review['files'])==count
+        for item in review['files']:
+            assert hashlib.sha256((base/safe(item['file'])).read_bytes()).hexdigest()==item['sha256'], f'Artwork changed since visual review: {item["file"]}'
     merged={};used=set();total_lines=total_points=total_paid=0
     for config in configs:
         fragment=load(base/f'chapters/{config["chapter"]:02}.json')
@@ -196,7 +201,7 @@ def check():
     print(f'COMPLETE_TEXT_CHECK_OK: {len(merged)} scenes, {total_lines} lines, {total_points} decisions, {total_paid} paid options; {total}/{planned} artworks')
     line_range_ok=480<=total_lines<=560
     print(f'LONG FORMAT LINE RANGE: {total_lines}/480–560; '+('OK' if line_range_ok else 'EDITORIAL REVISION REQUIRED before publication'))
-    print('NOT SHIPPABLE until remaining art and editorial review are complete. Stories 15/16 still have plans and covers only.')
+    print('TEXT_AND_ART_CHECKS_OK; mobile review and explicit publication are separate.' if not missing and line_range_ok else 'NOT SHIPPABLE: pending art or editorial work.')
     return {'longFormatLineRange':{'min':480,'max':560,'actual':total_lines,'matches':line_range_ok},'story':'pereplyot','sceneDigest':hashlib.sha256(json.dumps(merged,ensure_ascii=False,sort_keys=True).encode()).hexdigest(),
             'scenes':len(merged),'lines':total_lines,'decisions':total_points,'paidOptions':total_paid,
             'outcomes':outcomes,'explicitRefusalPath':refusal_path+[sid],'missingArt':missing,
@@ -207,4 +212,4 @@ if __name__=='__main__':
     import sys
     report=check()
     if '--report' in sys.argv:
-        (ROOT/'14/route-audit.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+        (story_base(14)/'route-audit.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')

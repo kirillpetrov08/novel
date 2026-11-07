@@ -1,0 +1,73 @@
+{
+  "longFormatLineRange": {
+    "min": 480,
+    "max": 560,
+    "actual": 557,
+    "matches": true
+  },
+  "story": "pereplyot",
+  "sceneDigest": "ada0ae0004b180d456cc18f5b3c788dfa026434002389d17cc0e4cb5facc1324",
+  "scenes": 168,
+  "lines": 557,
+  "decisions": 34,
+  "paidOptions": 12,
+  "outcomes": {
+    "all": {
+      "routes": 17179869184,
+      "minWords": 9214,
+      "maxWords": 9808,
+      "states": 42949,
+      "endings": {
+        "f14r": {
+          "routes": 8619768160,
+          "minWords": 9214,
+          "maxWords": 9767
+        },
+        "f14t": {
+          "routes": 121161376,
+          "minWords": 9252,
+          "maxWords": 9574
+        },
+        "f14d": {
+          "routes": 8438939648,
+          "minWords": 9263,
+          "maxWords": 9808
+        }
+      }
+    },
+    "free": {
+      "routes": 4194304,
+      "minWords": 9214,
+      "maxWords": 9386,
+      "states": 4865,
+      "endings": {
+        "f14r": {
+          "routes": 3145728,
+          "minWords": 9214,
+          "maxWords": 9376
+        },
+        "f14t": {
+          "routes": 1048576,
+          "minWords": 9252,
+          "maxWords": 9386
+        }
+      }
+    },
+    "maxFreeDesireAtFinalBranch": 3
+  },
+  "explicitRefusalPath": [
+    "f10r",
+    "f12",
+    "f13r",
+    "f14r"
+  ],
+  "missingArt": [],
+  "completedArt": 40,
+  "plannedArt": 109,
+  "estimatedMinutes": 74,
+  "timingMethod": "PROMPT_LONG: round(lines / 7.5); cross-check: route words / 170 + decisions * 0.4; not device-timed",
+  "wordBasedMinutes": {
+    "min": 67.8,
+    "max": 71.3
+  }
+}

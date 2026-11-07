@@ -1007,7 +1007,11 @@ const UI = {
     window.addEventListener('resize', () => { this.syncFeedAds(); WeatherFX._resize(); });
 
     // плеер
-    $('#dialogue').addEventListener('click', () => Engine.advance());
+    $('#dialogue').addEventListener('click', () => {
+      // Keep long replies scrollable while choices are open, without advancing.
+      if ($('#choices').classList.contains('open') || $('#ending-ov').classList.contains('open')) return;
+      Engine.advance();
+    });
     $('#stage').addEventListener('click', e => {
       if ($('#choices').classList.contains('open') || $('#ending-ov').classList.contains('open')) return;
       if (e.target === $('#stage') || e.target.closest('#stage-bg') || e.target.closest('.stage-shade')) Engine.advance();

@@ -1,0 +1,10 @@
+{
+  "date": "2026-11-07",
+  "scope": "Assistant visual review, new empty station common room; no character portrait generated in this batch.",
+  "files": [
+    {
+      "file": "images/bg-station.jpg",
+      "sha256": "34a0688930034e20e64203fd9a34d4d5e1b70e390a3b41550dc0d2e8a6911363"
+    }
+  ]
+}

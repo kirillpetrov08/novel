@@ -1,16 +1,17 @@
 #!/usr/bin/env python3
-"""Assemble the authored six-chapter text, NOT a publish command.
-The output intentionally stays in content-work/14/story.draft.json until all
-artwork exists and the normal library build and device checks are completed.
+"""Assemble authored chapters. Default: update only the source draft/audit.
+Explicit --publish writes canonical story.json only in stores/14 after complete
+art, format and exact-story browser-review gates. Android CI remains separate.
 """
 import hashlib
 import importlib.util
 import json
-import math
+import sys
 from pathlib import Path
 
 ROOT=Path(__file__).resolve().parents[1]
 BASE=ROOT/'14'
+if not BASE.exists(): BASE=ROOT.parent/'stores/14'
 
 def assemble():
     spec=importlib.util.spec_from_file_location('draft_checks',ROOT/'tools/check-drafts.py')
@@ -25,9 +26,9 @@ def assemble():
     assert len(configs)==6 and sum('ending' in s for s in scenes.values())==3
     digest=hashlib.sha256(json.dumps(scenes,ensure_ascii=False,sort_keys=True).encode()).hexdigest()
     assert digest==audit['sceneDigest']
-    # An estimate, not a claim of timed device testing: 170 words/minute plus
-    # 24 seconds per decision, rounded up to five minutes.
-    minutes=math.ceil((audit['outcomes']['all']['maxWords']/170+audit['decisions']*.4)/5)*5
+    # PROMPT_LONG formula, independently cross-checked against actual route
+    # word counts plus decision time; neither estimate is physical-device timing.
+    minutes=round(audit['lines']/7.5)
     assert 60<=minutes<=120
     story={
         'id':'pereplyot','title':'Переплёт',
@@ -41,9 +42,22 @@ def assemble():
         'scenes':scenes}
     (BASE/'story.draft.json').write_text(json.dumps(story,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
     audit['estimatedMinutes']=minutes
-    audit['timingMethod']='estimate: max route words / 170 + decisions * 0.4; rounded up to 5 minutes; not device-timed'
+    audit['timingMethod']='PROMPT_LONG: round(lines / 7.5); cross-check: route words / 170 + decisions * 0.4; not device-timed'
+    audit['wordBasedMinutes']={key:round(audit['outcomes']['all'][word]/170+audit['decisions']*.4,1) for key,word in [('min','minWords'),('max','maxWords')]}
+    assert 60<=audit['wordBasedMinutes']['min']<=audit['wordBasedMinutes']['max']<=120
     (BASE/'route-audit.json').write_text(json.dumps(audit,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
-    print(f'COMPLETE TEXT ASSEMBLED: 168 scenes, 3 authored endings, estimated {minutes} min. NOT PUBLISHED; missing art: {len(audit["missingArt"])}')
+    if '--publish' in sys.argv:
+        assert BASE.parent.name=='stores' and not audit['missingArt'] and audit['longFormatLineRange']['matches']
+        review=json.loads((BASE/'mobile-review.json').read_text())
+        assert hashlib.sha256((BASE/'story.draft.json').read_bytes()).hexdigest()==review['storySha256'], 'Mobile review story is stale'
+        assert len(review['results'])==10 and all(not r['failures'] and not r['errors'] for r in review['results'])
+        for file,digest in review['codeSha256'].items():
+            assert hashlib.sha256((ROOT.parent/file).read_bytes()).hexdigest()==digest, 'Mobile review is stale: '+file
+        (BASE/'story.json').write_text(json.dumps(story,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+        manifest=json.loads((BASE/'art-prompts.json').read_text());manifest['productionStatus']='ready'
+        (BASE/'art-prompts.json').write_text(json.dumps(manifest,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+        print('CANONICAL_STORY_WRITTEN: stores/14/story.json; library build and Android CI still required')
+    print(f'COMPLETE TEXT ASSEMBLED: 168 scenes, 3 authored endings, estimated {minutes} min. source assembly; missing art: {len(audit["missingArt"])}')
 
 if __name__=='__main__':
     assemble()

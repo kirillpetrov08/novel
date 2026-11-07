@@ -11,6 +11,7 @@ import numpy as np
 from PIL import Image
 
 BASE=Path(__file__).resolve().parents[1]/'14'
+if not BASE.exists(): BASE=Path(__file__).resolve().parents[2]/'stores/14'
 
 
 def check():

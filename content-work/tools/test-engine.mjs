@@ -1,12 +1,13 @@
 // Real app engine/store smoke tests with the authored story, no DOM rendering.
 // This does not pretend that pending CGs or Android-device QA are complete.
-import {readFileSync} from 'node:fs';
+import {readFileSync,existsSync} from 'node:fs';
 import {fileURLToPath} from 'node:url';
 import {resolve,dirname} from 'node:path';
 import vm from 'node:vm';
 import assert from 'node:assert/strict';
 const root=resolve(dirname(fileURLToPath(import.meta.url)),'../..');
-const story=JSON.parse(readFileSync(resolve(root,'content-work/14/story.draft.json')));
+const source=existsSync(resolve(root,'stores/14/story.json'))?'stores/14/story.json':'content-work/14/story.draft.json';
+const story=JSON.parse(readFileSync(resolve(root,source)));
 function harness(balance){
   const storage=new Map();const events=[];
   const ctx=vm.createContext({console,setInterval,clearInterval,
@@ -60,4 +61,4 @@ const before=JSON.stringify(h.E.state);h.E.choose(0);
 assert.equal(JSON.stringify(h.E.state),before);
 assert.equal(h.events.at(-1).t,'need-crystals');h.E.choose(1);
 assert.equal(h.E.state.sceneId,'a06f');
-console.log('NO_BALANCE_FREE_FALLBACK_OK; graphics/device testing remain pending');
+console.log('NO_BALANCE_FREE_FALLBACK_OK; browser layout is tested separately; physical-device QA not performed');

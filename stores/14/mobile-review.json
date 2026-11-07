@@ -1,0 +1,161 @@
+{
+  "date": "2026-11-07",
+  "scope": "Headless Chromium, real UI/engine, all scenes/lines, medium/large font; 24px top/bottom safe-area simulation. Not a physical Android or ad-SDK test, not timed reading.",
+  "results": [
+    {
+      "width": 320,
+      "height": 568,
+      "inset": 0,
+      "font": "m",
+      "scenes": 168,
+      "lines": 557,
+      "choices": 34,
+      "cgs": 16,
+      "scrollableLines": 208,
+      "failures": [],
+      "errors": []
+    },
+    {
+      "width": 320,
+      "height": 568,
+      "inset": 0,
+      "font": "l",
+      "scenes": 168,
+      "lines": 557,
+      "choices": 34,
+      "cgs": 16,
+      "scrollableLines": 388,
+      "failures": [],
+      "errors": []
+    },
+    {
+      "width": 360,
+      "height": 640,
+      "inset": 0,
+      "font": "m",
+      "scenes": 168,
+      "lines": 557,
+      "choices": 34,
+      "cgs": 16,
+      "scrollableLines": 14,
+      "failures": [],
+      "errors": []
+    },
+    {
+      "width": 360,
+      "height": 640,
+      "inset": 0,
+      "font": "l",
+      "scenes": 168,
+      "lines": 557,
+      "choices": 34,
+      "cgs": 16,
+      "scrollableLines": 236,
+      "failures": [],
+      "errors": []
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "inset": 0,
+      "font": "m",
+      "scenes": 168,
+      "lines": 557,
+      "choices": 34,
+      "cgs": 16,
+      "scrollableLines": 0,
+      "failures": [],
+      "errors": []
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "inset": 0,
+      "font": "l",
+      "scenes": 168,
+      "lines": 557,
+      "choices": 34,
+      "cgs": 16,
+      "scrollableLines": 7,
+      "failures": [],
+      "errors": []
+    },
+    {
+      "width": 320,
+      "height": 568,
+      "inset": 24,
+      "font": "m",
+      "scenes": 168,
+      "lines": 557,
+      "choices": 34,
+      "cgs": 16,
+      "scrollableLines": 208,
+      "failures": [],
+      "errors": []
+    },
+    {
+      "width": 320,
+      "height": 568,
+      "inset": 24,
+      "font": "l",
+      "scenes": 168,
+      "lines": 557,
+      "choices": 34,
+      "cgs": 16,
+      "scrollableLines": 388,
+      "failures": [],
+      "errors": []
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "inset": 24,
+      "font": "m",
+      "scenes": 168,
+      "lines": 557,
+      "choices": 34,
+      "cgs": 16,
+      "scrollableLines": 0,
+      "failures": [],
+      "errors": []
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "inset": 24,
+      "font": "l",
+      "scenes": 168,
+      "lines": 557,
+      "choices": 34,
+      "cgs": 16,
+      "scrollableLines": 7,
+      "failures": [],
+      "errors": []
+    }
+  ],
+  "reviewedScreenshots": [
+    "reviews/320-safe24-three-characters.png",
+    "reviews/320-safe24-ending-card.png",
+    "reviews/390-safe0-three-characters.png"
+  ],
+  "codeSha256": {
+    "css/style.css": "910b7b66c35a5b63abbb24e757e1f4150bb665b131ed5c0cc40ca3e28036722a",
+    "js/app.js": "0dab6feb4ada9a70eeee5a5f7094a10cf57e2032d9c5453835a690096eeed484"
+  },
+  "storySha256": "1a25580e96b9c3a864b4a5f852fd18c44fadf34a4b33b766179494725191899f",
+  "bundledUiSmoke": {
+    "libraryStories": 14,
+    "longTabAndDetail": true,
+    "endingOverlays": [
+      "f14t",
+      "f14d",
+      "f14r"
+    ],
+    "viewport": [
+      320,
+      568
+    ],
+    "safeInsets": 24,
+    "exitButtonsReachable": true
+  }
+}

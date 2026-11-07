@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""Compile explicitly authored Markdown chapters into STAGED scene fragments.
+"""Compile authored Markdown into source scene fragments (staged or canonical).
 Run from any cwd: python3 content-work/tools/compile-chapter.py
 No plot, transition or ending is invented here. Presentation is declared in
-14/chapters/config.json. Nothing is written into stores/ or the application.
+chapters/config.json. This updates source JSON/manifest, never runtime story.json.
 """
 import json
 import re
@@ -10,6 +10,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 BASE = ROOT / '14'
+if not BASE.exists(): BASE = ROOT.parent / 'stores/14'
 SPEAKERS = {'Ася': 'heroine', 'Ася, сообщение': 'heroine', 'Лев': 'hero', 'Валентина': 'director',
             'Рита': 'friend', 'Рита, сообщение': 'friend', 'Лев, сообщение': 'hero'}
 STATS = {'desire', 'trust', 'resolve'}
@@ -147,7 +148,7 @@ def compile_chapter():
     manifest=json.loads(manifest_path.read_text(encoding='utf-8'))
     manifest['sceneBackgrounds']={sid:s['bg'] for sid,s in merged.items()}
     manifest_path.write_text(json.dumps(manifest,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
-    print('DRAFT ONLY: authored endings retained; no library registration or released story')
+    print('SOURCE_COMPILED: authored endings retained; runtime story.json is not overwritten')
 
 
 if __name__=='__main__':

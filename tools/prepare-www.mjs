@@ -6,11 +6,15 @@
 //   3. Вшивает сюжеты в www/js/stories-bundle.js — в приложении они работают офлайн.
 //   4. Копирует index/css/js/stores(картинки)/assets в www/.
 import { rmSync, mkdirSync, cpSync, writeFileSync, readFileSync, existsSync, statSync, readdirSync } from 'node:fs';
-import { join, dirname } from 'node:path';
+import { join, dirname, basename } from 'node:path';
 import { validateStory, normalizeBundle, scanStoresDir, storyImagePaths, isSafeLocalImagePath } from './validate.mjs';
 
 const ROOT = process.cwd();
 const WWW = join(ROOT, 'www');
+// Story sources stay beside the canonical plot in Git, but must not bloat APK.
+const internalStoryDirs = new Set(['_template', 'references', 'chapters', 'reviews']);
+const includeStoryFile = src => !src.split(/[\\/]/).some(part => internalStoryDirs.has(part))
+  && !src.endsWith('.md') && (!src.endsWith('.json') || basename(src) === 'story.json');
 
 // --- 1+2. Истории и валидация ---
 const items = scanStoresDir('stores');
@@ -55,6 +59,7 @@ if (problems.length) {
   if (!existsSync(dir)) return;
   for (const name of readdirSync(dir)) {
     const p = join(dir, name);
+    if (!includeStoryFile(p)) continue;
     if (statSync(p).isDirectory()) warnBig(p);
     else if (/\.(png|jpe?g|webp)$/i.test(name) && statSync(p).size > 1_500_000)
       console.log(`⚠ Тяжёлая картинка (${(statSync(p).size / 1e6).toFixed(1)} МБ): ${p} — сожми до ~300–500 КБ`);
@@ -71,7 +76,7 @@ if (existsSync(join(ROOT, 'stores'))) {
   cpSync(join(ROOT, 'stores'), join(WWW, 'stores'), {
     recursive: true,
     // art-prompts.json — внутренний манифест генерации; приложению он не нужен.
-    filter: src => !src.split(/[\\/]/).includes('_template') && !src.endsWith('.md') && !src.endsWith('art-prompts.json'),
+    filter: includeStoryFile,
   });
 }
 if (existsSync(join(ROOT, 'assets'))) cpSync(join(ROOT, 'assets'), join(WWW, 'assets'), { recursive: true });

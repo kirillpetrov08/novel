@@ -80,6 +80,17 @@ class DraftTests(unittest.TestCase):
             with patch.object(compiler,'BASE',base):
                 with self.assertRaises(ValueError):compiler.compile_one(config)
 
+    def test_canonical_story_matches_compiled_source(self):
+        path=compiler.BASE/'story.json'
+        if not path.exists():self.skipTest('Not yet published')
+        story=json.loads(path.read_text())
+        merged={}
+        for config in json.loads((compiler.BASE/'chapters/config.json').read_text()):
+            merged.update(compiler.compile_one(config)['scenes'])
+        self.assertEqual(story['scenes'],merged)
+        self.assertEqual(story['characters'],json.loads((compiler.BASE/'characters.json').read_text()))
+        self.assertEqual(story['estimatedMinutes'],round(sum(len(s['lines']) for s in merged.values())/7.5))
+
     def test_reference_hash_change_rejected(self):
         original=checks.load
         def tampered(path):

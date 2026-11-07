@@ -216,7 +216,9 @@ img{max-width:100%;display:block}
    скрываются (персонажи уже внутри иллюстрации). Карточка не перехватывает
    нажатия — тап по сцене по-прежнему листает реплики. */
 .stage-cg{position:absolute;z-index:2;left:50%;top:calc(62px + var(--sat));
-  width:min(92%,540px);aspect-ratio:4/3;max-height:44%;
+  /* Reserve room for the tallest dialogue AND both native safe insets. */
+  width:min(92%,540px,calc((62dvh - 96px - var(--sat) - var(--sab))*1.333333));
+  aspect-ratio:4/3;max-height:min(44%,calc(62dvh - 96px - var(--sat) - var(--sab)));
   transform:translate(-50%,10px) scale(.985);opacity:0;visibility:hidden;
   transition:opacity .5s ease,transform .5s ease,visibility .5s;
   background:var(--surface);border:1px solid var(--accent);border-radius:16px;
@@ -241,7 +243,7 @@ img{max-width:100%;display:block}
 .player-lower{position:relative;flex:0 0 auto;z-index:7;display:flex;flex-direction:column;gap:9px;
   padding:0 calc(12px + var(--sar)) calc(12px + var(--sab)) calc(12px + var(--sal))}
 .stage.choices-open .stage-shade{background:linear-gradient(to top,rgba(30,25,18,.68) 0%,rgba(30,25,18,.22) 52%,transparent 72%)}
-.stage.choices-open .dialogue{pointer-events:none}
+.stage.choices-open .dialogue{cursor:default}
 
 /* диалог: «бумажная» карточка с тонкой двойной рамкой и табличкой имени,
    как в классических визуальных новеллах, но в фирменной бежевой палитре */
@@ -392,7 +394,11 @@ textarea.field{min-height:130px;resize:vertical;font-size:13px;line-height:1.5}
 .ref-banner .btn{background:var(--accent);color:#FFFDF8;min-height:44px}
 
 .loading-note{text-align:center;color:var(--muted);font-size:13px;padding:22px 10px}
-@media (max-height:620px){.chars{padding-top:52px}}
+/* Keep the same toolbar + system-inset clearance on short screens too.
+   Reducing it to 52px put character heads behind the 54px toolbar. */
+@media (max-height:620px){
+  .stage.choices-open .dialogue{max-height:30vh;max-height:30dvh}
+}
 @media (prefers-reduced-motion:reduce){*{animation:none !important;transition:none !important;scroll-behavior:auto !important}}
 
 /* Заголовки секций библиотеки (короткие / длинные) */
