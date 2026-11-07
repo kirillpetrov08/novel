@@ -465,5 +465,369 @@
         ]
       }
     }
+  },
+  {
+    "chapter": 4,
+    "prefix": "d",
+    "title": "Разрыв",
+    "entry": "d01",
+    "externalExits": [
+      "e01"
+    ],
+    "expectedScenes": 28,
+    "expectedChoices": 6,
+    "expectedPaid": 2,
+    "defaultBg": "images/bg-workshop.jpg",
+    "defaultShow": [
+      "heroine",
+      "hero"
+    ],
+    "overrides": {
+      "d01": {
+        "bg": "images/bg-reading-room.jpg",
+        "show": [
+          "heroine_casual",
+          "friend"
+        ]
+      },
+      "d02": {
+        "bg": "images/bg-reading-room.jpg",
+        "show": [
+          "heroine_casual",
+          "friend"
+        ]
+      },
+      "d03": {
+        "bg": "images/bg-workshop.jpg",
+        "show": [
+          "heroine"
+        ]
+      },
+      "d07": {
+        "bg": "images/bg-workshop.jpg",
+        "show": [
+          "heroine"
+        ]
+      },
+      "d13": {
+        "bg": "images/bg-workshop.jpg",
+        "show": [
+          "heroine"
+        ]
+      },
+      "d07p": {
+        "bg": "images/bg-workshop.jpg",
+        "show": [
+          "heroine",
+          "friend_smile"
+        ]
+      },
+      "d07f": {
+        "bg": "images/bg-home.jpg",
+        "show": []
+      },
+      "d08": {
+        "bg": "images/bg-home.jpg",
+        "show": []
+      },
+      "d15": {
+        "bg": "images/bg-home.jpg",
+        "show": []
+      },
+      "d16": {
+        "bg": "images/bg-home.jpg",
+        "show": []
+      },
+      "d09": {
+        "bg": "images/bg-apartment.jpg",
+        "show": [
+          "heroine_casual",
+          "director"
+        ]
+      },
+      "d10": {
+        "bg": "images/bg-apartment.jpg",
+        "show": [
+          "heroine_casual",
+          "director"
+        ]
+      },
+      "d11": {
+        "bg": "images/bg-workshop.jpg",
+        "show": [
+          "hero"
+        ]
+      },
+      "d14": {
+        "bg": "images/bg-lecture.jpg",
+        "show": [
+          "heroine_casual"
+        ]
+      }
+    }
+  },
+  {
+    "chapter": 5,
+    "prefix": "e",
+    "title": "Право на тишину",
+    "entry": "e01",
+    "externalExits": [
+      "f01"
+    ],
+    "expectedScenes": 28,
+    "expectedChoices": 6,
+    "expectedPaid": 2,
+    "defaultBg": "images/bg-workshop.jpg",
+    "defaultShow": [
+      "heroine",
+      "hero"
+    ],
+    "overrides": {
+      "e01": {
+        "bg": "images/bg-apartment.jpg",
+        "show": [
+          "heroine_casual",
+          "hero",
+          "director"
+        ]
+      },
+      "e02": {
+        "bg": "images/bg-apartment.jpg",
+        "show": [
+          "heroine_casual",
+          "hero",
+          "director"
+        ]
+      },
+      "e03": {
+        "bg": "images/bg-apartment.jpg",
+        "show": [
+          "heroine_casual",
+          "hero",
+          "director"
+        ]
+      },
+      "e04": {
+        "bg": "images/bg-apartment.jpg",
+        "show": [
+          "heroine_casual",
+          "hero",
+          "director"
+        ]
+      },
+      "e07": {
+        "bg": "images/bg-lecture.jpg",
+        "show": [
+          "heroine_casual",
+          "hero",
+          "friend_smile"
+        ]
+      },
+      "e09": {
+        "bg": "images/bg-lecture.jpg",
+        "show": [
+          "heroine_casual",
+          "hero",
+          "friend_smile"
+        ]
+      },
+      "e10": {
+        "bg": "images/bg-lecture.jpg",
+        "show": [
+          "heroine_casual",
+          "hero",
+          "friend_smile"
+        ]
+      },
+      "e11": {
+        "bg": "images/bg-lecture.jpg",
+        "show": [
+          "heroine_casual",
+          "hero",
+          "friend_smile"
+        ]
+      },
+      "e12": {
+        "bg": "images/bg-lecture.jpg",
+        "show": [
+          "heroine_casual",
+          "hero",
+          "friend_smile"
+        ]
+      },
+      "e08": {
+        "bg": "images/bg-lecture.jpg",
+        "show": [
+          "heroine_casual",
+          "hero"
+        ]
+      },
+      "e08p": {
+        "bg": "images/bg-riverside.jpg",
+        "show": [
+          "heroine_casual",
+          "hero"
+        ]
+      },
+      "e08f": {
+        "bg": "images/bg-home.jpg",
+        "show": []
+      },
+      "e14": {
+        "bg": "images/bg-courtyard.jpg",
+        "show": [
+          "heroine_casual",
+          "hero"
+        ]
+      },
+      "e15": {
+        "bg": "images/bg-workshop.jpg",
+        "show": [
+          "heroine"
+        ]
+      },
+      "e16": {
+        "bg": "images/bg-workshop.jpg",
+        "show": [
+          "heroine"
+        ]
+      },
+      "e13": {
+        "bg": "images/bg-lecture.jpg",
+        "show": [
+          "heroine_casual",
+          "hero"
+        ]
+      }
+    }
+  },
+  {
+    "chapter": 6,
+    "prefix": "f",
+    "title": "Новый корешок",
+    "entry": "f01",
+    "externalExits": [],
+    "expectedScenes": 28,
+    "expectedChoices": 5,
+    "expectedPaid": 2,
+    "defaultBg": "images/bg-workshop.jpg",
+    "defaultShow": [
+      "heroine",
+      "hero"
+    ],
+    "overrides": {
+      "f01": {
+        "bg": "images/bg-workshop.jpg",
+        "show": [
+          "heroine",
+          "hero",
+          "director_warm"
+        ]
+      },
+      "f02": {
+        "bg": "images/bg-workshop.jpg",
+        "show": [
+          "heroine",
+          "hero",
+          "director_warm"
+        ]
+      },
+      "f03": {
+        "bg": "images/bg-workshop.jpg",
+        "show": [
+          "heroine",
+          "hero",
+          "director_warm"
+        ]
+      },
+      "f04p": {
+        "bg": "images/bg-workshop.jpg",
+        "show": [
+          "heroine_smile",
+          "hero_tender"
+        ]
+      },
+      "f04f": {
+        "bg": "images/bg-workshop.jpg",
+        "show": [
+          "heroine"
+        ]
+      },
+      "f07": {
+        "bg": "images/bg-workshop.jpg",
+        "show": [
+          "heroine"
+        ]
+      },
+      "f06t": {
+        "bg": "images/bg-riverside.jpg",
+        "show": [
+          "heroine_casual",
+          "hero_tender"
+        ]
+      },
+      "f06r": {
+        "bg": "images/bg-home.jpg",
+        "show": []
+      },
+      "f11": {
+        "bg": "images/bg-home.jpg",
+        "show": []
+      },
+      "f12": {
+        "bg": "images/bg-courtyard.jpg",
+        "show": [
+          "heroine_casual"
+        ]
+      },
+      "f13t": {
+        "bg": "images/bg-home.jpg",
+        "show": [
+          "heroine_casual",
+          "hero_tender"
+        ]
+      },
+      "f14t": {
+        "bg": "images/bg-home.jpg",
+        "show": [
+          "heroine_casual",
+          "hero_tender"
+        ]
+      },
+      "f13d": {
+        "bg": "images/bg-home.jpg",
+        "show": [
+          "heroine_casual",
+          "hero_tender"
+        ]
+      },
+      "f14d": {
+        "bg": "images/bg-home.jpg",
+        "show": [
+          "heroine_casual",
+          "hero_tender"
+        ]
+      },
+      "f13r": {
+        "bg": "images/bg-lecture.jpg",
+        "show": [
+          "heroine_brave",
+          "friend_smile"
+        ]
+      },
+      "f14r": {
+        "bg": "images/bg-lecture.jpg",
+        "show": [
+          "heroine_brave",
+          "friend_smile"
+        ]
+      },
+      "f09": {
+        "bg": "images/bg-workshop.jpg",
+        "show": [
+          "heroine"
+        ]
+      }
+    }
   }
 ]

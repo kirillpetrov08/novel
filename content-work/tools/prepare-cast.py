@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Prepare story-14 sprites without allowing expression edits to redraw outfits.
 Dependencies: Pillow, numpy, opencv-python-headless, mediapipe==0.10.21.
-Only four neutral sources are segmented. Expressions are face-interior edits
+Five neutral/outfit sources are segmented. Expressions are face-interior edits
 composited onto their neutral source; silhouette, hair outline, body, clothes,
 alpha and the normalisation transform remain identical within each identity.
 Original model outputs stay in references/ for audit and later art direction.
@@ -31,7 +31,7 @@ def prepare():
     report = {'story': 'pereplyot', 'method': 'neutral silhouette + generated facial expression only',
               'canvas': [792, 1200], 'targetFaceFraction': 0.21, 'characters': {}}
     original_detector = mod._face_box
-    for identity in ('heroine', 'hero', 'friend', 'director'):
+    for identity in ('heroine', 'hero', 'friend', 'director', 'heroine_casual'):
         source = BASE / f'references/{identity}.png'
         with Image.open(source) as im:
             neutral = im.convert('RGB')
@@ -120,7 +120,7 @@ def prepare():
                 'expressionDeltaBox': delta_box, 'faceHeightFraction': round(face_out[3]/1200,4),
                 'sameSilhouette': True, 'sameLowerBodyPixels': True}
             print(f'{raw_path.stem}: 792x1200; face={face_out[3]/1200:.3f}; changed={delta_box}', flush=True)
-        report['characters'][identity] = {'neutralReference': str(source.relative_to(BASE)), 'states': state_report}
+        report['characters'][identity] = {'neutralReference': str(source.relative_to(BASE)), 'identity': identity.split('_')[0], 'wardrobe': 'casual' if identity=='heroine_casual' else 'work', 'states': state_report}
     (BASE/'sprite-audit.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
     manifest_path = BASE/'art-prompts.json'
     manifest=json.loads(manifest_path.read_text(encoding='utf-8'))

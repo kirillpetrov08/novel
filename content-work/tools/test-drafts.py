@@ -55,6 +55,31 @@ class DraftTests(unittest.TestCase):
                        {'a':{'lines':[{'text':'Текст'}],'choices':[{'next':'exit','crystals':5}]}}):
             with self.assertRaises(AssertionError):checks.check_graph(scenes,'a',{'exit'},True)
 
+    def test_ordered_stat_branches_and_free_ending(self):
+        scenes={'a':{'lines':[{'text':'Старт'}],'choices':[{'next':'b','crystals':5,'effect':{'desire':2,'trust':2}},{'next':'b','effect':{'trust':1}}]},
+                'b':{'lines':[{'text':'Развилка'}],'branch':[{'if':{'stat':'desire','gte':2},'to':'d'},{'if':{'stat':'trust','gte':1},'to':'t'}],'next':'t'},
+                'd':{'lines':[{'text':'Первый финал'}],'ending':{'title':'D'}},
+                't':{'lines':[{'text':'Второй финал'}],'ending':{'title':'T'}}}
+        full=checks.solve_graph(scenes,'a')
+        free=checks.solve_graph(scenes,'a',free=True)
+        self.assertEqual(set(full['terminals']),{'d','t'})
+        self.assertEqual(set(free['terminals']),{'t'})
+        self.assertEqual(full['summary'][0],2)
+        self.assertEqual(free['summary'][0],1)
+
+    def test_authored_endings_are_not_placeholders(self):
+        config=json.loads((compiler.BASE/'chapters/config.json').read_text())[-1]
+        chapter=compiler.compile_one(config)
+        endings=[s for s in chapter['scenes'].values() if 'ending' in s]
+        self.assertEqual(len(endings),3)
+        self.assertTrue(all(len(s['lines'])>=5 and len(s['ending']['text'])>80 for s in endings))
+        original=(compiler.BASE/'chapters/06.md').read_text()
+        with tempfile.TemporaryDirectory() as td:
+            base=Path(td);(base/'chapters').mkdir()
+            (base/'chapters/06.md').write_text(original.replace('"badge":"Доверие"','"badge":null'))
+            with patch.object(compiler,'BASE',base):
+                with self.assertRaises(ValueError):compiler.compile_one(config)
+
     def test_reference_hash_change_rejected(self):
         original=checks.load
         def tampered(path):

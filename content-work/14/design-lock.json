@@ -27,6 +27,11 @@
           "file": "references/heroine.png",
           "role": "нейтральный портрет: основной эталон для эмоций",
           "sha256": "aef17aa7e5e26cb5b01a0bd98381d60859f98b0647c7f233d57aa14afd3f95f9"
+        },
+        {
+          "file": "references/heroine_casual.png",
+          "role": "тот же герой, тот же костюм без рабочего фартука",
+          "sha256": "9e733c5185dce4d2acc0e39813f193a807d19862f2b72cb855b4441b810670e3"
         }
       ],
       "states": [

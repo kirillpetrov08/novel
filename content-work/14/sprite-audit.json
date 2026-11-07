@@ -9,6 +9,8 @@
   "characters": {
     "heroine": {
       "neutralReference": "references/heroine.png",
+      "identity": "heroine",
+      "wardrobe": "work",
       "states": {
         "heroine": {
           "source": "references/heroine.png",
@@ -69,6 +71,8 @@
     },
     "hero": {
       "neutralReference": "references/hero.png",
+      "identity": "hero",
+      "wardrobe": "work",
       "states": {
         "hero": {
           "source": "references/hero.png",
@@ -129,6 +133,8 @@
     },
     "friend": {
       "neutralReference": "references/friend.png",
+      "identity": "friend",
+      "wardrobe": "work",
       "states": {
         "friend": {
           "source": "references/friend.png",
@@ -139,11 +145,28 @@
           "faceHeightFraction": 0.2166,
           "sameSilhouette": true,
           "sameLowerBodyPixels": true
+        },
+        "friend_smile": {
+          "source": "references/friend_smile.png",
+          "sourceSha256": "c27f418bafaa7fccbf3268a82e1b4a733242be69098f83e759a3eaf550eb7cc5",
+          "file": "images/friend_smile.webp",
+          "sha256": "7d492fdb3484d721bfebb9db8995347d9575bbf2c062bd6eda28a2fd5813a021",
+          "expressionDeltaBox": [
+            214,
+            117,
+            555,
+            459
+          ],
+          "faceHeightFraction": 0.2211,
+          "sameSilhouette": true,
+          "sameLowerBodyPixels": true
         }
       }
     },
     "director": {
       "neutralReference": "references/director.png",
+      "identity": "director",
+      "wardrobe": "work",
       "states": {
         "director": {
           "source": "references/director.png",
@@ -152,6 +175,38 @@
           "sha256": "fa7fd2cb09e619ae49e88064e5f95d3b12baed6d3e74ac0d4a3c11c368afd6ca",
           "expressionDeltaBox": null,
           "faceHeightFraction": 0.2155,
+          "sameSilhouette": true,
+          "sameLowerBodyPixels": true
+        },
+        "director_warm": {
+          "source": "references/director_warm.png",
+          "sourceSha256": "32af975ad78804bce606dfd04a06248bc1ed5332cb9d3f37ff423d7d6f296acf",
+          "file": "images/director_warm.webp",
+          "sha256": "cb0e08a1c4f4854e4e554bb2ee1f57645c93ab72d12990a612202e437c172e70",
+          "expressionDeltaBox": [
+            280,
+            95,
+            605,
+            427
+          ],
+          "faceHeightFraction": 0.2138,
+          "sameSilhouette": true,
+          "sameLowerBodyPixels": true
+        }
+      }
+    },
+    "heroine_casual": {
+      "neutralReference": "references/heroine_casual.png",
+      "identity": "heroine",
+      "wardrobe": "casual",
+      "states": {
+        "heroine_casual": {
+          "source": "references/heroine_casual.png",
+          "sourceSha256": "9e733c5185dce4d2acc0e39813f193a807d19862f2b72cb855b4441b810670e3",
+          "file": "images/heroine_casual.webp",
+          "sha256": "72332533ee82567c88b4df864f142e7c9e5543024d51b60e31305f13f3d6cb0a",
+          "expressionDeltaBox": null,
+          "faceHeightFraction": 0.1971,
           "sameSilhouette": true,
           "sameLowerBodyPixels": true
         }

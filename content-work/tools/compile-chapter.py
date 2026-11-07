@@ -10,7 +10,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 BASE = ROOT / '14'
-SPEAKERS = {'Ася': 'heroine', 'Лев': 'hero', 'Валентина': 'director',
+SPEAKERS = {'Ася': 'heroine', 'Ася, сообщение': 'heroine', 'Лев': 'hero', 'Валентина': 'director',
             'Рита': 'friend', 'Рита, сообщение': 'friend', 'Лев, сообщение': 'hero'}
 STATS = {'desire', 'trust', 'resolve'}
 
@@ -49,6 +49,20 @@ def compile_one(config):
         presentation.update(config['overrides'].get(sid[:3], {}))
         presentation.update(config['overrides'].get(sid, {}))
         scene = {**presentation, 'bgGradient': ['#E9DFCE', '#796C5E'], 'lines': []}
+        terminals = re.findall(r'^Финал: `([^`]+)`\.$', body, re.M)
+        routes = re.findall(r'^Развилка: `([^`]+)`\.$', body, re.M)
+        if len(terminals) > 1 or len(routes) > 1 or (terminals and routes):
+            raise ValueError(f'Ambiguous terminal/branch: {sid}')
+        if terminals:
+            ending = json.loads(terminals[0])
+            if set(ending) != {'title', 'text', 'badge'} or not all(isinstance(v,str) and v.strip() for v in ending.values()):
+                raise ValueError(f'Invalid authored ending: {sid}')
+            scene['ending'] = ending
+        if routes:
+            route = json.loads(routes[0])
+            if set(route) != {'branch','next'} or not route['branch']:
+                raise ValueError(f'Invalid authored branch: {sid}')
+            scene.update(route)
         explicit_bg = re.findall(r'Фон: `(images/[^`]+)`', body)
         if explicit_bg and explicit_bg != [scene['bg']]:
             raise ValueError(f'Prose/presentation background mismatch: {sid}')
@@ -57,11 +71,13 @@ def compile_one(config):
         external = re.findall(r'Следующий узел: `([a-z0-9]+)`', body)
         if len(targets) + len(external) > 1:
             raise ValueError(f'Multiple exits: {sid}')
+        if (targets or external) and (routes or terminals):
+            raise ValueError(f'Multiple authored transitions: {sid}')
         if targets or external:
             scene['next'] = (targets + external)[0]
         for paragraph in re.split(r'\n\s*\n', body):
             paragraph = paragraph.strip()
-            if paragraph.startswith(('Переход:', 'Иллюстрация:', 'Фон:', '**Конец первой главы.**')):
+            if paragraph.startswith(('Переход:', 'Иллюстрация:', 'Фон:', 'Финал:', 'Развилка:', '**Конец первой главы.**')):
                 continue
             if paragraph.startswith('**Выбор'):
                 for line in paragraph.splitlines()[1:]:
@@ -94,10 +110,10 @@ def compile_one(config):
                 for part in chunks(paragraph):
                     scene['lines'].append({'type': 'narration', 'text': part})
         if choices:
-            if 'next' in scene:
+            if any(k in scene for k in ('next','branch','ending')):
                 raise ValueError(f'Choice plus next: {sid}')
             scene['choices'] = choices
-        if not scene['lines'] or not (choices or 'next' in scene):
+        if not scene['lines'] or not (choices or 'next' in scene or 'ending' in scene):
             raise ValueError(f'Empty or dead-end scene: {sid}')
         cg = re.findall(r'Иллюстрация: `(images/[^`]+)`', body)
         if cg:
@@ -131,7 +147,7 @@ def compile_chapter():
     manifest=json.loads(manifest_path.read_text(encoding='utf-8'))
     manifest['sceneBackgrounds']={sid:s['bg'] for sid,s in merged.items()}
     manifest_path.write_text(json.dumps(manifest,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
-    print('DRAFT ONLY: no story.json, library registration or generated ending')
+    print('DRAFT ONLY: authored endings retained; no library registration or released story')
 
 
 if __name__=='__main__':

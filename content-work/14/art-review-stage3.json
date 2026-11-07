@@ -1,0 +1,42 @@
+{
+  "reviewDate": "2026-11-07",
+  "reviewer": "assistant visual inspection",
+  "scope": "Seven stage-3 backgrounds/CGs; portrait review is separate. Not physical-device QA.",
+  "files": [
+    {
+      "file": "images/bg-riverside.jpg",
+      "sha256": "138f08e1bf5b17ec96fe5d69f1b502a4590019493c32762dc6b99c3adb0a1494",
+      "note": "Same autumn stone embankment as the walking/kiss cards; no people or text."
+    },
+    {
+      "file": "images/bg-lecture.jpg",
+      "sha256": "12740a1efe01670f0ba6da0301f96e9db73fb365cf5e325b3d50f235e69990a3",
+      "note": "Modest empty reading-room meeting space with lectern/chairs; no readable writing."
+    },
+    {
+      "file": "images/bg-home.jpg",
+      "sha256": "ccb2764053306d07d8608e8b2ceeb4200d694fe2f035066cd04f32b370a64eff",
+      "note": "Asya’s private kitchen, not Valentina’s apartment. Removed model-generated blank UI strip by cropping; inspected final crop. Source/crop recorded in art-prompts.json."
+    },
+    {
+      "file": "images/cg-margin.jpg",
+      "sha256": "4e89c003e798ce2bffe2a27ef1fff7bf2956feedbceeb6b35749dbbd24755b9e",
+      "note": "Casual Asya and Lev, separate chairs, green lamp and closed research folder; same faces/hair/outfits as reference portraits."
+    },
+    {
+      "file": "images/cg-visit.jpg",
+      "sha256": "c6397b546b1a1a151bad5272ea9a77de9ed50f4a6c187bd0d835d6ca22eae048",
+      "note": "Casual Asya, Lev and Valentina with tea and a CLOSED CREAM FAMILY NOTEBOOK, not the original historic album. Brief corrected to match prose."
+    },
+    {
+      "file": "images/cg-riverside.jpg",
+      "sha256": "fc19f5721480ace0b7a0e1c5cd5a96a599929eccfce7e2a5aa8c4b87db998d4a",
+      "note": "Same adult Asya and Lev, casual clothes, voluntary handholding on the established embankment."
+    },
+    {
+      "file": "images/cg-kiss.jpg",
+      "sha256": "2b2f23351561a5299165bc0bcc61a1376653f2f93fb5c92f763c9fd39b60296a",
+      "note": "Same adult faces, hair and costumes; mutually welcomed clothed kiss, consistent with the free c10t scene."
+    }
+  ]
+}

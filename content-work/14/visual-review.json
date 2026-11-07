@@ -1,13 +1,16 @@
 {
   "reviewDate": "2026-11-07",
   "reviewer": "assistant visual inspection",
-  "scope": "New story-14 neutral portraits, facial states and prepared sprites; not physical-device QA",
+  "scope": "Story-14 portrait inputs and 13 prepared sprites: previous ten preserved byte-for-byte; stage-3 casual outfit and two expressions visually inspected. Not physical-device QA.",
   "notes": [
     "Compared four neutral portraits to cover/cg-book and character plan",
     "Inspected all six generated expressions against their own neutral portrait",
     "Inspected final 10 transparent sprites on contrasting checkerboard; no clipped hair",
     "Expression states preserve shared silhouette, outfit and pose; only face interior differs",
-    "Casual Asya is still planned, not approved or generated"
+    "Stage 3: inspected casual Asya beside her original work sprite; same face, chestnut bob, ivory shirt, trousers and silver studs, apron removed.",
+    "Stage 3: inspected source and prepared friend_smile/director_warm beside their neutral portraits; preserved identities, outfits and age.",
+    "Casual outfit has its own segmented body, not a face pasted onto the apron; face-height fraction 0.197 versus 0.201 for work outfit.",
+    "Seven new backgrounds/CGs inspected separately; hashes and notes are in art-review-stage3.json."
   ],
   "files": [
     {
@@ -89,6 +92,30 @@
     {
       "file": "images/director.webp",
       "sha256": "fa7fd2cb09e619ae49e88064e5f95d3b12baed6d3e74ac0d4a3c11c368afd6ca"
+    },
+    {
+      "file": "references/heroine_casual.png",
+      "sha256": "9e733c5185dce4d2acc0e39813f193a807d19862f2b72cb855b4441b810670e3"
+    },
+    {
+      "file": "images/heroine_casual.webp",
+      "sha256": "72332533ee82567c88b4df864f142e7c9e5543024d51b60e31305f13f3d6cb0a"
+    },
+    {
+      "file": "references/friend_smile.png",
+      "sha256": "c27f418bafaa7fccbf3268a82e1b4a733242be69098f83e759a3eaf550eb7cc5"
+    },
+    {
+      "file": "images/friend_smile.webp",
+      "sha256": "7d492fdb3484d721bfebb9db8995347d9575bbf2c062bd6eda28a2fd5813a021"
+    },
+    {
+      "file": "references/director_warm.png",
+      "sha256": "32af975ad78804bce606dfd04a06248bc1ed5332cb9d3f37ff423d7d6f296acf"
+    },
+    {
+      "file": "images/director_warm.webp",
+      "sha256": "cb0e08a1c4f4854e4e554bb2ee1f57645c93ab72d12990a612202e437c172e70"
     }
   ]
 }

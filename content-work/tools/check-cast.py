@@ -40,13 +40,13 @@ def check():
             assert .18<=state['faceHeightFraction']<=.24
             count+=1
         print(f'{identity}: stable alpha, pose and lower-body pixels across {len(person["states"])} states')
-    assert count==10
+    assert count==13
     review=json.loads((BASE/'visual-review.json').read_text(encoding='utf-8'))
     expected={s[k] for p in report['characters'].values() for s in p['states'].values() for k in ('source','file')}
     assert {r['file'] for r in review['files']}==expected, 'Visual review does not cover this batch'
     for item in review['files']:
         assert hashlib.sha256((BASE/item['file']).read_bytes()).hexdigest()==item['sha256'], 'Image changed since visual review: '+item['file']
-    print('CAST_PIXEL_CHECK_OK: 10 transparent 792x1200 sprites; head margins intact; expression edits confined to face')
+    print('CAST_PIXEL_CHECK_OK: 13 transparent 792x1200 sprites; head margins intact; expression edits confined to face')
     print('Visual review against cover/neutral references remains required for every new CG or portrait.')
 
 
