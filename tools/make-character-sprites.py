@@ -195,6 +195,97 @@ def make_sprite(source_path: str) -> Image.Image:
     return img
 
 
+# Единый масштаб персонажей: единый холст 792x1200, высота лица = 21%
+# холста (крупные планы *_close — 26%), фигура на нижней кромке. Иначе
+# object-fit:contain в плеере даёт головам разный размер на экране.
+# Тот же алгоритм — в tools/normalize-sprites.py для готовых спрайтов.
+CANVAS_W, CANVAS_H = 792, 1200
+FACE_FRAC = 0.21
+FACE_FRAC_CLOSE = 0.26
+MAX_FIG_FRAC = 0.995
+MAX_UPSCALE = 2.5
+# Чтобы дотянуть лицо до целевого размера, фигуре разрешено выходить за
+# боковые края холста (до 22% ширины, крупным планам до 45%) и быть выше
+# холста до 25% (низ обрежется — в плеере он скрыт за карточкой диалога).
+SIDE_CROP = 0.22
+SIDE_CROP_CLOSE = 0.45
+HEIGHT_OVERFLOW = 1.25
+FACE_TOP_MIN = 24
+
+_FACE_DETECTOR = None
+
+
+def _face_box(img: Image.Image):
+    global _FACE_DETECTOR
+    try:
+        import mediapipe as mp
+        if _FACE_DETECTOR is None:
+            _FACE_DETECTOR = mp.solutions.face_detection.FaceDetection(
+                model_selection=1, min_detection_confidence=0.4
+            )
+    except Exception:
+        return None
+    bg = Image.new("RGBA", img.size, (234, 223, 203, 255))
+    bg.alpha_composite(img.convert("RGBA"))
+    try:
+        res = _FACE_DETECTOR.process(np.asarray(bg.convert("RGB")))
+    except Exception:
+        return None
+    if not res.detections:
+        return None
+    w, h = img.size
+    best = None
+    for d in res.detections:
+        bb = d.location_data.relative_bounding_box
+        box = (bb.xmin * w, bb.ymin * h, bb.width * w, bb.height * h)
+        if best is None or box[2] * box[3] > best[2] * best[3]:
+            best = box
+    return best
+
+
+def _paste(canvas: Image.Image, fig: Image.Image, x: int, y: int) -> None:
+    """alpha_composite с клиппингом: фигура может выходить за края холста."""
+    x0, y0 = max(0, -x), max(0, -y)
+    x1, y1 = min(fig.size[0], CANVAS_W - x), min(fig.size[1], CANVAS_H - y)
+    if x1 <= x0 or y1 <= y0:
+        return
+    canvas.alpha_composite(fig.crop((x0, y0, x1, y1)), (x + x0, y + y0))
+
+
+def normalize_canvas(img: Image.Image, closeup: bool = False) -> Image.Image:
+    if img.mode != "RGBA":
+        img = img.convert("RGBA")
+    mask = img.getchannel("A").point(lambda v: 255 if v > 16 else 0)
+    bbox = mask.getbbox()
+    if not bbox:
+        return Image.new("RGBA", (CANVAS_W, CANVAS_H), (0, 0, 0, 0))
+    fig = img.crop(bbox)
+    fw, fh = fig.size
+    face = _face_box(fig)
+    if face:
+        target = (FACE_FRAC_CLOSE if closeup else FACE_FRAC) * CANVAS_H
+        scale = target / max(1.0, face[3])
+        crop = SIDE_CROP_CLOSE if closeup else SIDE_CROP
+        scale = min(
+            scale,
+            MAX_UPSCALE,
+            (CANVAS_W / (1.0 - crop)) / fw,
+            (CANVAS_H * HEIGHT_OVERFLOW) / fh,
+        )
+    else:
+        scale = min((CANVAS_H * MAX_FIG_FRAC) / fh, CANVAS_W / fw)
+    new_size = (max(1, int(round(fw * scale))), max(1, int(round(fh * scale))))
+    if new_size != fig.size:
+        fig = fig.resize(new_size, Image.LANCZOS)
+    x = (CANVAS_W - fig.size[0]) // 2
+    y = CANVAS_H - fig.size[1]
+    if face and fig.size[1] > CANVAS_H:
+        y = max(y, FACE_TOP_MIN - int(face[1] * scale))
+    canvas = Image.new("RGBA", (CANVAS_W, CANVAS_H), (0, 0, 0, 0))
+    _paste(canvas, fig, x, y)
+    return canvas
+
+
 def locate(source_dir: str, rel_path: str) -> str | None:
     stem = os.path.splitext(os.path.basename(rel_path))[0]
     for ext in (".png", ".webp", ".jpg", ".jpeg"):
@@ -233,6 +324,7 @@ def main() -> int:
     os.makedirs(out_dir, exist_ok=True)
 
     changed = {}
+    obsolete = []
     total_before = total_after = 0
     for rel, stem in sorted(refs.items(), key=lambda x: x[1]):
         if only and stem not in only and rel not in only:
@@ -241,9 +333,11 @@ def main() -> int:
         if not src:
             print(f"⚠ {stem}: оригинал не найден")
             continue
-        sprite = make_sprite(src)
+        sprite = normalize_canvas(make_sprite(src), closeup=stem.endswith("_close"))
         dst = os.path.join(out_dir, stem + ".webp")
-        sprite.save(dst, "WEBP", quality=WEBP_QUALITY, alpha_quality=100, method=6)
+        tmp = dst + ".tmp.webp"
+        sprite.save(tmp, "WEBP", quality=WEBP_QUALITY, alpha_quality=100, method=6)
+        os.replace(tmp, dst)
         total_before += os.path.getsize(src)
         total_after += os.path.getsize(dst)
         alpha = np.asarray(sprite.getchannel("A"))
@@ -255,15 +349,21 @@ def main() -> int:
             changed[rel] = new_rel
             old_path = os.path.join(story_dir, rel)
             if os.path.exists(old_path) and os.path.abspath(old_path) != os.path.abspath(dst):
-                os.remove(old_path)
+                obsolete.append(old_path)  # удалим после успешной записи story.json
 
     if changed:
-        text = open(story_json, encoding="utf-8").read()
+        with open(story_json, encoding="utf-8") as f:
+            text = f.read()
         for old, new in changed.items():
             text = text.replace(f'"{old}"', f'"{new}"')
-        with open(story_json, "w", encoding="utf-8") as f:
+        json.loads(text)  # проверяем до замены файла
+        tmp = story_json + ".tmp"
+        with open(tmp, "w", encoding="utf-8") as f:
             f.write(text)
-        json.load(open(story_json, encoding="utf-8"))
+        os.replace(tmp, story_json)
+        for old_path in obsolete:
+            if os.path.exists(old_path):
+                os.remove(old_path)
 
     print(
         f"Итого: спрайтов {len(changed) if changed else '— (preview)'}; "

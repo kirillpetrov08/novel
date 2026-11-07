@@ -11,7 +11,6 @@
   "coverSymbol": "✦",
   "tags": [
     "романтика",
-    "18+",
     "чувственная романтика",
     "звёзды",
     "зима"
@@ -122,6 +121,7 @@
   "scenes": {
     "s1": {
       "bg": "images/bg-village.jpg",
+      "cg": "images/cg-arrival.jpg",
       "bgGradient": [
         "#D9CDB6",
         "#6E655A"
@@ -287,6 +287,7 @@
     },
     "s3": {
       "bg": "images/bg-dome.jpg",
+      "cg": "images/cg-red-lamp.jpg",
       "bgGradient": [
         "#2E2A33",
         "#8A4B3A"
@@ -451,6 +452,7 @@
     },
     "s6": {
       "bg": "images/bg-dome.jpg",
+      "cg": "images/cg-storm-dome.jpg",
       "bgGradient": [
         "#2E2A33",
         "#8A4B3A"
@@ -1300,6 +1302,7 @@
     },
     "ending_krasnaya_lampa": {
       "bg": "images/bg-dome.jpg",
+      "cg": "images/cg-ending-lampa.jpg",
       "bgGradient": [
         "#2E2A33",
         "#8A4B3A"
@@ -1341,6 +1344,7 @@
     },
     "ending_yasno": {
       "bg": "images/bg-dorm.jpg",
+      "cg": "images/cg-ending-yasno.jpg",
       "bgGradient": [
         "#E3D2B2",
         "#8A7355"
@@ -1377,6 +1381,7 @@
     },
     "ending_prodolzhenie": {
       "bg": "images/bg-village.jpg",
+      "cg": "images/cg-ending-prodolzhenie.jpg",
       "bgGradient": [
         "#D9CDB6",
         "#6E655A"

@@ -47,7 +47,7 @@ const Loader = {
     };
     s.cover = fix(s.cover);
     Object.values(s.characters || {}).forEach(c => { c.image = fix(c.image); });
-    Object.values(s.scenes || {}).forEach(sc => { sc.bg = fix(sc.bg); });
+    Object.values(s.scenes || {}).forEach(sc => { sc.bg = fix(sc.bg); sc.cg = fix(sc.cg); });
     return s;
   },
 
@@ -80,13 +80,19 @@ const Loader = {
 
   /* Android-сборка: истории уже вшиты, сеть не нужна. */
   loadBundled() {
-    (window.BUNDLED_STORIES || []).forEach(e => this.register(e.story, e.base || 'встроена', e.base || ''));
+    (window.BUNDLED_STORIES || []).forEach(e => {
+      if (e && typeof e === 'object') this.register(e.story, e.base || 'встроена', e.base || '');
+    });
     return !!window.BUNDLED_BUILD;
   },
 
   async fetchJson(path) {
     const r = await fetch(path, { cache: 'no-cache' });
-    if (!r.ok) throw new Error('HTTP ' + r.status);
+    if (!r.ok) {
+      const error = new Error('HTTP ' + r.status);
+      error.status = r.status;
+      throw error;
+    }
     return r.json();
   },
 
@@ -98,14 +104,14 @@ const Loader = {
       this.registerBundle(await this.fetchJson(inFolder), inFolder, `${folder}/${n}/`);
       return 'ok';
     } catch (e) {
-      if (!String(e.message).includes('404')) { this.diag(inFolder, 'JSON битый: ' + e.message); return 'broken'; }
+      if (e.status !== 404) { this.diag(inFolder, 'Не удалось загрузить или JSON битый: ' + e.message); return 'broken'; }
     }
     const flat = `${folder}/${n}.json`;
     try {
       this.registerBundle(await this.fetchJson(flat), flat, '');
       return 'ok';
     } catch (e) {
-      if (!String(e.message).includes('404')) { this.diag(flat, 'JSON битый: ' + e.message); return 'broken'; }
+      if (e.status !== 404) { this.diag(flat, 'Не удалось загрузить или JSON битый: ' + e.message); return 'broken'; }
     }
     return 'missing';
   },
@@ -113,9 +119,21 @@ const Loader = {
   async manifestFiles(folder) {
     try {
       const m = await this.fetchJson(`${folder}/index.json`);
-      if (Array.isArray(m)) return m;
-      if (m && Number.isInteger(m.count)) return Array.from({ length: m.count }, (_, i) => i + 1);
-      if (m && Array.isArray(m.files)) return m.files;
+      const maxProbe = CONFIG.stores.maxProbe || 500;
+      const normalizeList = list => [...new Set((list || []).slice(0, maxProbe).map(entry => {
+        if (Number.isInteger(entry) && entry >= 1 && entry <= maxProbe) return entry;
+        if (typeof entry !== 'string') return null;
+        const name = entry.trim();
+        if (!name.endsWith('.json') || name.startsWith('/') || name.includes('\\')
+          || /^[a-z][a-z0-9+.-]*:/i.test(name) || name.split('/').includes('..')) return null;
+        return name;
+      }).filter(entry => entry !== null))];
+      if (Array.isArray(m)) return normalizeList(m);
+      if (m && Number.isInteger(m.count)) {
+        const count = Math.max(0, Math.min(m.count, maxProbe));
+        return Array.from({ length: count }, (_, i) => i + 1);
+      }
+      if (m && Array.isArray(m.files)) return normalizeList(m.files);
       if (m && Array.isArray(m.stories) && m.stories.length && typeof m.stories[0] === 'object') {
         this.registerBundle(m, `${folder}/index.json`); return [];
       }

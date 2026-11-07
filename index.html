@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
 <meta name="theme-color" content="#F7F2E7">
 <title>Новелла — интерактивные истории</title>
 <link rel="stylesheet" href="css/style.css">
@@ -28,6 +28,7 @@
       <div id="continue-block"></div>
 
       <h2 class="h2">Библиотека</h2>
+      <div class="seg lib-tabs" id="lib-tabs"></div>
       <div id="story-list"><div class="loading-note">Загружаем истории из папки stores/…</div></div>
       <div id="library-diag"></div>
     </div></div>
@@ -59,29 +60,34 @@
       <div class="stage-bg" id="stage-bg"></div>
       <div class="stage-shade"></div>
       <div class="player-progress" id="player-progress" style="width:0%"></div>
+      <canvas id="weather-fx" aria-hidden="true"></canvas>
       <div class="player-top">
         <button class="icon-btn" id="player-exit" aria-label="Выйти из истории">←</button>
         <div class="player-title" id="player-title"></div>
-        <button class="icon-btn" id="player-log" aria-label="Журнал">≡</button>
+        <button class="icon-btn" id="player-skip" aria-label="Пропустить прочитанное" title="Пропустить прочитанное">»</button>
+        <button class="icon-btn" id="player-saves" aria-label="Сохранения" title="Сохранения">⚑</button>
+        <button class="icon-btn" id="player-log" aria-label="Журнал">☰</button>
         <button class="player-gems js-gems" aria-label="Кристаллы"><span style="color:var(--crystal)">◆</span><span class="js-gems-num">0</span></button>
       </div>
       <div class="chars" id="chars"></div>
+      <!-- Особая карточка-иллюстрация ключевого момента сцены (scene.cg) -->
+      <div class="stage-cg" id="stage-cg" aria-hidden="true"><div class="cg-frame" id="cg-frame"></div><div class="cg-mark">❦</div></div>
 
       <!-- Единая нижняя колонка: выборы всегда НАД репликой и не перекрывают её -->
       <div class="player-lower">
         <div class="choices" id="choices"></div>
         <div class="dialogue-wrap">
+          <div class="speaker" id="speaker" style="display:none"></div>
           <div class="dialogue" id="dialogue">
-            <div class="speaker" id="speaker"></div>
             <div class="dialogue-text" id="dialogue-text"></div>
-            <div class="dialogue-next" id="dialogue-next">▾</div>
+            <div class="dialogue-next" id="dialogue-next" aria-hidden="true">▾</div>
           </div>
         </div>
       </div>
 
       <div class="ending-ov" id="ending-ov">
-        <div class="ending-card">
-          <div class="kicker">ФИНАЛ ИСТОРИИ</div>
+        <div class="ending-card" role="dialog" aria-modal="true" aria-labelledby="ending-title">
+          <div class="kicker">❦ &nbsp;ФИНАЛ ИСТОРИИ&nbsp; ❦</div>
           <h2 id="ending-title"></h2>
           <div class="badge" id="ending-badge"></div>
           <p id="ending-text"></p>
@@ -157,6 +163,9 @@
       <button class="crystals-pill js-gems" data-go="shop"><span class="gem">◆</span><span class="js-gems-num">0</span></button>
     </header>
     <div class="scroll"><div class="pad">
+      <h2 class="h2">Задания дня</h2>
+      <div class="row-card" id="quests-box"><p class="muted">Загружаем задания…</p></div>
+
       <h2 class="h2">Приглашай друзей — получайте кристаллы</h2>
       <div class="row-card">
         <p class="muted" style="margin-bottom:10px">Твой личный код:</p>
@@ -179,7 +188,7 @@
         <div class="row-title">Тебя пригласили?</div>
         <p class="muted" style="margin:6px 0 11px">Введи код друга и получи бонус новичка. Код можно активировать один раз.</p>
         <div class="row-flex">
-          <input class="field" id="claim-input" placeholder="NV-XXXXXX" maxlength="10" style="flex:1;text-transform:uppercase">
+          <input class="field" id="claim-input" placeholder="NV-XXXXXX" maxlength="10" style="flex:1;text-transform:uppercase" aria-label="Код друга" autocomplete="off" autocapitalize="characters" spellcheck="false">
           <button class="mini-btn accent" id="claim-btn">Активировать</button>
         </div>
         <p class="muted small" id="claim-note" style="margin-top:9px"></p>
@@ -187,9 +196,36 @@
 
       <h2 class="h2">Настройки чтения</h2>
       <div class="row-card">
+        <div style="margin-bottom:14px">
+          <div class="row-title">Скорость текста</div>
+          <div class="row-sub" style="margin-bottom:8px">Как быстро печатаются реплики.</div>
+          <div class="seg" id="seg-speed">
+            <button data-speed="instant">Мгновенно</button>
+            <button data-speed="fast">Быстро</button>
+            <button data-speed="normal">Обычно</button>
+            <button data-speed="slow">Медленно</button>
+          </div>
+        </div>
+        <div style="margin-bottom:14px">
+          <div class="row-title">Размер шрифта</div>
+          <div class="row-sub" style="margin-bottom:8px">Размер текста реплик в плеере.</div>
+          <div class="seg" id="seg-font">
+            <button data-font="s">Меньше</button>
+            <button data-font="m">Обычно</button>
+            <button data-font="l">Крупнее</button>
+          </div>
+        </div>
         <div class="switch-row" style="margin-bottom:14px">
-          <div><div class="row-title">Печатная машинка</div><div class="row-sub">Текст появляется по символам. Выключи — и реплики будут мгновенными.</div></div>
-          <button class="mini-btn" id="typewriter-toggle"></button>
+          <div><div class="row-title">Музыка и атмосфера</div><div class="row-sub">Спокойный фон во время чтения. Работает без интернета.</div></div>
+          <button class="mini-btn" id="music-toggle"></button>
+        </div>
+        <div class="switch-row" style="margin-bottom:14px">
+          <div><div class="row-title">Эффекты погоды</div><div class="row-sub">Живой снег и дождь в сценах, где они есть по сюжету.</div></div>
+          <button class="mini-btn" id="weather-toggle"></button>
+        </div>
+        <div class="switch-row" style="margin-bottom:14px">
+          <div><div class="row-title">Уведомления</div><div class="row-sub" id="notify-sub">Напоминание вечером: ежедневные кристаллы и новые задания.</div></div>
+          <button class="mini-btn" id="notify-toggle"></button>
         </div>
         <div class="switch-row">
           <div><div class="row-title">Сбросить весь прогресс</div><div class="row-sub">Кристаллы и прохождения историй будут удалены.</div></div>
@@ -200,9 +236,29 @@
     </div></div>
   </section>
 
+  <!-- ===================== ПОЛКА ФИНАЛОВ ===================== -->
+  <section class="screen" id="screen-shelf">
+    <header class="topbar">
+      <div class="logo">ПОЛКА ФИНАЛОВ<small>КОНЦОВКИ И ДОСТИЖЕНИЯ</small></div>
+      <button class="crystals-pill js-gems" data-go="shop"><span class="gem">◆</span><span class="js-gems-num">0</span></button>
+    </header>
+    <div class="scroll"><div class="pad">
+      <div class="row-card big-balance">
+        <div class="num" id="shelf-total">✦ 0 из 0</div>
+        <div class="lbl">Финалов открыто во всех историях</div>
+      </div>
+      <div id="shelf-list"></div>
+      <p class="muted small">Перепроходи истории с другими выборами — каждый новый финал даёт +10 ◆ и место на полке.</p>
+
+      <h2 class="h2">Достижения</h2>
+      <div class="row-card" id="ach-box"><p class="muted">Загружаем достижения…</p></div>
+    </div></div>
+  </section>
+
   <!-- нижняя навигация -->
   <nav class="tabbar" id="tabbar">
-    <button data-go="library" class="active"><span class="ic">❦</span>Библиотека</button>
+    <button data-go="library" class="active" aria-current="page"><span class="ic">❦</span>Библиотека</button>
+    <button data-go="shelf"><span class="ic">✦</span>Полка</button>
     <button data-go="shop"><span class="ic">◆</span>Кристаллы</button>
     <button data-go="profile"><span class="ic">♡</span>Профиль</button>
   </nav>
@@ -210,7 +266,7 @@
 
 <!-- ===================== МОДАЛКИ ===================== -->
 <div class="modal-ov" id="modal-ad">
-  <div class="modal">
+  <div class="modal" role="dialog" aria-modal="true" aria-label="Реклама">
     <h3>Реклама</h3>
     <div class="ad-fake">
       <div class="t1">Здесь будет реклама</div>
@@ -223,7 +279,7 @@
 </div>
 
 <div class="modal-ov" id="modal-need">
-  <div class="modal">
+  <div class="modal" role="dialog" aria-modal="true" aria-label="Не хватает кристаллов">
     <h3>Не хватает кристаллов ◆</h3>
     <p id="need-text"></p>
     <button class="btn btn-accent" id="need-ad-btn">▶ Посмотреть рекламу и получить ◆</button>
@@ -233,7 +289,7 @@
 </div>
 
 <div class="modal-ov" id="modal-log">
-  <div class="modal">
+  <div class="modal" role="dialog" aria-modal="true" aria-label="Журнал реплик">
     <h3>Журнал</h3>
     <div class="log-list" id="log-list"></div>
     <button class="btn btn-ghost" data-close="modal-log" style="margin-top:14px">Закрыть</button>
@@ -241,7 +297,7 @@
 </div>
 
 <div class="modal-ov" id="modal-confirm">
-  <div class="modal">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="confirm-title" aria-describedby="confirm-text">
     <h3 id="confirm-title">Ты уверена?</h3>
     <p id="confirm-text"></p>
     <button class="btn btn-primary" id="confirm-yes">Да</button>
@@ -250,7 +306,7 @@
 </div>
 
 <div class="modal-ov" id="modal-welcome">
-  <div class="modal" style="text-align:center">
+  <div class="modal" role="dialog" aria-modal="true" aria-label="Добро пожаловать в Новеллу" style="text-align:center">
     <div style="font-size:38px;margin-bottom:8px">◆</div>
     <h3>Добро пожаловать в «Новеллу»</h3>
     <p id="welcome-text"></p>
@@ -258,7 +314,29 @@
   </div>
 </div>
 
-<div id="toasts"></div>
+<div class="modal-ov" id="modal-saves">
+  <div class="modal" role="dialog" aria-modal="true" aria-label="Сохранения">
+    <h3>Сохранения ⚑</h3>
+    <p class="muted" style="margin-bottom:10px">Закладки на важных развилках этой истории: вернись и выбери иначе, не перепроходя всё сначала.</p>
+    <div id="saves-list"></div>
+    <button class="btn btn-ghost" data-close="modal-saves" style="margin-top:12px">Закрыть</button>
+  </div>
+</div>
+
+<div class="modal-ov" id="modal-rate">
+  <div class="modal" role="dialog" aria-modal="true" aria-label="Оценка истории" style="text-align:center">
+    <div style="font-size:34px;margin-bottom:6px">♡</div>
+    <h3>Понравилась история?</h3>
+    <p class="muted">Твоя оценка правда помогает «Новелле» расти и выпускать новые истории чаще.</p>
+    <div class="stars" id="rate-stars" role="group" aria-label="Выбери оценку от 1 до 5 звёзд">
+      <button data-star="1" aria-label="1 звезда">★</button><button data-star="2" aria-label="2 звезды">★</button><button data-star="3" aria-label="3 звезды">★</button><button data-star="4" aria-label="4 звезды">★</button><button data-star="5" aria-label="5 звёзд">★</button>
+    </div>
+    <div id="rate-actions"></div>
+    <button class="btn btn-ghost" id="rate-later">Не сейчас</button>
+  </div>
+</div>
+
+<div id="toasts" aria-live="polite" aria-atomic="false"></div>
 
 <script src="js/config.js"></script>
 <script src="js/store.js"></script>
@@ -267,6 +345,9 @@
 <script src="js/stories-bundle.js"></script>
 <script src="js/loader.js"></script>
 <script src="js/engine.js"></script>
+<script src="js/meta.js"></script>
+<script src="js/audio.js"></script>
+<script src="js/notify.js"></script>
 <script src="js/app.js"></script>
 </body>
 </html>

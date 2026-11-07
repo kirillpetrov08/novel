@@ -1,11 +1,12 @@
 name: Сборка Android (APK + AAB для RuStore)
 
 # Когда собирать: вручную из вкладки Actions и автоматически при коммите
-# новой истории / кода приложения. Результат — артефакты запуска:
+# новой истории / кода приложения (каждый запуск = новый versionCode).
+# Результат — артефакты запуска:
 #   • novella-debug-apk   — тестовая сборка, ставится прямо на телефон
 #   • novella-release-apk — релизный APK для RuStore (подписанный, если заданы секреты)
 #   • novella-release-aab — то же приложение в формате AAB для RuStore
-# Дополнительно (ветки main и arena/e5c78877-novel) обновляется GitHub-релиз
+# Дополнительно (ветки main и arena/*) обновляется GitHub-релиз
 # «app-latest» — на странице репозитория (Releases) лежат novella.apk (тест),
 # novella-release.apk и novella.aab (для RuStore) с обычной кнопкой скачивания.
 on:
@@ -35,19 +36,19 @@ jobs:
     permissions:
       contents: write  # публикация APK/AAB в GitHub Release
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version: 22
           cache: npm
 
-      - uses: actions/setup-java@v4
+      - uses: actions/setup-java@v6
         with:
           distribution: temurin
           java-version: 21
 
-      - uses: android-actions/setup-android@v3
+      - uses: android-actions/setup-android@v4
         with:
           packages: "platform-tools platforms;android-36 build-tools;36.0.0"
 
@@ -56,6 +57,9 @@ jobs:
 
       - name: Проверить истории
         run: npm run validate
+
+      - name: Проверить синтаксис JS/MJS
+        run: npm run check:syntax
 
       - name: Собрать веб-часть и синхронизировать Android
         run: npm run build:android
@@ -117,40 +121,116 @@ jobs:
 
       - name: Проверка содержимого APK
         run: |
+          set -o pipefail
           unzip -l android/app/build/outputs/apk/debug/app-debug.apk > apk-list.txt
           grep -q 'assets/public/index.html' apk-list.txt
           grep -q 'assets/public/js/engine.js' apk-list.txt
+          if grep -q 'art-prompts.json' apk-list.txt; then
+            echo '::error::В APK попал внутренний art-prompts.json'
+            exit 1
+          fi
           unzip -p android/app/build/outputs/apk/debug/app-debug.apk assets/public/js/stories-bundle.js | grep -q 'BUNDLED_BUILD = true'
+          RELEASE_APK=$(ls android/app/build/outputs/apk/release/*.apk | head -n 1)
+          test -n "$RELEASE_APK"
+          unzip -l "$RELEASE_APK" > release-apk-list.txt
+          grep -q 'assets/public/index.html' release-apk-list.txt
+          grep -q 'assets/public/js/engine.js' release-apk-list.txt
+          if grep -q 'art-prompts.json' release-apk-list.txt; then
+            echo '::error::В релизный APK попал внутренний art-prompts.json'
+            exit 1
+          fi
           echo '✓ APK содержит приложение и вшитые истории' >> "$GITHUB_STEP_SUMMARY"
 
+      - name: Проверка подписи релизных APK и AAB
+        if: steps.ks.outputs.has == 'true'
+        run: |
+          fail() { echo "::error title=Проверка подписи::$*"; exit 1; }
+          APK=android/app/build/outputs/apk/release/app-release.apk
+          AAB=android/app/build/outputs/bundle/release/app-release.aab
+          [ -f "$APK" ] || fail "Нет релизного APK: $APK"
+          [ -f "$AAB" ] || fail "Нет релизного AAB: $AAB"
+
+          APKSIGNER=''
+          for root in "${ANDROID_HOME:-}" "${ANDROID_SDK_ROOT:-}" \
+              "$(sed -n 's/^sdk\.dir=//p' android/local.properties 2>/dev/null | head -n 1)" \
+              "$HOME/Android/Sdk" "/usr/local/lib/android/sdk"; do
+            [ -n "$root" ] && [ -d "$root/build-tools" ] || continue
+            APKSIGNER=$(find "$root/build-tools" -name apksigner \( -type f -o -type l \) | sort -V | tail -n 1)
+            [ -n "$APKSIGNER" ] && break
+          done
+          [ -n "$APKSIGNER" ] || fail 'Не найден apksigner в Android SDK'
+
+          set +e
+          "$APKSIGNER" verify --print-certs "$APK" > release-cert.txt 2>&1
+          APK_SIGN_STATUS=$?
+          set -e
+          cat release-cert.txt
+          [ $APK_SIGN_STATUS -eq 0 ] || fail "apksigner завершился с кодом $APK_SIGN_STATUS"
+          APK_SHA256=$(sed -n 's/.*certificate SHA-256 digest:[[:space:]]*//p' release-cert.txt | head -n 1 | tr -d '[:space:]:' | tr 'A-F' 'a-f')
+          [ ${#APK_SHA256} -eq 64 ] || fail 'apksigner не вернул SHA-256 сертификата APK'
+
+          set +e
+          jarsigner -verify "$AAB" > aab-verify.txt 2>&1
+          JAR_SIGN_STATUS=$?
+          set -e
+          cat aab-verify.txt
+          grep -qi 'jar verified' aab-verify.txt || fail 'jarsigner не подтвердил подпись AAB'
+          if grep -qiE 'jar is unsigned|verification failed|unsigned entr|invalid signature' aab-verify.txt; then
+            fail 'В AAB есть неподписанные или повреждённые элементы'
+          fi
+          # jarsigner может вернуть 4 только из-за ожидаемого предупреждения о
+          # самоподписанной цепочке Android-ключа. Криптографическая целостность
+          # при этом уже подтверждена строкой «jar verified», а ниже мы отдельно
+          # сверяем, что AAB подписан в точности тем же сертификатом, что APK.
+          if [ $JAR_SIGN_STATUS -ne 0 ] && [ $JAR_SIGN_STATUS -ne 4 ]; then
+            fail "jarsigner завершился с кодом $JAR_SIGN_STATUS"
+          fi
+
+          set +e
+          keytool -printcert -jarfile "$AAB" > aab-cert.txt 2>&1
+          AAB_CERT_STATUS=$?
+          set -e
+          cat aab-cert.txt
+          [ $AAB_CERT_STATUS -eq 0 ] || fail "keytool не смог прочитать сертификат AAB (код $AAB_CERT_STATUS)"
+          AAB_SHA256=$(grep -i 'SHA256:' aab-cert.txt | head -n 1 | sed 's/.*SHA256:[[:space:]]*//' | tr -d '[:space:]:' | tr 'A-F' 'a-f')
+          [ "$AAB_SHA256" = "$APK_SHA256" ] || fail 'SHA-256 сертификатов APK и AAB не совпадают'
+          echo '✓ Релизные APK и AAB подписаны одним ключом; подпись проверена в CI' >> "$GITHUB_STEP_SUMMARY"
+
       - name: Артефакт — тестовый APK
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: novella-debug-apk
           path: android/app/build/outputs/apk/debug/app-debug.apk
           if-no-files-found: error
 
       - name: Артефакт — AAB для RuStore
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: novella-release-aab
           path: android/app/build/outputs/bundle/release/app-release.aab
           if-no-files-found: error
 
       - name: Артефакт — релизный APK для RuStore
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: novella-release-apk
           path: android/app/build/outputs/apk/release/*.apk
           if-no-files-found: error
 
       - name: Опубликовать APK (тест + релиз) и AAB в GitHub Release (кнопка скачивания)
-        if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/arena/e5c78877-novel'
+        if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/arena/')
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          HAS_KEY: ${{ steps.ks.outputs.has }}
         run: |
           cp android/app/build/outputs/apk/debug/app-debug.apk novella.apk
-          cp android/app/build/outputs/apk/release/app-release.apk novella-release.apk 2>/dev/null || cp android/app/build/outputs/apk/release/app-release-unsigned.apk novella-release.apk
+          if [ "$HAS_KEY" = "true" ]; then
+            cp android/app/build/outputs/apk/release/app-release.apk novella-release.apk
+            SIGN_NOTE='Релизные APK и AAB подписаны ключом приложения и готовы к загрузке в RuStore.'
+          else
+            cp android/app/build/outputs/apk/release/app-release-unsigned.apk novella-release.apk
+            SIGN_NOTE='ВНИМАНИЕ: секреты подписи не настроены, релизные APK и AAB неподписанные — RuStore их не примет.'
+          fi
           cp android/app/build/outputs/bundle/release/app-release.aab novella.aab
           # Скользящий релиз: пересоздаём, чтобы тег указывал на собранный коммит
           gh release delete app-latest --yes --cleanup-tag 2>/dev/null || true
@@ -158,8 +238,10 @@ jobs:
             "## Что скачивать" \
             "" \
             "- **novella.apk** — тестовая сборка: скачать на телефон и установить (разрешить установку из браузера/файлов)." \
-            "- **novella-release.apk** — релизный APK для RuStore (примет магазин только после настройки ключа подписи, см. RUSTORE.md)." \
-            "- **novella.aab** — то же приложение в формате AAB для RuStore (тоже требует настроенного ключа подписи)." \
+            "- **novella-release.apk** — релизный APK для RuStore." \
+            "- **novella.aab** — то же приложение в формате AAB для RuStore." \
+            "" \
+            "$SIGN_NOTE" \
             "" \
             "Собрано автоматически из коммита ${{ github.sha }} (${{ github.ref_name }}), запуск №${{ github.run_number }}." \
             > release-notes.md
@@ -171,7 +253,7 @@ jobs:
           echo "✓ Релиз app-latest обновлён: novella.apk, novella-release.apk и novella.aab доступны на странице Releases" >> "$GITHUB_STEP_SUMMARY"
 
       - name: APK отдельной веткой apk-latest (агент забирает файл гитом в чат)
-        if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/arena/e5c78877-novel'
+        if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/arena/')
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |

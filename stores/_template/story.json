@@ -120,7 +120,7 @@
         {
           "if": {
             "stat": "stat1",
-            "gte": 3
+            "gte": 1
           },
           "to": "end1"
         }

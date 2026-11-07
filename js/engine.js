@@ -13,27 +13,77 @@ const Engine = {
 
   emit(type, payload) { this.onEvent && this.onEvent(type, payload); },
 
+  validEndingIds(story, ids) {
+    const valid = new Set(Object.entries(story.scenes || {})
+      .filter(([, sc]) => sc && sc.ending).map(([id]) => id));
+    return [...new Set(Array.isArray(ids) ? ids : [])].filter(id => valid.has(id));
+  },
+
   freshState(story) {
     const stats = {};
     Object.keys(story.stats || {}).forEach(k => stats[k] = 0);
+    const prev = Store.getProgress(story.id) || {};
+    // Старая версия сохранения могла ссылаться на уже удалённый финал. Такой id
+    // не должен лишать игрока награды за первое настоящее прохождение.
+    const endingsFound = this.validEndingIds(story, prev.endingsFound);
+    const prevSeen = Array.isArray(prev.seen) ? prev.seen : prev.visited;
+    const seen = [...new Set(Array.isArray(prevSeen) ? prevSeen : [])]
+      .filter(id => !!(story.scenes || {})[id]);
+    if (!seen.includes(story.start)) seen.push(story.start);
     return {
       sceneId: story.start, lineIndex: 0, stats,
       paid: [], visited: [story.start], log: [],
+      // seen: сцены, виденные в ЛЮБОМ прохождении (для «пропуска прочитанного»)
+      seen,
       completed: false,
-      endingsFound: (Store.getProgress(story.id) || {}).endingsFound || [],
-      completedBefore: (Store.getProgress(story.id) || {}).completed || false,
+      endingsFound,
+      // Признак первого прохождения нельзя терять при повторном рестарте уже
+      // начатого перепрохождения: completed в нём false, а история пройдена раньше.
+      completedBefore: !!(prev.completed || prev.completedBefore || endingsFound.length),
     };
+  },
+
+  normalizeState(story, state) {
+    const s = normalizePlayState(state) || this.freshState(story);
+    if (!story.scenes[s.sceneId]) { s.sceneId = story.start; s.lineIndex = 0; }
+    const declaredStats = story.stats || {};
+    Object.keys(s.stats).forEach(k => { if (!(k in declaredStats)) delete s.stats[k]; });
+    Object.keys(declaredStats).forEach(k => {
+      if (!Number.isFinite(s.stats[k])) s.stats[k] = 0;
+    });
+    const validScene = id => !!(story.scenes || {})[id];
+    s.visited = s.visited.filter(validScene);
+    s.seen = s.seen.filter(validScene);
+    s.endingsFound = this.validEndingIds(story, s.endingsFound);
+    s.paid = s.paid.filter(key => {
+      const match = /^(.+):(\d+)$/.exec(key);
+      if (!match || !validScene(match[1])) return false;
+      const choices = story.scenes[match[1]].choices || [];
+      return Number(match[2]) < choices.length;
+    });
+    if (!s.visited.includes(s.sceneId)) s.visited.push(s.sceneId);
+    if (!s.seen.length) s.seen = s.visited.slice();
+    if (!s.seen.includes(s.sceneId)) s.seen.push(s.sceneId);
+    if (s.endingsFound.length) s.completedBefore = true;
+    const sc = story.scenes[s.sceneId];
+    const lines = sc && Array.isArray(sc.lines) ? sc.lines : [];
+    s.lineIndex = Math.max(0, Math.min(s.lineIndex, Math.max(0, lines.length - 1)));
+    return s;
   },
 
   open(story, mode) { // mode: 'continue' | 'restart'
     this.stopTyping();
     this.story = story;
     const saved = Store.getProgress(story.id);
-    if (mode === 'continue' && saved && story.scenes[saved.sceneId] && !saved.completed) {
-      this.state = saved;
-    } else {
-      this.state = this.freshState(story);
-    }
+    const candidate = (mode === 'continue' && saved && story.scenes[saved.sceneId] && !saved.completed)
+      ? saved
+      : this.freshState(story);
+    // Защита от сохранений прошлой версии истории и частично битых состояний:
+    // типы полей, характеристики и граница реплики приводятся к текущей истории.
+    this.state = this.normalizeState(story, candidate);
+    this._finishedSceneId = null;
+    // снимок «уже читано до этого захода» — граница для пропуска прочитанного
+    this.seenBefore = new Set([...(this.state.seen || []), ...(this.state.visited || [])]);
     this.persist();
     this.render();
   },
@@ -46,6 +96,7 @@ const Engine = {
     if (!effect) return;
     const changes = [];
     for (const [k, v] of Object.entries(effect)) {
+      if (!Number.isFinite(v) || !((this.story.stats || {})[k])) continue;
       this.state.stats[k] = (this.state.stats[k] || 0) + v;
       const meta = (this.story.stats || {})[k] || {};
       changes.push(`${meta.icon || '✦'} ${meta.label || k} ${v > 0 ? '+' : ''}${v}`);
@@ -71,13 +122,22 @@ const Engine = {
     const choice = (this.scene().choices || [])[idx];
     if (!choice) return;
 
+    // Проверяем цель ДО списания и эффектов: битая ссылка (если история
+    // обновилась между валидацией и запуском) не должна стоить кристаллов.
+    if (!choice.next || !this.story.scenes[choice.next]) return;
+
     const locked = this.checkRequires(choice);
     if (locked) { this.emit('locked', locked); return; }
 
-    const cost = choice.crystals || 0;
+    const cost = Number.isInteger(choice.crystals) && choice.crystals > 0 ? choice.crystals : 0;
     if (cost > 0 && !this.isPaid(choice, idx)) {
       if (!Store.spendCrystals(cost, `Выбор в «${this.story.title}»`)) {
-        this.emit('need-crystals', { cost, idx });
+        this.emit('need-crystals', {
+          cost, idx,
+          storyId: this.story.id,
+          sceneId: this.state.sceneId,
+          text: choice.text,
+        });
         return;
       }
       this.state.paid.push(this.choiceKey(choice, idx)); // повторно в этом прохождении не платим
@@ -86,22 +146,59 @@ const Engine = {
 
     this.state.log.push({ type: 'choice', text: choice.text });
     this.applyEffect(choice.effect);
+    this.emit('choice-made', { paid: cost > 0 });
     this.goTo(choice.next);
   },
 
   goTo(sceneId) {
     if (!this.story.scenes[sceneId]) return;
+    this._finishedSceneId = null;
     this.state.sceneId = sceneId;
     this.state.lineIndex = 0;
     if (!this.state.visited.includes(sceneId)) this.state.visited.push(sceneId);
+    if (this.state.seen && !this.state.seen.includes(sceneId)) this.state.seen.push(sceneId);
     this.persist();
     this.render();
+  },
+
+  /* Пропуск прочитанного: мгновенно листает уже виденные сцены до ближайшего
+     выбора, финала или первой непрочитанной сцены. Возвращает true, если сдвинулись. */
+  skipRead() {
+    if (!this.state || !this.scene()) return false;
+    if (this.seenBefore && !this.seenBefore.has(this.state.sceneId)) return false;
+    this.stopTyping();
+    this._finishedSceneId = null;
+    const fromScene = this.state.sceneId, fromLine = this.state.lineIndex;
+    let guard = 0;
+    while (guard++ < 1500) {
+      const sc = this.scene();
+      if (!sc) break;
+      if (this.state.lineIndex < sc.lines.length - 1) { this.state.lineIndex = sc.lines.length - 1; continue; }
+      if (sc.ending || (sc.choices || []).length) break;
+      const target = this.resolveBranch(sc) || sc.next;
+      if (!target || !this.story.scenes[target]) break;
+      this.state.sceneId = target;
+      this.state.lineIndex = 0;
+      if (!this.state.visited.includes(target)) this.state.visited.push(target);
+      if (this.state.seen && !this.state.seen.includes(target)) this.state.seen.push(target);
+      if (this.seenBefore && !this.seenBefore.has(target)) break; // первая непрочитанная — стоп на её первой реплике
+    }
+    this.persist();
+    this.render();
+    if (this.scenePhase() === 'choices-ready') {
+      // Пропуск прочитанного должен сразу приводить к выбору, а не заставлять
+      // делать ещё один «пустой» тап только ради открытия кнопок.
+      this.finishTyping();
+      this.emit('show-choices');
+    }
+    return this.state.sceneId !== fromScene || this.state.lineIndex !== fromLine;
   },
 
   /* Тап по диалогу: допечатать строку ИЛИ шагнуть дальше. */
   advance() {
     if (this.typing && !this.typing.done) { this.finishTyping(); return; }
     const sc = this.scene();
+    if (!sc || !sc.lines) return;
     if (this.state.lineIndex < sc.lines.length - 1) {
       this.state.lineIndex++;
       this.persist();
@@ -130,6 +227,7 @@ const Engine = {
   /* Если сцена открывается сразу на выборах/финале без тапа — UI спросит это. */
   scenePhase() {
     const sc = this.scene();
+    if (!sc || !sc.lines) return 'lines';
     const lastLine = this.state.lineIndex >= sc.lines.length - 1;
     if (!lastLine) return 'lines';
     if (sc.ending) return 'ending-ready';
@@ -139,7 +237,13 @@ const Engine = {
 
   finish(sc) {
     const endingId = this.state.sceneId;
+    // Финал эмитится один раз на вход в сцену: повторные тапы/пробелы на уже
+    // открытом экране финала не должны заново крутить награды и счётчики заданий.
+    if (this._finishedSceneId === endingId) return;
+    this._finishedSceneId = endingId;
     const isNewEnding = !this.state.endingsFound.includes(endingId);
+    // Любой уже открытый финал сам по себе доказывает, что первое прохождение было.
+    if (this.state.endingsFound.length) this.state.completedBefore = true;
     const firstComplete = !this.state.completedBefore && !this.state.completed;
     if (isNewEnding) this.state.endingsFound.push(endingId);
     this.state.completed = true;
@@ -158,10 +262,12 @@ const Engine = {
       notes.push(`Новый финал открыт: +${CONFIG.crystals.newEnding} ◆`);
     }
     if (reward) Store.addCrystals(reward, `Финал «${sc.ending.title}»`);
-    this.emit('ending', { ending: sc.ending, reward, notes, isNewEnding });
+    this.emit('ending', { ending: sc.ending, reward, notes, isNewEnding, firstComplete });
   },
 
   progressPct() {
+    const sc = this.scene();
+    if (this.state.completed || (sc && sc.ending)) return 100;
     const total = Object.keys(this.story.scenes).length || 1;
     return Math.min(100, Math.round((this.state.visited.length / total) * 100));
   },
@@ -180,6 +286,7 @@ const Engine = {
       this.state.log.push({ type: ln.type, who: ln.who || null, text: ln.text, scene: this.state.sceneId, line: this.state.lineIndex });
       if (this.state.log.length > 500) this.state.log = this.state.log.slice(-500);
       this.persist();
+      this.emit('line-read'); // реплика показана впервые — для заданий и достижений
     }
     this.emit('render-line', ln);
   },
@@ -189,13 +296,15 @@ const Engine = {
     this.stopTyping();
     if (!Store.data.settings.typewriter) { el.textContent = text; this.typing = { done: true, full: text, el }; return; }
     let i = 0;
+    const chars = Array.from(text); // Unicode code points: не режем суррогатные пары пополам
     el.textContent = '';
     this.typing = { done: false, full: text, el, timer: null };
+    const ms = (Store.data.settings && Store.data.settings.typeMs) || CONFIG.text.typewriterMs;
     this.typing.timer = setInterval(() => {
       i += 2; // по 2 символа — плавно и без нагрузки
-      el.textContent = text.slice(0, i);
-      if (i >= text.length) this.finishTyping();
-    }, CONFIG.text.typewriterMs);
+      el.textContent = chars.slice(0, i).join('');
+      if (i >= chars.length) this.finishTyping();
+    }, ms);
   },
   finishTyping() {
     if (!this.typing) return;

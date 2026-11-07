@@ -9,7 +9,9 @@
                     кристаллов», удвоение награды за финал
      • interstitial R-M-20304990-2 — между новеллами: вход в историю
                     из библиотеки и выход с экрана финала
-     • native       R-M-20304990-3 — нативная карточка в библиотеке
+     • native       R-M-20304990-3 — нативная карточка в ленте библиотеки
+     • bannerFeed   R-M-20304990-5/-6 — баннеры «Лента» там же; слоты стоят
+                    в случайных местах между карточками (Meta.planFeedAds)
    В веб-режиме разработки (нет плагина) rewarded заменяется
    демо-таймером, interstitial пропускается, native — карточкой-
    заглушкой, чтобы было видно место размещения.
@@ -25,29 +27,71 @@ const Ads = {
   _nativeHeight: 0,      // высота нативной карточки (dp) — под слот в библиотеке
   _nativePromise: null,  // текущая загрузка native (защита от параллельных вызовов)
   onNativeResized: null, // выставляет UI: (heightDp) => подправить высоту слота
+  _feed: {},             // лента библиотеки: slotId -> {shown, height, promise}
+  onFeedResized: null,   // выставляет UI: (slotId, heightDp) => подправить высоту слота
+  onFeedClosed: null,    // выставляет UI: (slotId) => пользователь закрыл карточку крестиком
+  _interstitialPromise: null, // один показ interstitial на все параллельные вызовы
 
   plugin() {
     return (window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.YandexAds) || null;
   },
   isNative() { return !!this.plugin(); },
 
+  /* Страховка от «молчащего» плагина: ни один вызов рекламы не должен вечно
+     держать интерфейс (иначе, например, история вообще не откроется). */
+  _withTimeout(promise, ms, fallback) {
+    let timer = null;
+    const timeout = new Promise(res => { timer = setTimeout(() => res(fallback), ms); });
+    return Promise.race([Promise.resolve(promise), timeout])
+      .finally(() => { if (timer) clearTimeout(timer); });
+  },
+
+  _fire(promise) {
+    try { Promise.resolve(promise).catch(() => {}); } catch (e) {}
+  },
+
+  _height(value) {
+    const h = Number(value);
+    return Number.isFinite(h) && h > 0 ? Math.min(Math.round(h), 1000) : 0;
+  },
+
   async init() {
     const p = this.plugin();
     if (!p || this._inited) return;
-    this._inited = true;
     try {
       await p.initialize();
+      this._inited = true;
+      // После перезагрузки WebView нативные Android-вью прошлого JS-сеанса могли
+      // остаться поверх нового интерфейса. Начинаем каждый сеанс с чистого листа.
+      this._nativeVisible = false;
+      this._nativeHeight = 0;
+      this._feed = {};
+      this._fire(p.hideNative());
+      this._fire(p.hideAllFeedAds());
       // Предзагрузка полноэкранных форматов: показ потом мгновенный.
-      p.preloadInterstitial({ adUnitId: CONFIG.ads.interstitial });
-      p.preloadRewarded({ adUnitId: CONFIG.ads.rewarded });
+      this._fire(p.preloadInterstitial({ adUnitId: CONFIG.ads.interstitial }));
+      this._fire(p.preloadRewarded({ adUnitId: CONFIG.ads.rewarded }));
       if (p.addListener) {
-        p.addListener('nativeClosed', () => { this._nativeVisible = false; });
-        p.addListener('nativeResized', e => {
-          if (e && e.height) {
-            this._nativeHeight = e.height;
-            if (this.onNativeResized) this.onNativeResized(e.height);
+        this._fire(p.addListener('nativeClosed', () => { this._nativeVisible = false; }));
+        this._fire(p.addListener('nativeResized', e => {
+          const height = this._height(e && e.height);
+          if (height) {
+            this._nativeHeight = height;
+            if (this.onNativeResized) this.onNativeResized(height);
           }
-        });
+        }));
+        this._fire(p.addListener('feedClosed', e => {
+          const id = e && e.id; if (!id) return;
+          if (this._feed[id]) this._feed[id].shown = false;
+          if (this.onFeedClosed) this.onFeedClosed(id);
+        }));
+        this._fire(p.addListener('feedResized', e => {
+          const id = e && e.id;
+          const height = this._height(e && e.height);
+          if (!id || !height) return;
+          if (this._feed[id]) this._feed[id].height = height;
+          if (this.onFeedResized) this.onFeedResized(id, height);
+        }));
       }
     } catch (e) { /* без рекламы приложение продолжает работать */ }
   },
@@ -57,8 +101,11 @@ const Ads = {
     const p = this.plugin();
     if (!p) return false;
     try {
-      const r = await p.showRewarded({ adUnitId: CONFIG.ads.rewarded });
-      p.preloadRewarded({ adUnitId: CONFIG.ads.rewarded });
+      // Долгий предохранитель: уже показанная полноэкранная реклама может
+      // оставаться открытой по действиям пользователя дольше минуты. Случай
+      // «не загрузилась/не показалась» быстро завершает сам нативный плагин.
+      const r = await this._withTimeout(p.showRewarded({ adUnitId: CONFIG.ads.rewarded }), 300000, null);
+      this._fire(p.preloadRewarded({ adUnitId: CONFIG.ads.rewarded }));
       return !!(r && r.rewarded);
     } catch (e) { return false; }
   },
@@ -79,16 +126,22 @@ const Ads = {
   /* --- Interstitial: между новеллами и после финала. С кулдауном,
          никогда не блокирует пользователя, если реклама не готова. --- */
   async showInterstitial() {
-    const last = Store.data.ads.lastInterstitialAt || 0;
-    if (Date.now() - last < CONFIG.ads.interstitialCooldownSec * 1000) return false;
-    const p = this.plugin();
-    if (!p) return false; // в веб-разработке просто пропускаем
-    try {
-      const r = await p.showInterstitial({ adUnitId: CONFIG.ads.interstitial });
-      const shown = !!(r && r.shown);
-      if (shown) { Store.data.ads.lastInterstitialAt = Date.now(); Store.save(); }
-      return shown;
-    } catch (e) { return false; }
+    if (this._interstitialPromise) return this._interstitialPromise;
+    const run = (async () => {
+      const last = Store.data.ads.lastInterstitialAt || 0;
+      if (Date.now() - last < CONFIG.ads.interstitialCooldownSec * 1000) return false;
+      const p = this.plugin();
+      if (!p) return false; // в веб-разработке просто пропускаем
+      try {
+        const r = await this._withTimeout(p.showInterstitial({ adUnitId: CONFIG.ads.interstitial }), 180000, null);
+        const shown = !!(r && r.shown);
+        if (shown) { Store.data.ads.lastInterstitialAt = Date.now(); Store.save(); }
+        return shown;
+      } catch (e) { return false; }
+    })();
+    this._interstitialPromise = run;
+    try { return await run; }
+    finally { if (this._interstitialPromise === run) this._interstitialPromise = null; }
   },
 
   /* --- Native: карточка лежит точно поверх слота между историями в библиотеке.
@@ -105,9 +158,10 @@ const Ads = {
     if (this._nativePromise) return this._nativePromise;
     this._nativePromise = (async () => {
       try {
-        const r = await p.showNative({ adUnitId: CONFIG.ads.native, ...this._rectArgs(rect) });
+        const r = await this._withTimeout(p.showNative({ adUnitId: CONFIG.ads.native, ...this._rectArgs(rect) }), 15000, null);
+        if (r === null) { this.hideNative(); return { shown: false, height: 0 }; }
         this._nativeVisible = !!(r && r.shown);
-        this._nativeHeight = (r && r.height) || 0;
+        this._nativeHeight = this._height(r && r.height);
         return { shown: this._nativeVisible, height: this._nativeHeight };
       } catch (e) { return { shown: false, height: 0 }; }
       finally { this._nativePromise = null; }
@@ -118,16 +172,73 @@ const Ads = {
   positionNative(rect, visible) {
     const p = this.plugin();
     if (!p || !this._nativeVisible || !rect) return;
-    try { p.positionNative({ ...this._rectArgs(rect), visible: !!visible }); } catch (e) {}
+    this._fire(p.positionNative({ ...this._rectArgs(rect), visible: !!visible }));
   },
   hideNative() {
     const p = this.plugin();
     this._nativeVisible = false;
-    if (p) { try { p.hideNative(); } catch (e) {} }
+    if (p) this._fire(p.hideNative());
+  },
+
+  /* --- Feed: несколько рекламных слотов в ленте библиотеки (native + баннеры «Лента»).
+         Каждый слот — Android-вью плагина поверх своего DOM-слота, едет за скроллом.
+         Раскладку (где и какой блок) считает Meta.planFeedAds. --- */
+  isFeedShown(id) { return !!(this._feed[id] && this._feed[id].shown); },
+  feedHeight(id) { return (this._feed[id] && this._feed[id].height) || 0; },
+  async showFeedAd(id, adUnitId, kind, rect) {
+    const p = this.plugin();
+    if (!p || !rect || !id) return { shown: false, height: 0 };
+    const cur = this._feed[id] || (this._feed[id] = { shown: false, height: 0, promise: null });
+    if (cur.shown) { this.positionFeedAd(id, rect, true); return { shown: true, height: cur.height }; }
+    if (cur.promise) return cur.promise;
+    cur.promise = (async () => {
+      try {
+        const r = await this._withTimeout(p.showFeedAd({ id, adUnitId, kind, ...this._rectArgs(rect) }), 15000, null);
+        if (r === null) {
+          // Плагин мог всё же показать вью после таймаута JS: явно убираем слот,
+          // чтобы запоздавшая карточка не осталась висеть поверх интерфейса.
+          this.hideFeedAd(id);
+          return { shown: false, height: 0 };
+        }
+        cur.shown = !!(r && r.shown);
+        cur.height = this._height(r && r.height);
+        return { shown: cur.shown, height: cur.height };
+      } catch (e) { return { shown: false, height: 0 }; }
+      finally { cur.promise = null; }
+    })();
+    return cur.promise;
+  },
+  positionFeedAd(id, rect, visible) {
+    const p = this.plugin();
+    if (!p || !rect || !this.isFeedShown(id)) return;
+    this._fire(p.positionFeedAd({ id, ...this._rectArgs(rect), visible: !!visible }));
+  },
+  hideFeedAd(id) {
+    const p = this.plugin();
+    if (this._feed[id]) { this._feed[id].shown = false; this._feed[id].height = 0; }
+    if (p) this._fire(p.hideFeedAd({ id }));
+  },
+  hideAllFeedAds() {
+    Object.keys(this._feed).forEach(id => { this._feed[id].shown = false; this._feed[id].height = 0; });
+    const p = this.plugin();
+    if (p) this._fire(p.hideAllFeedAds());
   },
 
   /* --- Лимиты именно для кнопки в магазине (фарм кристаллов) --- */
+  syncAdsDay() {
+    const a = Store.data && Store.data.ads;
+    if (!a) return;
+    const today = todayKey();
+    a.count = Math.max(0, Math.floor(Number(a.count) || 0));
+    a.lastAt = Math.max(0, Number(a.lastAt) || 0);
+    if (a.day !== today) {
+      // Приложение может пережить полночь в фоне: Store.load() при этом не вызовется.
+      a.day = today; a.count = 0; a.lastAt = 0;
+      Store.save();
+    }
+  },
   canWatch() {
+    this.syncAdsDay();
     const a = Store.data.ads;
     if (a.count >= CONFIG.crystals.adDailyLimit) return { ok: false, reason: `Лимит на сегодня: ${CONFIG.crystals.adDailyLimit} реклам` };
     const wait = CONFIG.crystals.adCooldownSec - Math.floor((Date.now() - a.lastAt) / 1000);
@@ -135,6 +246,7 @@ const Ads = {
     return { ok: true };
   },
   registerWatch() {
+    this.syncAdsDay();
     Store.data.ads.count++;
     Store.data.ads.lastAt = Date.now();
     Store.save();

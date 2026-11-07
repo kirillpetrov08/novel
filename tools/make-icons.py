@@ -5,7 +5,8 @@
 from PIL import Image, ImageDraw
 import os
 
-RES = "android/app/src/main/res"
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+RES = os.path.join(ROOT, "android/app/src/main/res")
 CREAM_TOP = (247, 242, 231)     # #F7F2E7
 CREAM_BOT = (227, 211, 180)     # #E3D3B4
 BRONZE = (138, 109, 75)         # #8A6D4B
@@ -81,10 +82,11 @@ for density, px in ADAPTIVE.items():
 # сплеши: заменяем шаблонные, сохраняя их размеры
 import glob
 for path in glob.glob(os.path.join(RES, "**/splash.png"), recursive=True):
-    w, h = Image.open(path).size
+    with Image.open(path) as existing:
+        w, h = existing.size
     splash(w, h).save(path)
 
 # иконка для карточки RuStore (требуется 512×512)
-os.makedirs("rustore", exist_ok=True)
-full_icon(512).convert("RGB").save("rustore/icon-512.png")
+os.makedirs(os.path.join(ROOT, "rustore"), exist_ok=True)
+full_icon(512).convert("RGB").save(os.path.join(ROOT, "rustore/icon-512.png"))
 print("✓ Иконки (mipmap + adaptive), сплеши и rustore/icon-512.png сгенерированы")

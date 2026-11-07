@@ -1,0 +1,274 @@
+{
+ "story": "sol-i-svet",
+ "style": "Soft oil painting illustration, warm beige muted colors, gentle light, romantic visual novel art, no text (legacy manifest reconstructed 2026; character/background prompts describe the shipped art)",
+ "images": [
+  {
+   "file": "cover.jpg",
+   "type": "cover",
+   "prompt": "Romantic visual novel cover: a 28-year-old woman with long wavy chestnut hair, soft features, small hoop earrings, wearing a beige trench coat over a green knitted sweater and a 35-year-old man with short dark hair and a stubble beard, wearing a rust-orange raincoat over a navy turtleneck sweater, holding a brass lantern before a white lighthouse on a rocky northern shore, grey sea, lantern light, vertical composition, soft oil painting style, warm muted beige palette, gentle light, romantic visual novel art, no text, no lettering, no logos, no watermark"
+  },
+  {
+   "file": "images/bg-pier.jpg",
+   "type": "background",
+   "prompt": "a wooden pier of a small northern island harbour, grey sea, a ferry, overcast morning, no people, soft oil painting style, warm muted beige palette, gentle light, romantic visual novel art, no text, no lettering, no logos, no watermark"
+  },
+  {
+   "file": "images/bg-house.jpg",
+   "type": "background",
+   "prompt": "exterior of an old wooden house by the sea near a lighthouse, autumn, no people, soft oil painting style, warm muted beige palette, gentle light, romantic visual novel art, no text, no lettering, no logos, no watermark"
+  },
+  {
+   "file": "images/bg-lighthouse-day.jpg",
+   "type": "background",
+   "prompt": "a white lighthouse on rocky shore in daytime, grey sea and sky, no people, soft oil painting style, warm muted beige palette, gentle light, romantic visual novel art, no text, no lettering, no logos, no watermark"
+  },
+  {
+   "file": "images/bg-lantern-room.jpg",
+   "type": "background",
+   "prompt": "the lighthouse lamp room close-up, brass and glass lens, warm glow, no people, soft oil painting style, warm muted beige palette, gentle light, romantic visual novel art, no text, no lettering, no logos, no watermark"
+  },
+  {
+   "file": "images/bg-cafe.jpg",
+   "type": "background",
+   "prompt": "small seaside cafe interior, four tables, display counter, daylight, no people, soft oil painting style, warm muted beige palette, gentle light, romantic visual novel art, no text, no lettering, no logos, no watermark"
+  },
+  {
+   "file": "images/bg-cafe-night.jpg",
+   "type": "background",
+   "prompt": "the same small cafe at night, dim warm lamps, closed sign mood, no people, soft oil painting style, warm muted beige palette, gentle light, romantic visual novel art, no text, no lettering, no logos, no watermark"
+  },
+  {
+   "file": "images/bg-night-sea.jpg",
+   "type": "background",
+   "prompt": "night sea from a breakwater, lighthouse beam, dark waves, no people, soft oil painting style, warm muted beige palette, gentle light, romantic visual novel art, no text, no lettering, no logos, no watermark"
+  },
+  {
+   "file": "images/bg-house-storm.jpg",
+   "type": "background",
+   "prompt": "old house interior during a night storm, shutters, lantern light, no people, soft oil painting style, warm muted beige palette, gentle light, romantic visual novel art, no text, no lettering, no logos, no watermark"
+  },
+  {
+   "file": "images/bg-house-kitchen.jpg",
+   "type": "background",
+   "prompt": "cozy old house kitchen, wooden table, sea view window, morning light, no people, soft oil painting style, warm muted beige palette, gentle light, romantic visual novel art, no text, no lettering, no logos, no watermark"
+  },
+  {
+   "file": "images/bg-lighthouse-sunset.jpg",
+   "type": "background",
+   "prompt": "lighthouse gallery at sunset over the sea, golden light, no people, soft oil painting style, warm muted beige palette, gentle light, romantic visual novel art, no text, no lettering, no logos, no watermark"
+  },
+  {
+   "file": "images/bg-lighthouse-kiss.jpg",
+   "type": "background",
+   "prompt": "inside the lighthouse lamp room at dusk, huge lens, sea beyond glass, no people, soft oil painting style, warm muted beige palette, gentle light, romantic visual novel art, no text, no lettering, no logos, no watermark"
+  },
+  {
+   "file": "images/bg-darkroom.jpg",
+   "type": "background",
+   "prompt": "improvised photo darkroom in a bathroom, red safelight, prints hanging on a line, no people, soft oil painting style, warm muted beige palette, gentle light, romantic visual novel art, no text, no lettering, no logos, no watermark"
+  },
+  {
+   "file": "images/bg-square.jpg",
+   "type": "background",
+   "prompt": "small town club hall interior, rows of chairs, evening meeting, no people, soft oil painting style, warm muted beige palette, gentle light, romantic visual novel art, no text, no lettering, no logos, no watermark"
+  },
+  {
+   "file": "images/bg-house-cozy.jpg",
+   "type": "background",
+   "prompt": "warm evening interior of an old seaside house, lamplight, photographs on the wall, no people, soft oil painting style, warm muted beige palette, gentle light, romantic visual novel art, no text, no lettering, no logos, no watermark"
+  },
+  {
+   "file": "images/heroine.webp",
+   "type": "character",
+   "prompt": "a 28-year-old woman with long wavy chestnut hair, soft features, small hoop earrings, wearing a beige trench coat over a green knitted sweater, calm neutral expression. Waist-up portrait on a plain solid light beige background color #EADFCB, soft oil painting style, warm muted beige palette, gentle light, romantic visual novel art, no text, no lettering, no logos, no watermark"
+  },
+  {
+   "file": "images/matvey.webp",
+   "type": "character",
+   "prompt": "a 35-year-old man with short dark hair and a stubble beard, wearing a rust-orange raincoat over a navy turtleneck sweater, holding a brass lantern, calm neutral expression. Waist-up portrait on a plain solid light beige background color #EADFCB, soft oil painting style, warm muted beige palette, gentle light, romantic visual novel art, no text, no lettering, no logos, no watermark"
+  },
+  {
+   "file": "images/agata.webp",
+   "type": "character",
+   "prompt": "a 65-year-old woman with grey hair in a low bun, round glasses, wearing a white shirt under a rust-colored apron, calm neutral expression. Waist-up portrait on a plain solid light beige background color #EADFCB, soft oil painting style, warm muted beige palette, gentle light, romantic visual novel art, no text, no lettering, no logos, no watermark"
+  },
+  {
+   "file": "images/kirill.webp",
+   "type": "character",
+   "prompt": "a 45-year-old man with short greying hair, wearing a black coat and a dark grey scarf, holding leather gloves, calm neutral expression. Waist-up portrait on a plain solid light beige background color #EADFCB, soft oil painting style, warm muted beige palette, gentle light, romantic visual novel art, no text, no lettering, no logos, no watermark"
+  },
+  {
+   "file": "images/heroine_soft.webp",
+   "type": "character",
+   "prompt": "a 28-year-old woman with long wavy chestnut hair, soft features, small hoop earrings, wearing a beige trench coat over a green knitted sweater, soft tender expression. Waist-up portrait on a plain solid light beige background color #EADFCB, soft oil painting style, warm muted beige palette, gentle light, romantic visual novel art, no text, no lettering, no logos, no watermark"
+  },
+  {
+   "file": "images/heroine_storm.webp",
+   "type": "character",
+   "prompt": "a 28-year-old woman with long wavy chestnut hair, soft features, small hoop earrings, wearing a beige trench coat over a green knitted sweater, windswept tense expression in storm weather. Waist-up portrait on a plain solid light beige background color #EADFCB, soft oil painting style, warm muted beige palette, gentle light, romantic visual novel art, no text, no lettering, no logos, no watermark"
+  },
+  {
+   "file": "images/heroine_night.webp",
+   "type": "character",
+   "prompt": "a 28-year-old woman with long wavy chestnut hair, soft features, small hoop earrings, wearing a beige trench coat over a green knitted sweater, tired thoughtful night look. Waist-up portrait on a plain solid light beige background color #EADFCB, soft oil painting style, warm muted beige palette, gentle light, romantic visual novel art, no text, no lettering, no logos, no watermark"
+  },
+  {
+   "file": "images/heroine_brave.webp",
+   "type": "character",
+   "prompt": "a 28-year-old woman with long wavy chestnut hair, soft features, small hoop earrings, wearing a beige trench coat over a green knitted sweater, determined brave expression. Waist-up portrait on a plain solid light beige background color #EADFCB, soft oil painting style, warm muted beige palette, gentle light, romantic visual novel art, no text, no lettering, no logos, no watermark"
+  },
+  {
+   "file": "images/matvey_soft.webp",
+   "type": "character",
+   "prompt": "a 35-year-old man with short dark hair and a stubble beard, wearing a rust-orange raincoat over a navy turtleneck sweater, holding a brass lantern, soft tender expression. Waist-up portrait on a plain solid light beige background color #EADFCB, soft oil painting style, warm muted beige palette, gentle light, romantic visual novel art, no text, no lettering, no logos, no watermark"
+  },
+  {
+   "file": "images/matvey_storm.webp",
+   "type": "character",
+   "prompt": "a 35-year-old man with short dark hair and a stubble beard, wearing a rust-orange raincoat over a navy turtleneck sweater, holding a brass lantern, windswept tense expression in storm weather. Waist-up portrait on a plain solid light beige background color #EADFCB, soft oil painting style, warm muted beige palette, gentle light, romantic visual novel art, no text, no lettering, no logos, no watermark"
+  },
+  {
+   "file": "images/matvey_hurt.webp",
+   "type": "character",
+   "prompt": "a 35-year-old man with short dark hair and a stubble beard, wearing a rust-orange raincoat over a navy turtleneck sweater, holding a brass lantern, hurt guarded expression. Waist-up portrait on a plain solid light beige background color #EADFCB, soft oil painting style, warm muted beige palette, gentle light, romantic visual novel art, no text, no lettering, no logos, no watermark"
+  },
+  {
+   "file": "images/matvey_close.webp",
+   "type": "character",
+   "prompt": "a 35-year-old man with short dark hair and a stubble beard, wearing a rust-orange raincoat over a navy turtleneck sweater, holding a brass lantern, close intimate portrait, gentle intense gaze. Waist-up portrait on a plain solid light beige background color #EADFCB, soft oil painting style, warm muted beige palette, gentle light, romantic visual novel art, no text, no lettering, no logos, no watermark"
+  },
+  {
+   "file": "images/agata_grief.webp",
+   "type": "character",
+   "prompt": "a 65-year-old woman with grey hair in a low bun, round glasses, wearing a white shirt under a rust-colored apron, grieving sorrowful expression. Waist-up portrait on a plain solid light beige background color #EADFCB, soft oil painting style, warm muted beige palette, gentle light, romantic visual novel art, no text, no lettering, no logos, no watermark"
+  },
+  {
+   "file": "images/kirill_close.webp",
+   "type": "character",
+   "prompt": "a 45-year-old man with short greying hair, wearing a black coat and a dark grey scarf, holding leather gloves, close intimate portrait, gentle intense gaze. Waist-up portrait on a plain solid light beige background color #EADFCB, soft oil painting style, warm muted beige palette, gentle light, romantic visual novel art, no text, no lettering, no logos, no watermark"
+  },
+  {
+   "file": "images/heroine_wonder.webp",
+   "type": "character",
+   "prompt": "a 28-year-old woman with long wavy chestnut hair, soft features, small hoop earrings, wearing a beige trench coat over a green knitted sweater, amazed wondering expression. Waist-up portrait on a plain solid light beige background color #EADFCB, soft oil painting style, warm muted beige palette, gentle light, romantic visual novel art, no text, no lettering, no logos, no watermark"
+  },
+  {
+   "file": "images/heroine_doubt.webp",
+   "type": "character",
+   "prompt": "a 28-year-old woman with long wavy chestnut hair, soft features, small hoop earrings, wearing a beige trench coat over a green knitted sweater, doubtful worried expression. Waist-up portrait on a plain solid light beige background color #EADFCB, soft oil painting style, warm muted beige palette, gentle light, romantic visual novel art, no text, no lettering, no logos, no watermark"
+  },
+  {
+   "file": "images/heroine_exhausted.webp",
+   "type": "character",
+   "prompt": "a 28-year-old woman with long wavy chestnut hair, soft features, small hoop earrings, wearing a beige trench coat over a green knitted sweater, exhausted pale expression. Waist-up portrait on a plain solid light beige background color #EADFCB, soft oil painting style, warm muted beige palette, gentle light, romantic visual novel art, no text, no lettering, no logos, no watermark"
+  },
+  {
+   "file": "images/heroine_tears.webp",
+   "type": "character",
+   "prompt": "a 28-year-old woman with long wavy chestnut hair, soft features, small hoop earrings, wearing a beige trench coat over a green knitted sweater, tearful emotional expression. Waist-up portrait on a plain solid light beige background color #EADFCB, soft oil painting style, warm muted beige palette, gentle light, romantic visual novel art, no text, no lettering, no logos, no watermark"
+  },
+  {
+   "file": "images/matvey_guard.webp",
+   "type": "character",
+   "prompt": "a 35-year-old man with short dark hair and a stubble beard, wearing a rust-orange raincoat over a navy turtleneck sweater, holding a brass lantern, wary guarded expression. Waist-up portrait on a plain solid light beige background color #EADFCB, soft oil painting style, warm muted beige palette, gentle light, romantic visual novel art, no text, no lettering, no logos, no watermark"
+  },
+  {
+   "file": "images/matvey_laugh.webp",
+   "type": "character",
+   "prompt": "a 35-year-old man with short dark hair and a stubble beard, wearing a rust-orange raincoat over a navy turtleneck sweater, holding a brass lantern, warm laughing smile. Waist-up portrait on a plain solid light beige background color #EADFCB, soft oil painting style, warm muted beige palette, gentle light, romantic visual novel art, no text, no lettering, no logos, no watermark"
+  },
+  {
+   "file": "images/matvey_public.webp",
+   "type": "character",
+   "prompt": "a 35-year-old man with short dark hair and a stubble beard, wearing a rust-orange raincoat over a navy turtleneck sweater, holding a brass lantern, composed public expression. Waist-up portrait on a plain solid light beige background color #EADFCB, soft oil painting style, warm muted beige palette, gentle light, romantic visual novel art, no text, no lettering, no logos, no watermark"
+  },
+  {
+   "file": "images/agata_warm.webp",
+   "type": "character",
+   "prompt": "a 65-year-old woman with grey hair in a low bun, round glasses, wearing a white shirt under a rust-colored apron, warm kind smile. Waist-up portrait on a plain solid light beige background color #EADFCB, soft oil painting style, warm muted beige palette, gentle light, romantic visual novel art, no text, no lettering, no logos, no watermark"
+  },
+  {
+   "file": "images/agata_welcoming.webp",
+   "type": "character",
+   "prompt": "a 65-year-old woman with grey hair in a low bun, round glasses, wearing a white shirt under a rust-colored apron, welcoming friendly smile. Waist-up portrait on a plain solid light beige background color #EADFCB, soft oil painting style, warm muted beige palette, gentle light, romantic visual novel art, no text, no lettering, no logos, no watermark"
+  },
+  {
+   "file": "images/kirill_tired.webp",
+   "type": "character",
+   "prompt": "a 45-year-old man with short greying hair, wearing a black coat and a dark grey scarf, holding leather gloves, tired resigned expression. Waist-up portrait on a plain solid light beige background color #EADFCB, soft oil painting style, warm muted beige palette, gentle light, romantic visual novel art, no text, no lettering, no logos, no watermark"
+  },
+  {
+   "file": "images/cg-arrival.jpg",
+   "type": "card",
+   "scene": "s1",
+   "prompt": "A small ferry approaches the wooden pier of a rocky northern island: Вера, a 28-year-old woman with long wavy chestnut hair, soft features, small hoop earrings, wearing a beige trench coat over a green knitted sweater stands on deck with a suitcase looking at a white lighthouse on the cliff, grey sea, overcast morning, wide cinematic composition, soft oil painting style, warm muted beige palette, gentle light, romantic visual novel art, no text, no lettering, no logos, no watermark"
+  },
+  {
+   "file": "images/cg-storm.jpg",
+   "type": "card",
+   "scene": "s11",
+   "prompt": "Night storm on a breakwater by a lighthouse: Вера, a 28-year-old woman with long wavy chestnut hair, soft features, small hoop earrings, wearing a beige trench coat over a green knitted sweater and Matvey, a 35-year-old man with short dark hair and a stubble beard, wearing a rust-orange raincoat over a navy turtleneck sweater, holding a brass lantern leaning against wind and rain, waves crashing, the brass lantern glowing between them, wide cinematic composition, soft oil painting style, warm muted beige palette, gentle light, romantic visual novel art, no text, no lettering, no logos, no watermark"
+  },
+  {
+   "file": "images/cg-lamp.jpg",
+   "type": "card",
+   "scene": "s15",
+   "prompt": "Evening on the lighthouse gallery high above the sea: Вера, a 28-year-old woman with long wavy chestnut hair, soft features, small hoop earrings, wearing a beige trench coat over a green knitted sweater and Matvey, a 35-year-old man with short dark hair and a stubble beard, wearing a rust-orange raincoat over a navy turtleneck sweater, holding a brass lantern stand close at the railing, sunset over dark water, first town lights below, wide cinematic composition, soft oil painting style, warm muted beige palette, gentle light, romantic visual novel art, no text, no lettering, no logos, no watermark"
+  },
+  {
+   "file": "images/cg-ending-light.jpg",
+   "type": "card",
+   "scene": "ending_light",
+   "prompt": "Spring dusk at a white lighthouse with its lamp lit: Вера, a 28-year-old woman with long wavy chestnut hair, soft features, small hoop earrings, wearing a beige trench coat over a green knitted sweater and Matvey, a 35-year-old man with short dark hair and a stubble beard, wearing a rust-orange raincoat over a navy turtleneck sweater, holding a brass lantern below near a small house with warm workshop windows, calm sea, wide cinematic composition, soft oil painting style, warm muted beige palette, gentle light, romantic visual novel art, no text, no lettering, no logos, no watermark"
+  },
+  {
+   "file": "images/cg-ending-truth.jpg",
+   "type": "card",
+   "scene": "ending_truth",
+   "prompt": "Improvised photo darkroom in red safelight: Вера, a 28-year-old woman with long wavy chestnut hair, soft features, small hoop earrings, wearing a beige trench coat over a green knitted sweater holds a fresh black-and-white photo print up to the light, Matvey, a 35-year-old man with short dark hair and a stubble beard, wearing a rust-orange raincoat over a navy turtleneck sweater, holding a brass lantern beside her, prints hanging on a line, wide cinematic composition, soft oil painting style, warm muted beige palette, gentle light, romantic visual novel art, no text, no lettering, no logos, no watermark"
+  },
+  {
+   "file": "images/cg-ending-ashore.jpg",
+   "type": "card",
+   "scene": "ending_ashore",
+   "prompt": "December morning: Вера, a 28-year-old woman with long wavy chestnut hair, soft features, small hoop earrings, wearing a beige trench coat over a green knitted sweater alone at the stern of a departing ferry, holding an old tin box, looking back at a lonely lighthouse on the snowy shore, wide cinematic composition, soft oil painting style, warm muted beige palette, gentle light, romantic visual novel art, no text, no lettering, no logos, no watermark"
+  }
+ ],
+ "sceneBackgrounds": {
+  "s1": "images/bg-pier.jpg",
+  "s2": "images/bg-house.jpg",
+  "s3a": "images/bg-house.jpg",
+  "s3b": "images/bg-house.jpg",
+  "s4": "images/bg-lighthouse-day.jpg",
+  "s5": "images/bg-lantern-room.jpg",
+  "s6a": "images/bg-lantern-room.jpg",
+  "s6b": "images/bg-lighthouse-day.jpg",
+  "s7": "images/bg-cafe.jpg",
+  "s8a": "images/bg-cafe.jpg",
+  "s8b": "images/bg-cafe.jpg",
+  "s8c": "images/bg-cafe-night.jpg",
+  "s9": "images/bg-night-sea.jpg",
+  "s10a": "images/bg-night-sea.jpg",
+  "s10b": "images/bg-night-sea.jpg",
+  "s11": "images/bg-house-storm.jpg",
+  "s12a": "images/bg-night-sea.jpg",
+  "s12b": "images/bg-house-storm.jpg",
+  "s12c": "images/bg-night-sea.jpg",
+  "s13": "images/bg-house-kitchen.jpg",
+  "s14a": "images/bg-house-kitchen.jpg",
+  "s14b": "images/bg-house-kitchen.jpg",
+  "s14c": "images/bg-house-kitchen.jpg",
+  "s15": "images/bg-lighthouse-sunset.jpg",
+  "s16a": "images/bg-lighthouse-sunset.jpg",
+  "s16b": "images/bg-lighthouse-sunset.jpg",
+  "s16c": "images/bg-lighthouse-kiss.jpg",
+  "s17": "images/bg-darkroom.jpg",
+  "s18a": "images/bg-darkroom.jpg",
+  "s18b": "images/bg-cafe.jpg",
+  "s18c": "images/bg-darkroom.jpg",
+  "s19": "images/bg-square.jpg",
+  "ending_light": "images/bg-house-cozy.jpg",
+  "ending_truth": "images/bg-square.jpg",
+  "ending_ashore": "images/bg-pier.jpg"
+ }
+}

@@ -121,6 +121,42 @@
       "file": "images/mark.png",
       "type": "character",
       "prompt": "Single person centered waist-up character portrait, entire head and shoulders visible, figure fills 75 percent of frame, hands fully inside frame, vertical 3:4. Background exactly solid flat light beige #EADFCB, no gradient, no shadow, no furniture, no frame or ground. Adult man, 47 years old, thin face with sharp cheekbones, slicked-back gray hair, short trimmed gray beard, pale blue eyes, cool pale skin, broad build, wearing a charcoal suit jacket over a burgundy turtleneck. Cool confident expression. semi-realistic painterly digital illustration, soft visible brushstrokes, muted watercolor-like shading, warm beige and earthy palette, gentle diffused light, elegant minimalist composition, cinematic, no photorealism, no anime, no manga, no 3D render, no text, no watermark"
+    },
+    {
+      "file": "images/cg-return.jpg",
+      "type": "card",
+      "scene": "s1",
+      "prompt": "In a dusty old pottery workshop: an adult woman, 27 years old, heart-shaped face with a soft jawline, long dark auburn hair in a loose low bun with loose strands framing her face, deep amber-brown eyes, fair warm skin, slender build, wearing a warm terracotta knit dress and an oatmeal knit cardigan with a suitcase stands among shelves of handmade ceramics and a potter's wheel, soft light falling through a tall window, quiet grief and homecoming, wide cinematic composition, characters large in frame and shown from the waist up, soft oil painting illustration with gentle visible brushstrokes, warm beige muted earthy palette of cream, sand, bronze, sage green and slate grey, soft diffused natural light, semi-realistic painted faces with calm tender expressions, romantic visual novel key visual, painterly detailed background, not photorealistic, not anime, not 3D render, no text, no lettering, no words, no logos, no watermark"
+    },
+    {
+      "file": "images/cg-kiln-first.jpg",
+      "type": "card",
+      "scene": "s6",
+      "prompt": "Evening first firing of an old brick pottery kiln: an adult woman, 27 years old, heart-shaped face with a soft jawline, long dark auburn hair in a loose low bun with loose strands framing her face, deep amber-brown eyes, fair warm skin, slender build, wearing a warm terracotta knit dress and an oatmeal knit cardigan and an adult man, 31 years old, angular face with a strong jaw, short dark blond hair combed back with a few loose strands, gray-blue eyes, light stubble, tanned fair skin, lean athletic build, wearing a dark olive flannel shirt with sleeves rolled up to the elbows stand before the glowing fire mouth of the kiln, orange firelight on their faces, shelves of unfired clay vessels behind them, wide cinematic composition, characters large in frame and shown from the waist up, soft oil painting illustration with gentle visible brushstrokes, warm beige muted earthy palette of cream, sand, bronze, sage green and slate grey, soft diffused natural light, semi-realistic painted faces with calm tender expressions, romantic visual novel key visual, painterly detailed background, not photorealistic, not anime, not 3D render, no text, no lettering, no words, no logos, no watermark"
+    },
+    {
+      "file": "images/cg-rain.jpg",
+      "type": "card",
+      "scene": "s10",
+      "prompt": "Caught by rain at the edge of an old town center: an adult woman, 27 years old, heart-shaped face with a soft jawline, long dark auburn hair in a loose low bun with loose strands framing her face, deep amber-brown eyes, fair warm skin, slender build, wearing a warm terracotta knit dress and an oatmeal knit cardigan and an adult man, 31 years old, angular face with a strong jaw, short dark blond hair combed back with a few loose strands, gray-blue eyes, light stubble, tanned fair skin, lean athletic build, wearing a dark olive flannel shirt with sleeves rolled up to the elbows stand close under a narrow shop awning, rain streaming beyond it, wet cobblestones shining, an intimate pause between them, wide cinematic composition, characters large in frame and shown from the waist up, soft oil painting illustration with gentle visible brushstrokes, warm beige muted earthy palette of cream, sand, bronze, sage green and slate grey, soft diffused natural light, semi-realistic painted faces with calm tender expressions, romantic visual novel key visual, painterly detailed background, not photorealistic, not anime, not 3D render, no text, no lettering, no words, no logos, no watermark"
+    },
+    {
+      "file": "images/cg-ending-ogon.jpg",
+      "type": "card",
+      "scene": "ending_ogon",
+      "prompt": "Night firing at the old brick kiln: an adult woman, 27 years old, heart-shaped face with a soft jawline, long dark auburn hair in a loose low bun with loose strands framing her face, deep amber-brown eyes, fair warm skin, slender build, wearing a warm terracotta knit dress and an oatmeal knit cardigan and an adult man, 31 years old, angular face with a strong jaw, short dark blond hair combed back with a few loose strands, gray-blue eyes, light stubble, tanned fair skin, lean athletic build, wearing a dark olive flannel shirt with sleeves rolled up to the elbows embracing in the warm glow of the open kiln door, sparks and glazed vessels shining on shelves around them, wide cinematic composition, characters large in frame and shown from the waist up, soft oil painting illustration with gentle visible brushstrokes, warm beige muted earthy palette of cream, sand, bronze, sage green and slate grey, soft diffused natural light, semi-realistic painted faces with calm tender expressions, romantic visual novel key visual, painterly detailed background, not photorealistic, not anime, not 3D render, no text, no lettering, no words, no logos, no watermark"
+    },
+    {
+      "file": "images/cg-ending-sveta.jpg",
+      "type": "card",
+      "scene": "ending_sveta",
+      "prompt": "Dawn in the pottery workshop: an adult woman, 27 years old, heart-shaped face with a soft jawline, long dark auburn hair in a loose low bun with loose strands framing her face, deep amber-brown eyes, fair warm skin, slender build, wearing a warm terracotta knit dress and an oatmeal knit cardigan throws open the shutters to the first morning light, a plain sealed envelope without any writing lying on the workbench among ceramics, quiet hope, wide cinematic composition, characters large in frame and shown from the waist up, soft oil painting illustration with gentle visible brushstrokes, warm beige muted earthy palette of cream, sand, bronze, sage green and slate grey, soft diffused natural light, semi-realistic painted faces with calm tender expressions, romantic visual novel key visual, painterly detailed background, not photorealistic, not anime, not 3D render, no text, no lettering, no words, no logos, no watermark"
+    },
+    {
+      "file": "images/cg-ending-cherepok.jpg",
+      "type": "card",
+      "scene": "ending_cherepok",
+      "prompt": "Rainy street parting: an adult man, 31 years old, angular face with a strong jaw, short dark blond hair combed back with a few loose strands, gray-blue eyes, light stubble, tanned fair skin, lean athletic build, wearing a dark olive flannel shirt with sleeves rolled up to the elbows walks away under the rain toward a blurred departing bus while an adult woman, 27 years old, heart-shaped face with a soft jawline, long dark auburn hair in a loose low bun with loose strands framing her face, deep amber-brown eyes, fair warm skin, slender build, wearing a warm terracotta knit dress and an oatmeal knit cardigan remains standing at the curb holding a red pottery shard in her hand, wet pavement reflections, bittersweet distance, wide cinematic composition, characters large in frame and shown from the waist up, soft oil painting illustration with gentle visible brushstrokes, warm beige muted earthy palette of cream, sand, bronze, sage green and slate grey, soft diffused natural light, semi-realistic painted faces with calm tender expressions, romantic visual novel key visual, painterly detailed background, not photorealistic, not anime, not 3D render, no text, no lettering, no words, no logos, no watermark"
     }
   ],
   "sceneBackgrounds": {
