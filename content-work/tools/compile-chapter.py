@@ -1,9 +1,8 @@
 #!/usr/bin/env python3
-"""Compile the explicitly marked first chapter draft, never a shipped story.
-
+"""Compile explicitly authored Markdown chapters into STAGED scene fragments.
 Run from any cwd: python3 content-work/tools/compile-chapter.py
-This deliberately supports only the authored chapter's notation. Unknown speakers,
-missing transitions, duplicate IDs and unsupported paragraphs fail loudly.
+No plot, transition or ending is invented here. Presentation is declared in
+14/chapters/config.json. Nothing is written into stores/ or the application.
 """
 import json
 import re
@@ -11,15 +10,13 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 BASE = ROOT / '14'
-SOURCE = BASE / 'chapters/01.md'
-OUT = BASE / 'chapters/01.json'
 SPEAKERS = {'Ася': 'heroine', 'Лев': 'hero', 'Валентина': 'director',
             'Рита': 'friend', 'Рита, сообщение': 'friend', 'Лев, сообщение': 'hero'}
 STATS = {'desire', 'trust', 'resolve'}
 
 
 def chunks(text, limit=240):
-    """Prefer sentence boundaries; fall back to spaces, never cut a word."""
+    """Prefer sentence boundaries; never cut a word or inflate short sentences."""
     result, current = [], ''
     for sentence in re.split(r'(?<=[.!?…])\s+', text.strip()):
         sentence = ' '.join(sentence.split())
@@ -38,24 +35,23 @@ def chunks(text, limit=240):
     return result
 
 
-def compile_chapter():
-    source = SOURCE.read_text(encoding='utf-8')
-    sections = list(re.finditer(r'^## (a\d{2}[a-z]?) · (.+)$', source, re.M))
-    scenes = {}
-    titles = {}
+def compile_one(config):
+    number = config['chapter']
+    source = (BASE / f'chapters/{number:02}.md').read_text(encoding='utf-8')
+    sections = list(re.finditer(r'^## ([a-f]\d{2}[a-z]?) · (.+)$', source, re.M))
+    scenes, titles = {}, {}
     for i, heading in enumerate(sections):
         sid, title = heading.groups()
-        if sid in scenes:
-            raise ValueError(f'Duplicate scene: {sid}')
+        if sid in scenes or not sid.startswith(config['prefix']):
+            raise ValueError(f'Duplicate or wrong chapter scene: {sid}')
         body = source[heading.end():sections[i + 1].start() if i + 1 < len(sections) else len(source)].strip()
-        n = int(sid[1:3])
-        bg = 'reading-room' if 8 <= n <= 11 else 'courtyard' if n in (12, 16, 17) else 'home' if n == 18 else 'workshop'
-        show = ['heroine'] if n in (1, 18) else ['heroine', 'hero']
-        if 3 <= n <= 6:
-            show.append('director')
-        if 8 <= n <= 11:
-            show.append('friend')
-        scene = {'bg': f'images/bg-{bg}.jpg', 'bgGradient': ['#E9DFCE', '#796C5E'], 'show': show, 'lines': []}
+        presentation = {'bg': config['defaultBg'], 'show': config['defaultShow']}
+        presentation.update(config['overrides'].get(sid[:3], {}))
+        presentation.update(config['overrides'].get(sid, {}))
+        scene = {**presentation, 'bgGradient': ['#E9DFCE', '#796C5E'], 'lines': []}
+        explicit_bg = re.findall(r'Фон: `(images/[^`]+)`', body)
+        if explicit_bg and explicit_bg != [scene['bg']]:
+            raise ValueError(f'Prose/presentation background mismatch: {sid}')
         choices = []
         targets = re.findall(r'Переход: `([a-z0-9]+)`', body)
         external = re.findall(r'Следующий узел: `([a-z0-9]+)`', body)
@@ -73,10 +69,12 @@ def compile_chapter():
                     if not m:
                         raise ValueError(f'Invalid choice notation in {sid}: {line}')
                     label, cost, effects, target = m.groups()
-                    effect_pairs = re.findall(r'`([a-z]+) \+(\d+)`', effects)
-                    if not effect_pairs or any(k not in STATS for k, _ in effect_pairs):
+                    pairs = re.findall(r'`([a-z]+) \+(\d+)`', effects)
+                    if not pairs or any(k not in STATS for k, _ in pairs) or len({k for k,_ in pairs})!=len(pairs):
                         raise ValueError(f'Invalid effects: {sid}')
-                    option = {'text': label, 'next': target, 'effect': {k: int(v) for k, v in effect_pairs}}
+                    if re.sub(r'`[a-z]+ \+\d+`', '', effects).strip(' ,'):
+                        raise ValueError(f'Unparsed effect notation: {sid}')
+                    option = {'text': label, 'next': target, 'effect': {k: int(v) for k, v in pairs}}
                     if cost == '5◆':
                         option['crystals'] = 5
                     choices.append(option)
@@ -106,21 +104,35 @@ def compile_chapter():
             if len(cg) != 1:
                 raise ValueError(f'Multiple CG: {sid}')
             scene['cg'] = cg[0]
-        scenes[sid] = scene
-        titles[sid] = title
-    if len(scenes) != 28:
-        raise ValueError('Expected 28 explicitly authored chapter-one scenes')
-    result = {'productionStatus': 'draft-fragment', 'story': 'pereplyot', 'chapter': 1,
-              'title': 'Чужой почерк', 'entry': 'a01', 'externalExits': ['b01'],
-              'sceneTitles': titles, 'scenes': scenes}
-    OUT.write_text(json.dumps(result, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
-    # The manifest only maps scenes that actually exist, not planned future chapters.
-    manifest_path = BASE / 'art-prompts.json'
-    manifest = json.loads(manifest_path.read_text(encoding='utf-8'))
-    manifest['sceneBackgrounds'] = {sid: s['bg'] for sid, s in scenes.items()}
-    manifest_path.write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
-    print(f'DRAFT ONLY: {len(scenes)} scenes, {sum(len(s["lines"]) for s in scenes.values())} lines; b01 not written')
+        scenes[sid], titles[sid] = scene, title
+    if len(scenes) != config['expectedScenes']:
+        raise ValueError(f'Chapter {number}: unexpected scene count {len(scenes)}')
+    if set(config['overrides']) - scenes.keys():
+        raise ValueError(f'Unused presentation declarations: {set(config["overrides"]) - scenes.keys()}')
+    return {'productionStatus': 'draft-fragment', 'story': 'pereplyot', 'chapter': number,
+            'title': config['title'], 'entry': config['entry'], 'externalExits': config['externalExits'],
+            'sceneTitles': titles, 'scenes': scenes}
 
 
-if __name__ == '__main__':
+def compile_chapter():
+    configs = json.loads((BASE/'chapters/config.json').read_text(encoding='utf-8'))
+    results = [compile_one(config) for config in configs]  # fail before replacing any output
+    merged = {}
+    for result in results:
+        if merged.keys() & result['scenes'].keys():
+            raise ValueError('Duplicate scene IDs across chapters')
+        merged.update(result['scenes'])
+    for result in results:
+        path = BASE/f'chapters/{result["chapter"]:02}.json'
+        path.write_text(json.dumps(result,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+        print(f'DRAFT chapter {result["chapter"]}: {len(result["scenes"])} scenes, '
+              f'{sum(len(s["lines"]) for s in result["scenes"].values())} lines')
+    manifest_path=BASE/'art-prompts.json'
+    manifest=json.loads(manifest_path.read_text(encoding='utf-8'))
+    manifest['sceneBackgrounds']={sid:s['bg'] for sid,s in merged.items()}
+    manifest_path.write_text(json.dumps(manifest,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+    print('DRAFT ONLY: no story.json, library registration or generated ending')
+
+
+if __name__=='__main__':
     compile_chapter()

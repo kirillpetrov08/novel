@@ -40,12 +40,12 @@
   "scenes": {
     "a01": {
       "bg": "images/bg-workshop.jpg",
+      "show": [
+        "heroine"
+      ],
       "bgGradient": [
         "#E9DFCE",
         "#796C5E"
-      ],
-      "show": [
-        "heroine"
       ],
       "lines": [
         {
@@ -83,13 +83,13 @@
     },
     "a02": {
       "bg": "images/bg-workshop.jpg",
-      "bgGradient": [
-        "#E9DFCE",
-        "#796C5E"
-      ],
       "show": [
         "heroine",
         "hero"
+      ],
+      "bgGradient": [
+        "#E9DFCE",
+        "#796C5E"
       ],
       "lines": [
         {
@@ -134,14 +134,14 @@
     },
     "a03": {
       "bg": "images/bg-workshop.jpg",
-      "bgGradient": [
-        "#E9DFCE",
-        "#796C5E"
-      ],
       "show": [
         "heroine",
         "hero",
         "director"
+      ],
+      "bgGradient": [
+        "#E9DFCE",
+        "#796C5E"
       ],
       "lines": [
         {
@@ -191,14 +191,14 @@
     },
     "a03r": {
       "bg": "images/bg-workshop.jpg",
+      "show": [
+        "heroine_brave",
+        "hero",
+        "director"
+      ],
       "bgGradient": [
         "#E9DFCE",
         "#796C5E"
-      ],
-      "show": [
-        "heroine",
-        "hero",
-        "director"
       ],
       "lines": [
         {
@@ -229,14 +229,14 @@
     },
     "a03t": {
       "bg": "images/bg-workshop.jpg",
+      "show": [
+        "heroine_smile",
+        "hero",
+        "director"
+      ],
       "bgGradient": [
         "#E9DFCE",
         "#796C5E"
-      ],
-      "show": [
-        "heroine",
-        "hero",
-        "director"
       ],
       "lines": [
         {
@@ -268,14 +268,14 @@
     },
     "a04": {
       "bg": "images/bg-workshop.jpg",
-      "bgGradient": [
-        "#E9DFCE",
-        "#796C5E"
-      ],
       "show": [
         "heroine",
         "hero",
         "director"
+      ],
+      "bgGradient": [
+        "#E9DFCE",
+        "#796C5E"
       ],
       "lines": [
         {
@@ -321,14 +321,14 @@
     },
     "a05": {
       "bg": "images/bg-workshop.jpg",
+      "show": [
+        "heroine_doubt",
+        "hero",
+        "director"
+      ],
       "bgGradient": [
         "#E9DFCE",
         "#796C5E"
-      ],
-      "show": [
-        "heroine",
-        "hero",
-        "director"
       ],
       "lines": [
         {
@@ -368,14 +368,14 @@
     },
     "a06": {
       "bg": "images/bg-workshop.jpg",
-      "bgGradient": [
-        "#E9DFCE",
-        "#796C5E"
-      ],
       "show": [
         "heroine",
         "hero",
         "director"
+      ],
+      "bgGradient": [
+        "#E9DFCE",
+        "#796C5E"
       ],
       "lines": [
         {
@@ -430,14 +430,14 @@
     },
     "a06p": {
       "bg": "images/bg-workshop.jpg",
+      "show": [
+        "heroine_smile",
+        "hero_smile",
+        "director"
+      ],
       "bgGradient": [
         "#E9DFCE",
         "#796C5E"
-      ],
-      "show": [
-        "heroine",
-        "hero",
-        "director"
       ],
       "lines": [
         {
@@ -476,14 +476,14 @@
     },
     "a06f": {
       "bg": "images/bg-workshop.jpg",
-      "bgGradient": [
-        "#E9DFCE",
-        "#796C5E"
-      ],
       "show": [
         "heroine",
         "hero",
         "director"
+      ],
+      "bgGradient": [
+        "#E9DFCE",
+        "#796C5E"
       ],
       "lines": [
         {
@@ -518,13 +518,13 @@
     },
     "a07": {
       "bg": "images/bg-workshop.jpg",
-      "bgGradient": [
-        "#E9DFCE",
-        "#796C5E"
-      ],
       "show": [
         "heroine",
         "hero"
+      ],
+      "bgGradient": [
+        "#E9DFCE",
+        "#796C5E"
       ],
       "lines": [
         {
@@ -573,19 +573,19 @@
     },
     "a08": {
       "bg": "images/bg-reading-room.jpg",
+      "show": [
+        "heroine_casual",
+        "hero",
+        "friend"
+      ],
       "bgGradient": [
         "#E9DFCE",
         "#796C5E"
       ],
-      "show": [
-        "heroine",
-        "hero",
-        "friend"
-      ],
       "lines": [
         {
           "type": "narration",
-          "text": "После обеда они пошли к Рите. Дождь на время закончился, оставив двор похожим на вымытую посуду. Ася заперла мастерскую и дважды проверила ручку. Лев сделал вид, что рассматривает карниз."
+          "text": "После обеда они пошли к Рите. Ася сняла фартук и оставила его на крючке. Дождь на время закончился, оставив двор похожим на вымытую посуду. Она заперла мастерскую и дважды проверила ручку. Лев сделал вид, что рассматривает карниз."
         },
         {
           "type": "dialogue",
@@ -624,14 +624,14 @@
     },
     "a09": {
       "bg": "images/bg-reading-room.jpg",
+      "show": [
+        "heroine_casual",
+        "hero",
+        "friend"
+      ],
       "bgGradient": [
         "#E9DFCE",
         "#796C5E"
-      ],
-      "show": [
-        "heroine",
-        "hero",
-        "friend"
       ],
       "lines": [
         {
@@ -666,14 +666,14 @@
     },
     "a09r": {
       "bg": "images/bg-reading-room.jpg",
+      "show": [
+        "heroine_casual",
+        "hero",
+        "friend"
+      ],
       "bgGradient": [
         "#E9DFCE",
         "#796C5E"
-      ],
-      "show": [
-        "heroine",
-        "hero",
-        "friend"
       ],
       "lines": [
         {
@@ -703,14 +703,14 @@
     },
     "a09t": {
       "bg": "images/bg-reading-room.jpg",
+      "show": [
+        "heroine_casual",
+        "hero",
+        "friend"
+      ],
       "bgGradient": [
         "#E9DFCE",
         "#796C5E"
-      ],
-      "show": [
-        "heroine",
-        "hero",
-        "friend"
       ],
       "lines": [
         {
@@ -750,14 +750,14 @@
     },
     "a10": {
       "bg": "images/bg-reading-room.jpg",
+      "show": [
+        "heroine_casual",
+        "hero",
+        "friend"
+      ],
       "bgGradient": [
         "#E9DFCE",
         "#796C5E"
-      ],
-      "show": [
-        "heroine",
-        "hero",
-        "friend"
       ],
       "lines": [
         {
@@ -797,14 +797,14 @@
     },
     "a11": {
       "bg": "images/bg-reading-room.jpg",
+      "show": [
+        "heroine_casual",
+        "hero",
+        "friend"
+      ],
       "bgGradient": [
         "#E9DFCE",
         "#796C5E"
-      ],
-      "show": [
-        "heroine",
-        "hero",
-        "friend"
       ],
       "lines": [
         {
@@ -853,13 +853,13 @@
     },
     "a12": {
       "bg": "images/bg-courtyard.jpg",
+      "show": [
+        "heroine_casual",
+        "hero"
+      ],
       "bgGradient": [
         "#E9DFCE",
         "#796C5E"
-      ],
-      "show": [
-        "heroine",
-        "hero"
       ],
       "lines": [
         {
@@ -910,13 +910,13 @@
     },
     "a12r": {
       "bg": "images/bg-courtyard.jpg",
+      "show": [
+        "heroine_casual",
+        "hero"
+      ],
       "bgGradient": [
         "#E9DFCE",
         "#796C5E"
-      ],
-      "show": [
-        "heroine",
-        "hero"
       ],
       "lines": [
         {
@@ -947,13 +947,13 @@
     },
     "a12t": {
       "bg": "images/bg-courtyard.jpg",
+      "show": [
+        "heroine_casual",
+        "hero"
+      ],
       "bgGradient": [
         "#E9DFCE",
         "#796C5E"
-      ],
-      "show": [
-        "heroine",
-        "hero"
       ],
       "lines": [
         {
@@ -985,18 +985,18 @@
     },
     "a13": {
       "bg": "images/bg-workshop.jpg",
+      "show": [
+        "heroine",
+        "hero_smile"
+      ],
       "bgGradient": [
         "#E9DFCE",
         "#796C5E"
       ],
-      "show": [
-        "heroine",
-        "hero"
-      ],
       "lines": [
         {
           "type": "narration",
-          "text": "В мастерской пахло мокрой шерстью соседского пальто: кто-то ненадолго открывал общую дверь. Ася проверила альбом и оставила его закрытым на дальнем краю стола. Сегодня трогать его больше не собирались."
+          "text": "В мастерской пахло мокрой шерстью соседского пальто: кто-то ненадолго открывал общую дверь. Ася снова надела фартук, проверила альбом и оставила его закрытым на дальнем краю стола. Сегодня трогать его больше не собирались."
         },
         {
           "type": "narration",
@@ -1040,13 +1040,13 @@
     },
     "a14": {
       "bg": "images/bg-workshop.jpg",
+      "show": [
+        "heroine_smile",
+        "hero_smile"
+      ],
       "bgGradient": [
         "#E9DFCE",
         "#796C5E"
-      ],
-      "show": [
-        "heroine",
-        "hero"
       ],
       "lines": [
         {
@@ -1080,13 +1080,13 @@
     },
     "a15": {
       "bg": "images/bg-workshop.jpg",
-      "bgGradient": [
-        "#E9DFCE",
-        "#796C5E"
-      ],
       "show": [
         "heroine",
         "hero"
+      ],
+      "bgGradient": [
+        "#E9DFCE",
+        "#796C5E"
       ],
       "lines": [
         {
@@ -1124,13 +1124,13 @@
     },
     "a15p": {
       "bg": "images/bg-workshop.jpg",
+      "show": [
+        "heroine_smile",
+        "hero_tender"
+      ],
       "bgGradient": [
         "#E9DFCE",
         "#796C5E"
-      ],
-      "show": [
-        "heroine",
-        "hero"
       ],
       "lines": [
         {
@@ -1173,13 +1173,13 @@
     },
     "a15f": {
       "bg": "images/bg-workshop.jpg",
-      "bgGradient": [
-        "#E9DFCE",
-        "#796C5E"
-      ],
       "show": [
         "heroine",
         "hero"
+      ],
+      "bgGradient": [
+        "#E9DFCE",
+        "#796C5E"
       ],
       "lines": [
         {
@@ -1215,13 +1215,13 @@
     },
     "a16": {
       "bg": "images/bg-courtyard.jpg",
+      "show": [
+        "heroine_casual",
+        "hero"
+      ],
       "bgGradient": [
         "#E9DFCE",
         "#796C5E"
-      ],
-      "show": [
-        "heroine",
-        "hero"
       ],
       "lines": [
         {
@@ -1256,13 +1256,13 @@
     },
     "a17": {
       "bg": "images/bg-courtyard.jpg",
+      "show": [
+        "heroine_casual",
+        "hero"
+      ],
       "bgGradient": [
         "#E9DFCE",
         "#796C5E"
-      ],
-      "show": [
-        "heroine",
-        "hero"
       ],
       "lines": [
         {
@@ -1301,12 +1301,10 @@
     },
     "a18": {
       "bg": "images/bg-home.jpg",
+      "show": [],
       "bgGradient": [
         "#E9DFCE",
         "#796C5E"
-      ],
-      "show": [
-        "heroine"
       ],
       "lines": [
         {

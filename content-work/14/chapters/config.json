@@ -1,0 +1,469 @@
+[
+  {
+    "chapter": 1,
+    "prefix": "a",
+    "title": "Чужой почерк",
+    "entry": "a01",
+    "externalExits": [
+      "b01"
+    ],
+    "expectedScenes": 28,
+    "expectedChoices": 5,
+    "expectedPaid": 2,
+    "defaultBg": "images/bg-workshop.jpg",
+    "defaultShow": [
+      "heroine",
+      "hero"
+    ],
+    "overrides": {
+      "a01": {
+        "bg": "images/bg-workshop.jpg",
+        "show": [
+          "heroine"
+        ]
+      },
+      "a02": {
+        "bg": "images/bg-workshop.jpg",
+        "show": [
+          "heroine",
+          "hero"
+        ]
+      },
+      "a03": {
+        "bg": "images/bg-workshop.jpg",
+        "show": [
+          "heroine",
+          "hero",
+          "director"
+        ]
+      },
+      "a03r": {
+        "bg": "images/bg-workshop.jpg",
+        "show": [
+          "heroine_brave",
+          "hero",
+          "director"
+        ]
+      },
+      "a03t": {
+        "bg": "images/bg-workshop.jpg",
+        "show": [
+          "heroine_smile",
+          "hero",
+          "director"
+        ]
+      },
+      "a04": {
+        "bg": "images/bg-workshop.jpg",
+        "show": [
+          "heroine",
+          "hero",
+          "director"
+        ]
+      },
+      "a05": {
+        "bg": "images/bg-workshop.jpg",
+        "show": [
+          "heroine_doubt",
+          "hero",
+          "director"
+        ]
+      },
+      "a06": {
+        "bg": "images/bg-workshop.jpg",
+        "show": [
+          "heroine",
+          "hero",
+          "director"
+        ]
+      },
+      "a06p": {
+        "bg": "images/bg-workshop.jpg",
+        "show": [
+          "heroine_smile",
+          "hero_smile",
+          "director"
+        ]
+      },
+      "a06f": {
+        "bg": "images/bg-workshop.jpg",
+        "show": [
+          "heroine",
+          "hero",
+          "director"
+        ]
+      },
+      "a07": {
+        "bg": "images/bg-workshop.jpg",
+        "show": [
+          "heroine",
+          "hero"
+        ]
+      },
+      "a08": {
+        "bg": "images/bg-reading-room.jpg",
+        "show": [
+          "heroine_casual",
+          "hero",
+          "friend"
+        ]
+      },
+      "a09": {
+        "bg": "images/bg-reading-room.jpg",
+        "show": [
+          "heroine_casual",
+          "hero",
+          "friend"
+        ]
+      },
+      "a09r": {
+        "bg": "images/bg-reading-room.jpg",
+        "show": [
+          "heroine_casual",
+          "hero",
+          "friend"
+        ]
+      },
+      "a09t": {
+        "bg": "images/bg-reading-room.jpg",
+        "show": [
+          "heroine_casual",
+          "hero",
+          "friend"
+        ]
+      },
+      "a10": {
+        "bg": "images/bg-reading-room.jpg",
+        "show": [
+          "heroine_casual",
+          "hero",
+          "friend"
+        ]
+      },
+      "a11": {
+        "bg": "images/bg-reading-room.jpg",
+        "show": [
+          "heroine_casual",
+          "hero",
+          "friend"
+        ]
+      },
+      "a12": {
+        "bg": "images/bg-courtyard.jpg",
+        "show": [
+          "heroine_casual",
+          "hero"
+        ]
+      },
+      "a12r": {
+        "bg": "images/bg-courtyard.jpg",
+        "show": [
+          "heroine_casual",
+          "hero"
+        ]
+      },
+      "a12t": {
+        "bg": "images/bg-courtyard.jpg",
+        "show": [
+          "heroine_casual",
+          "hero"
+        ]
+      },
+      "a13": {
+        "bg": "images/bg-workshop.jpg",
+        "show": [
+          "heroine",
+          "hero_smile"
+        ]
+      },
+      "a14": {
+        "bg": "images/bg-workshop.jpg",
+        "show": [
+          "heroine_smile",
+          "hero_smile"
+        ]
+      },
+      "a15": {
+        "bg": "images/bg-workshop.jpg",
+        "show": [
+          "heroine",
+          "hero"
+        ]
+      },
+      "a15p": {
+        "bg": "images/bg-workshop.jpg",
+        "show": [
+          "heroine_smile",
+          "hero_tender"
+        ]
+      },
+      "a15f": {
+        "bg": "images/bg-workshop.jpg",
+        "show": [
+          "heroine",
+          "hero"
+        ]
+      },
+      "a16": {
+        "bg": "images/bg-courtyard.jpg",
+        "show": [
+          "heroine_casual",
+          "hero"
+        ]
+      },
+      "a17": {
+        "bg": "images/bg-courtyard.jpg",
+        "show": [
+          "heroine_casual",
+          "hero"
+        ]
+      },
+      "a18": {
+        "bg": "images/bg-home.jpg",
+        "show": []
+      }
+    }
+  },
+  {
+    "chapter": 2,
+    "prefix": "b",
+    "title": "Поля",
+    "entry": "b01",
+    "externalExits": [
+      "c01"
+    ],
+    "expectedScenes": 28,
+    "expectedChoices": 6,
+    "expectedPaid": 2,
+    "defaultBg": "images/bg-workshop.jpg",
+    "defaultShow": [
+      "heroine",
+      "hero"
+    ],
+    "overrides": {
+      "b03": {
+        "show": [
+          "heroine",
+          "hero",
+          "director"
+        ]
+      },
+      "b04": {
+        "bg": "images/bg-reading-room.jpg",
+        "show": [
+          "heroine_casual",
+          "hero",
+          "friend"
+        ]
+      },
+      "b05": {
+        "bg": "images/bg-reading-room.jpg",
+        "show": [
+          "heroine_casual",
+          "hero",
+          "friend"
+        ]
+      },
+      "b08": {
+        "bg": "images/bg-apartment.jpg",
+        "show": [
+          "heroine_casual",
+          "hero",
+          "director"
+        ]
+      },
+      "b09": {
+        "bg": "images/bg-apartment.jpg",
+        "show": [
+          "heroine_casual",
+          "hero",
+          "director"
+        ]
+      },
+      "b10": {
+        "bg": "images/bg-apartment.jpg",
+        "show": [
+          "heroine_casual",
+          "hero",
+          "director"
+        ]
+      },
+      "b11": {
+        "bg": "images/bg-apartment.jpg",
+        "show": [
+          "heroine_casual",
+          "hero",
+          "director"
+        ]
+      },
+      "b12": {
+        "bg": "images/bg-apartment.jpg",
+        "show": [
+          "heroine_casual",
+          "hero",
+          "director"
+        ]
+      },
+      "b16": {
+        "bg": "images/bg-home.jpg",
+        "show": []
+      },
+      "b02": {
+        "show": [
+          "heroine_brave",
+          "hero_doubt"
+        ]
+      },
+      "b06": {
+        "show": [
+          "heroine_smile",
+          "hero_smile"
+        ]
+      },
+      "b07p": {
+        "show": [
+          "heroine_smile",
+          "hero_smile"
+        ]
+      },
+      "b13": {
+        "show": [
+          "heroine",
+          "hero"
+        ]
+      },
+      "b15p": {
+        "show": [
+          "heroine_smile",
+          "hero_tender"
+        ]
+      }
+    }
+  },
+  {
+    "chapter": 3,
+    "prefix": "c",
+    "title": "Нитка",
+    "entry": "c01",
+    "externalExits": [
+      "d01"
+    ],
+    "expectedScenes": 28,
+    "expectedChoices": 6,
+    "expectedPaid": 2,
+    "defaultBg": "images/bg-workshop.jpg",
+    "defaultShow": [
+      "heroine",
+      "hero"
+    ],
+    "overrides": {
+      "c02": {
+        "bg": "images/bg-reading-room.jpg",
+        "show": [
+          "heroine_casual",
+          "hero",
+          "friend"
+        ]
+      },
+      "c03": {
+        "bg": "images/bg-reading-room.jpg",
+        "show": [
+          "heroine_casual",
+          "hero",
+          "friend"
+        ]
+      },
+      "c04": {
+        "bg": "images/bg-courtyard.jpg",
+        "show": [
+          "heroine_casual",
+          "hero"
+        ]
+      },
+      "c05": {
+        "bg": "images/bg-courtyard.jpg",
+        "show": [
+          "heroine_casual",
+          "hero"
+        ]
+      },
+      "c06": {
+        "bg": "images/bg-riverside.jpg",
+        "show": [
+          "heroine_casual",
+          "hero"
+        ]
+      },
+      "c07": {
+        "bg": "images/bg-riverside.jpg",
+        "show": [
+          "heroine_casual",
+          "hero"
+        ]
+      },
+      "c08": {
+        "bg": "images/bg-riverside.jpg",
+        "show": [
+          "heroine_casual",
+          "hero"
+        ]
+      },
+      "c09": {
+        "bg": "images/bg-riverside.jpg",
+        "show": [
+          "heroine_casual",
+          "hero"
+        ]
+      },
+      "c10": {
+        "bg": "images/bg-riverside.jpg",
+        "show": [
+          "heroine_casual",
+          "hero"
+        ]
+      },
+      "c11": {
+        "bg": "images/bg-riverside.jpg",
+        "show": [
+          "heroine_casual",
+          "hero"
+        ]
+      },
+      "c12": {
+        "bg": "images/bg-riverside.jpg",
+        "show": [
+          "heroine_casual",
+          "hero"
+        ]
+      },
+      "c16": {
+        "bg": "images/bg-home.jpg",
+        "show": []
+      },
+      "c13": {
+        "show": [
+          "heroine",
+          "hero_doubt"
+        ]
+      },
+      "c14": {
+        "show": [
+          "heroine",
+          "hero_doubt"
+        ]
+      },
+      "c15p": {
+        "show": [
+          "heroine_doubt",
+          "hero_tender"
+        ]
+      },
+      "c15f": {
+        "show": [
+          "heroine_brave",
+          "hero"
+        ]
+      }
+    }
+  }
+]

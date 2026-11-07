@@ -1,0 +1,67 @@
+{
+  "heroine": {
+    "name": "Ася",
+    "color": "#97705D",
+    "image": "images/heroine.webp"
+  },
+  "heroine_smile": {
+    "name": "Ася",
+    "color": "#97705D",
+    "image": "images/heroine_smile.webp"
+  },
+  "heroine_doubt": {
+    "name": "Ася",
+    "color": "#97705D",
+    "image": "images/heroine_doubt.webp"
+  },
+  "heroine_brave": {
+    "name": "Ася",
+    "color": "#97705D",
+    "image": "images/heroine_brave.webp"
+  },
+  "hero": {
+    "name": "Лев",
+    "color": "#65745F",
+    "image": "images/hero.webp"
+  },
+  "hero_smile": {
+    "name": "Лев",
+    "color": "#65745F",
+    "image": "images/hero_smile.webp"
+  },
+  "hero_doubt": {
+    "name": "Лев",
+    "color": "#65745F",
+    "image": "images/hero_doubt.webp"
+  },
+  "hero_tender": {
+    "name": "Лев",
+    "color": "#65745F",
+    "image": "images/hero_tender.webp"
+  },
+  "friend": {
+    "name": "Рита",
+    "color": "#875B63",
+    "image": "images/friend.webp"
+  },
+  "friend_smile": {
+    "name": "Рита",
+    "color": "#875B63",
+    "image": "images/friend_smile.webp"
+  },
+  "director": {
+    "name": "Валентина",
+    "color": "#66758C",
+    "image": "images/director.webp"
+  },
+  "director_warm": {
+    "name": "Валентина",
+    "color": "#66758C",
+    "image": "images/director_warm.webp"
+  },
+  "heroine_casual": {
+    "name": "Ася",
+    "color": "#97705D",
+    "image": "images/heroine_casual.webp"
+  }
+}

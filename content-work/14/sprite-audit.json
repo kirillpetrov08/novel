@@ -1,0 +1,161 @@
+{
+  "story": "pereplyot",
+  "method": "neutral silhouette + generated facial expression only",
+  "canvas": [
+    792,
+    1200
+  ],
+  "targetFaceFraction": 0.21,
+  "characters": {
+    "heroine": {
+      "neutralReference": "references/heroine.png",
+      "states": {
+        "heroine": {
+          "source": "references/heroine.png",
+          "sourceSha256": "aef17aa7e5e26cb5b01a0bd98381d60859f98b0647c7f233d57aa14afd3f95f9",
+          "file": "images/heroine.webp",
+          "sha256": "c4a1f34158ef0cc33b5154ae9da3dca878be4dcd6bac9bca8deeba5f2e057919",
+          "expressionDeltaBox": null,
+          "faceHeightFraction": 0.2015,
+          "sameSilhouette": true,
+          "sameLowerBodyPixels": true
+        },
+        "heroine_brave": {
+          "source": "references/heroine_brave.png",
+          "sourceSha256": "a5fdf54cc05b7da5fdfe0068b05071932c4d699fd42918bb94f4f846d892be71",
+          "file": "images/heroine_brave.webp",
+          "sha256": "a0b23ac2f7f1aa87dea46ff300e54d7b5c60ae3d1dce8cbb4c03cc61fcb41f96",
+          "expressionDeltaBox": [
+            271,
+            100,
+            591,
+            421
+          ],
+          "faceHeightFraction": 0.2039,
+          "sameSilhouette": true,
+          "sameLowerBodyPixels": true
+        },
+        "heroine_doubt": {
+          "source": "references/heroine_doubt.png",
+          "sourceSha256": "913eb7a73e77f63002bdad48307cd1eecaf4933fb5af0dd0ecadfbd34a3f0d17",
+          "file": "images/heroine_doubt.webp",
+          "sha256": "93ce2b981c3cf42f70da4ac65ce0872d8fb81532fb2337429b5afd060dc71624",
+          "expressionDeltaBox": [
+            271,
+            102,
+            591,
+            421
+          ],
+          "faceHeightFraction": 0.2027,
+          "sameSilhouette": true,
+          "sameLowerBodyPixels": true
+        },
+        "heroine_smile": {
+          "source": "references/heroine_smile.png",
+          "sourceSha256": "a3b46a745d3bbd2a02da85634c5b5f2ed7b414e447c6389d7bf9476c1497efa7",
+          "file": "images/heroine_smile.webp",
+          "sha256": "26e5884984ca1c5ad43a7fea86e37bd40cbaaec9edec5df944f57374675bb43c",
+          "expressionDeltaBox": [
+            270,
+            102,
+            592,
+            421
+          ],
+          "faceHeightFraction": 0.2039,
+          "sameSilhouette": true,
+          "sameLowerBodyPixels": true
+        }
+      }
+    },
+    "hero": {
+      "neutralReference": "references/hero.png",
+      "states": {
+        "hero": {
+          "source": "references/hero.png",
+          "sourceSha256": "6aa4dd4c73d32d968c1e7c61dd67ea9e3c7e469175c47a1e9abb2133db917bf6",
+          "file": "images/hero.webp",
+          "sha256": "df9c6a8e75f963c5e67b55153a0231cf2a32a76b476c537c5cbe427f10c37f64",
+          "expressionDeltaBox": null,
+          "faceHeightFraction": 0.2174,
+          "sameSilhouette": true,
+          "sameLowerBodyPixels": true
+        },
+        "hero_doubt": {
+          "source": "references/hero_doubt.png",
+          "sourceSha256": "75f13043ec327cd4808a149c8aa3b74095b5388efd39375e09ab978c3d928f40",
+          "file": "images/hero_doubt.webp",
+          "sha256": "684a29b2effa02b67f9d460dce5a2f18dd1c9bf9d3be41d4fb3952e3010a0da5",
+          "expressionDeltaBox": [
+            212,
+            109,
+            535,
+            427
+          ],
+          "faceHeightFraction": 0.2257,
+          "sameSilhouette": true,
+          "sameLowerBodyPixels": true
+        },
+        "hero_smile": {
+          "source": "references/hero_smile.png",
+          "sourceSha256": "13949eb37da0aea2458262bb335903481d43b82e950c58a572952ced287ab070",
+          "file": "images/hero_smile.webp",
+          "sha256": "487c645621e419d23a3f30b95243758ff77af2fa33c4172bb37237a780bc9602",
+          "expressionDeltaBox": [
+            212,
+            109,
+            535,
+            426
+          ],
+          "faceHeightFraction": 0.2208,
+          "sameSilhouette": true,
+          "sameLowerBodyPixels": true
+        },
+        "hero_tender": {
+          "source": "references/hero_tender.png",
+          "sourceSha256": "babbb65fa87ba394e437e8af1bf5c9746dfcc734e98109340eacc90d73286315",
+          "file": "images/hero_tender.webp",
+          "sha256": "039e8144515ac9d626902dbdbbe481e7c4e19da2369260f17716cf6f9403e77a",
+          "expressionDeltaBox": [
+            212,
+            108,
+            536,
+            428
+          ],
+          "faceHeightFraction": 0.2235,
+          "sameSilhouette": true,
+          "sameLowerBodyPixels": true
+        }
+      }
+    },
+    "friend": {
+      "neutralReference": "references/friend.png",
+      "states": {
+        "friend": {
+          "source": "references/friend.png",
+          "sourceSha256": "6e84888d7bca3e03e8c28504b5f392b9fcc264b765e0ae69bf07b75647b8995b",
+          "file": "images/friend.webp",
+          "sha256": "79f2c44ec964e6fdbf43ac468ef969a3a2f5ee214706c6110687480937e6339f",
+          "expressionDeltaBox": null,
+          "faceHeightFraction": 0.2166,
+          "sameSilhouette": true,
+          "sameLowerBodyPixels": true
+        }
+      }
+    },
+    "director": {
+      "neutralReference": "references/director.png",
+      "states": {
+        "director": {
+          "source": "references/director.png",
+          "sourceSha256": "30858434a14484ef6a46b4ad09a0bb3d706a87d8805a5361fcf962e68d9d1484",
+          "file": "images/director.webp",
+          "sha256": "fa7fd2cb09e619ae49e88064e5f95d3b12baed6d3e74ac0d4a3c11c368afd6ca",
+          "expressionDeltaBox": null,
+          "faceHeightFraction": 0.2155,
+          "sameSilhouette": true,
+          "sameLowerBodyPixels": true
+        }
+      }
+    }
+  }
+}

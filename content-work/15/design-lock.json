@@ -1,0 +1,86 @@
+{
+  "story": "tishe-snega",
+  "policy": "Эмоции меняют мимику, не личность, причёску, возраст, телосложение или костюм. Новая одежда только по явному wardrobe и событию в сюжете.",
+  "styleReferences": [
+    {
+      "file": "cover.jpg",
+      "role": "обложка собственной истории; стиль восходит к stores/1/cover.jpg",
+      "sha256": "86e1d24c1cc90a81fb884364382fc0c0cb3686da8fbb7e046a58a82a07f964e8"
+    }
+  ],
+  "characters": {
+    "heroine": {
+      "name": "Нина",
+      "age": 32,
+      "immutableDesign": "Тёплая светлая кожа, широкие мягкие скулы, серо-зелёные глаза, пепельно-русая коса через правое плечо.",
+      "wardrobes": {
+        "work": "Песочная полевая куртка, оливковый свитер, тёмные полевые брюки."
+      },
+      "identityReferences": [
+        {
+          "file": "cover.jpg",
+          "role": "левая героиня",
+          "sha256": "86e1d24c1cc90a81fb884364382fc0c0cb3686da8fbb7e046a58a82a07f964e8"
+        }
+      ],
+      "states": [
+        "heroine",
+        "heroine_smile",
+        "heroine_doubt",
+        "heroine_brave"
+      ],
+      "identityStatus": "anchored"
+    },
+    "hero": {
+      "name": "Артём",
+      "age": 35,
+      "immutableDesign": "Тёплая смуглая кожа, короткие чёрные кудри, карие глаза, аккуратная короткая чёрная борода.",
+      "wardrobes": {
+        "work": "Графитово-синяя полевая куртка, тёмно-коричневый ремень камеры, тёмные брюки."
+      },
+      "identityReferences": [
+        {
+          "file": "cover.jpg",
+          "role": "правый герой",
+          "sha256": "86e1d24c1cc90a81fb884364382fc0c0cb3686da8fbb7e046a58a82a07f964e8"
+        }
+      ],
+      "states": [
+        "hero",
+        "hero_smile",
+        "hero_doubt",
+        "hero_tender"
+      ],
+      "identityStatus": "anchored"
+    },
+    "friend": {
+      "name": "Соня",
+      "age": 29,
+      "immutableDesign": "Смуглая кожа, короткие прямые тёмные волосы, карие глаза.",
+      "wardrobes": {
+        "work": "Горчичный флис и графитовые полевые брюки."
+      },
+      "identityReferences": [],
+      "states": [
+        "friend",
+        "friend_smile"
+      ],
+      "identityStatus": "planned-no-portrait-yet"
+    },
+    "director": {
+      "name": "Павел",
+      "age": 56,
+      "immutableDesign": "Светлая обветренная кожа, короткие седые волосы, тёмные глаза, серая щетина.",
+      "wardrobes": {
+        "work": "Серо-зелёная рабочая полевая куртка, тёмные брюки."
+      },
+      "identityReferences": [],
+      "states": [
+        "director",
+        "director_warm"
+      ],
+      "identityStatus": "planned-no-portrait-yet"
+    }
+  },
+  "reviewNote": "SHA-256 защищает эталоны от незаметной подмены, но не доказывает сходство лиц. Новые изображения требуют визуальной проверки с эталонами. Для эмоциональных спрайтов №14 также проверяются неизменность alpha, тела и одежды."
+}

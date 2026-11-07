@@ -1,0 +1,86 @@
+{
+  "story": "vtoraya-podacha",
+  "policy": "Эмоции меняют мимику, не личность, причёску, возраст, телосложение или костюм. Новая одежда только по явному wardrobe и событию в сюжете.",
+  "styleReferences": [
+    {
+      "file": "cover.jpg",
+      "role": "обложка собственной истории; стиль восходит к stores/1/cover.jpg",
+      "sha256": "e68c00777feee047454e11be153407250537103e93d99a3efa5c158cb4d162b9"
+    }
+  ],
+  "characters": {
+    "heroine": {
+      "name": "Вера",
+      "age": 31,
+      "immutableDesign": "Светлая кожа с лёгкими веснушками, овальное лицо, зелёные глаза, рыжевато-каштановый высокий хвост; естественное спортивное телосложение.",
+      "wardrobes": {
+        "work": "Кремовое поло, приглушённые терракотовые длинные спортивные брюки."
+      },
+      "identityReferences": [
+        {
+          "file": "cover.jpg",
+          "role": "левая героиня",
+          "sha256": "e68c00777feee047454e11be153407250537103e93d99a3efa5c158cb4d162b9"
+        }
+      ],
+      "states": [
+        "heroine",
+        "heroine_smile",
+        "heroine_doubt",
+        "heroine_brave"
+      ],
+      "identityStatus": "anchored"
+    },
+    "hero": {
+      "name": "Денис",
+      "age": 33,
+      "immutableDesign": "Светлая тёплая кожа, широкие скулы, короткие тёмно-русые волосы, серые глаза, без бороды; естественное спортивное телосложение.",
+      "wardrobes": {
+        "work": "Тёмно-шалфейная спортивная футболка и графитовые спортивные брюки."
+      },
+      "identityReferences": [
+        {
+          "file": "cover.jpg",
+          "role": "правый герой",
+          "sha256": "e68c00777feee047454e11be153407250537103e93d99a3efa5c158cb4d162b9"
+        }
+      ],
+      "states": [
+        "hero",
+        "hero_smile",
+        "hero_doubt",
+        "hero_tender"
+      ],
+      "identityStatus": "anchored"
+    },
+    "friend": {
+      "name": "Лена",
+      "age": 34,
+      "immutableDesign": "Оливковая кожа, карие глаза, длинная тёмная коса.",
+      "wardrobes": {
+        "work": "Песочная ветровка и тёмно-синие брюки."
+      },
+      "identityReferences": [],
+      "states": [
+        "friend",
+        "friend_smile"
+      ],
+      "identityStatus": "planned-no-portrait-yet"
+    },
+    "director": {
+      "name": "Борис",
+      "age": 58,
+      "immutableDesign": "Загорелое лицо, короткие седые волосы, светло-карие глаза, без бороды.",
+      "wardrobes": {
+        "work": "Тёмно-синяя спортивная куртка и серые брюки."
+      },
+      "identityReferences": [],
+      "states": [
+        "director",
+        "director_warm"
+      ],
+      "identityStatus": "planned-no-portrait-yet"
+    }
+  },
+  "reviewNote": "SHA-256 защищает эталоны от незаметной подмены, но не доказывает сходство лиц. Новые изображения требуют визуальной проверки с эталонами. Для эмоциональных спрайтов №14 также проверяются неизменность alpha, тела и одежды."
+}
