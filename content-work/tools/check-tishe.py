@@ -84,6 +84,43 @@ def validate_fragment(fragment, config, characters, manifest):
     return lines, points, paid, used, offscreen
 
 
+def check_reviews(base, manifest, lock):
+    reviewed = {}
+    documents = [base / 'visual-review.json', *sorted(base.glob('art-review-stage*.json'))]
+    anchors = list(lock['styleReferences'])
+    anchors += [a for character in lock['characters'].values() for a in character['identityReferences']]
+    items = anchors + [item for path in documents for item in load(path)['files']]
+    for item in items:
+        path = base / graphs.safe(item['file'])
+        assert path.is_file(), f'Missing reviewed image: {path}'
+        digest = hashlib.sha256(path.read_bytes()).hexdigest()
+        assert digest == item['sha256'], f'Changed reviewed image: {path}'
+        assert item['file'] not in reviewed or reviewed[item['file']] == digest
+        reviewed[item['file']] = digest
+    existing = {i['file'] for i in manifest['images'] if (base / graphs.safe(i['file'])).exists()}
+    assert existing <= reviewed.keys(), f'Playable art lacks visual approval: {existing - reviewed.keys()}'
+    return len(existing)
+
+
+def assert_mandatory(scenes, entry, exit_id, required):
+    """No player route may bypass these freely supplied core story actions."""
+    for blocked in required:
+        assert blocked in scenes
+        todo = [entry]; visited = set()
+        while todo:
+            sid = todo.pop()
+            if sid == blocked or sid in visited:
+                continue
+            assert sid != exit_id, f'Core action can be bypassed: {blocked}'
+            visited.add(sid)
+            scene = scenes[sid]
+            assert not scene.get('branch') and not scene.get('ending')
+            if 'choices' in scene:
+                todo.extend(c['next'] for c in scene['choices'])
+            else:
+                todo.append(scene['next'])
+
+
 def check():
     configs = load(BASE / 'chapters/config.json')
     # Completion needs its own full graph/consent/endings/length audit first.
@@ -99,10 +136,7 @@ def check():
         for state in person['states']:
             assert characters[state]['name'] == person['name']
             assert characters[state]['image'] == f'images/{state}.webp'
-    for filename in ('visual-review.json', 'art-review-stage4.json'):
-        review = load(BASE / filename)
-        for item in review['files']:
-            assert hashlib.sha256((BASE / graphs.safe(item['file'])).read_bytes()).hexdigest() == item['sha256']
+    reviewed_art = check_reviews(BASE, manifest, lock)
     compiler.BASE = BASE  # private compiler module; the canonical №14 is never a write target
     merged = {}
     used = set()
@@ -124,14 +158,21 @@ def check():
     # Artyom is deliberately offscreen in these two porch/exit alternatives:
     # his outdoor portrait carries a camera, which he leaves inside in a16d.
     assert set(offscreen) == {('a16d', 'hero'), ('a16r', 'hero')}, offscreen
+    core = ['a13', 'b04']
+    if len(configs) >= 3: core += ['c01', 'c03', 'c06', 'c11']
+    if len(configs) >= 4: core += ['d02', 'd04', 'd09', 'd11', 'd15']
+    assert_mandatory(merged, configs[0]['entry'], configs[-1]['externalExits'][0], core)
     outcomes = {}
     for free in (False, True):
         result = graphs.solve_graph(merged, configs[0]['entry'], configs[-1]['externalExits'], free=free)
         routes, low, high = result['summary']
         assert set(result['terminals']) == set(configs[-1]['externalExits'])
+        exit_stats = [stats for sid, stats in result['seen'] if sid in configs[-1]['externalExits']]
+        ranges = {key: {'min': min(v[i] for v in exit_stats), 'max': max(v[i] for v in exit_stats)}
+                  for i, key in enumerate(graphs.STATS)}
         outcomes['free' if free else 'all'] = {
             'routes': routes, 'states': result['states'], 'minWords': low, 'maxWords': high,
-            'continuations': sorted(result['terminals'])}
+            'continuations': sorted(result['terminals']), 'exitStatRanges': ranges}
         print(f'{"FREE" if free else "ALL"} FRAGMENT: {routes} routes, {low}–{high} words, {result["states"]} states')
     missing = sorted(path for path in used if not (BASE / path).is_file())
     report = {
@@ -139,6 +180,7 @@ def check():
         'chapters': len(configs), 'scenes': len(merged), 'lines': lines,
         'decisions': points, 'paidOptions': paid, 'outcomes': outcomes,
         'externalExits': configs[-1]['externalExits'], 'missingUsedArt': missing,
+        'mandatoryCoreScenes': core, 'reviewedPlayableArt': reviewed_art,
         'offscreenSpeakers': [list(pair) for pair in sorted(set(offscreen))],
         'sceneDigest': hashlib.sha256(json.dumps(merged, ensure_ascii=False, sort_keys=True).encode()).hexdigest(),
         'limits': ['No final endings or full-story balance yet', 'No timed reading or mobile visual approval',

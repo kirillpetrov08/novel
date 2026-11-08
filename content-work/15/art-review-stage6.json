@@ -1,0 +1,38 @@
+{
+  "checkpoint": 6,
+  "story": "tishe-snega",
+  "method": "Assistant visual inspection of all six new backgrounds against the accepted station and cover; no people, legible lettering, logos or UI strips observed.",
+  "notes": [
+    "Tundra: firm dry path, snow in hollows, dwarf willows, no animals/nests or unsafe crossing. Small roofed equipment support without writing.",
+    "Equipment and listening rooms: consistent timber station, plain unbranded devices, dark screens, clear floor.",
+    "Porch: covered, dry clear walkway, patchy snow outside; neutral lighting supports arrival and evening.",
+    "Storm: same station room viewed safely from inside, window obscured by snow, guarded stove and glass-shielded table lamp; no rescue or power-outage implied.",
+    "Screening: modest multipurpose station room, blank portable screen, plain chairs, no signage."
+  ],
+  "files": [
+    {
+      "file": "images/bg-tundra.jpg",
+      "sha256": "971988378eb6f2a591a04a57e653cee899eb358fa1f3e732b177e041e555a972"
+    },
+    {
+      "file": "images/bg-equipment.jpg",
+      "sha256": "c16b02a53804eb2d893a72d814e5dfd89f715e09825374dabed49dd65150055a"
+    },
+    {
+      "file": "images/bg-listening.jpg",
+      "sha256": "d3101b291cbb1f4c261c7b04897d64a23a6cb4f18258ee9b07a10f3d2a7ea831"
+    },
+    {
+      "file": "images/bg-porch.jpg",
+      "sha256": "bb140781622be5db9d9d5e497a17823f901e96767e16483b8dd54a06c67236e9"
+    },
+    {
+      "file": "images/bg-storm.jpg",
+      "sha256": "6fd2b8ad478ca6b882ae6bae57526e37f69250eecdd459e15a1733cc8c34494c"
+    },
+    {
+      "file": "images/bg-screening.jpg",
+      "sha256": "9475637c129d176c601ffe733612c738dc66215ea090eac6445b42c891f014c0"
+    }
+  ]
+}

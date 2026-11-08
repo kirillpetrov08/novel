@@ -1,0 +1,205 @@
+{
+  "scope": "portrait-and-background-preflight-only",
+  "skippedCgScenes": [
+    "a02",
+    "a04",
+    "a11",
+    "b03",
+    "b07d",
+    "b12d",
+    "c03",
+    "c08d",
+    "c10t",
+    "d01",
+    "d04",
+    "d09"
+  ],
+  "results": [
+    {
+      "width": 320,
+      "height": 568,
+      "inset": 0,
+      "font": "m",
+      "scenes": 100,
+      "lines": 311,
+      "choices": 22,
+      "cgs": 0,
+      "scrollableLines": 177,
+      "failures": [],
+      "errors": []
+    },
+    {
+      "width": 320,
+      "height": 568,
+      "inset": 0,
+      "font": "l",
+      "scenes": 100,
+      "lines": 311,
+      "choices": 22,
+      "cgs": 0,
+      "scrollableLines": 262,
+      "failures": [],
+      "errors": []
+    },
+    {
+      "width": 360,
+      "height": 640,
+      "inset": 0,
+      "font": "m",
+      "scenes": 100,
+      "lines": 311,
+      "choices": 22,
+      "cgs": 0,
+      "scrollableLines": 10,
+      "failures": [],
+      "errors": []
+    },
+    {
+      "width": 360,
+      "height": 640,
+      "inset": 0,
+      "font": "l",
+      "scenes": 100,
+      "lines": 311,
+      "choices": 22,
+      "cgs": 0,
+      "scrollableLines": 188,
+      "failures": [],
+      "errors": []
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "inset": 0,
+      "font": "m",
+      "scenes": 100,
+      "lines": 311,
+      "choices": 22,
+      "cgs": 0,
+      "scrollableLines": 0,
+      "failures": [],
+      "errors": []
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "inset": 0,
+      "font": "l",
+      "scenes": 100,
+      "lines": 311,
+      "choices": 22,
+      "cgs": 0,
+      "scrollableLines": 4,
+      "failures": [],
+      "errors": []
+    },
+    {
+      "width": 320,
+      "height": 568,
+      "inset": 24,
+      "font": "m",
+      "scenes": 100,
+      "lines": 311,
+      "choices": 22,
+      "cgs": 0,
+      "scrollableLines": 177,
+      "failures": [],
+      "errors": []
+    },
+    {
+      "width": 320,
+      "height": 568,
+      "inset": 24,
+      "font": "l",
+      "scenes": 100,
+      "lines": 311,
+      "choices": 22,
+      "cgs": 0,
+      "scrollableLines": 262,
+      "failures": [],
+      "errors": []
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "inset": 24,
+      "font": "m",
+      "scenes": 100,
+      "lines": 311,
+      "choices": 22,
+      "cgs": 0,
+      "scrollableLines": 0,
+      "failures": [],
+      "errors": []
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "inset": 24,
+      "font": "l",
+      "scenes": 100,
+      "lines": 311,
+      "choices": 22,
+      "cgs": 0,
+      "scrollableLines": 4,
+      "failures": [],
+      "errors": []
+    }
+  ],
+  "notReleaseApproval": true,
+  "fragmentSceneDigest": "99b41715f65ea56f774062ae1ae80aeed43192dfb8a8f4f7ac1cbf0bfe27e2bf",
+  "codeSha256": {
+    "js/app.js": "0dab6feb4ada9a70eeee5a5f7094a10cf57e2032d9c5453835a690096eeed484",
+    "js/engine.js": "98b9df0da56497305e4b787b79ef84fa376537d1e0576d023a0749040a45234d",
+    "js/loader.js": "b2eca91aa77362ca1d3913bfd78bcf809fd69038efcba2c988827c23855a9b38",
+    "css/style.css": "910b7b66c35a5b63abbb24e757e1f4150bb665b131ed5c0cc40ca3e28036722a"
+  },
+  "artSha256": {
+    "cover.jpg": "86e1d24c1cc90a81fb884364382fc0c0cb3686da8fbb7e046a58a82a07f964e8",
+    "images/bg-station.jpg": "34a0688930034e20e64203fd9a34d4d5e1b70e390a3b41550dc0d2e8a6911363",
+    "images/bg-tundra.jpg": "971988378eb6f2a591a04a57e653cee899eb358fa1f3e732b177e041e555a972",
+    "images/bg-equipment.jpg": "c16b02a53804eb2d893a72d814e5dfd89f715e09825374dabed49dd65150055a",
+    "images/bg-listening.jpg": "d3101b291cbb1f4c261c7b04897d64a23a6cb4f18258ee9b07a10f3d2a7ea831",
+    "images/bg-porch.jpg": "bb140781622be5db9d9d5e497a17823f901e96767e16483b8dd54a06c67236e9",
+    "images/bg-storm.jpg": "6fd2b8ad478ca6b882ae6bae57526e37f69250eecdd459e15a1733cc8c34494c",
+    "images/bg-screening.jpg": "9475637c129d176c601ffe733612c738dc66215ea090eac6445b42c891f014c0",
+    "images/heroine.webp": "9a79f5096f10a0e77f0c30bcdb587ff81cc9e0c262557ba54b674e51745bfb20",
+    "images/heroine_smile.webp": "b27b7f1c8707385ba56778c47c0e3277da353cfd9f9d0f96ecd0e08866245827",
+    "images/heroine_doubt.webp": "db4ae330488dba2f9cd96e5ff784e93e7b12c61de643abc10bae4db289817d14",
+    "images/heroine_brave.webp": "c32505e018a917f6f279d07af6a5d8e876adf13dd6240f3d62c1d6fd76b507be",
+    "images/hero.webp": "3e5418cd7e4f3a62caccb9e83a78fe790e9bc40bd8b383fcaa0a2ea49e4eb4b7",
+    "images/hero_smile.webp": "963917e12d5110929bbbefdb8a6e4a312733678636c2b3c525f8aace9037e1b4",
+    "images/hero_doubt.webp": "e108ad37b6e5a830d393a30ddc174deb9664e50c313e2e9639bbac09482ffd45",
+    "images/hero_tender.webp": "4902add84be3931e463e41a7d56b291c7a6479666df808e62fa8045f99efd2b7",
+    "images/friend.webp": "bab3fbef107fada44224d99f3b80b829bd9d4e981f4092afb8f62b174406e0d0",
+    "images/friend_smile.webp": "3b8907e96da9ff05dede7f9416fdd9ae453c0e655f028ad93fff6f3c912b0234",
+    "images/director.webp": "8f46fd6e8fc8361d397fb706c63ecdeca226e059f0f0e7ff1d4a7367562e6aaa",
+    "images/director_warm.webp": "5bac41535b9e87c8d389dd01f78d64da11ae603b3a5f71b10d91ffdf87f6b783",
+    "images/heroine_indoor.webp": "ab08ca94da0e1f5d19b013b304dc08f3aa89cca3428e4ed9f6541b27c644cbac",
+    "images/hero_indoor.webp": "ced5654a83b97dc017dd448637e6f57cf750db2f416f915111ceef43da161d4a"
+  },
+  "screenshots": [
+    {
+      "file": "reviews/cast-stage6-320-safe0-indoor-choices.png",
+      "sha256": "d4b4eb63b06660cd7f1ebb3f445c0b8a10dc20d8d08af3cd2c11173a6eb8b1e5"
+    },
+    {
+      "file": "reviews/cast-stage6-320-safe24-large-three-characters.png",
+      "sha256": "1d4e4c19a3882252ec187d7f040c40532878fc88511c6eb755c596cfd446a688"
+    },
+    {
+      "file": "reviews/cast-stage6-390-safe0-outdoors.png",
+      "sha256": "f2f84a66d5c4680772a54cb6c2d0a464b7a2e73d922f2d86bbc91d9b134abe85"
+    }
+  ],
+  "visualReview": {
+    "acceptedForScope": true,
+    "notes": [
+      "Three screenshots inspected: 320x568 safe24 large font/three characters, 390x844 outdoors/two characters, 320x568 indoor choices.",
+      "Head/hair areas remain clear of toolbar and choices; portraits match frozen neutral identities/wardrobes.",
+      "Long dialogue deliberately scrolls vertically on compact/large-font layouts and remains reachable with choices open.",
+      "Only 100 scenes without CG were rendered (311 lines, 22 choices per configuration); all 12 currently authored CG scenes were EXCLUDED, not replaced.",
+      "This is not final story, CG, ending, time-to-read or physical Android approval. The temporary browser-only fixture is never serialized into the app bundle."
+    ]
+  }
+}

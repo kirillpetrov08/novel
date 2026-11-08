@@ -27,8 +27,8 @@ function harness(balance){
   vm.runInContext('Store.load(); Store.data.crystals=balance; Store.save(); Engine.onEvent=(t,p)=>events.push({t,p}); Engine.open(story,"restart"); globalThis.E=Engine; globalThis.S=Store;',ctx);
   return {ctx,E:ctx.E,S:ctx.S,events};
 }
-for(const strategy of ['free-trust','free-resolve','paid']){
-  const paid=strategy==='paid';
+for(const strategy of ['free-trust','free-resolve','paid','paid-no-kiss']){
+  const paid=strategy.startsWith('paid');
   const h=harness(paid?paidCount*5:0);
   const expectedStats={desire:0,trust:0,resolve:0};
   let steps=0,selected=0,resumed=false;
@@ -36,7 +36,8 @@ for(const strategy of ['free-trust','free-resolve','paid']){
     const scene=h.E.scene();
     if(scene.next===exit && h.E.state.lineIndex===scene.lines.length-1)break;
     if(scene.choices && h.E.state.lineIndex===scene.lines.length-1){
-      const candidates=scene.choices.map((c,i)=>({c,i})).filter(({c})=>paid||!c.crystals);
+      const candidates=scene.choices.map((c,i)=>({c,i})).filter(({c})=>paid||!c.crystals)
+        .filter(({c})=>strategy!=='paid-no-kiss'||h.E.state.sceneId!=='c10'||c.next==='c10r');
       const score=c=>(paid&&c.crystals?100:0)+(c.effect?.[strategy==='free-resolve'?'resolve':'trust']||0);
       candidates.sort((a,b)=>score(b.c)-score(a.c));
       const {c,i}=candidates[0];
@@ -55,6 +56,16 @@ for(const strategy of ['free-trust','free-resolve','paid']){
   assert.equal(selected,decisions);
   assert.equal(h.E.scene().next,exit);
   assert.equal(h.E.state.completed,false);
+  if(scenes.c10){
+    const refused=strategy==='paid-no-kiss'||strategy==='free-resolve';
+    assert(h.E.state.visited.includes(refused?'c10r':'c10t'));
+    assert(!h.E.state.visited.includes(refused?'c10t':'c10r'));
+    assert.equal(Boolean(scenes.c10r.cg),false);
+    assert.equal(scenes.c10t.cg,'images/cg-kiss.jpg');
+    for(const mandatory of ['c01','c03','c06','c11','d02','d04','d09','d11','d15']){
+      if(scenes[mandatory])assert(h.E.state.visited.includes(mandatory));
+    }
+  }
   assert.equal(h.events.filter(e=>e.t==='ending').length,0);
   const payments=h.events.filter(e=>e.t==='crystals-spent');
   assert.equal(payments.length,paid?paidCount:0);

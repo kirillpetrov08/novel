@@ -120,6 +120,52 @@ class TisheTests(unittest.TestCase):
             self.assertIn('unrecognized arguments', result.stderr)
         self.assertEqual(before, {name: (canonical / name).read_bytes() for name in names})
 
+    def test_reviewed_background_change_rejected(self):
+        with tempfile.TemporaryDirectory() as directory:
+            base = Path(directory); (base / 'images').mkdir()
+            image = base / 'images/bg-test.jpg'; image.write_bytes(b'reviewed illustration')
+            (base / 'visual-review.json').write_text(json.dumps({'files': []}))
+            (base / 'art-review-stage6.json').write_text(json.dumps({'files': [
+                {'file': 'images/bg-test.jpg', 'sha256': hashlib.sha256(image.read_bytes()).hexdigest()}]}))
+            m = {'images': [{'file': 'images/bg-test.jpg'}]}
+            lock = {'styleReferences': [], 'characters': {}}
+            self.assertEqual(checks.check_reviews(base, m, lock), 1)
+            image.write_bytes(b'unreviewed replacement')
+            with self.assertRaises(AssertionError):
+                checks.check_reviews(base, m, lock)
+
+    def test_unreviewed_existing_art_rejected(self):
+        with tempfile.TemporaryDirectory() as directory:
+            base = Path(directory); (base / 'new.jpg').write_bytes(b'not reviewed')
+            (base / 'visual-review.json').write_text(json.dumps({'files': []}))
+            with self.assertRaises(AssertionError):
+                checks.check_reviews(base, {'images': [{'file': 'new.jpg'}]},
+                                     {'styleReferences': [], 'characters': {}})
+
+    def test_core_actions_cannot_be_skipped(self):
+        scenes = {}
+        for config in configs:
+            scenes.update(checks.load(BASE / f'chapters/{config["chapter"]:02}.json')['scenes'])
+        exit_id = configs[-1]['externalExits'][0]
+        for required in ('c01', 'c03', 'd04', 'd09', 'd11'):
+            checks.assert_mandatory(scenes, 'a01', exit_id, [required])
+            mutated = copy.deepcopy(scenes)
+            mutated['a01']['next'] = exit_id
+            with self.assertRaises(AssertionError):
+                checks.assert_mandatory(mutated, 'a01', exit_id, [required])
+
+    def test_kiss_and_refusal_both_reachable_without_payment(self):
+        scenes = {}
+        for config in configs:
+            scenes.update(checks.load(BASE / f'chapters/{config["chapter"]:02}.json')['scenes'])
+        result = checks.graphs.solve_graph(scenes, 'a01', configs[-1]['externalExits'], free=True)
+        reached = {sid for sid, stats in result['seen']}
+        self.assertTrue({'c10t', 'c10r'} <= reached)
+        self.assertFalse('c08d' in reached)
+        self.assertTrue(all(not c.get('crystals') and not c.get('requires') for c in scenes['c10']['choices']))
+        self.assertNotIn('cg', scenes['c10r'])
+        self.assertEqual(scenes['c10t']['cg'], 'images/cg-kiss.jpg')
+
     def test_partial_routes_report_is_current(self):
         with contextlib.redirect_stdout(io.StringIO()):
             report = checks.check()

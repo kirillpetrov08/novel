@@ -51,6 +51,21 @@
           "faceHeightFraction": 0.2084,
           "sameSilhouette": true,
           "sameLowerBodyPixels": true
+        },
+        "heroine_brave": {
+          "source": "references/heroine_brave.png",
+          "sourceSha256": "e8a497b49046444231f7b18920428525d703389339a0e349c46cd37469505480",
+          "file": "images/heroine_brave.webp",
+          "sha256": "c32505e018a917f6f279d07af6a5d8e876adf13dd6240f3d62c1d6fd76b507be",
+          "expressionDeltaBox": [
+            228,
+            122,
+            572,
+            452
+          ],
+          "faceHeightFraction": 0.2116,
+          "sameSilhouette": true,
+          "sameLowerBodyPixels": true
         }
       }
     },
@@ -115,6 +130,21 @@
           "faceHeightFraction": 0.2155,
           "sameSilhouette": true,
           "sameLowerBodyPixels": true
+        },
+        "hero_tender": {
+          "source": "references/hero_tender.png",
+          "sourceSha256": "ff8e39c1e95708b4254199ed1d0c22080237b15c292494ee716c2f7ebf60e52e",
+          "file": "images/hero_tender.webp",
+          "sha256": "4902add84be3931e463e41a7d56b291c7a6479666df808e62fa8045f99efd2b7",
+          "expressionDeltaBox": [
+            230,
+            99,
+            511,
+            411
+          ],
+          "faceHeightFraction": 0.2179,
+          "sameSilhouette": true,
+          "sameLowerBodyPixels": true
         }
       }
     },
@@ -149,6 +179,21 @@
           "faceHeightFraction": 0.209,
           "sameSilhouette": true,
           "sameLowerBodyPixels": true
+        },
+        "friend_smile": {
+          "source": "references/friend_smile.png",
+          "sourceSha256": "15b86cb17c945ae75d794f1fc435721b2aefcfd44178ed94f8426da4faf10e15",
+          "file": "images/friend_smile.webp",
+          "sha256": "3b8907e96da9ff05dede7f9416fdd9ae453c0e655f028ad93fff6f3c912b0234",
+          "expressionDeltaBox": [
+            237,
+            115,
+            542,
+            439
+          ],
+          "faceHeightFraction": 0.2101,
+          "sameSilhouette": true,
+          "sameLowerBodyPixels": true
         }
       }
     },
@@ -164,6 +209,21 @@
           "sha256": "8f46fd6e8fc8361d397fb706c63ecdeca226e059f0f0e7ff1d4a7367562e6aaa",
           "expressionDeltaBox": null,
           "faceHeightFraction": 0.2107,
+          "sameSilhouette": true,
+          "sameLowerBodyPixels": true
+        },
+        "director_warm": {
+          "source": "references/director_warm.png",
+          "sourceSha256": "f1531969ca3e577965a8916e08149f2363bcd1d8d22da5efa2e3f21f3e667483",
+          "file": "images/director_warm.webp",
+          "sha256": "5bac41535b9e87c8d389dd01f78d64da11ae603b3a5f71b10d91ffdf87f6b783",
+          "expressionDeltaBox": [
+            273,
+            85,
+            547,
+            399
+          ],
+          "faceHeightFraction": 0.2098,
           "sameSilhouette": true,
           "sameLowerBodyPixels": true
         }

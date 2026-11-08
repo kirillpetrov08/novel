@@ -26,12 +26,12 @@
     {
       "file": "images/bg-listening.jpg",
       "type": "background",
-      "prompt": "Vertical 2:3 empty environment, eye-level view, uncluttered lower third for dialogue UI. NO people, faces, portraits or silhouettes. Quiet recording analysis room, two chairs, headphones on table, dark unmarked monitor screens, muted timber wall, dusk window. Match the established stores/1/cover.jpg illustration style and the current story cover for character identity: fine dark contours, softly brushed semi-realistic painted faces, tactile fabric, restrained warm cream sand bronze sage and slate palette, gentle diffused lighting. Not photorealistic, not anime, not 3D. No text, lettering, readable documents, words, numbers, logos or watermark. One standalone full-bleed illustration, not a collage or grid."
+      "prompt": "Vertical 2:3 empty environment, eye-level view, uncluttered lower third for dialogue UI. NO people, faces, portraits or silhouettes. Quiet recording analysis room, two chairs, headphones on table, dark unmarked monitor screens, muted timber wall, soft neutral window light usable at different hours. Match the established stores/1/cover.jpg illustration style and the current story cover for character identity: fine dark contours, softly brushed semi-realistic painted faces, tactile fabric, restrained warm cream sand bronze sage and slate palette, gentle diffused lighting. Not photorealistic, not anime, not 3D. No text, lettering, readable documents, words, numbers, logos or watermark. One standalone full-bleed illustration, not a collage or grid."
     },
     {
       "file": "images/bg-porch.jpg",
       "type": "background",
-      "prompt": "Vertical 2:3 empty environment, eye-level view, uncluttered lower third for dialogue UI. NO people, faces, portraits or silhouettes. Covered wooden station porch after snowfall, snow beyond a cleared safe walkway, blue dusk, glowing window. Match the established stores/1/cover.jpg illustration style and the current story cover for character identity: fine dark contours, softly brushed semi-realistic painted faces, tactile fabric, restrained warm cream sand bronze sage and slate palette, gentle diffused lighting. Not photorealistic, not anime, not 3D. No text, lettering, readable documents, words, numbers, logos or watermark. One standalone full-bleed illustration, not a collage or grid."
+      "prompt": "Vertical 2:3 empty environment, eye-level view, uncluttered lower third for dialogue UI. NO people, faces, portraits or silhouettes. Covered wooden station porch in late autumn, patchy snow beyond a cleared safe walkway, pale neutral sky, glowing window. Match the established stores/1/cover.jpg illustration style and the current story cover for character identity: fine dark contours, softly brushed semi-realistic painted faces, tactile fabric, restrained warm cream sand bronze sage and slate palette, gentle diffused lighting. Not photorealistic, not anime, not 3D. No text, lettering, readable documents, words, numbers, logos or watermark. One standalone full-bleed illustration, not a collage or grid."
     },
     {
       "file": "images/bg-storm.jpg",
@@ -41,7 +41,7 @@
     {
       "file": "images/bg-screening.jpg",
       "type": "background",
-      "prompt": "Vertical 2:3 empty environment, eye-level view, uncluttered lower third for dialogue UI. NO people, faces, portraits or silhouettes. Small documentary screening room, blank screen and empty chairs, warm neutral lamps, no posters or signs. Match the established stores/1/cover.jpg illustration style and the current story cover for character identity: fine dark contours, softly brushed semi-realistic painted faces, tactile fabric, restrained warm cream sand bronze sage and slate palette, gentle diffused lighting. Not photorealistic, not anime, not 3D. No text, lettering, readable documents, words, numbers, logos or watermark. One standalone full-bleed illustration, not a collage or grid."
+      "prompt": "Vertical 2:3 empty environment, eye-level view, uncluttered lower third for dialogue UI. NO people, faces, portraits or silhouettes. Small multipurpose documentary screening room inside the same timber field station, blank screen and empty chairs, warm neutral lamps, no posters or signs. Match the established stores/1/cover.jpg illustration style and the current story cover for character identity: fine dark contours, softly brushed semi-realistic painted faces, tactile fabric, restrained warm cream sand bronze sage and slate palette, gentle diffused lighting. Not photorealistic, not anime, not 3D. No text, lettering, readable documents, words, numbers, logos or watermark. One standalone full-bleed illustration, not a collage or grid."
     },
     {
       "file": "images/heroine.webp",
@@ -168,42 +168,48 @@
       "type": "card",
       "prompt": "4:3 landscape composition, characters large waist-up, important faces and hands inside central safe area. NINA, 32-year-old woman, warm fair skin, soft broad cheekbones, grey-green eyes, ash-blonde hair in a braid over her right shoulder, olive ribbed crew-neck jumper, dark field trousers, no parka and no clipped field recorder. SONYA, 29-year-old woman, warm medium skin, short straight dark hair, brown eyes, mustard fleece and charcoal field trousers. Scene: Nina and Sonya exchange a restrained pleased look after remote confirmation, closed unmarked laptop on table, plain recorder, teamwork rather than spectacle. Match the established stores/1/cover.jpg illustration style and the current story cover for character identity: fine dark contours, softly brushed semi-realistic painted faces, tactile fabric, restrained warm cream sand bronze sage and slate palette, gentle diffused lighting. Not photorealistic, not anime, not 3D. No text, lettering, readable documents, words, numbers, logos or watermark. One standalone full-bleed illustration, not a collage or grid.",
       "chapter": 3,
-      "referencePolicy": "Indoor: use heroine_indoor / hero_indoor where present; retain original face, age, hair and body; equipment only as scene props."
+      "referencePolicy": "Indoor: use heroine_indoor / hero_indoor where present; retain original face, age, hair and body; equipment only as scene props.",
+      "scene": "c03"
     },
     {
       "file": "images/cg-walk.jpg",
       "type": "card",
-      "prompt": "4:3 landscape composition, characters large waist-up, important faces and hands inside central safe area. NINA, 32-year-old woman, warm fair skin, soft broad cheekbones, grey-green eyes, ash-blonde hair in a braid over her right shoulder, sand field parka over olive wool jumper, dark field trousers. ARTYOM, 35-year-old man, warm medium complexion, short curly black hair, dark brown eyes, neatly trimmed short black beard, charcoal blue field jacket, dark brown camera strap, dark trousers. Scene: The pair walk a safe packed snowy footpath near station under pale sky, no thin ice, hold hands willingly, camera safely stowed. Match the established stores/1/cover.jpg illustration style and the current story cover for character identity: fine dark contours, softly brushed semi-realistic painted faces, tactile fabric, restrained warm cream sand bronze sage and slate palette, gentle diffused lighting. Not photorealistic, not anime, not 3D. No text, lettering, readable documents, words, numbers, logos or watermark. One standalone full-bleed illustration, not a collage or grid.",
+      "prompt": "4:3 landscape composition, characters large waist-up, important faces and hands inside central safe area. NINA, 32-year-old woman, warm fair skin, soft broad cheekbones, grey-green eyes, ash-blonde hair in a braid over her right shoulder, sand field parka over olive wool jumper, dark field trousers. ARTYOM, 35-year-old man, warm medium complexion, short curly black hair, dark brown eyes, neatly trimmed short black beard, charcoal blue field jacket, dark brown camera strap, dark trousers. Scene: The pair walk a safe firm dry footpath with snow only in hollows near station under pale sky, no thin ice, hold hands willingly, camera safely stowed. Match the established stores/1/cover.jpg illustration style and the current story cover for character identity: fine dark contours, softly brushed semi-realistic painted faces, tactile fabric, restrained warm cream sand bronze sage and slate palette, gentle diffused lighting. Not photorealistic, not anime, not 3D. No text, lettering, readable documents, words, numbers, logos or watermark. One standalone full-bleed illustration, not a collage or grid.",
       "chapter": 3,
-      "referencePolicy": "Use own story neutral work portraits for faces and clothing, never portraits from another story."
+      "referencePolicy": "Use own story neutral work portraits for faces and clothing, never portraits from another story.",
+      "scene": "c08d"
     },
     {
       "file": "images/cg-kiss.jpg",
       "type": "card",
       "prompt": "4:3 landscape composition, characters large waist-up, important faces and hands inside central safe area. NINA, 32-year-old woman, warm fair skin, soft broad cheekbones, grey-green eyes, ash-blonde hair in a braid over her right shoulder, sand field parka over olive wool jumper, dark field trousers. ARTYOM, 35-year-old man, warm medium complexion, short curly black hair, dark brown eyes, neatly trimmed short black beard, charcoal blue field jacket, dark brown camera strap, dark trousers. Scene: Gentle mutually welcomed closed-mouth first kiss on sheltered station porch, both in warm parkas, no explicit content, safe clear ground. Match the established stores/1/cover.jpg illustration style and the current story cover for character identity: fine dark contours, softly brushed semi-realistic painted faces, tactile fabric, restrained warm cream sand bronze sage and slate palette, gentle diffused lighting. Not photorealistic, not anime, not 3D. No text, lettering, readable documents, words, numbers, logos or watermark. One standalone full-bleed illustration, not a collage or grid.",
       "chapter": 3,
-      "referencePolicy": "Use own story neutral work portraits for faces and clothing, never portraits from another story."
+      "referencePolicy": "Use own story neutral work portraits for faces and clothing, never portraits from another story.",
+      "scene": "c10t"
     },
     {
       "file": "images/cg-snowbound.jpg",
       "type": "card",
-      "prompt": "4:3 landscape composition, characters large waist-up, important faces and hands inside central safe area. NINA, 32-year-old woman, warm fair skin, soft broad cheekbones, grey-green eyes, ash-blonde hair in a braid over her right shoulder, olive ribbed crew-neck jumper, dark field trousers, no parka and no clipped field recorder. ARTYOM, 35-year-old man, warm medium complexion, short curly black hair, dark brown eyes, neatly trimmed short black beard, dark charcoal-olive crew-neck jumper and dark trousers, no field jacket or camera strap worn. Scene: Warm station interior beside window filled with snow outside, both safely indoors, camera packed, waiting not reckless rescue. Match the established stores/1/cover.jpg illustration style and the current story cover for character identity: fine dark contours, softly brushed semi-realistic painted faces, tactile fabric, restrained warm cream sand bronze sage and slate palette, gentle diffused lighting. Not photorealistic, not anime, not 3D. No text, lettering, readable documents, words, numbers, logos or watermark. One standalone full-bleed illustration, not a collage or grid.",
+      "prompt": "4:3 landscape composition, characters large waist-up, important faces and hands inside central safe area. NINA, 32-year-old woman, warm fair skin, soft broad cheekbones, grey-green eyes, ash-blonde hair in a braid over her right shoulder, olive ribbed crew-neck jumper, dark field trousers, no parka and no clipped field recorder. ARTYOM, 35-year-old man, warm medium complexion, short curly black hair, dark brown eyes, neatly trimmed short black beard, dark charcoal-olive crew-neck jumper and dark trousers, no field jacket or camera strap worn. PAVEL, 56-year-old man, fair weathered face, short grey hair, dark eyes, grey stubble, grey-green field jacket, dark trousers. Scene: Warm station interior beside window filled with snow outside, Nina and Artyom safely indoors with Pavel announcing cancelled outings, three people maximum, camera packed, waiting not reckless rescue. Match the established stores/1/cover.jpg illustration style and the current story cover for character identity: fine dark contours, softly brushed semi-realistic painted faces, tactile fabric, restrained warm cream sand bronze sage and slate palette, gentle diffused lighting. Not photorealistic, not anime, not 3D. No text, lettering, readable documents, words, numbers, logos or watermark. One standalone full-bleed illustration, not a collage or grid.",
       "chapter": 4,
-      "referencePolicy": "Indoor: use heroine_indoor / hero_indoor where present; retain original face, age, hair and body; equipment only as scene props."
+      "referencePolicy": "Indoor: use heroine_indoor / hero_indoor where present; retain original face, age, hair and body; equipment only as scene props.",
+      "scene": "d01"
     },
     {
       "file": "images/cg-boundary.jpg",
       "type": "card",
       "prompt": "4:3 landscape composition, characters large waist-up, important faces and hands inside central safe area. NINA, 32-year-old woman, warm fair skin, soft broad cheekbones, grey-green eyes, ash-blonde hair in a braid over her right shoulder, olive ribbed crew-neck jumper, dark field trousers, no parka and no clipped field recorder. ARTYOM, 35-year-old man, warm medium complexion, short curly black hair, dark brown eyes, neatly trimmed short black beard, dark charcoal-olive crew-neck jumper and dark trousers, no field jacket or camera strap worn. Scene: Nina and Artyom in editing room discussing privacy, screens angled away, Nina firm, Artyom listening with respectful space, no hostility. Match the established stores/1/cover.jpg illustration style and the current story cover for character identity: fine dark contours, softly brushed semi-realistic painted faces, tactile fabric, restrained warm cream sand bronze sage and slate palette, gentle diffused lighting. Not photorealistic, not anime, not 3D. No text, lettering, readable documents, words, numbers, logos or watermark. One standalone full-bleed illustration, not a collage or grid.",
       "chapter": 4,
-      "referencePolicy": "Indoor: use heroine_indoor / hero_indoor where present; retain original face, age, hair and body; equipment only as scene props."
+      "referencePolicy": "Indoor: use heroine_indoor / hero_indoor where present; retain original face, age, hair and body; equipment only as scene props.",
+      "scene": "d04"
     },
     {
       "file": "images/cg-report.jpg",
       "type": "card",
-      "prompt": "4:3 landscape composition, characters large waist-up, important faces and hands inside central safe area. NINA, 32-year-old woman, warm fair skin, soft broad cheekbones, grey-green eyes, ash-blonde hair in a braid over her right shoulder, olive ribbed crew-neck jumper, dark field trousers, no parka and no clipped field recorder. PAVEL, 56-year-old man, fair weathered face, short grey hair, dark eyes, grey stubble, grey-green field jacket, dark trousers. Scene: Nina tells Pavel about an old calibration error at common-room table, closed notebook, calm serious accountability, no readable report. Match the established stores/1/cover.jpg illustration style and the current story cover for character identity: fine dark contours, softly brushed semi-realistic painted faces, tactile fabric, restrained warm cream sand bronze sage and slate palette, gentle diffused lighting. Not photorealistic, not anime, not 3D. No text, lettering, readable documents, words, numbers, logos or watermark. One standalone full-bleed illustration, not a collage or grid.",
+      "prompt": "4:3 landscape composition, characters large waist-up, important faces and hands inside central safe area. NINA, 32-year-old woman, warm fair skin, soft broad cheekbones, grey-green eyes, ash-blonde hair in a braid over her right shoulder, olive ribbed crew-neck jumper, dark field trousers, no parka and no clipped field recorder. PAVEL, 56-year-old man, fair weathered face, short grey hair, dark eyes, grey stubble, grey-green field jacket, dark trousers. SONYA, 29-year-old woman, warm medium-brown skin, short straight dark hair, brown eyes, mustard fleece and charcoal field trousers. Scene: Nina discusses her own old clock-correction date error with Pavel; Sonya is present as the independent technical checker at common-room table, closed notebook, calm serious accountability, no readable report. Match the established stores/1/cover.jpg illustration style and the current story cover for character identity: fine dark contours, softly brushed semi-realistic painted faces, tactile fabric, restrained warm cream sand bronze sage and slate palette, gentle diffused lighting. Not photorealistic, not anime, not 3D. No text, lettering, readable documents, words, numbers, logos or watermark. One standalone full-bleed illustration, not a collage or grid.",
       "chapter": 4,
-      "referencePolicy": "Indoor: use heroine_indoor / hero_indoor where present; retain original face, age, hair and body; equipment only as scene props."
+      "referencePolicy": "Indoor: use heroine_indoor / hero_indoor where present; retain original face, age, hair and body; equipment only as scene props.",
+      "scene": "d09"
     },
     {
       "file": "images/cg-screening.jpg",
@@ -302,6 +308,62 @@
     "b15": "images/bg-station.jpg",
     "b15r": "images/bg-station.jpg",
     "b15t": "images/bg-station.jpg",
-    "b16": "images/bg-listening.jpg"
+    "b16": "images/bg-listening.jpg",
+    "c01": "images/bg-station.jpg",
+    "c02": "images/bg-listening.jpg",
+    "c02r": "images/bg-listening.jpg",
+    "c02t": "images/bg-listening.jpg",
+    "c03": "images/bg-listening.jpg",
+    "c04": "images/bg-station.jpg",
+    "c05": "images/bg-screening.jpg",
+    "c05r": "images/bg-screening.jpg",
+    "c05t": "images/bg-screening.jpg",
+    "c06": "images/bg-screening.jpg",
+    "c07": "images/bg-porch.jpg",
+    "c08": "images/bg-tundra.jpg",
+    "c08d": "images/bg-tundra.jpg",
+    "c08r": "images/bg-tundra.jpg",
+    "c09": "images/bg-station.jpg",
+    "c10": "images/bg-station.jpg",
+    "c10t": "images/bg-porch.jpg",
+    "c10r": "images/bg-station.jpg",
+    "c11": "images/bg-equipment.jpg",
+    "c12": "images/bg-equipment.jpg",
+    "c12r": "images/bg-equipment.jpg",
+    "c12t": "images/bg-equipment.jpg",
+    "c13": "images/bg-station.jpg",
+    "c14": "images/bg-station.jpg",
+    "c15": "images/bg-station.jpg",
+    "c15d": "images/bg-station.jpg",
+    "c15r": "images/bg-station.jpg",
+    "c16": "images/bg-station.jpg",
+    "d01": "images/bg-storm.jpg",
+    "d02": "images/bg-listening.jpg",
+    "d03": "images/bg-listening.jpg",
+    "d03r": "images/bg-listening.jpg",
+    "d03t": "images/bg-listening.jpg",
+    "d04": "images/bg-listening.jpg",
+    "d05": "images/bg-listening.jpg",
+    "d06": "images/bg-listening.jpg",
+    "d06r": "images/bg-listening.jpg",
+    "d06t": "images/bg-listening.jpg",
+    "d07": "images/bg-storm.jpg",
+    "d08": "images/bg-station.jpg",
+    "d08r": "images/bg-station.jpg",
+    "d08t": "images/bg-station.jpg",
+    "d09": "images/bg-station.jpg",
+    "d10": "images/bg-storm.jpg",
+    "d10d": "images/bg-storm.jpg",
+    "d10r": "images/bg-storm.jpg",
+    "d11": "images/bg-station.jpg",
+    "d12": "images/bg-screening.jpg",
+    "d12r": "images/bg-screening.jpg",
+    "d12t": "images/bg-screening.jpg",
+    "d13": "images/bg-equipment.jpg",
+    "d14": "images/bg-storm.jpg",
+    "d14d": "images/bg-storm.jpg",
+    "d14r": "images/bg-storm.jpg",
+    "d15": "images/bg-storm.jpg",
+    "d16": "images/bg-storm.jpg"
   }
 }

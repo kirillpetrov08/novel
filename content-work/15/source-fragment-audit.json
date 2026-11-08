@@ -1,46 +1,90 @@
 {
   "story": "tishe-snega",
   "productionStatus": "incomplete-not-shippable",
-  "chapters": 2,
-  "scenes": 56,
-  "lines": 172,
-  "decisions": 11,
-  "paidOptions": 4,
+  "chapters": 4,
+  "scenes": 112,
+  "lines": 348,
+  "decisions": 23,
+  "paidOptions": 8,
   "outcomes": {
     "all": {
-      "routes": 2048,
-      "states": 815,
-      "minWords": 3618,
-      "maxWords": 3717,
+      "routes": 8388608,
+      "states": 6853,
+      "minWords": 7361,
+      "maxWords": 7575,
       "continuations": [
-        "c01"
-      ]
+        "e01"
+      ],
+      "exitStatRanges": {
+        "desire": {
+          "min": 0,
+          "max": 8
+        },
+        "trust": {
+          "min": 0,
+          "max": 23
+        },
+        "resolve": {
+          "min": 1,
+          "max": 23
+        }
+      }
     },
     "free": {
-      "routes": 128,
-      "states": 232,
-      "minWords": 3618,
-      "maxWords": 3658,
+      "routes": 32768,
+      "states": 1281,
+      "minWords": 7361,
+      "maxWords": 7450,
       "continuations": [
-        "c01"
-      ]
+        "e01"
+      ],
+      "exitStatRanges": {
+        "desire": {
+          "min": 0,
+          "max": 1
+        },
+        "trust": {
+          "min": 0,
+          "max": 15
+        },
+        "resolve": {
+          "min": 8,
+          "max": 23
+        }
+      }
     }
   },
   "externalExits": [
-    "c01"
+    "e01"
   ],
   "missingUsedArt": [
-    "images/bg-equipment.jpg",
-    "images/bg-listening.jpg",
-    "images/bg-porch.jpg",
-    "images/bg-tundra.jpg",
     "images/cg-arrival.jpg",
+    "images/cg-boundary.jpg",
+    "images/cg-discovery.jpg",
+    "images/cg-kiss.jpg",
     "images/cg-listening.jpg",
     "images/cg-music.jpg",
+    "images/cg-report.jpg",
     "images/cg-rules.jpg",
     "images/cg-sensor.jpg",
-    "images/cg-strap.jpg"
+    "images/cg-snowbound.jpg",
+    "images/cg-strap.jpg",
+    "images/cg-walk.jpg"
   ],
+  "mandatoryCoreScenes": [
+    "a13",
+    "b04",
+    "c01",
+    "c03",
+    "c06",
+    "c11",
+    "d02",
+    "d04",
+    "d09",
+    "d11",
+    "d15"
+  ],
+  "reviewedPlayableArt": 22,
   "offscreenSpeakers": [
     [
       "a16d",
@@ -51,7 +95,7 @@
       "hero"
     ]
   ],
-  "sceneDigest": "c8755c61e8831748dd440629b3af8c0b5ca40f7281d048b9008570d0ace2c695",
+  "sceneDigest": "99b41715f65ea56f774062ae1ae80aeed43192dfb8a8f4f7ac1cbf0bfe27e2bf",
   "limits": [
     "No final endings or full-story balance yet",
     "No timed reading or mobile visual approval",

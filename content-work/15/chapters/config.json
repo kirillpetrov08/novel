@@ -329,5 +329,393 @@
         ]
       }
     }
+  },
+  {
+    "story": "tishe-snega",
+    "speakers": {
+      "Нина": "heroine",
+      "Артём": "hero",
+      "Соня": "friend",
+      "Павел": "director"
+    },
+    "chapter": 3,
+    "prefix": "c",
+    "title": "След",
+    "entry": "c01",
+    "externalExits": [
+      "d01"
+    ],
+    "expectedScenes": 28,
+    "expectedChoices": 6,
+    "expectedPaid": 2,
+    "defaultBg": "images/bg-station.jpg",
+    "defaultShow": [
+      "heroine_indoor",
+      "hero_indoor"
+    ],
+    "overrides": {
+      "c01": {
+        "show": [
+          "heroine_indoor",
+          "director"
+        ]
+      },
+      "c02": {
+        "bg": "images/bg-listening.jpg",
+        "show": [
+          "heroine_indoor",
+          "friend"
+        ]
+      },
+      "c02r": {
+        "bg": "images/bg-listening.jpg",
+        "show": [
+          "heroine_indoor",
+          "friend"
+        ]
+      },
+      "c02t": {
+        "bg": "images/bg-listening.jpg",
+        "show": [
+          "heroine_indoor",
+          "friend"
+        ]
+      },
+      "c03": {
+        "bg": "images/bg-listening.jpg",
+        "show": [
+          "heroine_indoor",
+          "friend_smile"
+        ]
+      },
+      "c05": {
+        "bg": "images/bg-screening.jpg",
+        "show": [
+          "heroine_indoor",
+          "hero_indoor"
+        ]
+      },
+      "c05r": {
+        "bg": "images/bg-screening.jpg",
+        "show": [
+          "heroine_indoor",
+          "hero_indoor"
+        ]
+      },
+      "c05t": {
+        "bg": "images/bg-screening.jpg",
+        "show": [
+          "heroine_indoor",
+          "hero_indoor",
+          "director"
+        ]
+      },
+      "c06": {
+        "bg": "images/bg-screening.jpg",
+        "show": [
+          "heroine_indoor",
+          "hero_indoor"
+        ]
+      },
+      "c07": {
+        "bg": "images/bg-porch.jpg",
+        "show": [
+          "heroine_brave",
+          "hero_tender"
+        ]
+      },
+      "c08": {
+        "bg": "images/bg-tundra.jpg",
+        "show": [
+          "heroine",
+          "hero_tender"
+        ]
+      },
+      "c08r": {
+        "bg": "images/bg-tundra.jpg",
+        "show": [
+          "heroine",
+          "hero_tender"
+        ]
+      },
+      "c08d": {
+        "bg": "images/bg-tundra.jpg",
+        "show": [
+          "heroine_smile",
+          "hero_tender"
+        ]
+      },
+      "c10t": {
+        "bg": "images/bg-porch.jpg",
+        "show": [
+          "heroine_smile",
+          "hero_tender"
+        ]
+      },
+      "c11": {
+        "bg": "images/bg-equipment.jpg",
+        "show": [
+          "heroine_indoor",
+          "friend_smile"
+        ]
+      },
+      "c12": {
+        "bg": "images/bg-equipment.jpg",
+        "show": [
+          "heroine_indoor",
+          "friend"
+        ]
+      },
+      "c12r": {
+        "bg": "images/bg-equipment.jpg",
+        "show": [
+          "heroine_indoor",
+          "friend"
+        ]
+      },
+      "c12t": {
+        "bg": "images/bg-equipment.jpg",
+        "show": [
+          "heroine_indoor",
+          "friend"
+        ]
+      },
+      "c13": {
+        "show": [
+          "heroine_indoor",
+          "director_warm"
+        ]
+      },
+      "c16": {
+        "show": [
+          "heroine_indoor"
+        ]
+      }
+    }
+  },
+  {
+    "story": "tishe-snega",
+    "speakers": {
+      "Нина": "heroine",
+      "Артём": "hero",
+      "Соня": "friend",
+      "Павел": "director"
+    },
+    "chapter": 4,
+    "prefix": "d",
+    "title": "Белый промежуток",
+    "entry": "d01",
+    "externalExits": [
+      "e01"
+    ],
+    "expectedScenes": 28,
+    "expectedChoices": 6,
+    "expectedPaid": 2,
+    "defaultBg": "images/bg-station.jpg",
+    "defaultShow": [
+      "heroine_indoor",
+      "hero_indoor"
+    ],
+    "overrides": {
+      "d01": {
+        "bg": "images/bg-storm.jpg",
+        "show": [
+          "heroine_indoor",
+          "hero_indoor",
+          "director"
+        ]
+      },
+      "d02": {
+        "bg": "images/bg-listening.jpg",
+        "show": [
+          "heroine_indoor",
+          "hero_indoor"
+        ]
+      },
+      "d03": {
+        "bg": "images/bg-listening.jpg",
+        "show": [
+          "heroine_indoor",
+          "hero_indoor"
+        ]
+      },
+      "d03r": {
+        "bg": "images/bg-listening.jpg",
+        "show": [
+          "heroine_indoor",
+          "hero_indoor"
+        ]
+      },
+      "d03t": {
+        "bg": "images/bg-listening.jpg",
+        "show": [
+          "heroine_indoor",
+          "hero_indoor"
+        ]
+      },
+      "d04": {
+        "bg": "images/bg-listening.jpg",
+        "show": [
+          "heroine_indoor",
+          "hero_indoor"
+        ]
+      },
+      "d05": {
+        "bg": "images/bg-listening.jpg",
+        "show": [
+          "heroine_indoor",
+          "hero_indoor"
+        ]
+      },
+      "d06": {
+        "bg": "images/bg-listening.jpg",
+        "show": [
+          "heroine_indoor",
+          "hero_indoor"
+        ]
+      },
+      "d06r": {
+        "bg": "images/bg-listening.jpg",
+        "show": [
+          "heroine_indoor",
+          "hero_indoor"
+        ]
+      },
+      "d06t": {
+        "bg": "images/bg-listening.jpg",
+        "show": [
+          "heroine_indoor",
+          "hero_indoor"
+        ]
+      },
+      "d07": {
+        "bg": "images/bg-storm.jpg",
+        "show": [
+          "heroine_indoor",
+          "director"
+        ]
+      },
+      "d08": {
+        "bg": "images/bg-station.jpg",
+        "show": [
+          "heroine_indoor",
+          "friend",
+          "director"
+        ]
+      },
+      "d08r": {
+        "bg": "images/bg-station.jpg",
+        "show": [
+          "heroine_indoor",
+          "friend",
+          "director"
+        ]
+      },
+      "d08t": {
+        "bg": "images/bg-station.jpg",
+        "show": [
+          "heroine_indoor",
+          "friend",
+          "director"
+        ]
+      },
+      "d09": {
+        "bg": "images/bg-station.jpg",
+        "show": [
+          "heroine_indoor",
+          "friend",
+          "director"
+        ]
+      },
+      "d10": {
+        "bg": "images/bg-storm.jpg",
+        "show": [
+          "heroine_indoor",
+          "friend_smile"
+        ]
+      },
+      "d10d": {
+        "bg": "images/bg-storm.jpg",
+        "show": [
+          "heroine_indoor",
+          "friend_smile"
+        ]
+      },
+      "d10r": {
+        "bg": "images/bg-storm.jpg",
+        "show": [
+          "heroine_indoor",
+          "friend_smile"
+        ]
+      },
+      "d11": {
+        "bg": "images/bg-station.jpg",
+        "show": [
+          "heroine_indoor",
+          "hero_indoor"
+        ]
+      },
+      "d12": {
+        "bg": "images/bg-screening.jpg",
+        "show": [
+          "heroine_indoor",
+          "hero_indoor"
+        ]
+      },
+      "d12r": {
+        "bg": "images/bg-screening.jpg",
+        "show": [
+          "heroine_indoor",
+          "hero_indoor"
+        ]
+      },
+      "d12t": {
+        "bg": "images/bg-screening.jpg",
+        "show": [
+          "heroine_indoor",
+          "hero_indoor"
+        ]
+      },
+      "d13": {
+        "bg": "images/bg-equipment.jpg",
+        "show": [
+          "heroine_indoor",
+          "friend"
+        ]
+      },
+      "d14": {
+        "bg": "images/bg-storm.jpg",
+        "show": [
+          "heroine_indoor",
+          "hero_indoor"
+        ]
+      },
+      "d14d": {
+        "bg": "images/bg-storm.jpg",
+        "show": [
+          "heroine_indoor",
+          "hero_indoor"
+        ]
+      },
+      "d14r": {
+        "bg": "images/bg-storm.jpg",
+        "show": [
+          "heroine_indoor",
+          "hero_indoor"
+        ]
+      },
+      "d15": {
+        "bg": "images/bg-storm.jpg",
+        "show": [
+          "heroine_indoor"
+        ]
+      },
+      "d16": {
+        "bg": "images/bg-storm.jpg",
+        "show": [
+          "heroine_indoor"
+        ]
+      }
+    }
   }
 ]

@@ -1,7 +1,7 @@
 {
   "story": "tishe-snega",
-  "checkpoint": 5,
-  "method": "Visual inspection of cover, all ten raw portraits and all ten processed sprites, plus separate pixel checks; hashes freeze reviewed files, not facial recognition.",
+  "checkpoint": 6,
+  "method": "Cumulative visual review: checkpoint5 ten states; checkpoint6 four new expression sources/sprites compared with their own frozen neutral portraits. All 20 previously accepted file hashes retained unchanged.",
   "accepted": true,
   "notes": [
     "Nina matches her own cover: ash-blonde braid on anatomical right/viewer left, grey-green eyes, fair warm complexion; no Asya face/outfit reused.",
@@ -10,7 +10,8 @@
     "All portraits use the same outlined softly painted style; no readable text, logos or extra limbs observed.",
     "Indoor variants deliberately remove outerwear and gear; Nina keeps olive sweater, Artyom charcoal-olive jumper. Wardrobe transitions are in prose/config. Faces, age and hair remain recognisably the same.",
     "Expression sprites reuse neutral silhouette/alpha, hair contour and lower-body pixels; source model redraws outside the face are not used.",
-    "Portraits are transparent, aligned to 792x1200, with complete hair/head margins; mobile scene rendering still pending."
+    "Portraits are transparent, aligned to 792x1200, with complete hair/head margins; mobile scene rendering still pending.",
+    "Checkpoint6: heroine_brave, hero_tender, friend_smile, director_warm retain neutral identity, age, hair and wardrobe. Facial changes are restrained; processed silhouettes/outfits remain pixel-identical to their own neutral. No redesign or new clothes."
   ],
   "files": [
     {
@@ -18,8 +19,16 @@
       "sha256": "8f46fd6e8fc8361d397fb706c63ecdeca226e059f0f0e7ff1d4a7367562e6aaa"
     },
     {
+      "file": "images/director_warm.webp",
+      "sha256": "5bac41535b9e87c8d389dd01f78d64da11ae603b3a5f71b10d91ffdf87f6b783"
+    },
+    {
       "file": "images/friend.webp",
       "sha256": "bab3fbef107fada44224d99f3b80b829bd9d4e981f4092afb8f62b174406e0d0"
+    },
+    {
+      "file": "images/friend_smile.webp",
+      "sha256": "3b8907e96da9ff05dede7f9416fdd9ae453c0e655f028ad93fff6f3c912b0234"
     },
     {
       "file": "images/hero.webp",
@@ -38,8 +47,16 @@
       "sha256": "963917e12d5110929bbbefdb8a6e4a312733678636c2b3c525f8aace9037e1b4"
     },
     {
+      "file": "images/hero_tender.webp",
+      "sha256": "4902add84be3931e463e41a7d56b291c7a6479666df808e62fa8045f99efd2b7"
+    },
+    {
       "file": "images/heroine.webp",
       "sha256": "9a79f5096f10a0e77f0c30bcdb587ff81cc9e0c262557ba54b674e51745bfb20"
+    },
+    {
+      "file": "images/heroine_brave.webp",
+      "sha256": "c32505e018a917f6f279d07af6a5d8e876adf13dd6240f3d62c1d6fd76b507be"
     },
     {
       "file": "images/heroine_doubt.webp",
@@ -58,8 +75,16 @@
       "sha256": "2bf21cbe0ba2f3ea920d90b9337180571ac4f58d28ca574f643df73937a7f635"
     },
     {
+      "file": "references/director_warm.png",
+      "sha256": "f1531969ca3e577965a8916e08149f2363bcd1d8d22da5efa2e3f21f3e667483"
+    },
+    {
       "file": "references/friend.png",
       "sha256": "5a78d4c85e1575d3bd7ef2682daa3c65d6730c10fc307e735c11bfcf5eca8dcf"
+    },
+    {
+      "file": "references/friend_smile.png",
+      "sha256": "15b86cb17c945ae75d794f1fc435721b2aefcfd44178ed94f8426da4faf10e15"
     },
     {
       "file": "references/hero.png",
@@ -78,8 +103,16 @@
       "sha256": "a3e30997e82c56180e884c58948055d6fc48ed3628fb79aa5866e92a6c10197a"
     },
     {
+      "file": "references/hero_tender.png",
+      "sha256": "ff8e39c1e95708b4254199ed1d0c22080237b15c292494ee716c2f7ebf60e52e"
+    },
+    {
       "file": "references/heroine.png",
       "sha256": "951193a53aecd5fb25a03ccc2d0768bc8891b6bc49c7b000b192c80b9bdb249e"
+    },
+    {
+      "file": "references/heroine_brave.png",
+      "sha256": "e8a497b49046444231f7b18920428525d703389339a0e349c46cd37469505480"
     },
     {
       "file": "references/heroine_doubt.png",
@@ -93,5 +126,7 @@
       "file": "references/heroine_smile.png",
       "sha256": "5e4d390ac0965b8be6ed707c8ef31d5b2222b8c7b9606c178724ce7573620291"
     }
-  ]
+  ],
+  "previousReviewedFilesRetained": 20,
+  "newReviewedFiles": 8
 }
