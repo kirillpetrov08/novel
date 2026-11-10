@@ -1,0 +1,66 @@
+{
+  "story": "tishe-snega",
+  "checkpoint": 8,
+  "complete": false,
+  "acceptedCount": 7,
+  "pending": [
+    "images/cg-ending-resolve.jpg"
+  ],
+  "method": "Each generated CG was reviewed sequentially against the frozen story cover, portrait references, scene text and established palette. Only the final accepted attempt for each slot is retained.",
+  "discardedCandidates": [
+    {
+      "file": "images/cg-report.jpg",
+      "reason": "Initial attempt had decorative wall maps/markings; regenerated with blank timber walls and no charts."
+    },
+    {
+      "file": "images/cg-screening.jpg",
+      "reason": "Initial attempt placed the blank screen behind the characters; regenerated with the screen in front of their gaze."
+    },
+    {
+      "file": "images/cg-ending-desire.jpg",
+      "reason": "Initial attempt duplicated Nina; regenerated with exactly two people, one Nina and one Artyom."
+    }
+  ],
+  "notes": [
+    "All seven retained CGs are 1200x896 JPEGs in the established soft semi-realistic painted style.",
+    "Nina remains consistent with her identity portrait: warm fair skin, grey-green eyes, ash-blonde hair in exactly one braid over her anatomical right shoulder, and the correct outfit for each scene.",
+    "Artyom, Sonya and Pavel retain their distinct established faces, complexions, ages, hair and scene-appropriate clothing.",
+    "cg-strap: tiny soft sleeve on the table; three small stitches in its edge, not load-bearing strap repair.",
+    "cg-discovery: Nina and Sonya only; closed unmarked laptop and ordinary recorder.",
+    "cg-boundary: Nina calmly states a privacy boundary; Artyom listens with respectful space, blank screens, no hostility.",
+    "cg-report: Nina, Pavel and Sonya only; plain closed notebook and blank timber walls, no maps or readable report.",
+    "cg-screening: Nina, Artyom and Sonya face a completely blank screen positioned ahead of them.",
+    "cg-ending-trust: ordinary anonymous snowy city walkway, mutual restrained embrace and separate travel bags; no signage or lettering.",
+    "cg-ending-desire: exactly Nina and Artyom, two closed blank notebooks, restrained consensual kiss, no duplication or equipment."
+  ],
+  "files": [
+    {
+      "file": "images/cg-strap.jpg",
+      "sha256": "c77ca72e2bc529faa142a7a29cd88a3cd6ac6d244cfaf78cde584d3b35ece7b5"
+    },
+    {
+      "file": "images/cg-discovery.jpg",
+      "sha256": "7b8180c13d6589f283833b777c94dde6b7992d1b394c265b8b0daabb5f7aa28d"
+    },
+    {
+      "file": "images/cg-boundary.jpg",
+      "sha256": "d35df6bc34d97b9ebc2361c4e50f9751e6a0f95c4cf80ed6c10d5d30216e6363"
+    },
+    {
+      "file": "images/cg-report.jpg",
+      "sha256": "a23904f101356fccaf620c37b26ab8fe98b3ca43bf9eb0801d191d7eddaacf58"
+    },
+    {
+      "file": "images/cg-screening.jpg",
+      "sha256": "40fccc8964456743643031ce69d6d3ce01b41340a2d7d363392dcc51d4aa3630"
+    },
+    {
+      "file": "images/cg-ending-trust.jpg",
+      "sha256": "35c33dde387c2b648a10b6c3fa75337c09036fd83cc63c43ac975c83a41d6b8a"
+    },
+    {
+      "file": "images/cg-ending-desire.jpg",
+      "sha256": "a209c2e195bff810c9fd3a108d05a5941ebc824e7203509a882dcebfbc00fd31"
+    }
+  ]
+}

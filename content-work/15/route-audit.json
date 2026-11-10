@@ -81,14 +81,7 @@
   },
   "externalExits": [],
   "missingUsedArt": [
-    "images/cg-boundary.jpg",
-    "images/cg-discovery.jpg",
-    "images/cg-ending-desire.jpg",
-    "images/cg-ending-resolve.jpg",
-    "images/cg-ending-trust.jpg",
-    "images/cg-report.jpg",
-    "images/cg-screening.jpg",
-    "images/cg-strap.jpg"
+    "images/cg-ending-resolve.jpg"
   ],
   "mandatoryCoreScenes": [
     "a13",
@@ -113,7 +106,7 @@
     "f08",
     "f09"
   ],
-  "reviewedPlayableArt": 30,
+  "reviewedPlayableArt": 37,
   "explicitRefusalPath": [
     "f09r",
     "f11",
