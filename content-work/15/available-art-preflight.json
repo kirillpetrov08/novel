@@ -1,0 +1,212 @@
+{
+  "scope": "available-art-preflight-not-release",
+  "skippedCgScenes": [
+    "b07d",
+    "c03",
+    "d04",
+    "d09",
+    "e06",
+    "f14t",
+    "f14d",
+    "f14r"
+  ],
+  "results": [
+    {
+      "width": 320,
+      "height": 568,
+      "inset": 0,
+      "font": "m",
+      "scenes": 160,
+      "lines": 497,
+      "choices": 34,
+      "cgs": 8,
+      "scrollableLines": 300,
+      "failures": [],
+      "errors": []
+    },
+    {
+      "width": 320,
+      "height": 568,
+      "inset": 0,
+      "font": "l",
+      "scenes": 160,
+      "lines": 497,
+      "choices": 34,
+      "cgs": 8,
+      "scrollableLines": 435,
+      "failures": [],
+      "errors": []
+    },
+    {
+      "width": 360,
+      "height": 640,
+      "inset": 0,
+      "font": "m",
+      "scenes": 160,
+      "lines": 497,
+      "choices": 34,
+      "cgs": 8,
+      "scrollableLines": 33,
+      "failures": [],
+      "errors": []
+    },
+    {
+      "width": 360,
+      "height": 640,
+      "inset": 0,
+      "font": "l",
+      "scenes": 160,
+      "lines": 497,
+      "choices": 34,
+      "cgs": 8,
+      "scrollableLines": 318,
+      "failures": [],
+      "errors": []
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "inset": 0,
+      "font": "m",
+      "scenes": 160,
+      "lines": 497,
+      "choices": 34,
+      "cgs": 8,
+      "scrollableLines": 0,
+      "failures": [],
+      "errors": []
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "inset": 0,
+      "font": "l",
+      "scenes": 160,
+      "lines": 497,
+      "choices": 34,
+      "cgs": 8,
+      "scrollableLines": 13,
+      "failures": [],
+      "errors": []
+    },
+    {
+      "width": 320,
+      "height": 568,
+      "inset": 24,
+      "font": "m",
+      "scenes": 160,
+      "lines": 497,
+      "choices": 34,
+      "cgs": 8,
+      "scrollableLines": 300,
+      "failures": [],
+      "errors": []
+    },
+    {
+      "width": 320,
+      "height": 568,
+      "inset": 24,
+      "font": "l",
+      "scenes": 160,
+      "lines": 497,
+      "choices": 34,
+      "cgs": 8,
+      "scrollableLines": 435,
+      "failures": [],
+      "errors": []
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "inset": 24,
+      "font": "m",
+      "scenes": 160,
+      "lines": 497,
+      "choices": 34,
+      "cgs": 8,
+      "scrollableLines": 0,
+      "failures": [],
+      "errors": []
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "inset": 24,
+      "font": "l",
+      "scenes": 160,
+      "lines": 497,
+      "choices": 34,
+      "cgs": 8,
+      "scrollableLines": 13,
+      "failures": [],
+      "errors": []
+    }
+  ],
+  "notReleaseApproval": true,
+  "codeSha256": {
+    "js/app.js": "0dab6feb4ada9a70eeee5a5f7094a10cf57e2032d9c5453835a690096eeed484",
+    "js/engine.js": "98b9df0da56497305e4b787b79ef84fa376537d1e0576d023a0749040a45234d",
+    "js/loader.js": "b2eca91aa77362ca1d3913bfd78bcf809fd69038efcba2c988827c23855a9b38",
+    "css/style.css": "910b7b66c35a5b63abbb24e757e1f4150bb665b131ed5c0cc40ca3e28036722a",
+    "content-work/tools/test-tishe-mobile.mjs": "7b17109cda1c0e0174e30484e9adc50b3b28d9a9aa9a9cd078c54b21f358ae8b"
+  },
+  "artSha256": {
+    "cover.jpg": "86e1d24c1cc90a81fb884364382fc0c0cb3686da8fbb7e046a58a82a07f964e8",
+    "images/bg-station.jpg": "34a0688930034e20e64203fd9a34d4d5e1b70e390a3b41550dc0d2e8a6911363",
+    "images/bg-tundra.jpg": "971988378eb6f2a591a04a57e653cee899eb358fa1f3e732b177e041e555a972",
+    "images/bg-equipment.jpg": "c16b02a53804eb2d893a72d814e5dfd89f715e09825374dabed49dd65150055a",
+    "images/bg-listening.jpg": "d3101b291cbb1f4c261c7b04897d64a23a6cb4f18258ee9b07a10f3d2a7ea831",
+    "images/bg-porch.jpg": "bb140781622be5db9d9d5e497a17823f901e96767e16483b8dd54a06c67236e9",
+    "images/bg-storm.jpg": "6fd2b8ad478ca6b882ae6bae57526e37f69250eecdd459e15a1733cc8c34494c",
+    "images/bg-screening.jpg": "9475637c129d176c601ffe733612c738dc66215ea090eac6445b42c891f014c0",
+    "images/heroine.webp": "9a79f5096f10a0e77f0c30bcdb587ff81cc9e0c262557ba54b674e51745bfb20",
+    "images/heroine_smile.webp": "b27b7f1c8707385ba56778c47c0e3277da353cfd9f9d0f96ecd0e08866245827",
+    "images/heroine_doubt.webp": "db4ae330488dba2f9cd96e5ff784e93e7b12c61de643abc10bae4db289817d14",
+    "images/heroine_brave.webp": "c32505e018a917f6f279d07af6a5d8e876adf13dd6240f3d62c1d6fd76b507be",
+    "images/hero.webp": "3e5418cd7e4f3a62caccb9e83a78fe790e9bc40bd8b383fcaa0a2ea49e4eb4b7",
+    "images/hero_smile.webp": "963917e12d5110929bbbefdb8a6e4a312733678636c2b3c525f8aace9037e1b4",
+    "images/hero_doubt.webp": "e108ad37b6e5a830d393a30ddc174deb9664e50c313e2e9639bbac09482ffd45",
+    "images/hero_tender.webp": "4902add84be3931e463e41a7d56b291c7a6479666df808e62fa8045f99efd2b7",
+    "images/friend.webp": "bab3fbef107fada44224d99f3b80b829bd9d4e981f4092afb8f62b174406e0d0",
+    "images/friend_smile.webp": "3b8907e96da9ff05dede7f9416fdd9ae453c0e655f028ad93fff6f3c912b0234",
+    "images/director.webp": "8f46fd6e8fc8361d397fb706c63ecdeca226e059f0f0e7ff1d4a7367562e6aaa",
+    "images/director_warm.webp": "5bac41535b9e87c8d389dd01f78d64da11ae603b3a5f71b10d91ffdf87f6b783",
+    "images/cg-arrival.jpg": "c73dd2b00ae8175df6d4ad6f7774642408325e9be02a068fc042017c8aa1e87a",
+    "images/cg-rules.jpg": "ea0f15090d603c4930108d3c448cef1d0b393132211aa17b2f87cd5333952c86",
+    "images/cg-listening.jpg": "9c99e9247f6ab3fd10657ec9111a250bbcf69fa22c6d4c9104d2a84f0d414d66",
+    "images/cg-sensor.jpg": "9020552bf6d2ba36c1fd69ad199edba1f70e41a16ec0211daaab808400bc2b91",
+    "images/cg-music.jpg": "40d2e812e52ceee04eebd10def60f388a5858a9381fc882b461676d01570aaf0",
+    "images/cg-walk.jpg": "315aa5b051d162efb3aeeb72bab3a9bdb5d12f4903979dd35d996634581ac4c1",
+    "images/cg-kiss.jpg": "00b16698453a09eea1100af8ff71a8b185e53a0104f01edd6276b4884f878cf3",
+    "images/cg-snowbound.jpg": "79ec8eece2781a183bdaab2946b899e56b06708500878fd2b3d53d04a92122cb",
+    "images/heroine_indoor.webp": "ab08ca94da0e1f5d19b013b304dc08f3aa89cca3428e4ed9f6541b27c644cbac",
+    "images/hero_indoor.webp": "ced5654a83b97dc017dd448637e6f57cf750db2f416f915111ceef43da161d4a"
+  },
+  "visualReview": {
+    "acceptedForScope": true,
+    "notes": [
+      "Three screenshots inspected: 320x568 safe24 large-font rules CG, 320x568 final free consent/refusal choices, 390x844 kiss CG.",
+      "Approved CGs retain the own-story faces, one right-shoulder braid, clothing and scene actions; heads/cards stay above dialogue/choices. Frozen portraits were not regenerated.",
+      "Long text scrolls vertically on compact/large-font layouts with reachable choices; no horizontal overflow detected.",
+      "160 scenes, 497 lines, all 34 decision points and 8 available CGs rendered in each of 10 configurations; eight unavailable cards/scenes excluded, not substituted.",
+      "All three ending scenes are among exclusions. No ending-overlay approval for story 15, no measured reading time, no physical Android or live-ad approval.",
+      "Browser-only in-memory fixture from story.draft.json; app library remains 14 stories. Prefetch disabled solely to avoid requesting deliberately excluded missing cards."
+    ]
+  },
+  "sceneDigest": "146ca4d5a5540c816ea17af604576574364d932f14e651cd68a4742fff75e70c",
+  "stagedSourceSha256": "a0b93293c77e0bf1da4bd94d147869a47edd1811872ab8afa7d7576b5d375210",
+  "screenshots": [
+    {
+      "file": "reviews/available-stage7-320-safe0-final-consent.png",
+      "sha256": "b74e6c26fd34d0cff0b27bde75c28c00fe034cb5634076a8986cdab8e22a3607"
+    },
+    {
+      "file": "reviews/available-stage7-320-safe24-large-rules-card.png",
+      "sha256": "2990fae9366fb51590f8dae784a7f56e2a9947f0b79bd96564bf19a0b781871c"
+    },
+    {
+      "file": "reviews/available-stage7-390-safe0-kiss-card.png",
+      "sha256": "9a7f540a3aa1074deb27425f66cd8faecabc97fa24159a79292d0c8e211e958c"
+    }
+  ]
+}

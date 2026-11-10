@@ -1,0 +1,62 @@
+{
+  "checkpoint": 7,
+  "story": "tishe-snega",
+  "method": "Assistant visual inspection of all ten candidate CGs against own locked portraits and backgrounds. Eight accepted; two rejected and removed from playable images.",
+  "notes": [
+    "All accepted CGs are landscape 1200x896, softly painted with thin contours and the established muted palette.",
+    "Nina keeps one ash-blonde right-shoulder braid, fair skin and own face; Artyom retains medium-brown skin, black curls and short black beard/moustache.",
+    "Indoor scenes use the locked jumpers; work jackets only outdoors. Sonya retains cropped straight dark hair/mustard fleece; Pavel grey hair/stubble and grey-green work jacket.",
+    "Music uses two separate wired in-ear pairs, consistent with prose saying headphones; no shared single earphone.",
+    "Walk uses a dry safe trail and stowed camera; kiss is gentle and mutually welcomed, no camera/strap worn.",
+    "Sensor focuses on Nina fastening a recorder to a simple support; Artyom waits in the background, camera lowered.",
+    "No readable lettering, logos or UI strips observed. Rejected candidates are NOT approved or counted as completed art."
+  ],
+  "files": [
+    {
+      "file": "images/cg-arrival.jpg",
+      "sha256": "c73dd2b00ae8175df6d4ad6f7774642408325e9be02a068fc042017c8aa1e87a"
+    },
+    {
+      "file": "images/cg-rules.jpg",
+      "sha256": "ea0f15090d603c4930108d3c448cef1d0b393132211aa17b2f87cd5333952c86"
+    },
+    {
+      "file": "images/cg-listening.jpg",
+      "sha256": "9c99e9247f6ab3fd10657ec9111a250bbcf69fa22c6d4c9104d2a84f0d414d66"
+    },
+    {
+      "file": "images/cg-sensor.jpg",
+      "sha256": "9020552bf6d2ba36c1fd69ad199edba1f70e41a16ec0211daaab808400bc2b91"
+    },
+    {
+      "file": "images/cg-music.jpg",
+      "sha256": "40d2e812e52ceee04eebd10def60f388a5858a9381fc882b461676d01570aaf0"
+    },
+    {
+      "file": "images/cg-walk.jpg",
+      "sha256": "315aa5b051d162efb3aeeb72bab3a9bdb5d12f4903979dd35d996634581ac4c1"
+    },
+    {
+      "file": "images/cg-kiss.jpg",
+      "sha256": "00b16698453a09eea1100af8ff71a8b185e53a0104f01edd6276b4884f878cf3"
+    },
+    {
+      "file": "images/cg-snowbound.jpg",
+      "sha256": "79ec8eece2781a183bdaab2946b899e56b06708500878fd2b3d53d04a92122cb"
+    }
+  ],
+  "rejectedCandidates": [
+    {
+      "file": "references/rejected-cg-discovery-stage7.jpg",
+      "sha256": "72dee5b162b3638bd8542e4f4e108dc4e5533cb8f35855f1cc7d92203636c6ce",
+      "reason": "Nina incorrectly has TWO braids; must retain ONE braid over anatomical right shoulder.",
+      "requiredCorrection": "Edit this candidate using its own neutral character references; retain identities and correct only the faulty detail. Do not change authored chapter to fit rejected art."
+    },
+    {
+      "file": "references/rejected-cg-strap-stage7.jpg",
+      "sha256": "dc0f727d5df16cd790b9000f2117156671cdf9c40b440fdcf0f4466313a7c5e4",
+      "reason": "Object being sewn is a large padded bag/panel, not the small non-load-bearing shoulder sleeve specified in b07d.",
+      "requiredCorrection": "Edit this candidate using its own neutral character references; retain identities and correct only the faulty detail. Do not change authored chapter to fit rejected art."
+    }
+  ]
+}

@@ -210,9 +210,18 @@ def check():
 
 if __name__=='__main__':
     import argparse
-    parser=argparse.ArgumentParser(description='Check all planned art and the full graph of №14 only.')
+    parser=argparse.ArgumentParser(description='Default: planned art for 14–16 and full graph of 14. --story 15: scoped staged text/art/consent audit.')
     parser.add_argument('--report',action='store_true')
+    parser.add_argument('--story',type=int,choices=(14,15),default=14)
     args=parser.parse_args()
-    report=check()
+    if args.story==15:
+        import importlib.util
+        spec=importlib.util.spec_from_file_location('scoped_tishe_checks',Path(__file__).with_name('check-tishe.py'))
+        checker=importlib.util.module_from_spec(spec);spec.loader.exec_module(checker)
+        report=checker.check()
+        target=checker.BASE/('route-audit.json' if report['chapters']==6 else 'source-fragment-audit.json')
+    else:
+        report=check()
+        target=story_base(14)/'route-audit.json'
     if args.report:
-        (story_base(14)/'route-audit.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+        target.write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')

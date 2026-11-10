@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""№15 fragment regressions; fixture mutations never touch real source files."""
+"""№15 source/complete-graph regressions; fixture mutations never touch real source files."""
 import contextlib
 import copy
 import importlib.util
@@ -109,16 +109,35 @@ class TisheTests(unittest.TestCase):
             with self.assertRaises(ValueError):
                 guard.load_frozen(base)
 
-    def test_old_publication_tools_refuse_story15(self):
+    def test_old_publication_tool_refuses_story15(self):
         canonical = BASE.parent.parent / 'stores/14'
         names = ('story.json', 'story.draft.json', 'route-audit.json', 'art-prompts.json')
         before = {name: (canonical / name).read_bytes() for name in names}
-        for tool, flag in [('assemble-story.py', '--publish'), ('check-drafts.py', '--report')]:
+        for tool, flag in [('assemble-story.py', '--publish')]:
             result = subprocess.run([sys.executable, str(TOOLS / tool), '--story', '15', flag],
                                     capture_output=True, text=True, timeout=10)
             self.assertEqual(result.returncode, 2)
             self.assertIn('unrecognized arguments', result.stderr)
         self.assertEqual(before, {name: (canonical / name).read_bytes() for name in names})
+
+    def test_neutral_gradient_only_for_ending_cards(self):
+        original = checks.load(BASE / 'chapters/06.json')
+        checks.validate_fragment(original, configs[-1], characters, manifest)
+        for sid, bg in [('f01',''), ('f14t','images/cg-ending-trust.jpg')]:
+            changed = copy.deepcopy(original)
+            changed['scenes'][sid]['bg'] = bg
+            with self.assertRaises(AssertionError):
+                checks.validate_fragment(changed, configs[-1], characters, manifest)
+
+    def test_scoped_checker_reports_15_without_touching_14(self):
+        canonical = BASE.parent.parent / 'stores/14'
+        before = {p.name:p.read_bytes() for p in canonical.glob('*.json')}
+        result = subprocess.run([sys.executable, str(TOOLS / 'check-drafts.py'), '--story', '15', '--report'],
+                                capture_output=True, text=True, timeout=10)
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertIn('SOURCE_CHECK_OK', result.stdout)
+        self.assertEqual(checks.load(BASE / 'route-audit.json')['story'], 'tishe-snega')
+        self.assertEqual(before, {p.name:p.read_bytes() for p in canonical.glob('*.json')})
 
     def test_reviewed_background_change_rejected(self):
         with tempfile.TemporaryDirectory() as directory:
@@ -146,7 +165,7 @@ class TisheTests(unittest.TestCase):
         scenes = {}
         for config in configs:
             scenes.update(checks.load(BASE / f'chapters/{config["chapter"]:02}.json')['scenes'])
-        exit_id = configs[-1]['externalExits'][0]
+        exit_id = configs[-1]['externalExits'][0] if configs[-1]['externalExits'] else 'f14r'
         for required in ('c01', 'c03', 'd04', 'd09', 'd11'):
             checks.assert_mandatory(scenes, 'a01', exit_id, [required])
             mutated = copy.deepcopy(scenes)
@@ -166,11 +185,62 @@ class TisheTests(unittest.TestCase):
         self.assertNotIn('cg', scenes['c10r'])
         self.assertEqual(scenes['c10t']['cg'], 'images/cg-kiss.jpg')
 
-    def test_partial_routes_report_is_current(self):
+    def complete_scenes(self):
+        return checks.load(BASE / 'story.draft.json')['scenes']
+
+    def test_assembled_scenes_match_sources(self):
+        story = checks.load(BASE / 'story.draft.json')
+        scenes = {}
+        for config in configs:
+            scenes.update(checks.load(BASE / f'chapters/{config["chapter"]:02}.json')['scenes'])
+        self.assertEqual(story['scenes'], scenes)
+        self.assertEqual(story['characters'], characters)
+        self.assertEqual(story['estimatedMinutes'], round(sum(len(s['lines']) for s in scenes.values())/7.5))
+        self.assertEqual(story['id'], 'tishe-snega')
+
+    def test_paid_statistics_cannot_override_final_refusal(self):
+        scenes = self.complete_scenes()
+        self.assertEqual(checks.verify_final_consent(scenes), ['f09r','f11','f13r','f14r'])
+        scenes['f09r']['next'] = 'f10'
+        with self.assertRaises(AssertionError):
+            checks.verify_final_consent(scenes)
+
+    def test_final_answer_cannot_require_payment(self):
+        scenes = self.complete_scenes()
+        scenes['f09']['choices'][1]['crystals'] = 5
+        with self.assertRaises(AssertionError):
+            checks.verify_final_consent(scenes)
+
+    def test_desire_threshold_is_free_maximum_plus_one(self):
+        scenes = self.complete_scenes()
+        result = checks.graphs.solve_graph(scenes, 'a01', free=True)
+        self.assertEqual(checks.verify_free_balance(scenes, result), 2)
+        for threshold in (2,4):
+            changed = copy.deepcopy(scenes)
+            changed['f10']['branch'][0]['if']['gte'] = threshold
+            result = checks.graphs.solve_graph(changed, 'a01', free=True)
+            with self.assertRaises(AssertionError):
+                checks.verify_free_balance(changed, result)
+
+    def test_trust_ending_must_remain_free(self):
+        scenes = self.complete_scenes()
+        scenes['f10']['branch'][1]['if']['gte'] = 99
+        result = checks.graphs.solve_graph(scenes, 'a01', free=True)
+        with self.assertRaises(AssertionError):
+            checks.verify_free_balance(scenes, result)
+
+    def test_incomplete_art_cannot_be_published_by_staged_assembler(self):
+        result = subprocess.run([sys.executable, str(TOOLS / 'assemble-tishe.py'), '--publish'],
+                                capture_output=True, text=True, timeout=10)
+        self.assertEqual(result.returncode, 2)
+        self.assertFalse((BASE / 'story.json').exists())
+        self.assertFalse((BASE.parent.parent / 'stores/15').exists())
+
+    def test_route_report_is_current(self):
         with contextlib.redirect_stdout(io.StringIO()):
             report = checks.check()
-        self.assertEqual(report, checks.load(BASE / 'source-fragment-audit.json'))
-        self.assertEqual(report['productionStatus'], 'incomplete-not-shippable')
+        self.assertEqual(report, checks.load(BASE / ('route-audit.json' if len(configs)==6 else 'source-fragment-audit.json')))
+        self.assertEqual(report['productionStatus'], 'text-complete-not-shippable' if len(configs)==6 else 'incomplete-not-shippable')
         self.assertEqual(report['outcomes']['all']['routes'], 2 ** report['decisions'])
         self.assertEqual(report['outcomes']['free']['routes'], 2 ** (report['decisions'] - report['paidOptions']))
         self.assertFalse((BASE / 'story.json').exists())

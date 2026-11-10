@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""Read-only checks of the authored, INCOMPLETE №15 fragments.
---report writes only content-work/15/source-fragment-audit.json, never stores/.
-This is deliberately not a publication gate or a complete-story/endings audit.
+"""Read-only checks of №15 fragments or the complete authored text.
+--report writes a scoped fragment/route audit, never stores/.
+Full text/endings are audited; publication, complete art and device approval are separate.
 """
 import hashlib
 import importlib.util
@@ -42,8 +42,14 @@ def validate_fragment(fragment, config, characters, manifest):
     offscreen = []
     for sid, scene in scenes.items():
         assert sid.startswith(config['prefix'])
-        assert planned[scene['bg']] == 'background'
-        used.add(scene['bg'])
+        if scene['bg']:
+            assert planned[scene['bg']] == 'background'
+            used.add(scene['bg'])
+        else:
+            # Epilogue CG establishes the new location on a neutral gradient;
+            # never enlarge/repeat its people as a second background image.
+            assert scene.get('ending') and scene.get('cg') and not scene['show']
+            assert scene['bgGradient'] == ['#E9DFCE', '#796C5E']
         if 'cg' in scene:
             assert planned[scene['cg']] == 'card'
             used.add(scene['cg'])
@@ -66,9 +72,17 @@ def validate_fragment(fragment, config, characters, manifest):
                 if line['who'] not in identities and not scene.get('cg'):
                     offscreen.append((sid, line['who']))
             lines += 1
-        # Partial chapters must not pretend to finish the novel.
-        assert 'ending' not in scene and 'branch' not in scene
-        assert ('choices' in scene) != ('next' in scene), sid
+        if config['chapter'] < 6:
+            assert 'ending' not in scene and 'branch' not in scene
+        assert sum(key in scene for key in ('choices', 'next', 'ending')) == 1, sid
+        if 'branch' in scene:
+            assert 'next' in scene and scene['branch']
+            for rule in scene['branch']:
+                assert set(rule) == {'if','to'} and set(rule['if']) == {'stat','gte'}
+                assert rule['if']['stat'] in graphs.STATS and type(rule['if']['gte']) is int
+        if 'ending' in scene:
+            assert set(scene['ending']) == {'title','text','badge'}
+            assert all(isinstance(v,str) and v.strip() for v in scene['ending'].values())
         if 'choices' in scene:
             points += 1
             assert len(scene['choices']) >= 2
@@ -78,7 +92,7 @@ def validate_fragment(fragment, config, characters, manifest):
                 assert choice.get('crystals', 0) in (0, 5)
                 assert choice['effect'] and set(choice['effect']) <= set(graphs.STATS)
                 assert all(type(v) is int and 0 < v <= 10 for v in choice['effect'].values())
-                assert not choice.get('requires'), 'No gated choice in these opening chapters'
+                assert not choice.get('requires'), 'No gated choices in this story'
                 paid += bool(choice.get('crystals'))
     assert points == config['expectedChoices'] and paid == config['expectedPaid']
     return lines, points, paid, used, offscreen
@@ -114,17 +128,40 @@ def assert_mandatory(scenes, entry, exit_id, required):
             assert sid != exit_id, f'Core action can be bypassed: {blocked}'
             visited.add(sid)
             scene = scenes[sid]
-            assert not scene.get('branch') and not scene.get('ending')
+            assert not scene.get('ending'), f'Core action can be bypassed: {blocked}'
             if 'choices' in scene:
                 todo.extend(c['next'] for c in scene['choices'])
             else:
                 todo.append(scene['next'])
+                todo.extend(rule['to'] for rule in scene.get('branch',[]))
+
+
+def verify_final_consent(scenes):
+    assert {c['next'] for c in scenes['f09']['choices']} == {'f09t','f09r'}
+    assert all(not c.get('crystals') and not c.get('requires') for c in scenes['f09']['choices'])
+    assert scenes['f09t']['next'] == 'f10'
+    path=[]; sid='f09r'
+    while True:
+        assert sid not in path, 'Refusal path cycle'
+        path.append(sid); scene=scenes[sid]
+        assert 'choices' not in scene and 'branch' not in scene
+        if 'ending' in scene:break
+        sid=scene['next']
+    assert sid=='f14r', 'Final refusal must lead to independence regardless of stats/payments'
+    return path
+
+
+def verify_free_balance(scenes, result):
+    assert set(result['terminals']) == {'f14t','f14r'}
+    maximum=max(stats[0] for sid,stats in result['seen'] if sid=='f10')
+    assert scenes['f10']['branch'][0]['if'] == {'stat':'desire','gte':maximum+1}
+    return maximum
 
 
 def check():
     configs = load(BASE / 'chapters/config.json')
-    # Completion needs its own full graph/consent/endings/length audit first.
-    assert 1 <= len(configs) < 6, 'Extend to a full-story audit before completing chapter 6'
+    assert 1 <= len(configs) <= 6
+    complete = len(configs) == 6
     manifest = load(BASE / 'art-prompts.json')
     assert manifest['productionStatus'] == 'draft'
     assert not (BASE / 'story.json').exists(), 'Do not publish incomplete fragments'
@@ -144,7 +181,7 @@ def check():
     lines = points = paid = 0
     for index, config in enumerate(configs, 1):
         assert config['chapter'] == index and config['prefix'] == chr(96 + index)
-        assert config['externalExits'] == [chr(97 + index) + '01']
+        assert config['externalExits'] == ([] if index == 6 else [chr(97 + index) + '01'])
         fragment = load(BASE / f'chapters/{index:02}.json')
         assert compiler.compile_one(config) == fragment, f'Uncompiled source: {index}'
         counts = validate_fragment(fragment, config, characters, manifest)
@@ -161,33 +198,58 @@ def check():
     core = ['a13', 'b04']
     if len(configs) >= 3: core += ['c01', 'c03', 'c06', 'c11']
     if len(configs) >= 4: core += ['d02', 'd04', 'd09', 'd11', 'd15']
-    assert_mandatory(merged, configs[0]['entry'], configs[-1]['externalExits'][0], core)
+    if len(configs) >= 5: core += ['e03','e06','e09','e13','e14']
+    if complete: core += ['f01','f02','f06','f08','f09']
+    exit_id = None if complete else configs[-1]['externalExits'][0]
+    assert_mandatory(merged, configs[0]['entry'], exit_id, core)
+    if complete:
+        assert len(merged) == 168 and points == 34 and paid == 12
+        assert 480 <= lines <= 560, (lines, 'long format line budget')
+        assert {sid for sid,s in merged.items() if 'ending' in s} == {'f14t','f14d','f14r'}
+        assert [sid for sid,s in merged.items() if 'branch' in s] == ['f10']
     outcomes = {}
     for free in (False, True):
         result = graphs.solve_graph(merged, configs[0]['entry'], configs[-1]['externalExits'], free=free)
         routes, low, high = result['summary']
-        assert set(result['terminals']) == set(configs[-1]['externalExits'])
-        exit_stats = [stats for sid, stats in result['seen'] if sid in configs[-1]['externalExits']]
+        expected = ({'f14t','f14r'} if free else {'f14t','f14d','f14r'}) if complete else set(configs[-1]['externalExits'])
+        assert set(result['terminals']) == expected
+        exit_stats = [stats for sid, stats in result['seen'] if sid in result['terminals']]
+        if complete and free:
+            maximum = verify_free_balance(merged, result)
+        if complete and not free:
+            assert any(sid=='f09r' and stats[0]>=3 for sid,stats in result['seen'])
         ranges = {key: {'min': min(v[i] for v in exit_stats), 'max': max(v[i] for v in exit_stats)}
                   for i, key in enumerate(graphs.STATS)}
         outcomes['free' if free else 'all'] = {
             'routes': routes, 'states': result['states'], 'minWords': low, 'maxWords': high,
-            'continuations': sorted(result['terminals']), 'exitStatRanges': ranges}
-        print(f'{"FREE" if free else "ALL"} FRAGMENT: {routes} routes, {low}–{high} words, {result["states"]} states')
+            'continuations': [] if complete else sorted(result['terminals']), 'exitStatRanges': ranges,
+            'endings': {k:{'routes':v[0],'minWords':v[1],'maxWords':v[2]} for k,v in result['terminals'].items()} if complete else {}}
+        print(f'{"FREE" if free else "ALL"} {"COMPLETE TEXT" if complete else "FRAGMENT"}: {routes} routes, {low}–{high} words, {result["states"]} states')
+    refusal_path = verify_final_consent(merged) if complete else []
+    if complete:
+        expected_paths={i['file'] for i in manifest['images']}
+        assert used | {'cover.jpg'} == expected_paths, 'Unused planned art'
     missing = sorted(path for path in used if not (BASE / path).is_file())
     report = {
-        'story': 'tishe-snega', 'productionStatus': 'incomplete-not-shippable',
+        'story': 'tishe-snega', 'productionStatus': 'text-complete-not-shippable' if complete else 'incomplete-not-shippable',
         'chapters': len(configs), 'scenes': len(merged), 'lines': lines,
         'decisions': points, 'paidOptions': paid, 'outcomes': outcomes,
         'externalExits': configs[-1]['externalExits'], 'missingUsedArt': missing,
-        'mandatoryCoreScenes': core, 'reviewedPlayableArt': reviewed_art,
+        'mandatoryCoreScenes': core, 'reviewedPlayableArt': reviewed_art, 'explicitRefusalPath': refusal_path,
         'offscreenSpeakers': [list(pair) for pair in sorted(set(offscreen))],
         'sceneDigest': hashlib.sha256(json.dumps(merged, ensure_ascii=False, sort_keys=True).encode()).hexdigest(),
-        'limits': ['No final endings or full-story balance yet', 'No timed reading or mobile visual approval',
+        'limits': ([] if complete else ['No final endings or full-story balance yet']) + ['No timed reading or full mobile visual approval',
                    'Missing artwork is reported, never replaced with art from another story']}
-    print(f'FRAGMENT_CHECK_OK: {len(merged)} scenes / {lines} lines / {points} choices / {paid} paid at 5◆')
+    if complete:
+        report['maxFreeDesireAtFinalBranch']=maximum
+        report['estimatedMinutes']=round(lines/7.5)
+        report['wordBasedMinutes']={key:round(outcomes['all'][field]/170+points*.4,1) for key,field in [('min','minWords'),('max','maxWords')]}
+        assert 60 <= report['estimatedMinutes'] <= 120
+        assert 60 <= report['wordBasedMinutes']['min'] <= report['wordBasedMinutes']['max'] <= 120
+        report['timingMethod']='lines/7.5, rounded; cross-check route words/170 + decisions*0.4; NOT measured reading time'
+    print(f'SOURCE_CHECK_OK: {len(merged)} scenes / {lines} lines / {points} choices / {paid} paid at 5◆')
     print('PENDING USED ART:', ', '.join(missing))
-    print('NOT SHIPPABLE: chapters, art, final routes and mobile review remain unfinished')
+    print('NOT SHIPPABLE: remaining art/full mobile approval required; final routes audited' if complete else 'NOT SHIPPABLE: incomplete text/art')
     return report
 
 
@@ -198,4 +260,4 @@ if __name__ == '__main__':
     args = parser.parse_args()
     result = check()
     if args.report:
-        (BASE / 'source-fragment-audit.json').write_text(json.dumps(result, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
+        (BASE / ('route-audit.json' if result['chapters']==6 else 'source-fragment-audit.json')).write_text(json.dumps(result, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
