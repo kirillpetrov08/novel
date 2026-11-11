@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Assemble ONLY staged №15 into story.draft.json; never publish or touch stores/.
-A full graph/consent/length audit is required even though some art is pending.
---publish is intentionally unsupported until complete art and full mobile QA.
+A complete graph/consent/length/art audit is required before writing the draft.
+Publishing into stores/ or the app requires a separate explicit decision.
 """
 import argparse
 import importlib.util

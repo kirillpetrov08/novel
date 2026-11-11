@@ -80,9 +80,7 @@
     }
   },
   "externalExits": [],
-  "missingUsedArt": [
-    "images/cg-ending-resolve.jpg"
-  ],
+  "missingUsedArt": [],
   "mandatoryCoreScenes": [
     "a13",
     "b04",
@@ -106,7 +104,7 @@
     "f08",
     "f09"
   ],
-  "reviewedPlayableArt": 37,
+  "reviewedPlayableArt": 38,
   "explicitRefusalPath": [
     "f09r",
     "f11",
@@ -125,7 +123,7 @@
   ],
   "sceneDigest": "146ca4d5a5540c816ea17af604576574364d932f14e651cd68a4742fff75e70c",
   "limits": [
-    "No timed reading or full mobile visual approval",
+    "No timed reading or physical Android/device QA, live-ad validation, or release approval",
     "Missing artwork is reported, never replaced with art from another story"
   ],
   "maxFreeDesireAtFinalBranch": 2,

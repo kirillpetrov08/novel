@@ -1,0 +1,337 @@
+{
+  "scope": "full-art-staged-mobile-browser-qa-not-release-approval",
+  "missingCgScenes": [],
+  "missingAssets": [],
+  "results": [
+    {
+      "width": 320,
+      "height": 568,
+      "inset": 0,
+      "font": "m",
+      "scenes": 168,
+      "lines": 523,
+      "choices": 34,
+      "cgs": 16,
+      "scrollableLines": 319,
+      "endingOverlays": [
+        {
+          "scene": "f14t",
+          "title": "На одной частоте",
+          "visible": true,
+          "scroll": "auto"
+        },
+        {
+          "scene": "f14d",
+          "title": "Долгий свет",
+          "visible": true,
+          "scroll": "auto"
+        },
+        {
+          "scene": "f14r",
+          "title": "Свой маршрут",
+          "visible": true,
+          "scroll": "auto"
+        }
+      ],
+      "failures": [],
+      "errors": []
+    },
+    {
+      "width": 320,
+      "height": 568,
+      "inset": 0,
+      "font": "l",
+      "scenes": 168,
+      "lines": 523,
+      "choices": 34,
+      "cgs": 16,
+      "scrollableLines": 458,
+      "endingOverlays": [
+        {
+          "scene": "f14t",
+          "title": "На одной частоте",
+          "visible": true,
+          "scroll": "auto"
+        },
+        {
+          "scene": "f14d",
+          "title": "Долгий свет",
+          "visible": true,
+          "scroll": "auto"
+        },
+        {
+          "scene": "f14r",
+          "title": "Свой маршрут",
+          "visible": true,
+          "scroll": "auto"
+        }
+      ],
+      "failures": [],
+      "errors": []
+    },
+    {
+      "width": 360,
+      "height": 640,
+      "inset": 0,
+      "font": "m",
+      "scenes": 168,
+      "lines": 523,
+      "choices": 34,
+      "cgs": 16,
+      "scrollableLines": 34,
+      "endingOverlays": [
+        {
+          "scene": "f14t",
+          "title": "На одной частоте",
+          "visible": true,
+          "scroll": "auto"
+        },
+        {
+          "scene": "f14d",
+          "title": "Долгий свет",
+          "visible": true,
+          "scroll": "auto"
+        },
+        {
+          "scene": "f14r",
+          "title": "Свой маршрут",
+          "visible": true,
+          "scroll": "auto"
+        }
+      ],
+      "failures": [],
+      "errors": []
+    },
+    {
+      "width": 360,
+      "height": 640,
+      "inset": 0,
+      "font": "l",
+      "scenes": 168,
+      "lines": 523,
+      "choices": 34,
+      "cgs": 16,
+      "scrollableLines": 338,
+      "endingOverlays": [
+        {
+          "scene": "f14t",
+          "title": "На одной частоте",
+          "visible": true,
+          "scroll": "auto"
+        },
+        {
+          "scene": "f14d",
+          "title": "Долгий свет",
+          "visible": true,
+          "scroll": "auto"
+        },
+        {
+          "scene": "f14r",
+          "title": "Свой маршрут",
+          "visible": true,
+          "scroll": "auto"
+        }
+      ],
+      "failures": [],
+      "errors": []
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "inset": 0,
+      "font": "m",
+      "scenes": 168,
+      "lines": 523,
+      "choices": 34,
+      "cgs": 16,
+      "scrollableLines": 0,
+      "endingOverlays": [
+        {
+          "scene": "f14t",
+          "title": "На одной частоте",
+          "visible": true,
+          "scroll": "auto"
+        },
+        {
+          "scene": "f14d",
+          "title": "Долгий свет",
+          "visible": true,
+          "scroll": "auto"
+        },
+        {
+          "scene": "f14r",
+          "title": "Свой маршрут",
+          "visible": true,
+          "scroll": "auto"
+        }
+      ],
+      "failures": [],
+      "errors": []
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "inset": 0,
+      "font": "l",
+      "scenes": 168,
+      "lines": 523,
+      "choices": 34,
+      "cgs": 16,
+      "scrollableLines": 14,
+      "endingOverlays": [
+        {
+          "scene": "f14t",
+          "title": "На одной частоте",
+          "visible": true,
+          "scroll": "auto"
+        },
+        {
+          "scene": "f14d",
+          "title": "Долгий свет",
+          "visible": true,
+          "scroll": "auto"
+        },
+        {
+          "scene": "f14r",
+          "title": "Свой маршрут",
+          "visible": true,
+          "scroll": "auto"
+        }
+      ],
+      "failures": [],
+      "errors": []
+    },
+    {
+      "width": 320,
+      "height": 568,
+      "inset": 24,
+      "font": "m",
+      "scenes": 168,
+      "lines": 523,
+      "choices": 34,
+      "cgs": 16,
+      "scrollableLines": 319,
+      "endingOverlays": [
+        {
+          "scene": "f14t",
+          "title": "На одной частоте",
+          "visible": true,
+          "scroll": "auto"
+        },
+        {
+          "scene": "f14d",
+          "title": "Долгий свет",
+          "visible": true,
+          "scroll": "auto"
+        },
+        {
+          "scene": "f14r",
+          "title": "Свой маршрут",
+          "visible": true,
+          "scroll": "auto"
+        }
+      ],
+      "failures": [],
+      "errors": []
+    },
+    {
+      "width": 320,
+      "height": 568,
+      "inset": 24,
+      "font": "l",
+      "scenes": 168,
+      "lines": 523,
+      "choices": 34,
+      "cgs": 16,
+      "scrollableLines": 458,
+      "endingOverlays": [
+        {
+          "scene": "f14t",
+          "title": "На одной частоте",
+          "visible": true,
+          "scroll": "auto"
+        },
+        {
+          "scene": "f14d",
+          "title": "Долгий свет",
+          "visible": true,
+          "scroll": "auto"
+        },
+        {
+          "scene": "f14r",
+          "title": "Свой маршрут",
+          "visible": true,
+          "scroll": "auto"
+        }
+      ],
+      "failures": [],
+      "errors": []
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "inset": 24,
+      "font": "m",
+      "scenes": 168,
+      "lines": 523,
+      "choices": 34,
+      "cgs": 16,
+      "scrollableLines": 0,
+      "endingOverlays": [
+        {
+          "scene": "f14t",
+          "title": "На одной частоте",
+          "visible": true,
+          "scroll": "auto"
+        },
+        {
+          "scene": "f14d",
+          "title": "Долгий свет",
+          "visible": true,
+          "scroll": "auto"
+        },
+        {
+          "scene": "f14r",
+          "title": "Свой маршрут",
+          "visible": true,
+          "scroll": "auto"
+        }
+      ],
+      "failures": [],
+      "errors": []
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "inset": 24,
+      "font": "l",
+      "scenes": 168,
+      "lines": 523,
+      "choices": 34,
+      "cgs": 16,
+      "scrollableLines": 14,
+      "endingOverlays": [
+        {
+          "scene": "f14t",
+          "title": "На одной частоте",
+          "visible": true,
+          "scroll": "auto"
+        },
+        {
+          "scene": "f14d",
+          "title": "Долгий свет",
+          "visible": true,
+          "scroll": "auto"
+        },
+        {
+          "scene": "f14r",
+          "title": "Свой маршрут",
+          "visible": true,
+          "scroll": "auto"
+        }
+      ],
+      "failures": [],
+      "errors": []
+    }
+  ]
+}

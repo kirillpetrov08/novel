@@ -238,7 +238,7 @@ def check():
         'mandatoryCoreScenes': core, 'reviewedPlayableArt': reviewed_art, 'explicitRefusalPath': refusal_path,
         'offscreenSpeakers': [list(pair) for pair in sorted(set(offscreen))],
         'sceneDigest': hashlib.sha256(json.dumps(merged, ensure_ascii=False, sort_keys=True).encode()).hexdigest(),
-        'limits': ([] if complete else ['No final endings or full-story balance yet']) + ['No timed reading or full mobile visual approval',
+        'limits': ([] if complete else ['No final endings or full-story balance yet']) + ['No timed reading or physical Android/device QA, live-ad validation, or release approval',
                    'Missing artwork is reported, never replaced with art from another story']}
     if complete:
         report['maxFreeDesireAtFinalBranch']=maximum
@@ -249,7 +249,7 @@ def check():
         report['timingMethod']='lines/7.5, rounded; cross-check route words/170 + decisions*0.4; NOT measured reading time'
     print(f'SOURCE_CHECK_OK: {len(merged)} scenes / {lines} lines / {points} choices / {paid} paid at 5◆')
     print('PENDING USED ART:', ', '.join(missing))
-    print('NOT SHIPPABLE: remaining art/full mobile approval required; final routes audited' if complete else 'NOT SHIPPABLE: incomplete text/art')
+    print('NOT SHIPPABLE: release approval and any publication require separate authorization; final routes audited' if complete else 'NOT SHIPPABLE: incomplete text/art')
     return report
 
 

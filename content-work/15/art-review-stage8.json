@@ -1,12 +1,10 @@
 {
   "story": "tishe-snega",
   "checkpoint": 8,
-  "complete": false,
-  "acceptedCount": 7,
-  "pending": [
-    "images/cg-ending-resolve.jpg"
-  ],
-  "method": "Each generated CG was reviewed sequentially against the frozen story cover, portrait references, scene text and established palette. Only the final accepted attempt for each slot is retained.",
+  "complete": true,
+  "acceptedCount": 8,
+  "pending": [],
+  "method": "Each CG was generated sequentially and visually reviewed against the frozen story cover, portrait references, scene text and established palette. Only the final accepted attempt for each slot is retained.",
   "discardedCandidates": [
     {
       "file": "images/cg-report.jpg",
@@ -22,7 +20,7 @@
     }
   ],
   "notes": [
-    "All seven retained CGs are 1200x896 JPEGs in the established soft semi-realistic painted style.",
+    "All eight accepted CGs are 1200x896 JPEGs in the established soft semi-realistic painted style.",
     "Nina remains consistent with her identity portrait: warm fair skin, grey-green eyes, ash-blonde hair in exactly one braid over her anatomical right shoulder, and the correct outfit for each scene.",
     "Artyom, Sonya and Pavel retain their distinct established faces, complexions, ages, hair and scene-appropriate clothing.",
     "cg-strap: tiny soft sleeve on the table; three small stitches in its edge, not load-bearing strap repair.",
@@ -31,7 +29,8 @@
     "cg-report: Nina, Pavel and Sonya only; plain closed notebook and blank timber walls, no maps or readable report.",
     "cg-screening: Nina, Artyom and Sonya face a completely blank screen positioned ahead of them.",
     "cg-ending-trust: ordinary anonymous snowy city walkway, mutual restrained embrace and separate travel bags; no signage or lettering.",
-    "cg-ending-desire: exactly Nina and Artyom, two closed blank notebooks, restrained consensual kiss, no duplication or equipment."
+    "cg-ending-desire: exactly Nina and Artyom, two closed blank notebooks, restrained consensual kiss, no duplication or equipment.",
+    "cg-ending-resolve: Nina leads a calm field-season briefing with Sonya and Pavel; blank notebook, ordinary recorder, no maps or readable notes."
   ],
   "files": [
     {
@@ -61,6 +60,10 @@
     {
       "file": "images/cg-ending-desire.jpg",
       "sha256": "a209c2e195bff810c9fd3a108d05a5941ebc824e7203509a882dcebfbc00fd31"
+    },
+    {
+      "file": "images/cg-ending-resolve.jpg",
+      "sha256": "09b2fd02b3887514e3162008228327653187af5ae5e98a3982ab75cccba13461"
     }
   ]
 }

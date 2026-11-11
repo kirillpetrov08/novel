@@ -1,6 +1,6 @@
-# №15 «Тише снега» — checkpoint 8 в работе
+# №15 «Тише снега» — checkpoint 8 закрыт (арт + staged browser QA)
 
-**Текст завершён; полный арт ещё не готов.** Все шесть глав: **168 сцен, 523 реплики, 34 решения, 12 платных вариантов строго по 5◆, три финала**. Принято **37/38** игровых изображений: семь новых CG checkpoint 8 приняты после последовательной генерации и визуального review; осталось `cg-ending-resolve`. Полный browser QA будет только после 38/38. №15 остаётся вне `stores/`, библиотеки и APK.
+**Текст, арт и полный staged-browser QA завершены.** Все шесть глав: **168 сцен, 523 реплики, 34 решения, 12 платных вариантов строго по 5◆, три финала**. Принято **38/38** игровых изображений; все восемь новых CG checkpoint 8 прошли визуальную проверку и SHA-review. Полный browser QA пройден в **10 конфигурациях**: в каждой — все 168 сцен / 523 реплики / 34 решения / 16 CG / три финальных оверлея, **0 ошибок и нарушений**. №15 остаётся вне `stores/`, библиотеки и APK; физический Android QA, публикация и сборка не выполнялись.
 
 ## Текст и полный граф
 
@@ -35,7 +35,7 @@
 - `e14`: рабочее согласие не становится личным. `e15`: следующий сезон обсуждается через объём/время/команду, не через героическое переутомление.
 - `f01–f06`: дорога открыта по подтверждению, имущество/данные/открытые вопросы переданы, роль Сони не превращается в бесконечную доступность.
 - `f04`: необязательный личный обмен музыкой, не возврат личной пробы. `f07`: отдельное согласие на объятие; покупка не решает будущие отношения. `f09`: самостоятельный бесплатный ответ о паре.
-- `f13t/d/r`: эпилоги через полгода, разные профессии и границы остаются. Для `f14t/d/r` выбран **нейтральный бежевый градиент + собственная CG**, без дублирования людей из CG увеличенным фоном и без выдуманного нового городского фона. Это поддержано существующим форматом/рендерером, проверяется отдельным тестом; финальные карточки пока отсутствуют.
+- `f13t/d/r`: эпилоги через полгода, разные профессии и границы остаются. Для `f14t/d/r` выбран **нейтральный бежевый градиент + собственная CG**, без дублирования людей из CG увеличенным фоном и без выдуманного нового городского фона. Это поддержано существующим форматом/рендерером; все три ending overlays проверены в каждой из десяти конфигураций.
 
 ## Что произошло в главах 3–4 — обязательства продолжения
 
@@ -66,13 +66,17 @@
 
 На завершении checkpoint 7 были готовы обложка, семь фонов, четырнадцать прозрачных состояний и восемь CG = **30/38**. **Все прежние 28 хешей портретов и семь фонов сохранены**, новые портреты не генерировались. Нина: одна пепельно-русая коса, своё лицо; Артём: прежние кудри/тон кожи/борода; Соня и Павел не меняют возраст/внешность. В тёплых помещениях пара без полевых курток (`_indoor`). Камера в сцене поцелуя оставлена внутри. Все 14 WebP проходят прежнюю проверку 792×1200 RGBA, силуэта/масштаба/неподвижной одежды.
 
-## Checkpoint 8 — незавершённая пачка: 7/8 новых CG
+## Checkpoint 8 — завершён: 8/8 новых CG
 
-В этой итерации по одному и с визуальной проверкой созданы `cg-strap`, `cg-discovery`, `cg-boundary`, `cg-report`, `cg-screening`, `cg-ending-trust`, `cg-ending-desire`. Все семь соответствуют тексту/персонажам и сохраняют установленную стилистику; SHA-хеши и пометки — `art-review-stage8.json`. В первой попытке `report` были лишние карты/надписи, в первой `screening` экран оказался за зрителями, в первой `ending-desire` дублировалась Нина; все три заменены и не включены в `images/`.
+Восемь CG checkpoint 8 — `cg-strap`, `cg-discovery`, `cg-boundary`, `cg-report`, `cg-screening`, `cg-ending-trust`, `cg-ending-desire`, `cg-ending-resolve` — созданы строго последовательно и визуально проверены против закреплённого дизайна/текста. Все восемь SHA-хешей и замечания сохранены в `art-review-stage8.json`; полный аудит графа подтверждает **38/38** игровых изображений и пустой `missingUsedArt`. В первой попытке `report` были лишние карты/надписи, в первой `screening` экран оказался за зрителями, в первой `ending-desire` дублировалась Нина; эти кандидаты отброшены и не включены в игровые `images/`.
 
-Остался `images/cg-ending-resolve.jpg`. За этот ход исчерпан лимит генерации изображений; **не запускать новые генерации в этой сессии**. После продолжения сгенерировать только этот кадр, проверить его визуально и затем провести полный 10-конфигурационный QA всех 168 сцен, 16 CG и трёх ending overlays. Пока этого не сделано, checkpoint 8 закрытым не считать.
+Последний кадр `images/cg-ending-resolve.jpg` визуально принят: Нина, Соня и Павел обсуждают следующий сезон в тёплом помещении; лица/волосы и одежда соответствуют locked references, блокнот пустой, диктофон обычный, стеновые карты/текст отсутствуют.
 
-## Предварительная мобильная проверка — не выпуск
+Полный браузерный обход выполнен после добавления восьмой CG: 10 конфигураций; в каждой пройдены все 168 сцен / 523 реплики / 34 решения / 16 CG и три финальных overlay. Все конфигурации — без ошибок и нарушений. Отчёт: `reviews/full-mobile-stage8/report.json`; скриншоты и ending cards находятся в той же папке и просмотрены. Checkpoint 8 закрыт. Это не физическое Android-тестирование и не выпуск.
+
+## Исторический partial preflight checkpoint 7 — не выпуск
+
+Следующие результаты относятся к прошлому состоянию с отсутствовавшими CG, а не к текущему checkpoint 8. Актуальный полный QA и снимки сохранены отдельно в `reviews/full-mobile-stage8/`.
 
 **`available-art-preflight.json`**: 10 конфигураций, во всех 0 ошибок/нарушений. 320×568, 360×640, 390×844, обычный/крупный шрифт; 320/390 также с отступами по 24 px.
 
@@ -82,43 +86,42 @@
 
 Только изолированный браузерный fixture в памяти из `story.draft.json`, не запись в библиотеку. Предзагрузка отключена для намеренно отсутствующих CG. `serve-tishe-review.py` раздаёт 14-историчную `www` и изображения, но не черновой JSON. Это не физическое Android-тестирование, не замер чтения, не проверка живой рекламы и **не `mobile-review.json` для выпуска**. `cast-layout-preflight.json`/`reviews/cast-stage6-*` — историческая более узкая проверка четырёх глав.
 
-## Проверки текущего промежуточного состояния
+## Проверки текущего checkpoint 8
 
-- `check-tishe.py --report`, обычный `assemble-tishe.py` (без публикации) и `check-drafts.py --story 15 --report` проходят. Полный DAG остаётся 168 сцен/523 реплики; ровно один используемый арт отсутствует: `images/cg-ending-resolve.jpg`. Runtime `story.json` не создаётся.
-- **21 безопасный regression-тест №15** прошёл; две проверки, которые запускают `--publish`, намеренно пропущены по прямому указанию. `test-drafts.py` — **9/9**. Шесть Engine-стратегий и общий `test-engine.mjs` — PASS. Пиксельная проверка 14 спрайтов №15 и 13 спрайтов №14 — PASS.
-- Свежий промежуточный mobile preflight: 10 конфигураций, **167 сцен / 520 реплик / 34 решения / 15 CG**, 0 ошибок/нарушений. Он исключил `f14r` из-за отсутствующего `cg-ending-resolve` и не проверяет полностью все три финальных оверлея; это **не полный mobile approval**.
-- `test-bundled-ui.mjs`, `npm run validate`, `npm run check:syntax`, `wire-art.py --check`, `npm run build:www` — PASS. `www` содержит 14 историй; APK/Android CI не запускались. Старые предупреждения №5/6/14 остаются предупреждениями.
-- `check-drafts.py` считает **75/111** playable изображений: №14 37/37, staged №15 37/38, №16 1/36. `stores/15/` и `content-work/15/story.json` отсутствуют.
+- `check-tishe.py --report`, обычный `assemble-tishe.py` (без публикации) и `check-drafts.py --story 15 --report` проходят. Полный DAG: 168 сцен/523 реплики; **38/38** игровых изображений проверены, `missingUsedArt=[]`. Обновлённый `route-audit.json`; runtime `story.json` не создаётся.
+- **21 безопасный regression-тест №15** прошёл; два теста, которые вызывают `--publish`, намеренно исключены и не запускались. `test-drafts.py` — **9/9**. Шесть Engine-стратегий и общий `test-engine.mjs` — PASS. Пиксельная проверка 14 спрайтов №15 и 13 спрайтов №14 — PASS.
+- Полный `test-tishe-mobile.mjs`: **10 конфигураций** — 320×568, 360×640, 390×844, обычный/крупный шрифт; inset 24 px добавлен к вариантам 320×568 и 390×844 (иначе 0 px). В каждой: **168 сцен / 523 реплики / 34 решения / 16 CG**, все три финальных overlay; **0 ошибок и нарушений**. JSON-отчёт и шесть визуально проверенных PNG — `reviews/full-mobile-stage8/`. Это browser QA, не физическое Android-тестирование.
+- `test-bundled-ui.mjs`, `npm run validate`, `npm run check:syntax`, `wire-art.py --check`, `npm run build:www` — PASS. `www` содержит 14 историй; APK/Android CI не запускались. Известные предупреждения старых историй №5/6/14 остаются предупреждениями.
+- `check-drafts.py` считает **76/111** playable изображений: №14 37/37, staged №15 38/38, №16 1/36. `stores/15/` и `content-work/15/story.json` отсутствуют.
 
-## Следующий этап
+## Итог и ограничения дальнейшей работы
 
-1. После сброса лимита создать только оставшийся `cg-ending-resolve.jpg`, затем визуально проверить все восемь финальных CG и обновить `art-review-stage8.json` до 38/38.
-2. Довести `test-tishe-mobile.mjs` до полного обхода всех 168 сцен, 523 реплик, 34 решений, 16 CG и трёх ending overlays; повторить QA в десяти конфигурациях и сохранить свежие отчёты/скриншоты.
-3. Перепроверить SHA всех изображений/кода, граф, Store/Engine и регрессии. Обновить README/PLAN/PROGRESS, затем commit и push только в `arena/690e3c87-novel`, чтобы результаты не потерялись между sandbox-сессиями.
-4. №15 остаётся вне `stores/`/библиотеки; не запускать `--publish`, не переносить файлы и не собирать APK без отдельного явного решения. Не заявлять физический Android QA или релиз.
+1. Checkpoint 8 закрыт; полный исходный `README` рабочей зоны, сценарная `PLAN.md`, этот `PROGRESS.md`, `route-audit.json`, SHA review и browser QA report обновлены.
+2. №15 остаётся только в `content-work/15/`, вне `stores/`/библиотеки. Не запускать `--publish`, не переносить story/assets в приложение и не собирать APK без отдельного явного решения.
+3. Проведён именно staged browser QA. Физический Android QA, реальные рекламы, замер чтения и выпуск не проверялись и не заявляются.
 
 ## Команды
 
 ```sh
-python3 content-work/tools/compile-chapter.py --story 15
-python3 content-work/tools/assemble-tishe.py
+python3 content-work/tools/assemble-tishe.py  # staged draft only; never add --publish
 python3 content-work/tools/check-drafts.py --story 15 --report
-python3 content-work/tools/test-tishe.py
 node content-work/tools/test-tishe-engine.mjs
-# Pillow/numpy, без повторной подготовки уже принятых портретов:
-python3 content-work/tools/check-cast.py --story 15
-npm run build:www
-# Сервер запускать управляемым отдельным процессом:
-# python3 content-work/tools/serve-tishe-review.py --port 8000
-node content-work/tools/test-tishe-mobile.mjs
-# Прежняя библиотека, без --report для №14:
 python3 content-work/tools/test-drafts.py
-python3 content-work/tools/check-drafts.py
 node content-work/tools/test-engine.mjs
-node content-work/tools/test-bundled-ui.mjs
+# Pixel audits need numpy + Pillow; install/use a temporary environment if absent:
+PYTHONPATH=/tmp/novel-python-deps python3 content-work/tools/check-cast.py --story 15
+PYTHONPATH=/tmp/novel-python-deps python3 content-work/tools/check-cast.py --story 14
+npm run build:www
+# Browser dependencies/server are temporary development QA only:
+npm install --prefix /tmp/novel-browser-deps playwright-core @sparticuz/chromium
+# Run this server in a managed background process:
+python3 content-work/tools/serve-tishe-review.py --port 8000
+BROWSER_TEST_DEPS=/tmp/novel-browser-deps NOVEL_TEST_URL=http://127.0.0.1:8000 node content-work/tools/test-tishe-mobile.mjs
+BROWSER_TEST_DEPS=/tmp/novel-browser-deps NOVEL_TEST_URL=http://127.0.0.1:8000 node content-work/tools/test-bundled-ui.mjs
 npm run validate
 npm run check:syntax
 python3 tools/wire-art.py --check
+# Do not run the two regression tests that invoke --publish; they are out of scope.
 ```
 
 ## Предыдущие этапы

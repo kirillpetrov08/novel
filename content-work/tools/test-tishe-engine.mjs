@@ -93,4 +93,4 @@ assert.equal(JSON.stringify(h.E.state),previous);
 assert.equal(h.events.at(-1).t,'need-crystals');
 h.E.choose(h.E.scene().choices.findIndex(c=>!c.crystals));
 assert.equal(h.E.state.sceneId,'a09r');
-console.log('TISHE_NO_BALANCE_FREE_FALLBACK_OK; staged story remains outside the library until all art and mobile approval');
+console.log('TISHE_NO_BALANCE_FREE_FALLBACK_OK; staged story remains outside the library until separately authorized publication');
